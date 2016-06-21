@@ -13,8 +13,8 @@
 #' @param type the type of degree to be computed (see description); if contacts are not directed,
 #' this will be forced to 'both'
 #'
-#' @param a logical indicating if cases whose degree is computed should be from the linelist
-#' exclusively
+#' @param only_linelist a logical indicating if cases whose degree is computed should be from the
+#' linelist exclusively
 #'
 #' @examples
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,

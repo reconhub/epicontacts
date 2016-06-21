@@ -12,8 +12,8 @@ get_degree(x, type = c("in", "out", "both"), only_linelist = FALSE)
 \item{type}{the type of degree to be computed (see description); if contacts are not directed,
 this will be forced to 'both'}
 
-\item{a}{logical indicating if cases whose degree is computed should be from the linelist
-exclusively}
+\item{only_linelist}{a logical indicating if cases whose degree is computed should be from the
+linelist exclusively}
 }
 \description{
 This function computes the number of contacts per cases in a \code{\link{epi_contacts}}
