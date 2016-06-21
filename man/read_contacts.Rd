@@ -19,8 +19,8 @@ row corresponds to a unique patient), and contacts between patients. See details
 data formats.
 }
 \examples{
-if(require(outbreaks)){
- x <- ebola.sim$linelist
-}
+## make epi_contacts object from simulated Ebola data
+x <- read_contacts(ebola.sim$linelist, ebola.sim$contacts)
+
 }
 

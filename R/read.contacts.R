@@ -13,9 +13,9 @@
 #' @param id an index or name indicating which column in \code{linelist} contains unique identifiers
 #'
 #' @examples
-#' if(require(outbreaks)){
-#'  x <- ebola.sim$linelist
-#' }
+#' ## make epi_contacts object from simulated Ebola data
+#' x <- read_contacts(ebola.sim$linelist, ebola.sim$contacts)
+#'
 read_contacts <- function(linelist, contacts=NULL, id=1){
     ## We read data from linelist, which needs to contain at least one case, and contacts, which are
     ## optional. Sanity checks will include standard class and dimensionality checks, as well as
