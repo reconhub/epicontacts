@@ -10,7 +10,7 @@
 #' if(require(outbreaks)){
 #'  x <- ebola.sim$linelist
 #' }
-read.contacts <- function(linelist, contacts=NULL){
+read.contacts <- function(linelist, contacts=NULL, id=1){
     ## We read data from linelist, which needs to contain at least one case, and contacts, which are
     ## optional. Sanity checks will include standard class and dimensionality checks, as well as
     ## uniqueness of IDs in the line list
@@ -29,6 +29,10 @@ read.contacts <- function(linelist, contacts=NULL){
     if (ncol(linelist) < 1L) {
         stop("linelist should have at least one column")
     }
+    if (sum(temp <- duplicated(linelist[,id]))>0) {
+        msg <- paste(linelist[temp,id], collapse=" ")
+        stop("Duplicated IDs detected in the linelist; culprits are:", msg)
+    }
 
     ## Process contacts
     if (is.na(contacts)) {
@@ -38,8 +42,8 @@ read.contacts <- function(linelist, contacts=NULL){
         if(nrow(contacts) < 1L) {
             stop("contacts should have at least one row")
         }
-        if (ncol(contacts) < 1L) {
-            stop("contacts should have at least one column")
+        if (ncol(contacts) < 2L) {
+            stop("contacts should have at least two columns")
         }
     }
 
