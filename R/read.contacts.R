@@ -6,6 +6,12 @@
 #'
 #' @export
 #'
+#' @param linelist a data.frame with at least one columns providing unique patient identifiers
+#'
+#' @param contacts an optional data.frame; if provided, it needs at least two columns indicating patients between which cases take place; these need not be referenced in the linelist
+#'
+#' @param id an index or name indicating which column in \code{linelist} contains unique identifiers
+#'
 #' @examples
 #' if(require(outbreaks)){
 #'  x <- ebola.sim$linelist
