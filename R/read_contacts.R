@@ -28,7 +28,7 @@ make_epi_contacts <- function(linelist, contacts=NULL, id=1, from=1, to=2){
     ## 'id', and the first two columns of 'contacts' are 'from' and 'to'
 
 
-    ## process linelist
+    ## process linelist ##
     ## checks
     linelist <- as.data.frame(linelist)
 
@@ -59,7 +59,8 @@ make_epi_contacts <- function(linelist, contacts=NULL, id=1, from=1, to=2){
     linelist <- linelist[, c(id, setdiff(seq_len(ncol(linelist)), id))]
 
 
-    ## Process contacts
+    ## process contacts ##
+    ## checks
     if (length(contacts)==1 && is.na(contacts)) {
         contacts <- NULL
     }
@@ -70,6 +71,17 @@ make_epi_contacts <- function(linelist, contacts=NULL, id=1, from=1, to=2){
         if (ncol(contacts) < 2L) {
             stop("contacts should have at least two columns")
         }
+
+
+        ## reordering
+        if (is.character(from)) {
+            from <- match(from, names(contacts))
+        }
+        if (is.character(to)) {
+            to <- match(to, names(contacts))
+        }
+        names(contacts)[c(from,to)] <- c("from","to")
+        contacts <- contacts[, c(from, to, setdiff(seq_len(ncol(contacts)), c(from,to)))]
     }
 
     ## Build final output
