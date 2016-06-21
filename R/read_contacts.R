@@ -20,14 +20,18 @@
 #' ## make epi_contacts object from simulated Ebola data
 #' x <- read_contacts(ebola.sim$linelist, ebola.sim$contacts)
 #'
-read_contacts <- function(linelist, contacts=NULL, id=1){
+make_epi_contacts <- function(linelist, contacts=NULL, id=1, from=1, to=2){
     ## We read data from linelist, which needs to contain at least one case, and contacts, which are
     ## optional. Sanity checks will include standard class and dimensionality checks, as well as
     ## uniqueness of IDs in the line list, and enforcing 'character' type for the unique IDs, and
-    ## naming the case ID field 'id'.
+    ## naming the case ID field 'id'. We also reorder data so that the first column of 'linelist' is
+    ## 'id', and the first two columns of 'contacts' are 'from' and 'to'
 
 
-    ## Process nodes
+    ## process linelist
+    ## checks
+    linelist <- as.data.frame(linelist)
+
     if (is.null(linelist)) {
         stop("linelist is NULL")
     }
@@ -40,12 +44,19 @@ read_contacts <- function(linelist, contacts=NULL, id=1){
     if (ncol(linelist) < 1L) {
         stop("linelist should have at least one column")
     }
+
     linelist[,id] <- as.character(linelist[,id])
     if (sum(temp <- duplicated(linelist[,id]))>0) {
         msg <- paste(linelist[temp,id], collapse=" ")
         stop("Duplicated IDs detected in the linelist; culprits are:", msg)
     }
-    colnames(linelist)[id] <- "id"
+
+    ## reordering
+    if (is.character(id)) {
+        id <- match(id, names(linelist))
+    }
+    names(linelist)[id] <- "id"
+    linelist <- linelist[, c(id, setdiff(seq_len(ncol(linelist)), id))]
 
 
     ## Process contacts
