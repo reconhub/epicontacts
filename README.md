@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/Hackout3/contacts.svg?branch=master)](https://travis-ci.org/Hackout3/contacts)
+
 Welcome to the contact team repository!
 ---------------------------------------
 
