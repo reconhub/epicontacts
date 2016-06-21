@@ -12,6 +12,10 @@
 #'
 #' @param id an index or name indicating which column in \code{linelist} contains unique identifiers
 #'
+#' @return A list with two data.frames named 'linelist', and 'contacts'; the first column of
+#' 'linelist' is named 'id', and contains a vector of character corresponding to unique identifiers;
+#' the first two columns of 'contacts' are named 'from' and 'to', and indicate contacts.
+#'
 #' @examples
 #' ## make epi_contacts object from simulated Ebola data
 #' x <- read_contacts(ebola.sim$linelist, ebola.sim$contacts)

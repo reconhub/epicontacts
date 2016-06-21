@@ -13,6 +13,11 @@ read_contacts(linelist, contacts = NULL, id = 1)
 
 \item{id}{an index or name indicating which column in \code{linelist} contains unique identifiers}
 }
+\value{
+A list with two data.frames named 'linelist', and 'contacts'; the first column of
+'linelist' is named 'id', and contains a vector of character corresponding to unique identifiers;
+the first two columns of 'contacts' are named 'from' and 'to', and indicate contacts.
+}
 \description{
 This function reads data stored as data.frame containing linelist (case information, where each
 row corresponds to a unique patient), and contacts between patients. See details for expected
