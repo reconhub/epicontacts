@@ -66,7 +66,7 @@ make_epi_contacts <- function(linelist, contacts=NULL, id=1L, from=1L, to=2L, di
     linelist[,id] <- as.character(linelist[,id])
     if (sum(temp <- duplicated(linelist[,id]))>0) {
         msg <- paste(linelist[temp,id], collapse=" ")
-        stop("Duplicated IDs detected in the linelist; culprits are:", msg)
+        stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
     }
 
     ## reordering
