@@ -47,4 +47,7 @@ head(x$linelist)
 head(x$contacts)
 
 }
+\author{
+Thibaut Jombart (\email{thibautjombart@gmail.com})
+}
 

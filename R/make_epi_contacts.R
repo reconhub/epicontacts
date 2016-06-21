@@ -6,6 +6,8 @@
 #'
 #' @export
 #'
+#' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
+#'
 #' @param linelist a data.frame with at least one columns providing unique patient identifiers
 #'
 #' @param contacts an optional data.frame; if provided, it needs at least two columns indicating patients between which cases take place; these need not be referenced in the linelist
