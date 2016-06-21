@@ -1,0 +1,17 @@
+{
+    "contents" : "Package: contacts\nType: Package\nTitle: What the Package Does (Title Case)\nVersion: 0.1\nDate: 2016-06-21\nAuthors@R: person(\"First\", \"Last\", email = \"first.last@example.com\", role = c(\"aut\", \"cre\"))\nDescription: More about what it does (maybe more than one line)\nLicense: What license is it under?\nLazyData: TRUE",
+    "created" : 1466536034847.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1981306139",
+    "id" : "84975619",
+    "lastKnownWriteTime" : 1466536023,
+    "path" : "~/Sites/Shiny/contacts/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "dcf"
+}
