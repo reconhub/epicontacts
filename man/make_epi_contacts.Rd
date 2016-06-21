@@ -4,7 +4,8 @@
 \alias{make_epi_contacts}
 \title{Read linelist and contact data}
 \usage{
-make_epi_contacts(linelist, contacts = NULL, id = 1, from = 1, to = 2)
+make_epi_contacts(linelist, contacts = NULL, id = 1L, from = 1L,
+  to = 2L, directed = FALSE)
 }
 \arguments{
 \item{linelist}{a data.frame with at least one columns providing unique patient identifiers}
@@ -12,6 +13,13 @@ make_epi_contacts(linelist, contacts = NULL, id = 1, from = 1, to = 2)
 \item{contacts}{an optional data.frame; if provided, it needs at least two columns indicating patients between which cases take place; these need not be referenced in the linelist}
 
 \item{id}{an index or name indicating which column in \code{linelist} contains unique identifiers}
+
+\item{from}{an index or name indicating which column in \code{contacts} contains the first case of a contact}
+
+\item{to}{an index or name indicating which column in \code{contacts} contains the second case of a contact}
+
+\item{directed}{a logical indicating if contact are directed, or not; not that contacts will be
+indicated as 'from' and 'to' even in non directed contacts}
 }
 \value{
 A list with two data.frames named 'linelist', and 'contacts'; the first column of
@@ -25,7 +33,18 @@ data formats.
 }
 \examples{
 ## make epi_contacts object from simulated Ebola data
-x <- read_contacts(ebola.sim$linelist, ebola.sim$contacts)
+x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts)
+
+## test reordering of columns
+linelist <- ebola.sim$linelist[,rev(seq_len(ncol(ebola.sim$linelist)))]
+contacts <- ebola.sim$contacts[,rev(seq_len(ncol(ebola.sim$contacts)))]
+head(linelist)
+head(contacts)
+
+## make object
+x <- make_epi_contacts(linelist, contacts, id="case.id", to="case.id", from="infector")
+head(x$linelist)
+head(x$contacts)
 
 }
 
