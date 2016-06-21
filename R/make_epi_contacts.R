@@ -6,6 +6,8 @@
 #'
 #' @export
 #'
+#' @aliases make_epi_contacts epi_contacts
+#'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
 #' @param linelist a data.frame with at least one columns providing unique patient identifiers

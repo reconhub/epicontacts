@@ -7,6 +7,10 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
+#' @param x an \code{\link{epi_contacts}} object
+#'
+#' @param ... further parameters to be passed to other methods (currently not used)
+#'
 print.epi_contacts <- function(x, ...){
     cat("\n/// Epidemiological Contacts //\n")
     cat("\n  // class:", paste(class(x), collapse=", "))
