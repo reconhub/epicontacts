@@ -16,7 +16,7 @@
 #' if(require(outbreaks)){
 #'  x <- ebola.sim$linelist
 #' }
-read.contacts <- function(linelist, contacts=NULL, id=1){
+read_contacts <- function(linelist, contacts=NULL, id=1){
     ## We read data from linelist, which needs to contain at least one case, and contacts, which are
     ## optional. Sanity checks will include standard class and dimensionality checks, as well as
     ## uniqueness of IDs in the line list
