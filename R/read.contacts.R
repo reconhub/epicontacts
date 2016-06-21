@@ -26,7 +26,7 @@ read_contacts <- function(linelist, contacts=NULL, id=1){
     if (is.null(linelist)) {
         stop("linelist is NULL")
     }
-    if (is.na(linelist)) {
+    if (length(linelist)==1 && is.na(linelist)) {
         stop("linelist is NA")
     }
     if (nrow(linelist) < 1L) {
@@ -41,7 +41,7 @@ read_contacts <- function(linelist, contacts=NULL, id=1){
     }
 
     ## Process contacts
-    if (is.na(contacts)) {
+    if (length(contacts)==1 && is.na(contacts)) {
         contacts <- NULL
     }
     if (!is.null(contacts)){
