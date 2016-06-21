@@ -39,16 +39,11 @@ Data simulated by Pierre Nouvellet (\email{p.nouvellet@imperial.ac.uk}). Transfe
 and documentation by Thibaut Jombart (\email{thibautjombart@gmail.com}).
 }
 \references{
-WHO Ebola Response Team. 2014. Ebola virus disease in West Africa--the first 9 months
-of the epidemic and forward projections. The New England journal of medicine 371:1481–1495.
+WHO Ebola Response Team, 2014. Ebola virus disease in West Africa--the first 9 months
+of the epidemic and forward projections. The New England journal of medicine 371:1481-1495.
 
-WHO Ebola Response Team, J. Agua-Agum, A. Ariyarajah, B. Aylward, I. M. Blake, R. Brennan,
-A. Cori, C. A. Donnelly, I. Dorigatti, C. Dye, T. Eckmanns, N. M. Ferguson, P. Formenty,
-C. Fraser, E. Garcia, T. Garske, W. Hinsley, D. Holmes, S. Hugonnet, S. Iyengar, T. Jombart,
-R. Krishnan, S. Meijers, H. L. Mills, Y. Mohamed, G. Nedjati-Gilani, E. Newton, P. Nouvellet,
-L. Pelletier, D. Perkins, S. Riley, M. Sagrado, J. Schnitzler, D. Schumacher, A. Shah, M. D. Van
-Kerkhove, O. Varsaneux, and N. Wijekoon Kannangarage. 2015. West African Ebola epidemic after one
-year--slowing but not yet under control. The New England journal of medicine 372:584–587.
+WHO Ebola Response Team, 2015. West African Ebola epidemic after one
+year -- slowing but not yet under control. The New England journal of medicine 372:584-587.
 }
 \seealso{
 The 'outbreaks' package, from which this dataset is taken.

@@ -16,7 +16,7 @@
 #'
 #' @param to an index or name indicating which column in \code{contacts} contains the second case of a contact
 #'
-#' @param directed a logical indicating if contact are directed, or not; not that contacts will be
+#' @param directed a logical indicating if contact are directed, or not; note that contacts will be
 #' indicated as 'from' and 'to' even in non directed contacts
 #'
 #' @return A list with two data.frames named 'linelist', and 'contacts'; the first column of
