@@ -57,4 +57,5 @@ read_contacts <- function(linelist, contacts=NULL, id=1){
     out <- list(linelist=linelist, contacts=contacts)
 
     class(out) <- c("epi_contacts", "list")
+    return(out)
 }
