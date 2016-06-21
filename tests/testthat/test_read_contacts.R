@@ -5,6 +5,7 @@ test_that("Class and content are fine", {
         x <- read_contacts(ebola.sim$linelist)
         expect_is(x, "epi_contacts")
         expect_is(x, "list")
+        expect_is(x$linelist$id, "character")
     }
 })
 
