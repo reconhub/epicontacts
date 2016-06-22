@@ -18,7 +18,12 @@
 #'
 #' @param type of operation to be performed on node value. Can take forms "factor", "numeric", or "date"
 
-get_pairwise <- function(x, attribute, f=NULL){
+get_pairwise <- function(x, attribute, f=NULL, hard_NA=FALSE){
+    ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of
+    ## the contacts. 'f' is the function processing these paired values, with some pre-defined
+    ## behaviours for some types (dates, numeric); 'hard_NA' defines the behaviour for NAs, and if
+    ## TRUE will enforce a NA wherever the pair contained at least one NA.
+
     ## checks
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
@@ -33,6 +38,7 @@ get_pairwise <- function(x, attribute, f=NULL){
     names(values) <- x$linelist$id
     values.from <- values[x$contacts$from]
     values.to <- values[x$contacts$to]
+    ori.NA <- is.na(values.from) | is.na(values.to)
 
     ## define default function if not provided:
     ## - for 'Date': absolute number of difference in days
@@ -54,5 +60,9 @@ get_pairwise <- function(x, attribute, f=NULL){
     }
 
     out <- f(values.from, values.to)
+    if (hard_NA) {
+        out[ori.NA] <- NA
+    }
+
     return(out)
 }
