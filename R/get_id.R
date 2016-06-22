@@ -55,9 +55,15 @@ get_id <- function(x, which=c("linelist","contacts","all","common","from","to"))
         out <- intersect(x$linelist$id, unique(unlist(x$contacts[,1:2])))
     }
     if (which=="from") {
+        if (!x$directed) {
+            warning("x is not directed; 'from' has no particular meaning")
+        }
         out <- unique(x$contacts$from)
     }
     if (which=="to") {
+        if (!x$directed) {
+            warning("x is not directed; 'to' has no particular meaning")
+        }
         out <- unique(x$contacts$to)
     }
 
