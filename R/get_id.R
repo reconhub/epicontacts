@@ -55,10 +55,10 @@ get_id <- function(x, which=c("linelist","contacts","all","common","from","to"))
         out <- intersect(x$linelist$id, unique(unlist(x$contacts[,1:2])))
     }
     if (which=="from") {
-        out <- x$contacts$from
+        out <- unique(x$contacts$from)
     }
     if (which=="to") {
-        out <- x$contacts$to
+        out <- unique(x$contacts$to)
     }
 
     return(out)
