@@ -13,7 +13,9 @@ get_pairwise(x, attribute, f = NULL, hard_NA = FALSE)
 
 \item{f}{a function processing the attributes of 'from' and 'to'}
 
-\item{type}{of operation to be performed on node value. Can take forms "factor", "numeric", or "date"}
+\item{hard_NA}{a logical indicating if the output should be NA whenever one of the paired values
+is NA (TRUE); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
+values)}
 }
 \description{
 This function extract attributes of cases involved in contacts using case information provided in

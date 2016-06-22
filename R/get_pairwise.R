@@ -16,8 +16,10 @@
 #'
 #' @param f a function processing the attributes of 'from' and 'to'
 #'
-#' @param type of operation to be performed on node value. Can take forms "factor", "numeric", or "date"
-
+#' @param hard_NA a logical indicating if the output should be NA whenever one of the paired values
+#' is NA (TRUE); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
+#' values)
+#'
 get_pairwise <- function(x, attribute, f=NULL, hard_NA=FALSE){
     ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of
     ## the contacts. 'f' is the function processing these paired values, with some pre-defined
