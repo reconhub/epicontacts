@@ -40,11 +40,11 @@
 
     ## check
     if (!is.character(i)) {
-        warning("'i' is not a character; enforcing conversion \n(logicals and integers cannot be used to subset epi_contacts objects")
+        warning("'i' is not a character; enforcing conversion \n(logicals and integers cannot be used to subset epi_contacts objects)")
         i <- as.character(i)
     }
     if (!is.character(j)) {
-        warning("'j' is not a character; enforcing conversion \n(logicals and integers cannot be used to subset epi_contacts objects")
+        warning("'j' is not a character; enforcing conversion \n(logicals and integers cannot be used to subset epi_contacts objects)")
         j <- as.character(j)
     }
     contacts <- match.arg(contacts)
