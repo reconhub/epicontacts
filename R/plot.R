@@ -4,16 +4,13 @@
 #'
 #' @export
 #'
-#' @param an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epi_contacts}} object
+#'
+#' @param y a character string indicating the plotting method to be used
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @importFrom visNetwork visNetwork visGroups visLegend visOptions visNodes
-#' @importFrom magrittr "%>%"
-#'
-#' @return the same output as \code{visNetwork}
-#'
-#' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+#' @seealso \code{\linkvis_epi_contacts}}, which uses the package \code{visNetwork}.
 #'
 plot.epi_contacts <- function(x, y=c("visNetwork"), ...){
     ## checks
