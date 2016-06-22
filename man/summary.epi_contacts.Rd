@@ -4,10 +4,10 @@
 \alias{summary.epi_contacts}
 \title{Summary method for epi_contacts objects}
 \usage{
-\method{summary}{epi_contacts}(x, ...)
+\method{summary}{epi_contacts}(object, ...)
 }
 \arguments{
-\item{x}{an \code{\link{epi_contacts}} object}
+\item{object}{an \code{\link{epi_contacts}} object}
 
 \item{...}{further parameters to be passed to other methods (currently not used)}
 }
