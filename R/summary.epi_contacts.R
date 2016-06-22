@@ -46,8 +46,7 @@ summary.epi_contacts <- function(x, ...){
     cat("\n")
 
     cat("// attributes in contacts:",
-        # paste(names(x$contacts[,-c(1,2)]), collapse = ", "))
-        names(x$contacts[,-c(1,2)]))
+        paste(names(x$contacts[,-c(1,2)]), collapse = ", "))
 
     cat("\n")
 }
