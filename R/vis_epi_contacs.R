@@ -31,9 +31,11 @@
 #'
 #' @param height the height of the output, in html compatible format (e.g. '800px')
 #'
-#' @param ... further arguments to be passed to \code{visNetwork}
+#' @param selector a logical indicating if the selector tool should be used; defaults to TRUE
 #'
-#' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
+#' @param editor a logical indicating if the editor tool should be used; defaults to FALSE
+#'
+#' @param ... further arguments to be passed to \code{visNetwork}
 #'
 #' @importFrom visNetwork visNetwork visGroups visLegend visOptions visNodes
 #'
@@ -48,6 +50,7 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
                              legend=TRUE, legend_max=10,
                              col_pal=cases_pal, NA_col="lightgrey",
                              width="90%", height="700px",
+                             selector=TRUE, editor=FALSE,
                              ...){
 
     ## make visNetwork inputs: nodes
@@ -100,5 +103,12 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
 
     ## options
     out <- out %>% visNetwork::visOptions(highlightNearest=TRUE)
+
+    if (selector) {
+        out <- out %>% visNetwork::visOptions(selectedBy="group", manipulation=editor)
+    } else if (editor) {
+        out <- out %>% visNetwork::visOptions(manipulation=TRUE)
+    }
+
     return(out)
 }
