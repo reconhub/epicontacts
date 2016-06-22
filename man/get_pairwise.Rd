@@ -4,7 +4,7 @@
 \alias{get_pairwise}
 \title{Find pairwise node characteristics for epi_contacts objects}
 \usage{
-get_pairwise(x, attribute, f = NULL, hard_NA = FALSE)
+get_pairwise(x, attribute, f = NULL, hard_NA = TRUE)
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
@@ -14,13 +14,16 @@ get_pairwise(x, attribute, f = NULL, hard_NA = FALSE)
 \item{f}{a function processing the attributes of 'from' and 'to'}
 
 \item{hard_NA}{a logical indicating if the output should be NA whenever one of the paired values
-is NA (TRUE); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
+is NA (TRUE, default); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
 values)}
 }
 \description{
 This function extract attributes of cases involved in contacts using case information provided in
 the linelist of an \code{\link{epi_contacts}} dataset. If not provided, the function used to
 process attributes will adjust to the type of attribute selected (see details).
+}
+\examples{
+
 }
 \author{
 Tom Crellen (\email{tomcrellen@gmail.com})

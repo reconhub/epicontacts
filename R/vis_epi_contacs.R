@@ -37,10 +37,11 @@
 #'
 #'
 vis_epi_contacts <- function(x, group="id", annot=c("id"),
-                             legend=TRUE,
+                             legend=TRUE, legend.max=10,
                              selector=FALSE, editor=FALSE,
                              col.pal=cases_pal, NA.col="lightgrey",
-                             width="90%", height="700px", ...){
+                             width="90%", height="700px",
+                             ...){
 
     ## make visNetwork inputs: nodes
     nodes <- x$linelist
@@ -75,7 +76,7 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
     }
 
     ## add legend
-    if (legend) {
+    if (legend && K<legend.max) {
         out <- out %>% visNetwork::visLegend()
     }
 
