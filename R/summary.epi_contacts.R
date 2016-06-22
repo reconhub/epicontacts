@@ -12,7 +12,7 @@
 #'
 summary.epi_contacts <- function(x, ...){
     cat("\n/// Summary of Epidemiological Contacts //\n")
-    cat("\n  // class:", paste(class(x), collapse=", "))
+    cat("\n// class:", paste(class(x), collapse=", "))
 
     cat("\n")
 
@@ -20,19 +20,34 @@ summary.epi_contacts <- function(x, ...){
 
     contactcoverage <- length(intersect(unique(allcontacts),x$linelist[,1])) / (nrow(x$linelist))
 
-    cat("number of contacts in linelist:",
-        length(intersect(unique(allcontacts),x$linelist[,1])),
-        "/",
-        nrow(x$linelist),
-        paste0("(", round(contactcoverage*100,2), "%", ")"))
+    cat("// number of unique contacts:",
+        length(unique(allcontacts)))
 
     cat("\n")
 
-    cat("\n  // summary of linelist\n\n")
-    cat(summary(x$linelist))
+    cat("// number of records in linelist:",
+        nrow(x$linelist))
 
-    cat("\n  // summary of contacts\n\n")
-    cat(summary(x$contacts))
+    cat("\n")
+
+    cat("// number of contacts that appear in linelist:",
+        length(intersect(unique(allcontacts),x$linelist[,1])))
+
+    cat("\n")
+
+    cat("// percentage of contacts appearing in linelist:",
+        paste0(round(contactcoverage*100,2), "%"))
+
+    cat("\n")
+
+    cat("// attributes in linelist:",
+        paste(names(x$linelist[,-1]), collapse = ", "))
+
+    cat("\n")
+
+    cat("// attributes in contacts:",
+        # paste(names(x$contacts[,-c(1,2)]), collapse = ", "))
+        names(x$contacts[,-c(1,2)]))
 
     cat("\n")
 }
