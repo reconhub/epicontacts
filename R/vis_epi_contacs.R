@@ -1,6 +1,6 @@
-#' Plot epi_contacts objects
+#' Plot epi_contacts objects using visNetwork
 #'
-#' This function plots \code{\link{epi_contacts}} objects using various approaches.
+#' This function plots \code{\link{epi_contacts}} objects using the \code{visNetwork} package.
 #'
 #' @export
 #'

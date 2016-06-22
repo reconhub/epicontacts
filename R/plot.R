@@ -1,6 +1,7 @@
-#' Plot epi_contacts objects using visNetwork
+#' Plot epi_contacts objects
 #'
-#' This function plots \code{\link{epi_contacts}} objects using \code{visNetwork}.
+#' This function plots \code{\link{epi_contacts}} objects using various approaches. The default
+#' method uses \code{\link{vis_epi_contacts}}.
 #'
 #' @export
 #'
@@ -12,7 +13,7 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @seealso \code{\linkvis_epi_contacts}}, which uses the package \code{visNetwork}.
+#' @seealso \code{\link{vis_epi_contacts}}, which uses the package \code{visNetwork}.
 #'
 plot.epi_contacts <- function(x, y=c("visNetwork"), ...){
     ## checks
