@@ -5,7 +5,7 @@
 \title{Subset epi_contacts objects based on case identifiers}
 \usage{
 \method{[}{epi_contacts}(x, i, j = i, contacts = c("both", "either", "from",
-  "to"), ...)
+  "to"), k = TRUE, l = TRUE, ...)
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
@@ -16,6 +16,14 @@
 same as \code{i}}
 
 \item{contacts}{a character string indicating on which basis contacts are retained (see details)}
+
+\item{k}{an integer, logical, or character vector subsetting the supplementary columns of
+\code{x$linelist}, i.e. the columns after 'id'; i.e. \code{k=1} refers to the column immediately
+after 'id'.}
+
+\item{l}{an integer, logical, or character vector subsetting the supplementary columns of
+\code{x$contacts}, i.e. the columns after 'from' and 'to'; i.e. \code{l=1} refers to the column
+immediately after 'to'.}
 
 \item{...}{not used (there for compatibility with generic)}
 }
