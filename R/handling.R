@@ -18,6 +18,14 @@
 #'
 #' @param contacts a character string indicating on which basis contacts are retained (see details)
 #'
+#' @param k an integer, logical, or character vector subsetting the supplementary columns of
+#' \code{x$linelist}, i.e. the columns after 'id'; i.e. \code{k=1} refers to the column immediately
+#' after 'id'.
+#'
+#' @param l an integer, logical, or character vector subsetting the supplementary columns of
+#' \code{x$contacts}, i.e. the columns after 'from' and 'to'; i.e. \code{l=1} refers to the column
+#' immediately after 'to'.
+
 #' @param ... not used (there for compatibility with generic)
 #'
 #' @details
@@ -47,6 +55,7 @@
     ## - in x$contacts: l=1 will refer to the 3nd column (i.e. after 'from' and 'to')
 
     ## check
+    if(missing(i)) i <- get_id(x, "all")
     if (!is.character(i)) {
         warning("'i' is not a character; enforcing conversion \n(logicals and integers cannot be used to subset epi_contacts objects)")
         i <- as.character(i)
@@ -60,7 +69,9 @@
     ## subset linelist
     to.keep <- x$linelist$id %in% i
     x$linelist <- x$linelist[to.keep, , drop=FALSE]
-    x$linelist[,-1] <- x$linelist[,-1][,k]
+    if (ncol(x$linelist) > 1) {
+        x$linelist[,-1] <- x$linelist[, -1, drop=FALSE][,k]
+    }
 
     ## subset contacts
     if (contacts=="both") {
@@ -77,7 +88,9 @@
     }
 
     x$contacts <- x$contacts[to.keep, , drop=FALSE]
-    x$contacts[,-c(1,2)] <- x$contacts[,-c(1,2)][,l]
+    if (ncol(x$contacts) > 2) {
+        x$contacts[,-c(1,2)] <- x$contacts[, -c(1,2), drop=FALSE][,l]
+    }
 
     return(x)
 }
