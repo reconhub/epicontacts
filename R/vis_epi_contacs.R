@@ -36,15 +36,23 @@
 #' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
 #'
 #'
-vis_epi_contacts <- function(x, legend=TRUE,
-                             selector=TRUE, editor=TRUE,
-                             col.pal=case_pal,
+vis_epi_contacts <- function(x, group="id", annot=c("id"),
+                             legend=TRUE,
+                             selector=FALSE, editor=FALSE,
+                             col.pal=cases_pal, NA.col="lightgrey",
                              width="90%", height="700px", ...){
 
     ## make visNetwork inputs: nodes
     nodes <- x$linelist
     nodes$label <- nodes$id
+    nodes$group <- as.character(nodes[,group])
+    nodes$group[is.na(nodes$group)] <- "NA"
+    nodes$group <- factor(nodes$group)
 
+    ## get annotations
+    temp <- nodes[, annot, drop=FALSE]
+    temp <- sapply(names(temp), function(e) paste(e, temp[,e], sep=": "))
+    nodes$title <- paste("<p>", apply(temp, 1, paste0, collapse="<br>"), "</p>")
 
     ## make visNetwork inputs: edges
     edges <- x$contacts
@@ -58,12 +66,13 @@ vis_epi_contacts <- function(x, legend=TRUE,
     out <- visNetwork::visNetwork(nodes, edges,
                                   width=width, height=height, ...)
 
-    ## ## add group info/color
-    ## out <- out %>% visNetwork::visGroups(groupname = "internal", color = col.internal)
-    ## grp.col <- col.pal(K)
-    ## for(i in seq.int(K)){
-    ##     out <- out %>% visNetwork::visGroups(groupname = levels(x$group)[i], color = grp.col[i])
-    ## }
+    ## add group info/color
+    K <- length(unique(nodes$group))
+    grp.col <- col.pal(K)
+    grp.col[levels(nodes$group)=="NA"] <- NA.col
+    for(i in seq_len(K)){
+        out <- out %>% visNetwork::visGroups(groupname = levels(nodes$group)[i], color = grp.col[i])
+    }
 
     ## add legend
     if (legend) {
@@ -80,5 +89,8 @@ vis_epi_contacts <- function(x, legend=TRUE,
 
     ## set nodes borders
     out <- out %>% visNetwork::visNodes(borderWidth=2)
+
+    ## options
+    out <- out %>% visNetwork::visOptions(highlightNearest=TRUE)
     return(out)
 }
