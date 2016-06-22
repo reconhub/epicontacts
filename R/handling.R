@@ -71,8 +71,8 @@
     x$linelist <- x$linelist[to.keep, , drop=FALSE]
     if (ncol(x$linelist) > 1) {
         x$linelist <- data.frame(c(x$linelist[1],
-                                   x$linelist[-1][k])
-                                 )
+                                   x$linelist[-1][k]),
+                                 stringsAsFactors=FALSE)
     }
 
     ## subset contacts
@@ -92,8 +92,9 @@
     x$contacts <- x$contacts[to.keep, , drop=FALSE]
     if (ncol(x$contacts) > 2) {
         x$contacts <- data.frame(c(x$contacts[1:2],
-                                   x$contacts[-c(1:2)][l])
-                                 )
+                                   x$contacts[-c(1:2)][l]),
+                                 stringsAsFactors=FALSE)
+
     }
 
     return(x)
