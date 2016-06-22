@@ -15,7 +15,9 @@
 \item{j}{a character vector containing case ID to be retained in the contacts; defaults to the
 same as \code{i}}
 
-\item{contacts}{a character string indicating on which basis contacts are retained (see details).}
+\item{contacts}{a character string indicating on which basis contacts are retained (see details)}
+
+\item{...}{not used (there for compatibility with generic)}
 }
 \description{
 The "[" operator can be used to subset \code{\link{epi_contacts}} objects, retaining a specified
