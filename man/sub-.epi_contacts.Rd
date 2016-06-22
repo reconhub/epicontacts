@@ -4,7 +4,8 @@
 \alias{[.epi_contacts}
 \title{Subset epi_contacts objects based on case identifiers}
 \usage{
-\method{[}{epi_contacts}(x, i, j = i, strict = FALSE, ...)
+\method{[}{epi_contacts}(x, i, j = i, contacts = c("both", "either", "from",
+  "to"), ...)
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
@@ -14,15 +15,22 @@
 \item{j}{a character vector containing case ID to be retained in the contacts; defaults to the
 same as \code{i}}
 
-\item{strict}{a logical indicating the behaviour for subsetting contacts; if 'TRUE', both cases
-of a contact need to be in 'j' for this contact to be retained; if FALSE, only one of the cases
-needs to be present for a contact to be retained.}
+\item{contacts}{a character string indicating on which basis contacts are retained (see details).}
 }
 \description{
 The "[" operator can be used to subset \code{\link{epi_contacts}} objects, retaining a specified
 set of case identifiers (\code{i} for the linelist, \code{j} for contacts). Note that unlike most
 classical R objects, there is no replacement method for \code{\link{epi_contacts}} objects,
 i.e. no operations such as \code{foo[i] <- bar}.
+}
+\details{
+Details on the 'contacts' argument; possible values are:
+\itemize{
+\item{'both'}{contacts are retained only if both cases are in the subset}
+\item{'either'}{contacts are retained if at least one of the cases is in the subset}
+\item{'from'}{contacts are retained only if the source ('from') is in the subset}
+\item{'to'}{contacts are retained only if the recipient ('to') is in the subset}
+}
 }
 \examples{
 ## build data

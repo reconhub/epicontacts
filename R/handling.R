@@ -45,18 +45,26 @@
         warning("'j' is not a character; enforcing conversion \n(logicals and integers cannot be used to subset epi_contacts objects")
         j <- as.character(j)
     }
+    contacts <- match.arg(contacts)
 
     ## subset linelist
-    row.names(x$linelist) <- x$linelist$id
-    on.exit(row.names(x$linelist) <- NULL)
-    x$linelist <- x$linelist[i, , drop=FALSE]
+    to.keep <- x$linelist$id %in% i
+    x$linelist <- x$linelist[to.keep, , drop=FALSE]
 
     ## subset contacts
-    if (strict) {
+    if (contacts=="both") {
         to.keep <- (x$contacts$from %in% j) & (x$contacts$to %in% j)
-    } else {
+    }
+    if (contacts=="either") {
         to.keep <- (x$contacts$from %in% j) | (x$contacts$to %in% j)
     }
+    if (contacts=="from") {
+        to.keep <- x$contacts$from %in% j
+    }
+    if (contacts=="to") {
+        to.keep <- x$contacts$to %in% j
+    }
+
     x$contacts <- x$contacts[to.keep, , drop=FALSE]
 
     return(x)
