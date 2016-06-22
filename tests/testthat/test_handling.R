@@ -10,17 +10,23 @@ test_that("Data with specified IDs are extracted fine", {
     x2 <- x[get_id(x, "contacts")[1:10],]
     x3 <- x[get_id(x, "contacts")[1:10], contacts="either"]
     x4 <- x[get_id(x, "from")[1:3], contacts="from"]
+    x5 <- x[,k=1:2,l=1]
 
     expect_is(x1, "epi_contacts")
     expect_is(x2, "epi_contacts")
     expect_is(x3, "epi_contacts")
     expect_is(x4, "epi_contacts")
+    expect_is(x5, "epi_contacts")
 
     expect_equal(nrow(x1$linelist),10)
     expect_equal(nrow(x2$linelist),7)
     expect_equal(nrow(x3$contacts),16)
     expect_equal(nrow(x4$linelist),2)
     expect_equal(nrow(x4$contacts),4)
+    expect_equal(ncol(x5$linelist),3)
+    expect_equal(ncol(x5$contacts),3)
+    expect_equal(nrow(x5$linelist),nrow(x$linelist))
+    expect_equal(nrow(x5$contacts),nrow(x$contacts))
 })
 
 test_that("Errors / warnings happen when they should", {
