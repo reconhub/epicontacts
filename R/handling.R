@@ -16,7 +16,9 @@
 #' @param j a character vector containing case ID to be retained in the contacts; defaults to the
 #' same as \code{i}
 #'
-#' @param contacts a character string indicating on which basis contacts are retained (see details).
+#' @param contacts a character string indicating on which basis contacts are retained (see details)
+#'
+#' @param ... not used (there for compatibility with generic)
 #'
 #' @details
 #' Details on the 'contacts' argument; possible values are:
