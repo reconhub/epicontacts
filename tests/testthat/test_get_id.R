@@ -26,13 +26,19 @@ test_that("IDs are extracted fine", {
     expect_equal(unique(c(id5,id6)), id2)
 })
 
-test_that("Errors happen when they should", {
+test_that("Errors / warnings happen when they should", {
     x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                            id="case.id", to="case.id", from="infector",
-                           directed=TRUE)
+                           directed=FALSE)
 
     expect_error(get_id(x, "tamere"),
                  ".*should be one of.*")
+
+    expect_warning(get_id(x, "from"),
+                   "x is not directed; 'from' has no particular meaning")
+
+    expect_warning(get_id(x, "to"),
+                   "x is not directed; 'to' has no particular meaning")
 })
 
 
