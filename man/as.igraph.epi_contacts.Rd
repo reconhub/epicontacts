@@ -19,7 +19,9 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        directed=TRUE)
 
 ## subset data - keep 10 cases from linelist with contacts
-#' x <- x[get_id(x, "common")[1:10]]
+ids <- get_id(x, "common")[1:10]
+ids
+x <- x[ids]
 
 ## make igraph object with associates attributes from epi_contacts object
 net <- as.igraph.epi_contacts(x)
