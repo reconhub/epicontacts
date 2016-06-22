@@ -8,6 +8,8 @@
 #'
 #' @param y a character string indicating the plotting method to be used
 #'
+#' @param ... further arguments passed to the plotting method
+#'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
 #' @seealso \code{\linkvis_epi_contacts}}, which uses the package \code{visNetwork}.

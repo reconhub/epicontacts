@@ -16,17 +16,20 @@
 #' @param group an index or character string indicating which field of the linelist should be used
 #' to color the nodes
 #'
+#' @param annot an index or character string indicating which fields of the linelist should be used
+#' for annotating the nodes
+#'
 #' @param legend a logical indicating whether a legend should be added to the plot
 #'
-#' @param legend_max the maximum number of groups for a legendd to be displayed
+#' @param legend_max the maximum number of groups for a legend to be displayed
 #'
 #' @param col_pal a color palette for the groups
 #'
 #' @param NA_col the color used for unknown group
 #'
-#' @param width the width of the output, in html compatible format (e.g. '90%' or '800px'
+#' @param width the width of the output, in html compatible format (e.g. '90%' or '800px')
 #'
-#' @param height the height of the output, in html compatible format (e.g. '800px'
+#' @param height the height of the output, in html compatible format (e.g. '800px')
 #'
 #' @param ... further arguments to be passed to \code{visNetwork}
 #'
