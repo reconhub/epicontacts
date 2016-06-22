@@ -33,10 +33,18 @@
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
-"[.epi_contacts" <- function(x, i, j=i, contacts=c("both","either","from","to"), ...){
+"[.epi_contacts" <- function(x, i, j=i, contacts=c("both","either","from","to"),
+                             k=TRUE, l=TRUE, ...){
     ## In all the following, i is used to subset the linelist, j to subset contacts. The variable
     ## 'strict' triggers the subsetting of contacts; if TRUE, then both nodes need to be part of 'j'
     ## for a contact to be retained; if FALSE, only one of them needs to be in 'j'.
+
+    ## 'k' and 'l' will be used to subset the columns of attributes in x$linelist and x$contacts,
+    ## respectively; any usual subsetting is fine for these ones (index, logical, name), although
+    ## the 'id', 'from' and 'to' columns are discarded from the subsetting. That is:
+
+    ## - in x$linelist: k=1 will refer to the 2nd column (i.e. after 'id')
+    ## - in x$contacts: l=1 will refer to the 3nd column (i.e. after 'from' and 'to')
 
     ## check
     if (!is.character(i)) {
@@ -52,6 +60,7 @@
     ## subset linelist
     to.keep <- x$linelist$id %in% i
     x$linelist <- x$linelist[to.keep, , drop=FALSE]
+    x$linelist[,-1] <- x$linelist[,-1][,k]
 
     ## subset contacts
     if (contacts=="both") {
@@ -68,6 +77,7 @@
     }
 
     x$contacts <- x$contacts[to.keep, , drop=FALSE]
+    x$contacts[,-c(1,2)] <- x$contacts[,-c(1,2)][,l]
 
     return(x)
 }
