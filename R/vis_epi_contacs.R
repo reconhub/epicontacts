@@ -1,6 +1,6 @@
-#' Plot epi_contacts objects
+#' Plot epi_contacts objects using visNetwork
 #'
-#' This function plots \code{\link{epi_contacts}} objects using various approaches.
+#' This function plots \code{\link{epi_contacts}} objects using the \code{visNetwork} package.
 #'
 #' @export
 #'
@@ -13,19 +13,29 @@
 #'
 #' @param x an \code{\link{epi_contacts}} object
 #'
+#' @param group an index or character string indicating which field of the linelist should be used
+#' to color the nodes
+#'
+#' @param annot an index or character string indicating which fields of the linelist should be used
+#' for annotating the nodes
+#'
 #' @param legend a logical indicating whether a legend should be added to the plot
 #'
-#' @param selector a logical indicating whether a group selector tool should be added to the plot
+#' @param legend_max the maximum number of groups for a legend to be displayed
 #'
-#' @param editor a logical indicating whether an editor tool should be added to the plot
+#' @param col_pal a color palette for the groups
 #'
-#' @param width the width of the output, in html compatible format (e.g. '90%' or '800px'
+#' @param NA_col the color used for unknown group
 #'
-#' @param height the height of the output, in html compatible format (e.g. '800px'
+#' @param width the width of the output, in html compatible format (e.g. '90%' or '800px')
+#'
+#' @param height the height of the output, in html compatible format (e.g. '800px')
+#'
+#' @param selector a logical indicating if the selector tool should be used; defaults to TRUE
+#'
+#' @param editor a logical indicating if the editor tool should be used; defaults to FALSE
 #'
 #' @param ... further arguments to be passed to \code{visNetwork}
-#'
-#' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
 #' @importFrom visNetwork visNetwork visGroups visLegend visOptions visNodes
 #'
@@ -37,10 +47,10 @@
 #'
 #'
 vis_epi_contacts <- function(x, group="id", annot=c("id"),
-                             legend=TRUE, legend.max=10,
-                             selector=FALSE, editor=FALSE,
-                             col.pal=cases_pal, NA.col="lightgrey",
+                             legend=TRUE, legend_max=10,
+                             col_pal=cases_pal, NA_col="lightgrey",
                              width="90%", height="700px",
+                             selector=TRUE, editor=FALSE,
                              ...){
 
     ## make visNetwork inputs: nodes
@@ -69,29 +79,36 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
 
     ## add group info/color
     K <- length(unique(nodes$group))
-    grp.col <- col.pal(K)
-    grp.col[levels(nodes$group)=="NA"] <- NA.col
+    grp.col <- col_pal(K)
+    grp.col[levels(nodes$group)=="NA"] <- NA_col
     for(i in seq_len(K)){
         out <- out %>% visNetwork::visGroups(groupname = levels(nodes$group)[i], color = grp.col[i])
     }
 
     ## add legend
-    if (legend && K<legend.max) {
+    if (legend && K<legend_max) {
         out <- out %>% visNetwork::visLegend()
     }
 
-    ## add selector / editor
-    if (selector) {
-        selectedBy <- "group"
-    } else {
-        selectedBy <- NULL
-    }
-    out <- out %>% visNetwork::visOptions(selectedBy=selectedBy, manipulation=editor)
+    ## ## add selector / editor
+    ## if (selector) {
+    ##     selectedBy <- "group"
+    ## } else {
+    ##     selectedBy <- NULL
+    ## }
+    ## out <- out %>% visNetwork::visOptions(selectedBy=selectedBy, manipulation=editor)
 
     ## set nodes borders
     out <- out %>% visNetwork::visNodes(borderWidth=2)
 
     ## options
     out <- out %>% visNetwork::visOptions(highlightNearest=TRUE)
+
+    if (selector) {
+        out <- out %>% visNetwork::visOptions(selectedBy="group", manipulation=editor)
+    } else if (editor) {
+        out <- out %>% visNetwork::visOptions(manipulation=TRUE)
+    }
+
     return(out)
 }

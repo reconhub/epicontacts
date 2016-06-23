@@ -1,19 +1,19 @@
-#' Plot epi_contacts objects using visNetwork
+#' Plot epi_contacts objects
 #'
-#' This function plots \code{\link{epi_contacts}} objects using \code{visNetwork}.
+#' This function plots \code{\link{epi_contacts}} objects using various approaches. The default
+#' method uses \code{\link{vis_epi_contacts}}.
 #'
 #' @export
 #'
-#' @param an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epi_contacts}} object
+#'
+#' @param y a character string indicating the plotting method to be used
+#'
+#' @param ... further arguments passed to the plotting method
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @importFrom visNetwork visNetwork visGroups visLegend visOptions visNodes
-#' @importFrom magrittr "%>%"
-#'
-#' @return the same output as \code{visNetwork}
-#'
-#' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+#' @seealso \code{\link{vis_epi_contacts}}, which uses the package \code{visNetwork}.
 #'
 plot.epi_contacts <- function(x, y=c("visNetwork"), ...){
     ## checks
