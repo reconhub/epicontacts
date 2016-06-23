@@ -1,7 +1,7 @@
 #' Find pairwise node characteristics for epi_contacts objects
 #'
 #' This function finds all instances of pairwise node attributes for contact pairs in a \code{\link{epi_contacts}}
-#' dataset and returns a frequency table.
+#' dataset, and can process them as factors or numeric
 #'
 #' @export
 #'
@@ -11,14 +11,16 @@
 #'
 #' @param node_value the node attribute to be examined between contact pairs
 #'
+#' @param type of operation to be performed on node value. Can take forms "factor" and "subtraction"
 
-get_pairwise <- function(x, node_value){
+get_pairwise <- function(x, node_value, type=c("factor", "subtraction")){
     ## checks
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
     }
     if (!node_value %in% names(x$linelist)){
-        stop("node value does not exist, possibe node values: ", paste(names(x$linelist),collapse =", "))
+        stop("node value does not exist, possibe node values: ",
+             paste(names(x$linelist),collapse =", "))
     }
 
     #Messy process to combine dataframes - from and to - with "node value"
@@ -34,9 +36,15 @@ get_pairwise <- function(x, node_value){
     nodes <- data.frame(from = df.from.value$id, from_value =df.from.value[,node_value],
                         to=df.to.value$id, to_value=df.to.value[,node_value])
 
-    #combine node values
-    pairwise<- paste(as.character(nodes$from_value),as.character(nodes$to_value), sep=",")
+    #For factors
+    if (type=="factor") {
+        pairwise<- paste(as.character(nodes$from_value),as.character(nodes$to_value), sep=",")
+        return(pairwise)}
 
-    #Return as table
-    return(table(pairwise))}
+    if (type=="subtraction"){
+        pairwise <- (nodes$to_value - nodes$from_value)
+        pairwise <- as.numeric(pairwise)
+        return(pairwise)}
+        }
+
 
