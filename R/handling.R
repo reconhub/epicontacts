@@ -18,6 +18,14 @@
 #'
 #' @param contacts a character string indicating on which basis contacts are retained (see details)
 #'
+#' @param k an integer, logical, or character vector subsetting the supplementary columns of
+#' \code{x$linelist}, i.e. the columns after 'id'; i.e. \code{k=1} refers to the column immediately
+#' after 'id'.
+#'
+#' @param l an integer, logical, or character vector subsetting the supplementary columns of
+#' \code{x$contacts}, i.e. the columns after 'from' and 'to'; i.e. \code{l=1} refers to the column
+#' immediately after 'to'.
+
 #' @param ... not used (there for compatibility with generic)
 #'
 #' @details
@@ -33,12 +41,21 @@
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
-"[.epi_contacts" <- function(x, i, j=i, contacts=c("both","either","from","to"), ...){
+"[.epi_contacts" <- function(x, i, j=i, contacts=c("both","either","from","to"),
+                             k=TRUE, l=TRUE, ...){
     ## In all the following, i is used to subset the linelist, j to subset contacts. The variable
     ## 'strict' triggers the subsetting of contacts; if TRUE, then both nodes need to be part of 'j'
     ## for a contact to be retained; if FALSE, only one of them needs to be in 'j'.
 
+    ## 'k' and 'l' will be used to subset the columns of attributes in x$linelist and x$contacts,
+    ## respectively; any usual subsetting is fine for these ones (index, logical, name), although
+    ## the 'id', 'from' and 'to' columns are discarded from the subsetting. That is:
+
+    ## - in x$linelist: k=1 will refer to the 2nd column (i.e. after 'id')
+    ## - in x$contacts: l=1 will refer to the 3nd column (i.e. after 'from' and 'to')
+
     ## check
+    if(missing(i)) i <- get_id(x, "all")
     if (!is.character(i)) {
         warning("'i' is not a character; enforcing conversion \n(logicals and integers cannot be used to subset epi_contacts objects)")
         i <- as.character(i)
@@ -52,6 +69,11 @@
     ## subset linelist
     to.keep <- x$linelist$id %in% i
     x$linelist <- x$linelist[to.keep, , drop=FALSE]
+    if (ncol(x$linelist) > 1) {
+        x$linelist <- data.frame(c(x$linelist[1],
+                                   x$linelist[-1][k])
+                                 )
+    }
 
     ## subset contacts
     if (contacts=="both") {
@@ -68,6 +90,11 @@
     }
 
     x$contacts <- x$contacts[to.keep, , drop=FALSE]
+    if (ncol(x$contacts) > 2) {
+        x$contacts <- data.frame(c(x$contacts[1:2],
+                                   x$contacts[-c(1:2)][l])
+                                 )
+    }
 
     return(x)
 }
