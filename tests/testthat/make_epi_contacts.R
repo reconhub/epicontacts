@@ -3,7 +3,6 @@ context("Converting data to epi_contact using read_contacts")
 test_that("Class and content are fine", {
     x <- make_epi_contacts(ebola.sim$linelist)
     expect_is(x, "epi_contacts")
-    expect_is(x, "list")
     expect_is(x$linelist$id, "character")
 })
 

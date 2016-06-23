@@ -109,6 +109,6 @@ make_epi_contacts <- function(linelist, contacts=NULL, id=1L, from=1L, to=2L, di
     ## Build final output
     out <- list(linelist=linelist, contacts=contacts, directed=directed)
 
-    class(out) <- c("epi_contacts", "list")
+    class(out) <- c("epi_contacts")
     return(out)
 }
