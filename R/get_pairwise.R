@@ -1,60 +1,70 @@
 #' Find pairwise node characteristics for epi_contacts objects
 #'
-#' This function finds all instances of pairwise node attributes for contact pairs in a \code{\link{epi_contacts}}
-#' dataset, and can process them as factors, numeric or date.
-#' Factor returns all pairwise factors. Numeric returns absolute differences between contact pairs.
-#' Date returns absolute difference between dates.
+#' This function extract attributes of cases involved in contacts using case information provided in
+#' the linelist of an \code{\link{epi_contacts}} dataset. If not provided, the function used to
+#' process attributes will adjust to the type of attribute selected (see details).
 #'
 #' @export
 #'
-#' @author Tom Crellen (\email{tomcrellen@@gmail.com})
+#' @author
+#' Tom Crellen (\email{tomcrellen@@gmail.com})
+#' Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
 #' @param x an \code{\link{epi_contacts}} object
 #'
-#' @param node_value the node attribute to be examined between contact pairs
+#' @param attribute the attribute to be examined between contact pairs
 #'
-#' @param type of operation to be performed on node value. Can take forms "factor", "numeric", or "date"
+#' @param f a function processing the attributes of 'from' and 'to'
+#'
+#' @param hard_NA a logical indicating if the output should be NA whenever one of the paired values
+#' is NA (TRUE); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
+#' values)
+#'
+get_pairwise <- function(x, attribute, f=NULL, hard_NA=FALSE){
+    ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of
+    ## the contacts. 'f' is the function processing these paired values, with some pre-defined
+    ## behaviours for some types (dates, numeric); 'hard_NA' defines the behaviour for NAs, and if
+    ## TRUE will enforce a NA wherever the pair contained at least one NA.
 
-get_pairwise <- function(x, node_value, type=c("factor", "numeric", "date")){
     ## checks
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
     }
-    if (!node_value %in% names(x$linelist)){
-        stop("node value does not exist, possibe node values: ",
-             paste(names(x$linelist),collapse =", "))
+    if (!attribute %in% names(x$linelist)){
+        stop("attribute does not exist; available attributes are: ",
+             paste(names(x$linelist)[-1], collapse =", "))
     }
 
-    #Messy process to combine dataframes - from and to - with "node value"
-    df.from <- data.frame(id = x$contacts$from)
-    df.from$id <- as.character(df.from$id)
-    df.from.value <- dplyr::left_join(df.from, x$linelist, by="id")
+    ## find values for from and to
+    values <- x$linelist[, attribute, drop=TRUE]
+    names(values) <- x$linelist$id
+    values.from <- values[x$contacts$from]
+    values.to <- values[x$contacts$to]
+    ori.NA <- is.na(values.from) | is.na(values.to)
 
-    df.to <- data.frame(id = x$contacts$to)
-    df.to$id <- as.character(df.to$id)
-    df.to.value <- dplyr::left_join(df.to, x$linelist, by="id")
-
-    #nodes is final df with 4 columns
-    nodes <- data.frame(from = df.from.value$id, from_value =df.from.value[,node_value],
-                        to=df.to.value$id, to_value=df.to.value[,node_value])
-
-    #For factors
-    if (type=="factor") {
-        if (!is.factor(x$linelist[,node_value])) {
-            stop("node value is not a factor")}
-        pairwise<- paste(as.character(nodes$from_value),as.character(nodes$to_value), sep=",")
-        return(pairwise)}
-
-    if (type=="numeric") {
-        if (!is.numeric(x$linelist[,node_value])) {
-            stop("node value is not numeric")}
-        pairwise<- abs(nodes$to_value - nodes$from_value)
-        return(pairwise)}
-
-    if (type=="date"){
-        if (!lubridate::is.Date(x$linelist[,node_value])) {
-            stop("node value is not a date")}
-        pairwise <- abs(nodes$to_value - nodes$from_value)
-        pairwise <- as.numeric(pairwise)
-        return(pairwise)}
+    ## define default function if not provided:
+    ## - for 'Date': absolute number of difference in days
+    ## - for 'numeric'/'integer': absolute difference
+    ## - for other stuff: paste values
+    if (inherits(values, "Date")) {
+        f <- function(a, b) {
+            as.integer(abs(a-b))
         }
+    } else if (is.numeric(values)) {
+        f <- function(a, b) {
+            abs(a-b)
+        }
+    } else {
+        f <- function(a, b){
+            sep <- ifelse(x$directed, " -> "," - ")
+            paste(a, b, sep=sep)
+        }
+    }
+
+    out <- f(values.from, values.to)
+    if (hard_NA) {
+        out[ori.NA] <- NA
+    }
+
+    return(out)
+}

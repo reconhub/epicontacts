@@ -4,22 +4,26 @@
 \alias{get_pairwise}
 \title{Find pairwise node characteristics for epi_contacts objects}
 \usage{
-get_pairwise(x, node_value, type = c("factor", "numeric", "date"))
+get_pairwise(x, attribute, f = NULL, hard_NA = FALSE)
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
-\item{node_value}{the node attribute to be examined between contact pairs}
+\item{attribute}{the attribute to be examined between contact pairs}
 
-\item{type}{of operation to be performed on node value. Can take forms "factor", "numeric", or "date"}
+\item{f}{a function processing the attributes of 'from' and 'to'}
+
+\item{hard_NA}{a logical indicating if the output should be NA whenever one of the paired values
+is NA (TRUE); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
+values)}
 }
 \description{
-This function finds all instances of pairwise node attributes for contact pairs in a \code{\link{epi_contacts}}
-dataset, and can process them as factors, numeric or date.
-Factor returns all pairwise factors. Numeric returns absolute differences between contact pairs.
-Date returns absolute difference between dates.
+This function extract attributes of cases involved in contacts using case information provided in
+the linelist of an \code{\link{epi_contacts}} dataset. If not provided, the function used to
+process attributes will adjust to the type of attribute selected (see details).
 }
 \author{
 Tom Crellen (\email{tomcrellen@gmail.com})
+Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
 

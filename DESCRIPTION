@@ -9,5 +9,5 @@ Description: A collection of tools for representing epidemiological contact data
 License: GPL (>=2)
 LazyData: TRUE
 RoxygenNote: 5.0.1
-Imports: dplyr, lubridate, dplyr, igraph
+Imports: dplyr, igraph
 Suggests: testthat, covr
