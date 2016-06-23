@@ -2,6 +2,7 @@
 % Please edit documentation in R/summary.epi_contacts.R
 \name{summary.epi_contacts}
 \alias{summary.epi_contacts}
+\alias{summary_epi_contacts}
 \title{Summary method for epi_contacts objects}
 \usage{
 \method{summary}{epi_contacts}(object, ...)
