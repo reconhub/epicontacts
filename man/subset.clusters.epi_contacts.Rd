@@ -22,7 +22,7 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
 
-## subset using man and max cluster size
+## subset using min and max cluster size
 x_subset <- subset.clusters.epi_contacts(x, 12, 15)
 
 ## subset based on single cluster size

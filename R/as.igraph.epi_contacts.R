@@ -22,7 +22,7 @@
 #' ## make igraph object with associates attributes from epi_contacts object
 #' net <- as.igraph.epi_contacts(x)
 #' net
-#' igraph::plot(net)
+#' plot(net)
 #'
 
 as.igraph.epi_contacts <- function(epi_contacts_list){

@@ -50,13 +50,11 @@ cluster.summary.igraph <- function(net){
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
-#'## subset using man and max cluster size
+#'## subset using min and max cluster size
 #' x_subset <- subset.clusters.epi_contacts(x, 12, 15)
 #'
 #' ## subset based on single cluster size
 #' x_subset <- subset.clusters.epi_contacts(x, 12)
-
-
 
 subset.clusters.epi_contacts <- function(epi_contacts, cs_min, cs_max=cs_min){
     csize <- seq(from = cs_min, to = cs_max, by = 1)
@@ -70,4 +68,5 @@ subset.clusters.epi_contacts <- function(epi_contacts, cs_min, cs_max=cs_min){
     epi_subset <- epi_contacts[nodes_to_subset]
     return(epi_subset)
 }
+
 
