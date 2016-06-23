@@ -12,7 +12,7 @@ cases_pal <- function(n){
     if(n<length(colors)) {
         return(colors[seq_len(n)])
     } else {
-        return(colorRampPalette(colors)(n))
+        return(grDevices::colorRampPalette(colors)(n))
     }
 }
 
