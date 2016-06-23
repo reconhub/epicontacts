@@ -1,70 +1,25 @@
-#' Find pairwise node characteristics for epi_contacts objects
-#'
-#' This function extract attributes of cases involved in contacts using case information provided in
-#' the linelist of an \code{\link{epi_contacts}} dataset. If not provided, the function used to
-#' process attributes will adjust to the type of attribute selected (see details).
-#'
-#' @export
-#'
-#' @author
-#' Tom Crellen (\email{tomcrellen@@gmail.com})
-#' Thibaut Jombart (\email{thibautjombart@@gmail.com})
-#'
-#' @param x an \code{\link{epi_contacts}} object
-#'
-#' @param attribute the attribute to be examined between contact pairs
-#'
-#' @param f a function processing the attributes of 'from' and 'to'
-#'
-#' @param hard_NA a logical indicating if the output should be NA whenever one of the paired values
-#' is NA (TRUE); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
-#' values)
-#'
-get_pairwise <- function(x, attribute, f=NULL, hard_NA=FALSE){
-    ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of
-    ## the contacts. 'f' is the function processing these paired values, with some pre-defined
-    ## behaviours for some types (dates, numeric); 'hard_NA' defines the behaviour for NAs, and if
-    ## TRUE will enforce a NA wherever the pair contained at least one NA.
+context("Test get_pairwise")
+library(contacts)
+library(testthat)
 
-    ## checks
-    if (!inherits(x, "epi_contacts")) {
-        stop("x is not an 'epi_contacts' object")
-    }
-    if (!attribute %in% names(x$linelist)){
-        stop("attribute does not exist; available attributes are: ",
-             paste(names(x$linelist)[-1], collapse =", "))
-    }
+test_that("check gender", {
 
-    ## find values for from and to
-    values <- x$linelist[, attribute, drop=TRUE]
-    names(values) <- x$linelist$id
-    values.from <- values[x$contacts$from]
-    values.to <- values[x$contacts$to]
-    ori.NA <- is.na(values.from) | is.na(values.to)
+    x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+                           id="case.id", to="case.id", from="infector",
+                           directed=TRUE)
 
-    ## define default function if not provided:
-    ## - for 'Date': absolute number of difference in days
-    ## - for 'numeric'/'integer': absolute difference
-    ## - for other stuff: paste values
-    if (inherits(values, "Date")) {
-        f <- function(a, b) {
-            as.integer(abs(a-b))
-        }
-    } else if (is.numeric(values)) {
-        f <- function(a, b) {
-            abs(a-b)
-        }
-    } else {
-        f <- function(a, b){
-            sep <- ifelse(x$directed, " -> "," - ")
-            paste(a, b, sep=sep)
-        }
-    }
+    pair <- get_pairwise(x, "gender")
 
-    out <- f(values.from, values.to)
-    if (hard_NA) {
-        out[ori.NA] <- NA
-    }
+    expect_that( pair, is_a("character") )
+    expect_that( length(pair), equals(3800) )
+    expect_that( pair[1], is_a("character") ) })
 
-    return(out)
-}
+test_that("provide false characters", {
+    x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+                           id="case.id", to="case.id", from="infector",
+                           directed=TRUE)
+
+     expect_error(get_pairwise(x, "gende"))
+     expect_that(length(table(get_pairwise(x, "gender", hard_NA=F))) >
+                     length(table(get_pairwise(x, "gender", hard_NA=T))), is_true())
+     })
