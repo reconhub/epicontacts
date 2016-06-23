@@ -17,10 +17,12 @@
 #' @param f a function processing the attributes of 'from' and 'to'
 #'
 #' @param hard_NA a logical indicating if the output should be NA whenever one of the paired values
-#' is NA (TRUE); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
+#' is NA (TRUE, default); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
 #' values)
 #'
-get_pairwise <- function(x, attribute, f=NULL, hard_NA=FALSE){
+#' @examples
+#'
+get_pairwise <- function(x, attribute, f=NULL, hard_NA=TRUE){
     ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of
     ## the contacts. 'f' is the function processing these paired values, with some pre-defined
     ## behaviours for some types (dates, numeric); 'hard_NA' defines the behaviour for NAs, and if
@@ -29,6 +31,9 @@ get_pairwise <- function(x, attribute, f=NULL, hard_NA=FALSE){
     ## checks
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
+    }
+    if (!is.character(attribute)) {
+        attribute <- names(x$linelist)[attribute]
     }
     if (!attribute %in% names(x$linelist)){
         stop("attribute does not exist; available attributes are: ",
@@ -46,23 +51,24 @@ get_pairwise <- function(x, attribute, f=NULL, hard_NA=FALSE){
     ## - for 'Date': absolute number of difference in days
     ## - for 'numeric'/'integer': absolute difference
     ## - for other stuff: paste values
-    if (inherits(values, "Date")) {
-        f <- function(a, b) {
-            as.integer(abs(a-b))
-        }
-    } else if (is.numeric(values)) {
-        f <- function(a, b) {
-            abs(a-b)
-        }
-    } else {
-        f <- function(a, b){
-            sep <- ifelse(x$directed, " -> "," - ")
-            paste(a, b, sep=sep)
+    if (is.null(f)){
+        if (inherits(values, "Date")) {
+            f <- function(a, b) {
+                as.integer(abs(a-b))
+            }
+        } else if (is.numeric(values)) {
+            f <- function(a, b) {
+                abs(a-b)
+            }
+        } else {
+            f <- function(a, b){
+                sep <- ifelse(x$directed, " -> "," - ")
+                paste(a, b, sep=sep)
+            }
         }
     }
-
     out <- f(values.from, values.to)
-    if (hard_NA) {
+    if (length(out)==length(ori.NA) && hard_NA) {
         out[ori.NA] <- NA
     }
 
