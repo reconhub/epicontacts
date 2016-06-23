@@ -4,18 +4,20 @@
 \alias{get_pairwise}
 \title{Find pairwise node characteristics for epi_contacts objects}
 \usage{
-get_pairwise(x, node_value, type = c("factor", "subtraction"))
+get_pairwise(x, node_value, type = c("factor", "numeric", "date"))
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
 \item{node_value}{the node attribute to be examined between contact pairs}
 
-\item{type}{of operation to be performed on node value. Can take forms "factor" and "subtraction"}
+\item{type}{of operation to be performed on node value. Can take forms "factor", "numeric", or "date"}
 }
 \description{
 This function finds all instances of pairwise node attributes for contact pairs in a \code{\link{epi_contacts}}
-dataset, and can process them as factors or numeric
+dataset, and can process them as factors, numeric or date.
+Factor returns all pairwise factors. Numeric returns absolute differences between contact pairs.
+Date returns absolute difference between dates.
 }
 \author{
 Tom Crellen (\email{tomcrellen@gmail.com})
