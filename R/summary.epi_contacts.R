@@ -6,11 +6,14 @@
 #'
 #' @author VP Nagraj (\email{vpnagraj@virginia.edu})
 #'
-#' @param x an \code{\link{epi_contacts}} object
+#' @param object an \code{\link{epi_contacts}} object
 #'
 #' @param ... further parameters to be passed to other methods (currently not used)
 #'
-summary.epi_contacts <- function(x, ...){
+summary.epi_contacts <- function(object, ...){
+
+    x <- object
+
     cat("\n/// Summary of Epidemiological Contacts //\n")
     cat("\n// class:", paste(class(x), collapse=", "))
 
