@@ -7,7 +7,7 @@
 as.igraph.epi_contacts(epi_contacts_list)
 }
 \arguments{
-\item{epi_contacts_list}{an epi_contacts object containing two dataframes: linelist and contacts}
+\item{epi_contacts_list}{an \code{\link{epi_contacts}} object}
 }
 \description{
 This function creates an igraph object from a given epi_contacts object containing 'contacts' dataframe.
@@ -26,7 +26,7 @@ x <- x[ids]
 ## make igraph object with associates attributes from epi_contacts object
 net <- as.igraph.epi_contacts(x)
 net
-plot(net)
+igraph::plot(net)
 
 }
 \author{

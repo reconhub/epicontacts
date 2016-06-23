@@ -6,7 +6,7 @@
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
-#' @param epi_contacts_list an epi_contacts object containing two dataframes: linelist and contacts
+#' @param epi_contacts_list an \code{\link{epi_contacts}} object
 #'
 #' @examples
 #' ## build data
@@ -22,7 +22,7 @@
 #' ## make igraph object with associates attributes from epi_contacts object
 #' net <- as.igraph.epi_contacts(x)
 #' net
-#' plot(net)
+#' igraph::plot(net)
 #'
 
 as.igraph.epi_contacts <- function(epi_contacts_list){
@@ -50,7 +50,6 @@ as.igraph.epi_contacts <- function(epi_contacts_list){
 
     ### attrs_list: the above attributes in a list format
     attrs_list <- lapply(verts_info, function(attr_col){attr_col})
-    names(attrs_list)[1] = "label"
 
     ### assigning the attributes to the igraph
     igraph::vertex_attr(net) <- attrs_list # {{figure out if I should keep the "id" as an attr or not?}}
