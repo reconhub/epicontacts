@@ -7,7 +7,11 @@ S3method(print,summary_epi_contacts)
 S3method(summary,epi_contacts)
 export(as.igraph.epi_contacts)
 <<<<<<< HEAD
+<<<<<<< HEAD
 export(clusters.epi_contacts)
+=======
+export(clusters_epi_contacts)
+>>>>>>> Hackout3/master
 =======
 export(clusters_epi_contacts)
 >>>>>>> Hackout3/master
