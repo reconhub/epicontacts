@@ -8,7 +8,7 @@
 #' @param edge.attribute a named list defining the factor name and the factor value
 #' @param node.attribute a named list defining the factor name and the factor value
 
-factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
+epi_contacts_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
 
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
@@ -22,11 +22,11 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         warning("No factor provided, returning unmodified epi.contact object")
         return(x)
     }
-      
+
     node.id <- x$linelist$id
     edge.from <- x$contacts$from
     edge.to <- x$contacts$to
-  
+
     if(!(is.null(node.attribute))){
 
         for(i in names(node.attribute)){
@@ -36,13 +36,13 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
             }
 
             if(class(node.attribute[[i]]) %in% c("Date")){
-              if(length(node.attribute[[i]])!=2) stop("Node attribute of class date must contain a start and end date")  
-              x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] > node.attribute[[i]][1] & x$linelist[[i]] < node.attribute[[i]][2])
+              if(length(node.attribute[[i]])!=2) stop("Node attribute of class date must contain a start and end date")
+              x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] >= node.attribute[[i]][1] & x$linelist[[i]] <= node.attribute[[i]][2])
             }
         }
 
         node.id <- x$linelist$id
-        
+
     }
 
     if(!(is.null(edge.attribute))){
@@ -54,13 +54,13 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
             }
 
             if(class(edge.attribute[[i]]) %in% c("date")){
-                x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] > edge.attribute[[i]][1] & x$contacts[[i]] < edge.attribute[[i]][2])
+                x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] >= edge.attribute[[i]][1] & x$contacts[[i]] <= edge.attribute[[i]][2])
             }
         }
 
         edge.from <- x$contacts$from
         edge.to <- x$contacts$to
-        
+
     }
 
     out <- x[i=node.id,j=edge.from,contacts="from"]
