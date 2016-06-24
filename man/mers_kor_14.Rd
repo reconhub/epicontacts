@@ -38,6 +38,22 @@ Note that this dataset do not contain possible contact, therefore the network vi
  chains in epidemiology. This example do not represent nor the final outbreak investigation
  results neither the consolidated and complete description of the transmission chain.
 }
+\examples{
+
+## example using MERS outbreak in Korea, 2014
+head(mers_kor_14[[1]])
+head(mers_kor_14[[2]])
+
+x <- make_epi_contacts(linelist=mers_kor_14[[1]],
+contacts=mers_kor_14[[2]], directed=TRUE)
+
+\dontrun{
+plot(x)
+plot(x, group="place_infect")
+plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
+}
+
+}
 \author{
 Data collected by the European Centre for Disease Prevention and Control (Epidemic
 Intelligence and Response section, contact: Bertrand Sudre (\email{
