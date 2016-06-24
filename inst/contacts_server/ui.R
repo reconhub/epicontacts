@@ -3,7 +3,7 @@ library(visNetwork)
 
 shinyUI(fluidPage(
 
-    titlePanel("contact tracing app"),
+    titlePanel("Contact Tracing"),
 
     sidebarLayout(
         sidebarPanel(
@@ -33,7 +33,13 @@ shinyUI(fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-            visNetworkOutput("netplot")
+            visNetworkOutput("netplot"),
+            tabsetPanel(
+                tabPanel('Line List',
+                    DT::dataTableOutput("linelisttab")),
+                tabPanel('Contact List',
+                    DT::dataTableOutput("contactstab"))
+            )
         )
     )
 ))
