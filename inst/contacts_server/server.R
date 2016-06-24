@@ -42,7 +42,7 @@ shinyServer(function(input, output) {
 
         switch(input$interact,
             if(input$interact %in% factorcols) {
-                checkboxGroupInput("dynamic", "Dynamic", choices = levels(as.factor(dat[,input$interact])))
+                radioButtons("dynamic", "Dynamic", choices = levels(as.factor(dat[,input$interact])))
                 # checkboxGroupInput("dynamicfactor", "Dynamic", choices = unique(dat[,input$interact]))
             } else if (input$interact %in% numcols) {
                 numericInput("dynamicnum", input$interact, value = median(dat[,input$interact]))
@@ -61,8 +61,6 @@ shinyServer(function(input, output) {
 
         # NEED TO CHECK CLASS OF INPUT WIDGET
 
-        interactinput <- as.character(input$interact)
-
         subsetarglist <- list()
         subsetarglist[[1]] <- input$dynamic
         names(subsetarglist)[1] <- input$interact
@@ -74,13 +72,29 @@ shinyServer(function(input, output) {
 
     output$linelisttab <- DT::renderDataTable ({
 
-        getData()$linelist
+#         getData()$linelist
+
+        dat <- getData()
+
+        subsetarglist <- list()
+        subsetarglist[[1]] <- input$dynamic
+        names(subsetarglist)[1] <- input$interact
+
+        epi_contacts_subset(dat, node.attribute = subsetarglist)$linelist
 
     })
 
     output$contactstab <- DT::renderDataTable ({
 
-        getData()$contacts
+        # getData()$contacts
+
+        dat <- getData()
+
+        subsetarglist <- list()
+        subsetarglist[[1]] <- input$dynamic
+        names(subsetarglist)[1] <- input$interact
+
+        epi_contacts_subset(dat, node.attribute = subsetarglist)$contacts
 
     })
 })
