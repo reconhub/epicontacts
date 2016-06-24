@@ -59,6 +59,6 @@ Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
 }
 \references{
 Original three.js code by David Piegza: \url{https://github.com/davidpiegza/Graph-Visualization}.
-Original \code rthreejs code by B. W. Lewis: \url{https://github.com/bwlewis/rthreejs}.
+Original rthreejs code by B. W. Lewis: \url{https://github.com/bwlewis/rthreejs}.
 }
 
