@@ -7,8 +7,9 @@
 #' @param x an epi_contact object to be subsetted
 #' @param edge.attribute a named list defining the factor name and the factor value
 #' @param node.attribute a named list defining the factor name and the factor value
+#' @param ... further arguments passed on to other methods
 
-epi_contacts_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
+subset.epi_contacts <- function(x,edge.attribute=NULL,node.attribute=NULL,...){
 
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
