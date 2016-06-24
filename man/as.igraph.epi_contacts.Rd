@@ -4,10 +4,13 @@
 \alias{as.igraph.epi_contacts}
 \title{Create igraph object from contact data}
 \usage{
-as.igraph.epi_contacts(epi_contacts_list)
+as.igraph.epi_contacts(epi_contacts)
 }
 \arguments{
-\item{epi_contacts_list}{an \code{\link{epi_contacts}} object}
+\item{epi_contacts}{an \code{\link{epi_contacts}} object}
+}
+\value{
+An igraph graph object.
 }
 \description{
 This function creates an igraph object from a given epi_contacts object containing 'contacts' dataframe.
@@ -23,7 +26,7 @@ ids <- get_id(x, "common")[1:10]
 ids
 x <- x[ids]
 
-## make igraph object with associates attributes from epi_contacts object
+## make igraph object with associated attributes from epi_contacts object
 net <- as.igraph.epi_contacts(x)
 net
 plot(net)

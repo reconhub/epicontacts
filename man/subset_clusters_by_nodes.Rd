@@ -4,12 +4,16 @@
 \alias{subset_clusters_by_nodes}
 \title{Subset clusters from epi_contacts object by nodes}
 \usage{
-subset_clusters_by_nodes(epi_contacts, nds)
+subset_clusters_by_nodes(epi_contacts, nodes)
 }
 \arguments{
 \item{epi_contacts}{an \code{\link{epi_contacts}} object}
 
-\item{nds}{node(s) whose clusters need to be subsetted}
+\item{nodes}{node(s) whose clusters need to be subsetted}
+}
+\value{
+An \code{\link{epi_contacts}} object whose contact dataframe corresponds to
+all clusters containing specified nodes.
 }
 \description{
 This function subsets an epi_contacts object based on nodes (individuals) of interest.
@@ -20,10 +24,10 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
 
-nds <- "cac51e" ## it can be a vector of nodes as well
+nodes <- "cac51e" ## it can be a vector of nodes as well
 
 ## subset based on cluster to which "cac51e" belongs
-x_subset <- subset_clusters_by_nodes(x, nds)
+x_subset <- subset_clusters_by_nodes(x, nodes)
 
 }
 \author{

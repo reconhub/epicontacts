@@ -2,15 +2,44 @@
 % Please edit documentation in R/graph3D.R
 \name{graph3D}
 \alias{graph3D}
-\title{Create 3D graph from epi_contact object}
+\title{Interactive 3D Force-directed graph from epi_contact object}
 \usage{
-graph3D(epi_contacts)
+graph3D(epi_contacts, label_column = "id", v_col_by = "NA",
+  v.col = "darkturquoise", g.title = "", g.bg = "white",
+  g.fg = "darkturquoise", v.size = 1, e.size = 0.5)
 }
 \arguments{
 \item{epi_contacts}{an \code{\link{epi_contacts}} object}
+
+\item{label_column}{the column name in \code{linelist} to be used for node labels. Default is \code{id}}
+
+\item{v_col_by}{the column name in \code{linelist} to be used for node colors}
+
+\item{v.col}{the color of all nodes in graph, unless \code{v_col_by} is defined. Default is 'darkturquoise'}
+
+\item{g.title}{the title of the graph, if needed}
+
+\item{g.bg}{background color of graph. Default is 'black'}
+
+\item{g.fg}{foreground color of graph. Default is 'darkturquoise'}
+
+\item{v.size}{size of nodes in graph. Default is 1}
+
+\item{e.size}{width of edges in graph. Default is 0.5}
+}
+\value{
+An htmlwidget object that is displayed using the object's show or print method.
+(If you don't see your widget plot, try printing it with the \code{print} function.)
 }
 \description{
 This function creates a 3D graph from an epi_contact object
+}
+\note{
+All colors must be specified as color names like "red", "blue", etc. or
+as hexadecimal color values without opacity channel, for example "#FF0000", "#0a3e55"
+(upper or lower case hex digits are allowed).
+
+Double-click or tap on the plot to reset the view.
 }
 \examples{
 ## build data
@@ -23,8 +52,13 @@ x_subset <- subset_clusters_by_size(x, 10, 12)
 
 ## 3D graph
 g <- graph3D(x_subset)
+
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
+}
+\references{
+Original three.js code by David Piegza: \url{https://github.com/davidpiegza/Graph-Visualization}.
+Original \code rthreejs code by B. W. Lewis: \url{https://github.com/bwlewis/rthreejs}.
 }
 

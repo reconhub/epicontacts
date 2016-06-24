@@ -1,6 +1,7 @@
+
 #' Subset clusters from epi_contacts object by cluster size
 #'
-#' This function subsets an epi_contacts object based on cluster sizes of connected individuals.
+#' This function subsets an epi_contacts object based on sizes of clusters.
 #'
 #' @export
 #'
@@ -8,9 +9,12 @@
 #'
 #' @param epi_contacts an \code{\link{epi_contacts}} object
 #'
-#' @param cs_min minimum cluster size
+#' @param cs_min minimum cluster size to be subsetted
 #'
-#' @param cs_max maximum cluster size
+#' @param cs_max maximum cluster size to be subsetted
+#'
+#' @return An \code{\link{epi_contacts}} object whose contact dataframe corresponds to
+#' all clusters of specified cluster sizes.
 #'
 #' @examples
 #' ## build data
@@ -18,13 +22,16 @@
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
-#' ## subset using min and max cluster size
-#' x_subset <- subset_clusters_by_size(x, 12, 15)
 #'
-#' ## subset based on single cluster size
-#' x_subset <- subset_clusters_by_size(x, 12)
+#' ## subset based on cluster size (using range from min to max)
+#' x_subset <- subset_clusters_by_size(x, cs_min = 12, cs_max = 15)
+#'
+#'
+#' ## subset based on cluster size (using single cluster size value)
+#' x_subset <- subset_clusters_by_size(x, cs_min = 12)
 
-subset_clusters_by_size <- function(epi_contacts, cs_min, cs_max=cs_min){
+
+subset_clusters_by_size <- function(epi_contacts, cs_min, cs_max = cs_min){
     csize <- seq(from = cs_min, to = cs_max, by = 1)
     net <- as.igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
