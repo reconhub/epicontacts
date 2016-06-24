@@ -4,7 +4,7 @@ Title: Handling, Visualisation and Analysis of Epidemiological Contacts
 Version: 1.0.0
 Date: 2016-06-30
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
-	     person("Nagraj", "VP", email = "vpnagraj@virginia.edu", role = c("aut"))),
+	     person("Nagraj", "VP", email = "vpnagraj@virginia.edu", role = c("aut")),
 	     person("Randhawa", "Nistara", email = "nrandhawa@ucdavis.edu", role = c("aut")))
 Description: A collection of tools for representing epidemiological contact data, composed of case line lists and contacts between cases. Also contains procedures for data handling, interactive graphics, and statistics.
 License: GPL (>=2)
