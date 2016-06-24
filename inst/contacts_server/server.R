@@ -9,12 +9,14 @@ shinyServer(function(input, output) {
         req(input$linelist, input$contacts)
 
         linelist <-
-            read.csv(input$linelist$datapath)
+#             read.csv(input$linelist$datapath)
+            readr::read_csv(input$linelist$datapath)
 
         contacts <-
-            read.csv(input$contacts$datapath)
+#             read.csv(input$contacts$datapath)
+            readr::read_csv(input$contacts$datapath)
 
-        epicontact <- make_epi_contacts(linelist,contacts)
+        epicontact <- make_epi_contacts(linelist,contacts, directed = TRUE)
 
         return(epicontact)
     })
@@ -38,11 +40,12 @@ shinyServer(function(input, output) {
         # create interaction
         numcols <- names(dat[,sapply(dat,is.numeric)])
         datecols <- names(dat[,sapply(dat, inherits, "Date")])
-        factorcols <- names(dat[,sapply(dat, is.factor)])
+        factorcols <- names(dat[,sapply(dat, is.character)])
 
         switch(input$interact,
             if(input$interact %in% factorcols) {
-                checkboxGroupInput("dynamicfactor", "Dynamic", choices = levels(dat[,input$interact]))
+                checkboxGroupInput("dynamicfactor", "Dynamic", choices = levels(as.factor(dat[,input$interact])))
+                # checkboxGroupInput("dynamicfactor", "Dynamic", choices = unique(dat[,input$interact]))
             } else if (input$interact %in% numcols) {
                 numericInput("dynamicnum", input$interact, value = median(dat[,input$interact]))
             } else {
@@ -56,6 +59,18 @@ shinyServer(function(input, output) {
         dat <- getData()
         x <- get_id(dat, "common")[1:30]
         dat <- dat[x]
-        plot(dat, annot = TRUE)
+        plot(dat, annot = TRUE, group = "gender", editor = TRUE)
+    })
+
+    output$linelisttab <- DT::renderDataTable ({
+
+        getData()$linelist
+
+    })
+
+    output$contactstab <- DT::renderDataTable ({
+
+        getData()$contacts
+
     })
 })
