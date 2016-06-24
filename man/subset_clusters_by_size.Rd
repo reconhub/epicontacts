@@ -18,7 +18,8 @@ An \code{\link{epi_contacts}} object whose contact dataframe corresponds to
 all clusters of specified cluster sizes.
 }
 \description{
-This function subsets an epi_contacts object based on sizes of clusters.
+This function subsets an epi_contacts object based on defined size(s) of clusters (clusters being groups
+of connected individuals/nodes).
 }
 \examples{
 ## build data
