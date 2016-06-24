@@ -14,11 +14,8 @@
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
-#' ## subset for clusters of size 12
+#' ## subset based on single cluster size
 #' x_subset <- subset.clusters.epi_contacts(x, 12)
-#'
-#' ## 3D graph
-#' g <- graph3D(x_subset)
 
 
 graph3D <- function(epi_contacts) {

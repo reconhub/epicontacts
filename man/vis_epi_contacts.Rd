@@ -2,25 +2,37 @@
 % Please edit documentation in R/vis_epi_contacs.R
 \name{vis_epi_contacts}
 \alias{vis_epi_contacts}
-\title{Plot epi_contacts objects}
+\title{Plot epi_contacts objects using visNetwork}
 \usage{
 vis_epi_contacts(x, group = "id", annot = c("id"), legend = TRUE,
-  legend.max = 10, selector = FALSE, editor = FALSE,
-  col.pal = cases_pal, NA.col = "lightgrey", width = "90\%",
-  height = "700px", ...)
+  legend_max = 10, col_pal = cases_pal, NA_col = "lightgrey",
+  width = "90\%", height = "700px", selector = TRUE, editor = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
+\item{group}{an index or character string indicating which field of the linelist should be used
+to color the nodes}
+
+\item{annot}{an index or character string indicating which fields of the linelist should be used
+for annotating the nodes}
+
 \item{legend}{a logical indicating whether a legend should be added to the plot}
 
-\item{selector}{a logical indicating whether a group selector tool should be added to the plot}
+\item{legend_max}{the maximum number of groups for a legend to be displayed}
 
-\item{editor}{a logical indicating whether an editor tool should be added to the plot}
+\item{col_pal}{a color palette for the groups}
 
-\item{width}{the width of the output, in html compatible format (e.g. '90%' or '800px'}
+\item{NA_col}{the color used for unknown group}
 
-\item{height}{the height of the output, in html compatible format (e.g. '800px'}
+\item{width}{the width of the output, in html compatible format (e.g. '90%' or '800px')}
+
+\item{height}{the height of the output, in html compatible format (e.g. '800px')}
+
+\item{selector}{a logical indicating if the selector tool should be used; defaults to TRUE}
+
+\item{editor}{a logical indicating if the editor tool should be used; defaults to FALSE}
 
 \item{...}{further arguments to be passed to \code{visNetwork}}
 }
@@ -30,11 +42,9 @@ the same output as \code{visNetwork}
 the same output as \code{visNetwork}
 }
 \description{
-This function plots \code{\link{epi_contacts}} objects using various approaches.
+This function plots \code{\link{epi_contacts}} objects using the \code{visNetwork} package.
 }
 \author{
-Thibaut Jombart (\email{thibautjombart@gmail.com})
-
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
 \seealso{
