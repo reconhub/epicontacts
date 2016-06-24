@@ -1,5 +1,5 @@
 context("Test get_pairwise")
-library(contacts)
+library(epicontacts)
 library(testthat)
 
 test_that("check gender", {

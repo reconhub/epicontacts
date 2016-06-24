@@ -1,5 +1,5 @@
 library(shiny)
-library(contacts)
+library(epicontacts)
 library(visNetwork)
 
 shinyServer(function(input, output) {
