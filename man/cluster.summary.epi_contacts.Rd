@@ -13,10 +13,9 @@ cluster.summary.epi_contacts(epi_contacts)
 A list with graph specfic summary of \code{\link{epi_contacts}} object
 }
 \description{
-This function provides a summary of an igraph graph object created from clusters in an \code{\link{epi_contacts}} object, along
-with the summary of an igraph object created from \code{\link{epi_contacts}}. and a table of the number of clusters
+This function provides a summary of an igraph graph object created from clusters in an \code{\link{epi_contacts}} object,
+along with the summary of an igraph object created from \code{\link{epi_contacts}}. and a table of the number of clusters
 of contacts by their cluster size.
-Define cluster$$$$$$$$
 }
 \examples{
 ## build data
