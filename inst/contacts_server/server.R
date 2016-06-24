@@ -9,11 +9,9 @@ shinyServer(function(input, output) {
         req(input$linelist, input$contacts)
 
         linelist <-
-#             read.csv(input$linelist$datapath)
             readr::read_csv(input$linelist$datapath)
 
         contacts <-
-#             read.csv(input$contacts$datapath)
             readr::read_csv(input$contacts$datapath)
 
         epicontact <- make_epi_contacts(linelist,contacts, directed = TRUE)
@@ -59,7 +57,7 @@ shinyServer(function(input, output) {
         dat <- getData()
         x <- get_id(dat, "common")[1:30]
         dat <- dat[x]
-        plot(dat, annot = TRUE, group = "gender", editor = TRUE)
+        plot(dat, annot = TRUE, editor = TRUE)
     })
 
     output$linelisttab <- DT::renderDataTable ({
