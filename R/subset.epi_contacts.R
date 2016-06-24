@@ -7,8 +7,9 @@
 #' @param x an epi_contact object to be subsetted
 #' @param edge.attribute a named list defining the factor name and the factor value
 #' @param node.attribute a named list defining the factor name and the factor value
+#' @param ... further arguments passed on to other methods
 
-epi_contacts_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
+subset.epi_contacts <- function(x,edge.attribute=NULL,node.attribute=NULL,...){
 
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
@@ -32,7 +33,7 @@ epi_contacts_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         for(i in names(node.attribute)){
 
             if(class(node.attribute[[i]]) %in% c("character","factor","numeric")){
-                x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] %in% node.attribute[i])
+                x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] %in% node.attribute[[i]])
             }
 
             if(class(node.attribute[[i]]) %in% c("Date")){
@@ -50,7 +51,7 @@ epi_contacts_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         for(i in names(edge.attribute)){
 
             if(class(edge.attribute[[i]]) %in% c("character","factor","numeric")){
-                x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] %in% edge.attribute[i])
+                x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] %in% edge.attribute[[i]])
             }
 
             if(class(edge.attribute[[i]]) %in% c("date")){
