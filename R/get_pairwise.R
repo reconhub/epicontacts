@@ -32,7 +32,7 @@
 #' SI <- get_pairwise(x, "dt_onset")
 #' SI
 #' summary(SI)
-#' hist(SI, col="grey", border="white",
+#' hist(SI, col="grey", border="white", xlab="Days after symptoms"
 #'      main="MERS Korea 2014 - Serial Interval")
 #'
 #' ## check gender mixing:
