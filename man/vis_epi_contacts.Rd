@@ -26,7 +26,7 @@ for annotating the nodes}
 
 \item{NA_col}{the color used for unknown group}
 
-\item{width}{the width of the output, in html compatible format (e.g. '90%' or '800px')}
+\item{width}{the width of the output, in html compatible format (e.g. '90\%' or '800px')}
 
 \item{height}{the height of the output, in html compatible format (e.g. '800px')}
 
@@ -43,6 +43,21 @@ the same output as \code{visNetwork}
 }
 \description{
 This function plots \code{\link{epi_contacts}} objects using the \code{visNetwork} package.
+}
+\examples{
+
+## example using MERS outbreak in Korea, 2014
+head(mers_kor_14[[1]])
+head(mers_kor_14[[2]])
+
+x <- make_epi_contacts(linelist=mers_kor_14[[1]],
+contacts=mers_kor_14[[2]], directed=TRUE)
+
+\dontrun{
+plot(x)
+plot(x, group="place_infect")
+plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
+}
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})

@@ -9,11 +9,9 @@ shinyServer(function(input, output) {
         req(input$linelist, input$contacts)
 
         linelist <-
-#             read.csv(input$linelist$datapath)
             readr::read_csv(input$linelist$datapath)
 
         contacts <-
-#             read.csv(input$contacts$datapath)
             readr::read_csv(input$contacts$datapath)
 
         epicontact <- make_epi_contacts(linelist,contacts, directed = TRUE)
@@ -44,7 +42,7 @@ shinyServer(function(input, output) {
 
         switch(input$interact,
             if(input$interact %in% factorcols) {
-                checkboxGroupInput("dynamicfactor", "Dynamic", choices = levels(as.factor(dat[,input$interact])))
+                checkboxGroupInput("dynamic", "Dynamic", choices = levels(as.factor(dat[,input$interact])))
                 # checkboxGroupInput("dynamicfactor", "Dynamic", choices = unique(dat[,input$interact]))
             } else if (input$interact %in% numcols) {
                 numericInput("dynamicnum", input$interact, value = median(dat[,input$interact]))
@@ -56,10 +54,22 @@ shinyServer(function(input, output) {
 
     output$netplot <- renderVisNetwork ({
 
+        req(input$interact)
         dat <- getData()
         x <- get_id(dat, "common")[1:30]
         dat <- dat[x]
-        plot(dat, annot = TRUE, group = "gender", editor = TRUE)
+
+        # NEED TO CHECK CLASS OF INPUT WIDGET
+
+        interactinput <- as.character(input$interact)
+
+        subsetarglist <- list()
+        subsetarglist[[1]] <- input$dynamic
+        names(subsetarglist)[1] <- input$interact
+
+        dat <- epi_contacts_subset(dat, node.attribute = subsetarglist)
+
+        plot(dat, annot = TRUE, editor = TRUE)
     })
 
     output$linelisttab <- DT::renderDataTable ({
