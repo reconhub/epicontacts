@@ -1,6 +1,7 @@
 #' Subset clusters from epi_contacts object by nodes
 #'
 #' This function subsets an epi_contacts object based on nodes (individuals) of interest.
+#'
 #' @export
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
