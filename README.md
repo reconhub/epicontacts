@@ -4,19 +4,15 @@
 
 
 
-Welcome to the contacts package!
+Welcome to the *epicontacts* package!
 ---------------------------------------
-(title is work in progress ;) )
-
-For ongoing tasks and various information, check out our [**wiki**](http://github.com/hackout3/contacts/wiki).
-
 
 # Installation
 
 To install the devel version of the package, type:
 
 ```r
-devtools::install_github("Hackout3/contacts")
+devtools::install_github("Hackout3/epicontacts")
 ```
 
 Note that this requires the package *devtools* installed.
@@ -30,4 +26,6 @@ Main features include:
 * **`get_degree`:** access degree of cases in `epi_contacts` with various options
 * **`x[i,j,contacts]`:** susbset an `epi_contacts` object by retaining specified cases
 * **`summary`:** summary for  `epi_contacts` objects
+* **`plot`:** plot for  `epi_contacts` objects; various types of plot are available; default to `vis_epi_contacts`
+* **`vis_epi_contacts`:** plot an `epi_contacts` object using `visNetwork`
  
