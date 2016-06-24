@@ -32,7 +32,7 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         for(i in names(node.attribute)){
 
             if(class(node.attribute[[i]]) %in% c("character","factor","numeric")){
-                x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] %in% node.attribute[i])
+                x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] %in% node.attribute[[i]])
             }
 
             if(class(node.attribute[[i]]) %in% c("Date")){
@@ -50,7 +50,7 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         for(i in names(edge.attribute)){
 
             if(class(edge.attribute[[i]]) %in% c("character","factor","numeric")){
-                x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] %in% edge.attribute[i])
+                x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] %in% edge.attribute[[i]])
             }
 
             if(class(edge.attribute[[i]]) %in% c("date")){
