@@ -24,7 +24,7 @@ epi_contact <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        directed=TRUE)
 
 ## add cluster ID to epi_contacts 'linelist'
-epi_contacts_with_ids <- clusters.epi_contacts(obj)
+epi_contacts_with_ids <- clusters.epi_contacts(epi_contact)
 
 }
 \author{
