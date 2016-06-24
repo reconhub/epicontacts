@@ -23,9 +23,7 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         return(x)
     }
       
-    node.id <- x$linelist$id
-    edge.from <- x$contacts$from
-    edge.to <- x$contacts$to
+
   
     if(!(is.null(node.attribute))){
 
@@ -61,7 +59,7 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         edge.from <- x$contacts$from
         edge.to <- x$contacts$to
         
-    } else
+    }
 
     out <- x[i=node.id,j=edge.from,contacts="from"]
     out <- out[i=node.id,edge.to,contacts="to"]
