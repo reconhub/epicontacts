@@ -21,6 +21,25 @@
 #' values)
 #'
 #' @examples
+#' ## example using MERS outbreak in Korea, 2014
+#' head(mers_kor_14[[1]])
+#' head(mers_kor_14[[2]])
+#'
+#' x <- make_epi_contacts(linelist=mers_kor_14[[1]],
+#' contacts=mers_kor_14[[2]], directed=TRUE)
+#'
+#' ## estimate serial interval (onset->onset)
+#' SI <- get_pairwise(x, "dt_onset")
+#' SI
+#' summary(SI)
+#' hist(SI, col="grey", border="white", xlab="Days after symptoms"
+#'      main="MERS Korea 2014 - Serial Interval")
+#'
+#' ## check gender mixing:
+#' get_pairwise(x, "sex") # not good, we want 2-way table
+#'
+#' get_pairwise(x, "sex", f=table) # use custom function
+#' fisher.test(get_pairwise(x, "sex", f=table)) # test association
 #'
 get_pairwise <- function(x, attribute, f=NULL, hard_NA=TRUE){
     ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of

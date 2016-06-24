@@ -15,6 +15,7 @@
 #'
 #' @seealso \code{\link{vis_epi_contacts}}, which uses the package \code{visNetwork}.
 #'
+#' @examples
 #' ## example using MERS outbreak in Korea, 2014
 #' head(mers_kor_14[[1]])
 #' head(mers_kor_14[[2]])

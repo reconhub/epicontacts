@@ -17,12 +17,7 @@
 This function plots \code{\link{epi_contacts}} objects using various approaches. The default
 method uses \code{\link{vis_epi_contacts}}.
 }
-\author{
-Thibaut Jombart (\email{thibautjombart@gmail.com})
-}
-\seealso{
-\code{\link{vis_epi_contacts}}, which uses the package \code{visNetwork}.
-
+\examples{
 ## example using MERS outbreak in Korea, 2014
 head(mers_kor_14[[1]])
 head(mers_kor_14[[2]])
@@ -35,5 +30,11 @@ plot(x)
 plot(x, group="place_infect")
 plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
 }
+}
+\author{
+Thibaut Jombart (\email{thibautjombart@gmail.com})
+}
+\seealso{
+\code{\link{vis_epi_contacts}}, which uses the package \code{visNetwork}.
 }
 
