@@ -23,7 +23,9 @@ factor_subset <- function(x,edge.attribute=NULL,node.attribute=NULL){
         return(x)
     }
       
-
+    node.id <- x$linelist$id
+    edge.from <- x$contacts$from
+    edge.to <- x$contacts$to
   
     if(!(is.null(node.attribute))){
 
