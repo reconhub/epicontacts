@@ -26,7 +26,7 @@ for annotating the nodes}
 
 \item{NA_col}{the color used for unknown group}
 
-\item{width}{the width of the output, in html compatible format (e.g. '90%' or '800px')}
+\item{width}{the width of the output, in html compatible format (e.g. '90\%' or '800px')}
 
 \item{height}{the height of the output, in html compatible format (e.g. '800px')}
 

@@ -27,7 +27,7 @@
 #'
 #' @param NA_col the color used for unknown group
 #'
-#' @param width the width of the output, in html compatible format (e.g. '90%' or '800px')
+#' @param width the width of the output, in html compatible format (e.g. '90\%' or '800px')
 #'
 #' @param height the height of the output, in html compatible format (e.g. '800px')
 #'
