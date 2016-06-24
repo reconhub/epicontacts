@@ -1,16 +1,13 @@
-#' Subset clusters from epi_contacts object
+#' Subset clusters from epi_contacts object by nodes
 #'
-#' This function subsets an epi_contacts object based on cluster sizes of connected individuals.
-#'
+#' This function subsets an epi_contacts object based on nodes (individuals) of interest.
 #' @export
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
 #' @param epi_contacts an \code{\link{epi_contacts}} object
 #'
-#' @param cs_min minimum cluster size
-#'
-#' @param cs_max maximum cluster size
+#' @param nds node(s) whose clusters need to be subsetted
 #'
 #' @examples
 #' ## build data
@@ -18,23 +15,22 @@
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
-#'## subset using min and max cluster size
-#' x_subset <- subset.clusters.epi_contacts(x, 12, 15)
+#' nds <- "cac51e" ## it can be a vector of nodes as well
 #'
-#' ## subset based on single cluster size
-#' x_subset <- subset.clusters.epi_contacts(x, 12)
+#' ## subset based on cluster to which "cac51e" belongs
+#' x_subset <- subset_clusters_by_nodes(x, nds)
+#'
 
-subset.clusters.epi_contacts <- function(epi_contacts, cs_min, cs_max=cs_min){
-    csize <- seq(from = cs_min, to = cs_max, by = 1)
+
+subset_clusters_by_nodes <- function(epi_contacts, nds){
     net <- as.igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
     nodes <- data.frame(nodes =igraph::V(net)$id, cs_member = cs$membership, stringsAsFactors = FALSE)
-    cluster_to_subset <- which(cs$csize %in% csize)
+    cluster_to_subset <- unique(nodes$cs_member[which(nodes$nodes %in% nds)])
     nodes_to_subset <- nodes$nodes[ which(nodes$cs_member %in% cluster_to_subset)]
-    graph_subset <- igraph::induced_subgraph(net, igraph::V(net)$id %in% nodes_to_subset)
-
     epi_subset <- epi_contacts[nodes_to_subset]
     return(epi_subset)
 }
+
 
 

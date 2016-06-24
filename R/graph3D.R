@@ -15,7 +15,10 @@
 #'                        directed=TRUE)
 #'
 #' ## subset based on single cluster size
-#' x_subset <- subset.clusters.epi_contacts(x, 12)
+#' x_subset <- subset_clusters_by_size(x, 10, 12)
+#'
+#' ## 3D graph
+#' g <- graph3D(x_subset)
 
 
 graph3D <- function(epi_contacts) {

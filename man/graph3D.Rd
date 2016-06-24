@@ -19,7 +19,10 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        directed=TRUE)
 
 ## subset based on single cluster size
-x_subset <- subset.clusters.epi_contacts(x, 12)
+x_subset <- subset_clusters_by_size(x, 10, 12)
+
+## 3D graph
+g <- graph3D(x_subset)
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
