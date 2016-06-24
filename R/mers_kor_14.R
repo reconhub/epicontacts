@@ -30,9 +30,9 @@
 #'
 #' @docType data
 #'
-#' @rdname otbk_mers_kor_14
+#' @rdname mers_kor_14
 #'
-#' @aliases otbk_mers_kor_14
+#' @aliases mers_kor_14
 #'
 #' @author Data collected by the European Centre for Disease Prevention and Control (Epidemic
 #' Intelligence and Response section, contact: Bertrand Sudre (\email{
@@ -44,6 +44,6 @@
 #' Coulombier D. Taking stock of the first 133 MERS coronavirus cases globally--Is the epidemic
 #' changing?  Euro Surveill. 2013 Sep 26;18(39). pii: 20596. PubMed PMID: 24094061.
 #'
-"otbk_mers_kor_14"
+"mers_kor_14"
 
 
