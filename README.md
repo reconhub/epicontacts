@@ -31,7 +31,7 @@ Main features include:
 * **`vis_epi_contacts`:** plot an `epi_contacts` object using `visNetwork`
 * **`igraph.epi_contacts`:** create an `igraph` object from a epi_contacts object
 * **`clusters_epi_contacts`:** assign clusters and corresponding cluster sizes to linelist of an epi_contacts object (clusters being groups of connected individuals/nodes).
-* **`subset_clusters_by_nodes`**: subset an `epi_contacts` object based on individuals/nodes of interest.
+* **`subset_clusters_by_id`**: subset an `epi_contacts` object based on a IDs of cases of interest.
 * **`subset_clusters_by_size`**:  subset an `epi_contacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes).
 * **`graph3D`**: 3D graph from an `epi_contacts` object.
 
