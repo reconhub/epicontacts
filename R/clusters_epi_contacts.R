@@ -19,11 +19,11 @@
 #'                        directed=TRUE)
 #'
 #' ## add cluster ID to epi_contacts 'linelist'
-#' epi_contacts_with_ids <- clusters.epi_contacts(epi_contact)
+#' epi_contacts_with_ids <- clusters_epi_contacts(epi_contact)
 #'
 
 
-clusters.epi_contacts <- function(epi_contacts){
+clusters_epi_contacts <- function(epi_contacts){
     net <- as.igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
     net_nodes <- data.frame(id =igraph::V(net)$id, cluster_member = cs$membership, stringsAsFactors = FALSE)
