@@ -55,7 +55,7 @@ Main features include:
 
 * **igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object.
 
-* **clusters_epi_contacts**: assign clusters IDs to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes).
+* **clusters_epi_contacts**: assign clusters and corresponding cluster sizes to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes).
 
 * **ebola.sim**: simulated Ebola outbreak dataset. 
 
