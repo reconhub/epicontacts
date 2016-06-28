@@ -65,7 +65,7 @@ shinyServer(function(input, output) {
         subsetarglist[[1]] <- input$dynamic
         names(subsetarglist)[1] <- input$interact
 
-        dat <- epi_contacts_subset(dat, node.attribute = subsetarglist)
+        dat <- subset(dat, node.attribute = subsetarglist)
 
         plot(dat, annot = TRUE, editor = TRUE)
     })
@@ -80,7 +80,7 @@ shinyServer(function(input, output) {
         subsetarglist[[1]] <- input$dynamic
         names(subsetarglist)[1] <- input$interact
 
-        epi_contacts_subset(dat, node.attribute = subsetarglist)$linelist
+        subset(dat, node.attribute = subsetarglist)$linelist
 
     })
 
@@ -94,7 +94,7 @@ shinyServer(function(input, output) {
         subsetarglist[[1]] <- input$dynamic
         names(subsetarglist)[1] <- input$interact
 
-        epi_contacts_subset(dat, node.attribute = subsetarglist)$contacts
+        subset(dat, node.attribute = subsetarglist)$contacts
 
     })
 })
