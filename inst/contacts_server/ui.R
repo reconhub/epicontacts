@@ -7,7 +7,10 @@ shinyUI(fluidPage(
 
     sidebarLayout(
         sidebarPanel(
-            fileInput('linelist', 'Choose A Linelist File To Upload',
+            radioButtons("datasource", "Data", choices = c("Ebola Simulation","MERS South Korea", "Upload Data")),
+            conditionalPanel(
+            condition = "input.datasource == 'Upload Data'",
+            fileInput('linelist', 'Choose A Line List File To Upload',
                 accept = c(
                     'text/csv',
                     'text/comma-separated-values',
@@ -27,8 +30,11 @@ shinyUI(fluidPage(
                     '.tsv'
                 )
             ),
+            checkboxInput("directed", "Is This A Directed Network ?", value = TRUE)
+                ),
             uiOutput("ui1"),
-            uiOutput("ui2")
+            uiOutput("ui2"),
+            actionButton("subset", "Subset Data Based on Inputs Above")
         ),
 
         # Show a plot of the generated distribution
