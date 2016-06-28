@@ -21,7 +21,7 @@ Inputs data is built upon:
 
 <bk>
 
-2. a **contact dataset** (CD) mapping the relationships between individuals. The contact dataset corresponds to the mapping of the relationships between individuals (edge between nodes). The contact dataset can contains any attributes with regards to this relationship (e.g.  exposure, serial interval, ...).
+2. a **contact dataset** (CD) mapping the relationships between individuals. The contact dataset corresponds to the mapping of the relationships between individuals (edge between nodes). The contact dataset can contain any attributes with regards to this relationship (e.g.  exposure, serial interval, ...).
 
 <bk>
 
@@ -53,7 +53,7 @@ Main features include:
 
 * **epi_contacts**: a new S3 class for storing line list and contacts datasets.
 
-* **as.igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object.
+* **igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object.
 
 * **clusters_epi_contacts**: assign clusters IDs to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes).
 
@@ -134,7 +134,7 @@ Dataframe mapping relationship(s) between individuals (= network edge), unique i
 
 <br>
 
-### Create an epi_contacts object and get a summary
+### Create an `epi_contacts` object and get a summary
 
 ```{r, eval=TRUE}
   x <- make_epi_contacts(mers_kor_14[[1]],mers_kor_14[[2]], 
@@ -156,12 +156,13 @@ The default plot methods is using the "visNetwork" package to allow interactive 
 
 <br>
 
-
 #### Selection functions by individuals
 
-Access unique IDs identifier(s) from epi_contacts object with various options:
-  
-* Based on list of case (node)
+Access unique IDs identifier(s) from `epi_contacts` object with various options:
+
+<br>
+
+1. **Based on list of case (node)**
 
 ```{r, eval=TRUE}  
 linelist_ids <- get_id(x, "linelist")   # linelist only ('linelist')
@@ -180,8 +181,10 @@ common_ids <- get_id(x, "common")       # Intersection of both ('common')
 head(common_ids, n = 10L)
 length(get_id(x, "common"))         
 ```
-  
-* Based on list of pairs (edge of the network)
+
+<br>
+
+2. **Based on list of pairs (edge of the network)**
 By default in a `epi_contacts` object, deg_in and deg_out returns the number of contacts/edges  per individuals/nodes. deg_in and deg_out requires a directed network.
 [* ? to be tested with various direted and undirected network]
 
@@ -207,7 +210,9 @@ By default in a `epi_contacts` object, deg_in and deg_out returns the number of 
 The function allows pairwise processing of varaible in the line list according to each pairs in the contact dataset. For this example, the onset of disease is extracted from the line list in order to compute the difference between disease onset date for each pairs (which corresponds to the **serial interval**).
 [ ! add details of the default settings, behavior for date, string, numeric]
 
-* By a date in the line list
+<br>
+
+1. **By a date in the line list**
 
 ```{r, eval=TRUE} 
 SI <- get_pairwise(x, "dt_onset")   
@@ -224,8 +229,9 @@ renderPlot({
      main="MERS Korea 2014 - Serial Interval")
     })  # no dysplay to 
 ```
+<br><br>
 
-* By a categorical variable (sex in the example below) and applying a specfic function (e.g. table)
+2. **By a categorical variable (sex in the example below) and applying a specfic function (e.g. table)**
 
 ```{r, eval=TRUE} 
 get_pairwise(x, "sex", f=table) # allow the use of a custom function
@@ -233,23 +239,23 @@ fisher.test(get_pairwise(x, "sex", f=table))
 ```
 
 <br>
-####  Incorporate cluster IDs and sizes into the line list
+
+#### Incorporate cluster IDs and sizes into the line list
 The function `clusters_epi_contacts` adds a unique cluster identifier to the line list as a column named `cluster_member`. It also adds another column, `cluster_size`, corresponding to the size of the cluster. 
 _Note: A 'cluster' in this context corresponds to groups of connected individuals (connected components)._
 
 ```{r, eval=TRUE, message=FALSE} 
 x_id <- clusters_epi_contacts(x)    # adds two columns, one with cluster IDs and other with cluster sizes
-head(x_id$linelist, n = 10)
-head(x_id$linelist$cluster_member, n = 10)
-head(x_id$linelist$cluster_size, n = 10)
+head(x_id$linelist[ , c("cluster_member", "cluster_size")], n = 10)
 table(x_id$linelist$cluster_member)         # table of clusters with the number of individuals in them
 sort(unique(x_id$linelist$cluster_size))    # unique cluster sizes of clusters in linelist
 ```
 
 <br>
-##### Subsetting clusters in `epi_contacts` object by individual IDs, cluster member number or cluster size
 
-* ** Subset network via  node-based selection** 
+##### Subsetting clusters in `epi_contacts` object by individual IDs or cluster size
+
+1. **Subset network via  node-based selection** 
 
 ```{r, eval=TRUE}   
   nodes <- c("SK_14","SK_145")              # Select  one or more record(s)
@@ -257,10 +263,10 @@ sort(unique(x_id$linelist$cluster_size))    # unique cluster sizes of clusters i
   plot(x_subset_N)            # selection  as cluster to which "SK_14" belongs = all ?
 ```
   
-* ** Subset network via cluster size** 
+2. **Subset network via cluster size** 
   
 ```{r, eval=TRUE}   
-  x_subset_S <- x_subset <- subset_clusters_by_size(x, cs_min = 2, cs_max = 3)
+  x_subset_S <- subset_clusters_by_size(x, cs_min = 2, cs_max = 3)
   plot(x_subset_S)
 ```
 
@@ -283,7 +289,7 @@ The current example is built is using ggnetwork package
   library("intergraph")
   library("ggnetwork")
 
-  net_igraph  <-  as.igraph.epi_contacts(x)   # Conversion in i-graph object
+  net_igraph  <-  igraph.epi_contacts(x)   # Conversion in i-graph object
   l <- layout.reingold.tilford(net_igraph)    # Placement algorithm: Reingold Tilford
   
   renderPlot({
@@ -291,7 +297,7 @@ The current example is built is using ggnetwork package
            vertex.label=NA,
            vertex.frame.color="#ffffff", 
            vertex.size=2)
-  })   # Default plot from igraph --> ?? adapt layour
+  })   
   
   net_ggnet <- asNetwork(net_igraph)
   # For more information on conversion process
@@ -318,24 +324,25 @@ The current example is built is using ggnetwork package
 
 <br>
  
-#### Network representation with static 3D representation
+#### Network representation with 3D representation
 
 ```{r, eval=TRUE}
 library(threejs)
 
-data(LeMis)
-renderGraph( graphjs(LeMis))
-```
-test space
+x_subset <- subset_clusters_by_size(x, cs_min = 50, cs_max = 100)
+g <- graph3D(x_subset, v_col_by = "sex")
 
-```{r, eval=TRUE}
-
-z <- seq(-10, 10, 0.01)
-x <- cos(z)
-y <- sin(z)
-scatterplot3js(x,y,z, color=rainbow(length(z)))
+renderGraph(g)
 
 ```
+To interact with the plot:
+
+* zoom: scrollwheel
+* rotate: left-mouse button + move
+* pan: right-mouse button + move
+* identify node by label: mouse over 
+
+For more information on 3D javascript graphs, visit B.W. Lewis' [page](http://bwlewis.github.io/rthreejs/graphjs.html)
 
 <br>
 

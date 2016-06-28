@@ -34,7 +34,7 @@
 
 subset_clusters_by_size <- function(epi_contacts, cs_min, cs_max = cs_min){
     csize <- seq(from = cs_min, to = cs_max, by = 1)
-    net <- as.igraph.epi_contacts(epi_contacts)
+    net <- igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
     nodes <- data.frame(nodes =igraph::V(net)$id, cs_member = cs$membership, stringsAsFactors = FALSE)
     cluster_to_subset <- which(cs$csize %in% csize)

@@ -22,12 +22,12 @@
 #' x <- x[ids]
 #'
 #' ## make igraph object with associated attributes from epi_contacts object
-#' net <- as.igraph.epi_contacts(x)
+#' net <- igraph.epi_contacts(x)
 #' net
 #' plot(net)
 #'
 
-as.igraph.epi_contacts <- function(epi_contacts){
+igraph.epi_contacts <- function(epi_contacts){
 #     ## We read in the epi_contacts object, which contains the two dataframes, the 'linelist' and the
 #     ## 'contacts' dataframes. This function converts the 'contacts' dataframe into an igraph object.
 #     ## It extracts information for the igraph vertices from the corresponding 'linelist' dataframe

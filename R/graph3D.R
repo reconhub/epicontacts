@@ -65,7 +65,7 @@ graph3D <- function(epi_contacts,
 
     ## Create igraph object to pass on as data for 3D graph (because original epi_contacts object
     ## may contain NA's, which will hinder creation of 3D graph with threejs::graphjs()
-    x <- as.igraph.epi_contacts(epi_contacts)
+    x <- igraph.epi_contacts(epi_contacts)
 
     ## Get vertex attributes and prepare as input for graph
     v <- igraph::get.vertex.attribute(x)
@@ -93,14 +93,19 @@ graph3D <- function(epi_contacts,
     }
 
     ## Get edge list and format prepare as input for graph
-    e <- igraph::get.edgelist(x)
+    e <- igraph::get.edgelist(x, names=FALSE)
     e <- as.data.frame(e, stringsAsFactors = FALSE)
     colnames(e) = c("from", "to")
 
     ## Set edge attributes
     e$size = e.size
     e$color = "lightgrey"
+
+    ## Set vertex attributes
     v$size = v.size
+
+    ## Subset vertex dataframe for graphjs
+    v <- v[ , c("label", "id", "size", "color")]
 
     ## Create 3D graph
     g <- threejs::graphjs(edges = e, nodes = v, main = g.title, showLabels=FALSE, fg = g.fg, bg = g.bg)

@@ -29,7 +29,7 @@
 
 
 subset_clusters_by_nodes <- function(epi_contacts, nodes){
-    net <- as.igraph.epi_contacts(epi_contacts)
+    net <- igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
     net_nodes <- data.frame(nodes =igraph::V(net)$id, cs_member = cs$membership, stringsAsFactors = FALSE)
     cluster_to_subset <- unique(net_nodes$cs_member[which(net_nodes$nodes %in% nodes)])
