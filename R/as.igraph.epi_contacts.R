@@ -57,8 +57,16 @@ as.igraph.epi_contacts <- function(epi_contacts){
 #     igraph::vertex_attr(net) <- attrs_list # {{figure out if I should keep the "id" as an attr or not?}}
 
     ## Take 2, simpler way to go about it:
-    net <- igraph::graph_from_data_frame(epi_contacts$contacts, vertices = epi_contacts$linelist,
+
+    ## Create vertex dataframe using combination of linelist and contacts
+    all_ids <- data.frame(id = get_id(epi_contacts, "all"), stringsAsFactors = FALSE)
+    verts <- dplyr::full_join(epi_contacts$linelist, all_ids, by = "id")
+
+    ## Creating igraph object
+    net <- igraph::graph_from_data_frame(epi_contacts$contacts, vertices = verts,
                                  directed = epi_contacts$directed)
+
+    igraph::vertex_attr(net)$id = igraph::vertex_attr(net)$name
 
     return(net)
 }
