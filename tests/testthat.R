@@ -1,4 +1,4 @@
 library(testthat)
-library(contacts)
+library(epicontacts)
 
-test_check("contacts")
+test_check("epicontacts")
