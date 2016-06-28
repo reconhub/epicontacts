@@ -1,30 +1,77 @@
 library(shiny)
-library(contacts)
+library(epicontacts)
 library(visNetwork)
 
 shinyServer(function(input, output) {
 
     getData <- reactive({
 
-        req(input$linelist, input$contacts)
+        if (input$datasource == "Ebola Simulation") {
 
-        linelist <-
-            readr::read_csv(input$linelist$datapath)
+            epicontact <- make_epi_contacts(ebola.sim$linelist,ebola.sim$contacts, directed = TRUE)
 
-        contacts <-
-            readr::read_csv(input$contacts$datapath)
+            # subset the first 100 records so the network isn't too big
+            x <- get_id(epicontact, "common")[1:100]
 
-        epicontact <- make_epi_contacts(linelist,contacts, directed = TRUE)
+            epicontact <- epicontact[x]
 
-        return(epicontact)
+            return(epicontact)
+
+        } else if (input$datasource == "MERS South Korea") {
+
+            epicontact <- make_epi_contacts(mers_kor_14[[1]],mers_kor_14[[2]], directed = TRUE)
+
+            return(epicontact)
+
+        } else {
+
+            req(input$linelist, input$contacts)
+
+            linelist <-
+                readr::read_csv(input$linelist$datapath)
+
+            contacts <-
+                readr::read_csv(input$contacts$datapath)
+
+            epicontact <- make_epi_contacts(linelist,contacts, directed = input$directed)
+
+            return(epicontact)
+        }
     })
 
+    subsetData <- eventReactive(input$subset, {
+
+        dat <- getData()
+
+        # build arguments for subsetting
+
+        subsetarglist <- list()
+
+        if (inherits(dat$linelist[,input$interact], "Date")){
+
+            subsetarglist[[1]] <- c(as.Date(input$dynamic[1]),as.Date(input$dynamic[2]))
+
+        } else if(inherits(dat$linelist[,input$interact], "numeric")) {
+
+            subsetarglist[[1]] <- input$dynamic
+
+        } else {
+
+            subsetarglist[[1]] <- input$dynamic
+
+        }
+
+        names(subsetarglist)[1] <- input$interact
+
+        # call epi_contacts method for subsetting
+        subset(dat, node.attribute = subsetarglist)
+
+    })
 
     output$ui1 <- renderUI({
 
-        # create list of attributes from linelist
-        datcols <- names(getData()$linelist)
-
+        # create list of attributes from linelist minus the id column
+        datcols <- names(getData()$linelist)[-1]
         selectInput("interact", "Linelist Attributes", choices = datcols)
 
     })
@@ -35,19 +82,29 @@ shinyServer(function(input, output) {
 
         dat <- getData()$linelist
 
-        # create interaction
-        numcols <- names(dat[,sapply(dat,is.numeric)])
+        # define character of factor checking function
+
+        factchar <- function(x) {
+
+            is.character(x) | is.factor(x)
+
+        }
+
+        # create list of input options based on class of columm
+
+        numcols <- names(dat[,sapply(dat,inherits, "numeric")])
         datecols <- names(dat[,sapply(dat, inherits, "Date")])
-        factorcols <- names(dat[,sapply(dat, is.character)])
+        factorcols <- names(dat[,sapply(dat, factchar)])
 
         switch(input$interact,
             if(input$interact %in% factorcols) {
-                radioButtons("dynamic", "Dynamic", choices = levels(as.factor(dat[,input$interact])))
-                # checkboxGroupInput("dynamicfactor", "Dynamic", choices = unique(dat[,input$interact]))
+                radioButtons("dynamic", input$interact, choices = levels(as.factor(dat[,input$interact])), selected = NULL)
             } else if (input$interact %in% numcols) {
-                numericInput("dynamicnum", input$interact, value = median(dat[,input$interact]))
+                numericInput("dynamic", input$interact, value = median(dat[,input$interact]))
+            } else if (input$interact %in% datecols) {
+                dateRangeInput("dynamic", input$interact)
             } else {
-                dateRangeInput("dynamicdates", "Dynamic")
+                textInput("dynamic", input$interact)
             }
         )
     })
@@ -55,46 +112,38 @@ shinyServer(function(input, output) {
     output$netplot <- renderVisNetwork ({
 
         req(input$interact)
-        dat <- getData()
-        x <- get_id(dat, "common")[1:30]
-        dat <- dat[x]
 
-        # NEED TO CHECK CLASS OF INPUT WIDGET
-
-        subsetarglist <- list()
-        subsetarglist[[1]] <- input$dynamic
-        names(subsetarglist)[1] <- input$interact
-
-        dat <- epi_contacts_subset(dat, node.attribute = subsetarglist)
+        if(input$subset) {
+            dat <- subsetData()
+        } else {
+            dat <- getData()
+        }
 
         plot(dat, annot = TRUE, editor = TRUE)
+
     })
 
     output$linelisttab <- DT::renderDataTable ({
 
-#         getData()$linelist
+        req(input$interact)
 
-        dat <- getData()
-
-        subsetarglist <- list()
-        subsetarglist[[1]] <- input$dynamic
-        names(subsetarglist)[1] <- input$interact
-
-        epi_contacts_subset(dat, node.attribute = subsetarglist)$linelist
+        if(input$subset) {
+            subsetData()$linelist
+        } else {
+            getData()$linelist
+        }
 
     })
 
     output$contactstab <- DT::renderDataTable ({
 
-        # getData()$contacts
+        req(input$interact)
 
-        dat <- getData()
-
-        subsetarglist <- list()
-        subsetarglist[[1]] <- input$dynamic
-        names(subsetarglist)[1] <- input$interact
-
-        epi_contacts_subset(dat, node.attribute = subsetarglist)$contacts
+        if(input$subset) {
+            subsetData()$contacts
+          } else {
+          getData()$contacts
+          }
 
     })
 })
