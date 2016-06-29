@@ -23,6 +23,7 @@ Main features include:
 * **`epi_contacts`:** a new S3 class for storing linelists and contacts data
 * **`make_epi_contacts`:** a constructor for the new `epi_contacts` class
 * **`get_id`:** access unique IDs in an `epi_contacts` with various options
+* **`get_pairwise`**:  extract attributes of record(s) in contacts database using information provided in the line list database of an `epi_contacts` object.
 * **`get_degree`:** access degree of cases in `epi_contacts` with various options
 * **`x[i,j,contacts]`:** susbset an `epi_contacts` object by retaining specified cases
 * **`summary`:** summary for  `epi_contacts` objects
