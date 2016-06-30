@@ -15,7 +15,5 @@ LazyData: TRUE
 RoxygenNote: 5.0.1
 Imports: grDevices, dplyr, igraph, magrittr, visNetwork, threejs,
     colorspace
-Suggests: testthat, covr, shiny, readr,
-    knitr,
-    rmarkdown
+Suggests: testthat, covr, shiny, readr, knitr, rmarkdown, ggplot2, ggnetwork, intergraph
 VignetteBuilder: knitr
