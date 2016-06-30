@@ -1,6 +1,6 @@
-[![Travis-CI Build Status](https://travis-ci.org/Hackout3/contacts.svg?branch=master)](https://travis-ci.org/Hackout3/contacts)
+[![Travis-CI Build Status](https://travis-ci.org/Hackout3/contacts.svg?branch=master)](https://travis-ci.org/Hackout3/epicontacts)
 
-[![Coverage Status](https://img.shields.io/codecov/c/github/Hackout3/contacts/master.svg)](https://codecov.io/github/Hackout3/contacts?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/Hackout3/contacts/master.svg)](https://codecov.io/github/Hackout3/epicontacts?branch=master)
 
 
 
