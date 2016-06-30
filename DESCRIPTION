@@ -5,17 +5,18 @@ Version: 1.0.0
 Date: 2016-06-30
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
 	     person("Nagraj", "VP", email = "vpnagraj@virginia.edu", role = c("aut")),
-	     person("Randhawa", "Nistara", email = "nrandhawa@ucdavis.edu", role = c("aut")), 
-	     person("Bertrand", "Sudre", email = "Bertrand.Sudre@ecdc.europa.eu", role = c("aut")), 
-	     person("Finlay", "Campbell", email = "f.campbell15@imperial.ac.uk", role = c("aut")), 
+	     person("Randhawa", "Nistara", email = "nrandhawa@ucdavis.edu", role = c("aut")),
+	     person("Bertrand", "Sudre", email = "Bertrand.Sudre@ecdc.europa.eu", role = c("aut")),
+	     person("Finlay", "Campbell", email = "f.campbell15@imperial.ac.uk", role = c("aut")),
 	     person("Thomas", "Crellen", email = "tc13@sanger.ac.uk", role = c("aut")))
 Description: A collection of tools for representing epidemiological contact data, composed of case line lists and contacts between cases. Also contains procedures for data handling, interactive graphics, and statistics.
 License: GPL (>=2)
 LazyData: TRUE
 RoxygenNote: 5.0.1
 Imports: grDevices, dplyr, igraph, magrittr, visNetwork, threejs,
-    colorspace
-Suggests: testthat, covr, shiny, readr,
+    colorspace, shiny
+Suggests: testthat, covr, readr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    DT
 VignetteBuilder: knitr
