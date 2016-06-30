@@ -4,22 +4,27 @@
 \alias{subset_clusters_by_size}
 \title{Subset clusters from epi_contacts object by cluster size}
 \usage{
-subset_clusters_by_size(epi_contacts, cs_min, cs_max = cs_min)
+subset_clusters_by_size(epi_contacts, cs = NULL, cs_min = NULL,
+  cs_max = NULL)
 }
 \arguments{
 \item{epi_contacts}{an \code{\link{epi_contacts}} object}
 
-\item{cs_min}{minimum cluster size to be subsetted}
+\item{cs}{cluster size to be used for subsetting}
 
-\item{cs_max}{maximum cluster size to be subsetted}
+\item{cs_min}{minimum cluster size for subsetting}
+
+\item{cs_max}{maximum cluster size for subsetting}
 }
 \value{
 An \code{\link{epi_contacts}} object whose contact dataframe corresponds to
 all clusters of specified cluster sizes.
 }
 \description{
-This function subsets an epi_contacts object based on defined size(s) of clusters (clusters being groups
-of connected individuals/nodes).
+This function subsets an \code{\link{epi_contacts}} object based on defined size(s) of clusters
+(clusters being groups of connected individuals/nodes). Subsetting may be done by specifying a
+particular cluster size of interest, minimum cluster size, maximum cluster size, or a range
+(minimum and maximum) of cluster sizes.
 }
 \examples{
 ## build data
@@ -28,12 +33,20 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        directed=TRUE)
 
 
-## subset based on cluster size (using range from min to max)
+## subset based on cluster size range
 x_subset <- subset_clusters_by_size(x, cs_min = 12, cs_max = 15)
 
 
-## subset based on cluster size (using single cluster size value)
-x_subset <- subset_clusters_by_size(x, cs_min = 12)
+## subset based on single cluster size
+x_subset <- subset_clusters_by_size(x, cs = 12)
+
+
+#' ## subset based on minimum cluster size
+x_subset <- subset_clusters_by_size(x, cs_min = 10)
+
+
+#' #' ## subset based on maximum cluster size
+x_subset <- subset_clusters_by_size(x, cs_max = 9)
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
