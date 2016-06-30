@@ -1,6 +1,6 @@
-[![Travis-CI Build Status](https://travis-ci.org/Hackout3/contacts.svg?branch=master)](https://travis-ci.org/Hackout3/contacts)
+[![Travis-CI Build Status](https://travis-ci.org/Hackout3/contacts.svg?branch=master)](https://travis-ci.org/Hackout3/epicontacts)
 
-[![Coverage Status](https://img.shields.io/codecov/c/github/Hackout3/contacts/master.svg)](https://codecov.io/github/Hackout3/contacts?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/Hackout3/contacts/master.svg)](https://codecov.io/github/Hackout3/epicontacts?branch=master)
 
 
 
@@ -25,7 +25,7 @@ Main features include:
 * **`get_id`:** access unique IDs in an `epi_contacts` with various options
 * **`get_pairwise`**:  extract attributes of record(s) in contacts database using information provided in the linelist data of an `epi_contacts` object.
 * **`get_degree`:** access degree of cases in `epi_contacts` with various options
-* **`x[i,j,contacts]`:** susbset an `epi_contacts` object by retaining specified cases
+* **`x[i,j,contacts]`:** subset an `epi_contacts` object by retaining specified cases
 * **`summary`:** summary for  `epi_contacts` objects
 * **`plot`:** plot for  `epi_contacts` objects; various types of plot are available; default to `vis_epi_contacts`
 * **`vis_epi_contacts`:** plot an `epi_contacts` object using `visNetwork`
@@ -34,5 +34,6 @@ Main features include:
 * **`subset_clusters_by_id`**: subset an `epi_contacts` object based on a IDs of cases of interest.
 * **`subset_clusters_by_size`**:  subset an `epi_contacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes).
 * **`graph3D`**: 3D graph from an `epi_contacts` object.
+* **`epicontacts_server`**: run the epicontacts Shiny app on a local host
 
  
