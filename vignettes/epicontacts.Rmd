@@ -1,7 +1,10 @@
 ---
-title: "Epicontacts: visualisation of network data in epidemiology"
+title: "`epicontacts`: Visualisation of Network Data in Epidemiology"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 4
 runtime: shiny
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -9,227 +12,219 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+### Introduction
 
-<br>
-Epicontacts package intends to facilitate the visualisation and analysis of any epdimiological data with an network component, such as contact tracing datasets and  transmission chains.
+The `epicontacts` package aims to facilitate the visualisation and analysis of any epidemiological data with a network component, such as contact tracing datasets and transmission chains.
 
-Inputs data is built upon:
-
-<bk>
-
- 1. a **line list** (LL) of individuals.The line list contains a first column with unique identifier of individuals (record of cases and/or contacts) and any attributes in additionnal columns (e.g. age, sex, location, ...).
+Input data must consist of two components:
 
 <bk>
 
-2. a **contact dataset** (CD) mapping the relationships between individuals. The contact dataset corresponds to the mapping of the relationships between individuals (edge between nodes). The contact dataset can contain any attributes with regards to this relationship (e.g.  exposure, serial interval, ...).
+ 1. A **line list** (LL) of individuals. The line list contains a first column with unique identifier of individuals (record of cases and/or contacts) and any attributes in additionnal columns (e.g. age, sex, location, etc.).
 
 <bk>
 
-The package provides several network statistics,  functions to subset networks (by edge or two node) and visualize network in a various ways (2D, 3D, interactive graphics) using third-parties packages .
+2. A **contact dataset** (CD) mapping the relationships between individuals. The contact dataset corresponds to the mappings of the relationships between individuals (edges between nodes). The contact dataset can contain any attributes qualifying this relationship (e.g. exposure, serial interval, etc.).
+
+<bk>
+
+The package provides several network statistics, functions to subset networks (by edge or two nodes) and visualise networks in a various ways (2D, 3D, interactive graphics) using third-party packages.
 
 ---------------------------------------
   
 ### Installation
   
-To install the development version from github:
+To install the development version from GitHub:
 ```{r install, eval=FALSE} 
-  library("devtools")
-  install_github("Hackout3/epicontacts")
+library(devtools)
+install_github("Hackout3/epicontacts")
 ```
   
-The stable version can be installed from CRAN using: [*to be checked if needed*] _{Nistara: package is not on CRAN yet}_
+The stable version can be installed from CRAN using: [*to be checked if needed*] _{package is not on CRAN yet, so prob not needed}_
+
 ```{r, eval=FALSE}
-  # install.packages("epicontacts",force = TRUE) # ! Error: attempt to use zero-length variable name 
+# install.packages("epicontacts",force = TRUE) 
 ```
 
-Then, to load the package, use:
+To load the package use the following:
+
 ```{r, eval=TRUE} 
-  library("epicontacts")
+library(epicontacts)
 ```
   
-### Content overview
+### Overview
 
 Main features include:
 
-* **epi_contacts**: a new S3 class for storing line list and contacts datasets.
+* **epi_contacts**: a new S3 class for storing line list and contacts datasets
 
-* **igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object.
+* **igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object
 
-* **clusters_epi_contacts**: assign clusters and corresponding cluster sizes to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes).
+* **clusters_epi_contacts**: assign clusters and corresponding cluster sizes to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes)
 
-* **ebola.sim**: simulated Ebola outbreak dataset. 
+* **ebola.sim**: simulated Ebola outbreak dataset
 
-* **get_degree**: number of contacts/edges  per individuals/nodes in a `epi_contacts` object.
+* **get_degree**: number of contacts (edges)  per individuals (nodes) in a `epi_contacts` object
 
-* **get_id**:access unique IDs identifier(s) from `epi_contacts` object with various options.
+* **get_id**:access unique IDs identifier(s) from `epi_contacts` object with various options
 
-* **get_pairwise**:  extract attributes of record(s) in contacts database using information provided in the line list database of an `epi_contacts` object.
+* **get_pairwise**:  form an `epi_contacts` object, extract attributes of record(s) in contacts database using information provided in the line list database
 
-* **graph3D**: 3D graph from an `epi_contacts` object.
+* **graph3D**: 3D graph from an `epi_contacts` object
 
-* **make_epi_contacts**: a constructor for the new `epi_contacts` class.
+* **make_epi_contacts**: a constructor for the new `epi_contacts` class
 
-* **subset_clusters_by_id**: subset an `epi_contacts` object based on a IDs of cases of interest.
+* **subset_clusters_by_id**: subset an `epi_contacts` object based on individuals/nodes of interest
 
-* **subset_clusters_by_size**:  subset an `epi_contacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes).
+* **subset_clusters_by_size**: subset an `epi_contacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes)
 
-* **vis_epi_contacts**: plots epi_contacts objects using the visNetwork package.
+* **vis_epi_contacts**: plots epi_contacts objects using the visNetwork package
 
-  
-Other generic functions are proposed:
+* **epicontacts_server**: launches the epicontacts Shiny application on a local host
 
-* **summary**: summary for  `epi_contacts` object.
+Generic functions include:
 
-* **plot**:  default plot for `epi_contacts` object using visNetwork package.
+* **summary**: summary for  `epi_contacts` object
 
-* **print**: default printing method for `epi_contacts` object.
+* **plot**:  default plot for `epi_contacts` object using visNetwork package
 
-* **x[i,j,contacts]**: susbset an `epi_contacts` object by retaining specified cases. [*to be checked if needed*]
+* **print**: default printing method for `epi_contacts` object
 
-<br>
+* **x[i,j,contacts]**: subset an `epi_contacts` object by retaining specified cases
 
-Overview of package contents:
+### Package Contents
 
 ```{r Overv, eval=TRUE}
 ls("package:epicontacts")
 ```
 
-<br>
-Load additionnal packages required for running examples below: 
-loaded igraph, visNetwork
+Load additional packages required for running examples below: 
 
-```{r lib, eval=TRUE}
-  # library("intergraph")
-  library("shiny")
-  library("ggplot2")
+```{r lib}
+library(shiny)
 ```
 
-<br>
-
-### Visualisation and analysis
+### Visualisation and Analysis
 
 ##### Load training dataset
   
-A new S3 class `epi_contacts` for storing line list (LL)  and contacts dataset (CD) can be created from a line list (one row = one individual) and a contact dataset containing the relationship betwen individuals (one row = one edge). A training dataset `mers_kor_14` is used as running example (for more information, see  ` outbreaks` package  for dataset description).
+A new S3 class `epi_contacts` for storing line list (LL) and contacts dataset (CD) can be created from a line list (one row = one individual) and a contact dataset containing the relationship betwen individuals (one row = one edge). A training dataset `mers_kor_14` is used as running example (for more information, see` outbreaks` package  for dataset description).
 
 ```{r , eval=TRUE}
-  str(mers_kor_14) # list of two dataframes (one line list and one contact dataset)
+str(mers_kor_14) # list of two dataframes: 1) line list and 2)contact dataset.
 ```
 
-Dataframe corresponding to a line listing of individuals (= network node) which can be case(s) and/or contact(s) (if any), unique identifier and a set of descriptive variables.
+Dataframe corresponding to a line listing of individuals (= network nodes) which can be case(s) and/or contact(s) (if any), unique identifier and a set of descriptive variables.
 
 ```{r , eval=TRUE}
-  str(mers_kor_14[[1]])
-  colnames((mers_kor_14[[1]]))
-  summary(mers_kor_14[[1]])
+colnames((mers_kor_14[[1]]))
 ```
 
-Dataframe mapping relationship(s) between individuals (= network edge), unique identifiers and a set of descriptive variables.
+Dataframe mapping relationship(s) between individuals (= network edges), unique identifiers and a set of descriptive variables.
 
-```{r , eval=TRUE}
-  str(mers_kor_14[[2]]) 
-  colnames((mers_kor_14[[2]]))
-  summary(mers_kor_14[[2]])  # chekc function  NULL:SK_14 in from and  NULL:SK_113 in to
+```{r}
+colnames((mers_kor_14[[2]]))
 ```
 
-<br>
+#### Create an `epi_contacts` object and get a summary
 
-### Create an `epi_contacts` object and get a summary
+```{r}
+# create epi_contacts object as directed network
+x <- make_epi_contacts(mers_kor_14[[1]], mers_kor_14[[2]], directed=TRUE )
 
-```{r, eval=TRUE}
-  x <- make_epi_contacts(mers_kor_14[[1]],mers_kor_14[[2]], 
-                         id="id", to="to", from="from",  
-                         directed=TRUE )    # create epi_contacts object as directed network
-  
-  summary(x)        # summary of epi_contacts object
+# summary of epi_contacts object
+summary(x)
 ```
-
-<br>
 
 #### Interactive visualization  (generic methods)
 
-The default plot methods is using the "visNetwork" package to allow interactive visualization of network.
+The default plot methods uses the `visNetwork` package functionality to enable interactive visualization.
 
 ```{r, eval=FALSE}
-  plot(x)  # generic method, equivalent to the following: vis_epi_contacts(x)
+plot(x)  # generic method, equivalent to the following: vis_epi_contacts(x)
 ```
-
-<br>
 
 #### Selection functions by individuals
 
 Access unique IDs identifier(s) from `epi_contacts` object with various options:
 
-<br>
-
 1. **Based on list of case (node)**
 
-```{r, eval=TRUE}  
-linelist_ids <- get_id(x, "linelist")   # linelist only ('linelist')
-head(linelist_ids, n = 10L)
-length(linelist_ids)                    # 162 unique records in line list
+```{r}  
+# linelist only ('linelist')
+linelist_ids <- get_id(x, "linelist")
 
-contacts_ids <- get_id(x, "contacts")   # contacts only ('contacts')
-head(contacts_ids, n = 10L)
-length(get_id(x, "contacts"))           # 97 unique records in line list
+# firt 10 records    
+head(linelist_ids, n = 10)              
 
-all_ids <- get_id(x, "all")             # the union of both ('all')
-head(all_ids, n = 10L)
+# calculate number of unieque 
+length(linelist_ids)
+
+# extract ids of contacts i
+contacts_ids <- get_id(x, "contacts")
+head(contacts_ids, n = 10)
+
+# calculate number of records in contact list
+length(get_id(x, "contacts"))  
+
+# the union of both ('all')
+all_ids <- get_id(x, "all") 
+head(all_ids, n = 10)
 length(get_id(x, "all"))
 
-common_ids <- get_id(x, "common")       # Intersection of both ('common')
-head(common_ids, n = 10L)
+# Intersection of both ("common")
+common_ids <- get_id(x, "common") 
+head(common_ids, n = 10)
 length(get_id(x, "common"))         
 ```
-
-<br>
 
 2. **Based on list of pairs (edge of the network)**
 By default in a `epi_contacts` object, deg_in and deg_out returns the number of contacts/edges  per individuals/nodes. deg_in and deg_out requires a directed network.
 [* ? to be tested with various direted and undirected network]
 
-```{r, eval=TRUE}  
-  deg_in   <- get_degree(x, "in")
-  head(deg_in, n = 10L)      
-  table(deg_in)             # Distribution of incomning edge(s) by node
-  
-  deg_out   <- get_degree(x, "out")
-  head(deg_out, n = 10L)     
-  table(deg_out)            # Distribution of outgoing edge(s)by node
-  
-  deg_both  <- get_degree(x, "both")
-  head(deg_both, n = 10L)    #  ID record with highest number of edges
-  table(deg_both)           # Distribution of edge numbers  by nodes
+```{r}  
 
+deg_in   <- get_degree(x, "in")
+
+head(deg_in, n = 10)
+
+# Distribution of incomning edge(s) by node
+table(deg_in)           
+
+deg_out   <- get_degree(x, "out")
+
+head(deg_out, n = 10)
+
+# Distribution of outgoing edge(s)by node
+table(deg_out)
+
+deg_both  <- get_degree(x, "both")
+
+# ID record with highest number of edges
+head(deg_both, n = 10)
+
+# Distribution of edge numbers  by nodes
+table(deg_both)
 ```
 
-<br>
+#### Extract Characteristics of Pairwise Nodes
 
-#### Extract characteristics of pairwise nodes
-
-The function allows pairwise processing of varaible in the line list according to each pairs in the contact dataset. For this example, the onset of disease is extracted from the line list in order to compute the difference between disease onset date for each pairs (which corresponds to the **serial interval**).
+The function allows pairwise processing of varaible in the line list according to each pairs in the contact dataset. For this example, date of onset of disease is extracted from the line list in order to compute the difference between disease date of onset date for each pairs (which corresponds to the **serial interval**).
 [ ! add details of the default settings, behavior for date, string, numeric]
-
-<br>
 
 1. **By a date in the line list**
 
-```{r, eval=TRUE} 
+```{r} 
 SI <- get_pairwise(x, "dt_onset")   
 summary(SI)
-
 ```
-<br>
 
 Distribution of the serial interval:
 
-```{r, eval = TRUE}
-renderPlot({
-    hist(SI, col="grey", border="white", xlab="Days after symptoms",
-     main="MERS Korea 2014 - Serial Interval")
-    })  # no dysplay to 
+```{r}
+hist(SI, col="grey", border="white", xlab="Days after symptoms",
+    main="MERS Korea 2014 - Serial Interval")
 ```
-<br><br>
 
 2. **By a categorical variable (sex in the example below) and applying a specfic function (e.g. table)**
 
@@ -240,128 +235,150 @@ fisher.test(get_pairwise(x, "sex", f=table))
 
 <br>
 
-#### Incorporate cluster IDs and sizes into the line list
+#### Incorporate Cluster IDs and Sizes into the Line List
+
 The function `clusters_epi_contacts` adds a unique cluster identifier to the line list as a column named `cluster_member`. It also adds another column, `cluster_size`, corresponding to the size of the cluster. 
-_Note: A 'cluster' in this context corresponds to groups of connected individuals (connected components)._
+_Note: in this context,a  'cluster'  corresponds to groups of connected individuals (or connected components)._
 
-```{r, eval=TRUE, message=FALSE} 
-x_id <- clusters_epi_contacts(x)    # adds two columns, one with cluster IDs and other with cluster sizes
-head(x_id$linelist[ , c("cluster_member", "cluster_size")], n = 10)
-table(x_id$linelist$cluster_member)         # table of clusters with the number of individuals in them
-sort(unique(x_id$linelist$cluster_size))    # unique cluster sizes of clusters in linelist
+```{r, message=FALSE}
+# adds two columns, one with cluster IDs and other with cluster sizes
+x_id <- clusters_epi_contacts(x)
+
+# one cluster of 94 observations connected together with at least one edge, one cluster of 3 observations  and 65 single observations.
+table(x_id$linelist$cluster_size,x_id$linelist$cluster_member) 
 ```
-
-<br>
 
 ##### Subsetting clusters in `epi_contacts` object by individual IDs or cluster size
 
-1. **Subset network via  node-based selection** 
+1. **Subset network via node-based selection** 
 
-```{r, eval=TRUE}   
-  cases <- c("SK_14","SK_145")              # Select  one or more record(s)
-  x_subset_N <- subset_clusters_by_id(x, cases)  # connected component which includes the selected cases
-  plot(x_subset_N)            # selection  as cluster to which "SK_14" belongs = all ?
+```{r, eval=TRUE}
+# select  one or more record(s)
+nodes <- c("SK_14","SK_145")                  
+
+# subset connected components including the proposed ID
+x_subset_N <- subset_clusters_by_id(x, nodes)
+
+# plot the 
+plot(x_subset_N)                              
 ```
   
 2. **Subset network via cluster size** 
   
 ```{r, eval=TRUE}   
-  x_subset_S <- subset_clusters_by_size(x, cs_min = 2, cs_max = 3)
-  plot(x_subset_S)
+  x_subset_S1 <- subset_clusters_by_size(x, cs = 3) # to be updated
+  plot(x_subset_S1)
+  x_subset_S2 <- subset_clusters_by_size(x, cs_min = 10, cs_max = 100)
+  plot(x_subset_S2)
 ```
 
-<br>
-
-#### Network representation with static 2D representation 
-
+#### 2D Network Representation
 
 ```{r, eval=FALSE}
-  install.packages("ggnetwork") ######### Do we need to install this if we're using github below?
-  devtools::install_github("briatte/ggnetwork") # Geoms to plot networks with ggplot2  
+# Geoms to plot networks with ggplot2  
+devtools::install_github("briatte/ggnetwork")
 ```
 
-
-The current example is built is using ggnetwork package
+The current example is built is using `ggnetwork` package
 
 ```{r, eval=TRUE}  
-  
-  library("igraph") 
-  library("intergraph")
-  library("ggnetwork")
 
-  net_igraph  <-  igraph.epi_contacts(x)   # Conversion in i-graph object
-  l <- layout.reingold.tilford(net_igraph)    # Placement algorithm: Reingold Tilford
-  
-  renderPlot({
-      plot(net_igraph,layout=l, edge.arrow.size=.2, 
-           vertex.label=NA,
-           vertex.frame.color="#ffffff", 
-           vertex.size=2)
-  })   
-  
-  net_ggnet <- asNetwork(net_igraph)
-  # For more information on conversion process
-  
-  net_ggnet <- ggnetwork(net_ggnet)
-  
-  # Default plot from ggnet2
+library(igraph) 
+
+# convert object for igraph processing
+net_igraph <- igraph.epi_contacts(x)
+
+# tree-like graph using the Reingold-Tilford graph layout algorithm
+l <- layout.reingold.tilford(net_igraph)
+
+# alternative circular layout
+# l <- layout.reingold.tilford(net_igraph, circular=T)
+
+plot(net_igraph,
+    # NODES   
+    vertex.color= "red" ,                                               
+    vertex.frame.color= "white",                              
+    vertex.shape= "circle",
+    # size of the node (default is 15) or V(net)$size
+    vertex.size = 2.5, 
+    # character vector to name the nodes
+    vertex.label = NA,                                      
+    # EDGES
+    # edge color "grey70"
+    edge.color = E(net_igraph)$color,
+    # edge width, defaults to 1
+    edge.width = 0.5,
+    # arrow size, defaults to 1
+    edge.arrow.size = 0.1,
+    # arrow width, defaults to 1
+    edge.arrow.width = 0.25,    
+    # empty space margins around the plot, vector with length 4
+    margin = 0, 
+    # if TRUE, the plot will be framed
+    frame =  TRUE,
+    # add plot title and format
+    main = list(paste("R igraph package",sep=""), cex = 1, col = "black", font = 3),
+    # specify layout chosen above
+    layout=l) 
 ```
   
-The current example is built is using ggnetwork package
+The current example is built is using `ggnetwork` package:
 
-```{r, eval=FALSE}
+```{r}
+
+library(ggplot2)
+library(ggnetwork)
+library(intergraph)
+
+net_igraph  <-  igraph.epi_contacts(x_subset_N)
+
+# For more information on conversion process
+net_ggnet <- asNetwork(net_igraph)
+
+# ggnetwork() function ensure conversion in dataframe for further used in ggplot2
+
+# head(ggnetwork(net_ggnet))
+# tail(ggnetwork(net_ggnet))
   
-    ggplot(
-      ggnetwork(net_igraph, layout = "kamadakawai", arrow.gap = 0.025),
-      aes(x, y, xend = xend, yend = yend)) +
-      geom_edges(aes(color = ser_int), arrow = arrow(length = unit(10, "pt"), type = "closed")) + # edge layout
-      geom_nodes(aes(size = 3)) + # node layout
-      scale_color_gradient(low = "grey50", high = "tomato") +
-      scale_size_area(breaks = 1:3) +
-      theme_blank()
-    )
+ggplot(ggnetwork(net_ggnet, layout = "fruchtermanreingold", arrow.gap = 0.01),
+    aes(x, y, xend = xend, yend = yend)) +
+    geom_edgetext(aes(label = diff_dt_onset ), label.size = NA, color = "grey10", fill = "white",size= 2.5, fontface = "bold") +
+    geom_edges(aes(linetype = "solid"), size = 0.5, color= "grey60", alpha=0.7, arrow = arrow(angle= 40, length = unit(3, "pt"), type = "closed")) +
+    geom_nodes(aes(), color = "goldenrod3", size=4, alpha=0.5) +
+    theme_blank(legend.position="none")
 ```
 
-<br>
- 
-#### Network representation with 3D representation
+#### 3D Network Representation
 
-```{r, eval=TRUE}
+```{r}
 library(threejs)
 
 x_subset <- subset_clusters_by_size(x, cs_min = 50, cs_max = 100)
 g <- graph3D(x_subset, v_col_by = "sex")
 
 renderGraph(g)
-
 ```
+
+```{r}
+library(threejs)
+x_subset <- subset_clusters_by_size(x, cs_min = 50, cs_max = 100)
+
+graph3D(x_subset, v_col_by = "sex")
+```
+
 To interact with the plot:
 
 * zoom: scrollwheel
 * rotate: left-mouse button + move
 * pan: right-mouse button + move
-* identify case by label: mouse over 
+* identify node by label: mouse over 
 
 For more information on 3D javascript graphs, visit B.W. Lewis' [page](http://bwlewis.github.io/rthreejs/graphjs.html)
 
-<br>
+#### `epicontacts` Shiny App
 
-#### Run contacts package as a app.
+`epicontacts` includes an interactive mode that features a web interface built and designed using the [Shiny](http://shiny.rstudio.com/) framework. The "server" runs on a local host, and therefore can be viewed and used inside a web browser. With the package loaded, the app can be launched using the following:
 
-
-<br>
- 
-#### Run contacts package as a app. ContactsServer: a web application 
-  
-  The functionalities of Contacts are also available via a user-friendly web interface,    running locally on the default web browser.   It can be started by simply typing ContactsServer(). The interface allows you to import both dataset required  epicontact object  (line list  and contacts data) and explore interactively network.
-  --> Fonction export to be developped   ? saving image of current view in various formats. 
-  
-
-
-  [* ? To be completed]
-The `epi_contacts` object can be subsetted in different manner using specific conditions:
-
-```{r, eval=FALSE}  
-  x[i,j,contacts]
+```{r, eval=FALSE, message = FALSE}
+epicontacts_server()
 ```
-
