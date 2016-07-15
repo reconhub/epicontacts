@@ -119,7 +119,7 @@ shinyServer(function(input, output) {
             dat <- getData()
         }
 
-        plot(dat, annot = TRUE, editor = TRUE)
+        plot(dat, annot = TRUE, editor = TRUE, group = input$interact)
 
     })
 
