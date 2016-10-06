@@ -1,6 +1,6 @@
-[![Travis-CI Build Status](https://travis-ci.org/Hackout3/epicontacts.svg?branch=master)](https://travis-ci.org/Hackout3/epicontacts)
+[![Travis-CI Build Status](https://travis-ci.org/reconhub/epicontacts.svg?branch=master)](https://travis-ci.org/reconhub/epicontacts)
 
-[![Coverage Status](https://img.shields.io/codecov/c/github/Hackout3/epicontacts/master.svg)](https://codecov.io/github/Hackout3/epicontacts?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/reconhub/epicontacts/master.svg)](https://codecov.io/github/Reconhub/epicontacts?branch=master)
 
 
 
@@ -12,7 +12,7 @@ Welcome to the *epicontacts* package!
 To install the devel version of the package, type:
 
 ```r
-devtools::install_github("Hackout3/epicontacts")
+devtools::install_github("reconhub/epicontacts")
 ```
 
 Note that this requires the package *devtools* installed.
