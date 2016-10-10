@@ -4,10 +4,10 @@
 \alias{subset_clusters_by_id}
 \title{Subset epi_contacts by case-specified clusters}
 \usage{
-subset_clusters_by_id(epi_contacts, id)
+subset_clusters_by_id(x, id)
 }
 \arguments{
-\item{epi_contacts}{an \code{\link{epi_contacts}} object}
+\item{x}{an \code{\link{epi_contacts}} object}
 
 \item{id}{a character vector of case identifiers; the connected components attached to these
 cases will be retained in the output object.}
