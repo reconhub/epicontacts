@@ -7,10 +7,6 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @return the same output as \code{visNetwork}
-#'
-#' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
-#'
 #' @param x an \code{\link{epi_contacts}} object
 #'
 #' @param group an index or character string indicating which field of the linelist should be used
@@ -37,7 +33,6 @@
 #'
 #' @param ... further arguments to be passed to \code{visNetwork}
 #'
-#' @importFrom visNetwork visNetwork visGroups visLegend visOptions visNodes
 #'
 #' @importFrom magrittr "%>%"
 #'
@@ -118,9 +113,11 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
     out <- out %>% visNetwork::visOptions(highlightNearest=TRUE)
 
     if (selector) {
-        out <- out %>% visNetwork::visOptions(selectedBy="group", manipulation=editor)
+        out <- out %>% visNetwork::visOptions(selectedBy="group",
+                                              manipulation=editor, highlightNearest=TRUE)
     } else if (editor) {
-        out <- out %>% visNetwork::visOptions(manipulation=TRUE)
+        out <- out %>% visNetwork::visOptions(manipulation=TRUE,
+                                              highlightNearest=TRUE)
     }
 
     return(out)
