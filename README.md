@@ -3,7 +3,6 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/reconhub/epicontacts/master.svg)](https://codecov.io/github/Reconhub/epicontacts?branch=master)
 
 
-
 Welcome to the *epicontacts* package!
 ---------------------------------------
 
