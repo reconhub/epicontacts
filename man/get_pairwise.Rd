@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_pairwise.R
 \name{get_pairwise}
 \alias{get_pairwise}
-\title{Find pairwise node characteristics for epi_contacts objects}
+\title{Characterise contacts by comparing case attributes}
 \usage{
 get_pairwise(x, attribute, f = NULL, hard_NA = TRUE)
 }

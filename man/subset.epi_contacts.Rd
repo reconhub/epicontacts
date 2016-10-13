@@ -4,20 +4,27 @@
 \alias{subset.epi_contacts}
 \title{Subset an epi_contact object by factors}
 \usage{
-\method{subset}{epi_contacts}(x, edge.attribute = NULL,
-  node.attribute = NULL, ...)
+\method{subset}{epi_contacts}(x, node.attribute = NULL,
+  edge.attribute = NULL, ...)
 }
 \arguments{
 \item{x}{an epi_contact object to be subsetted}
 
-\item{edge.attribute}{a named list defining the factor name and the factor value}
+\item{node.attribute}{a named list defining the node attribute name and node attribute value (as a single value or vector of values).
+Dates must be provided as a vector of date objects, defining the range of dates included in the subset}
 
-\item{node.attribute}{a named list defining the factor name and the factor value}
+\item{edge.attribute}{a named list defining the edge attribute name and edge attribute value (as a single value or vector of values).
+Dates must be provided as a vector of date objects, defining the range of dates included in the subset}
 
 \item{...}{further arguments passed on to other methods}
 }
 \description{
 Subset an epi_contact object by factors
+}
+\examples{
+x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+id="case.id", to="case.id", from="infector", directed=FALSE)
+y <- subset.epi_contacts(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
 }
 \author{
 Finlay Campbell

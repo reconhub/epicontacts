@@ -38,8 +38,6 @@ for annotating the nodes}
 }
 \value{
 the same output as \code{visNetwork}
-
-the same output as \code{visNetwork}
 }
 \description{
 This function plots \code{\link{epi_contacts}} objects using the \code{visNetwork} package.
@@ -63,8 +61,6 @@ plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
 \seealso{
-\code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
-
 \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
 }
 

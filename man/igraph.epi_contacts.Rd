@@ -4,16 +4,17 @@
 \alias{igraph.epi_contacts}
 \title{Create igraph object from contact data}
 \usage{
-igraph.epi_contacts(epi_contacts)
+igraph.epi_contacts(x)
 }
 \arguments{
-\item{epi_contacts}{an \code{\link{epi_contacts}} object}
+\item{x}{An \code{\link{epi_contacts}} object.}
 }
 \value{
-An igraph graph object.
+An \code{igraph} object (from the \code{igraph} package).
 }
 \description{
-This function creates an igraph object from a given epi_contacts object containing 'contacts' dataframe.
+This function creates an igraph object from a given \code{\link{epi_contacts}} object containing
+a 'contacts' dataframe.
 }
 \examples{
 ## build data
