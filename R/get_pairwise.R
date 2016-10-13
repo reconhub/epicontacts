@@ -1,4 +1,4 @@
-#' Find pairwise node characteristics for epi_contacts objects
+#' Characterise contacts by comparing case attributes
 #'
 #' This function extract attributes of cases involved in contacts using case information provided in
 #' the linelist of an \code{\link{epi_contacts}} dataset. If not provided, the function used to
