@@ -22,9 +22,11 @@ Dates must be provided as a vector of date objects, defining the range of dates 
 Subset an epi_contact object by factors
 }
 \examples{
+\dontrun{
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 id="case.id", to="case.id", from="infector", directed=FALSE)
 y <- subset.epi_contacts(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
+}
 }
 \author{
 Finlay Campbell
