@@ -12,11 +12,10 @@
 #' @param ... further arguments passed on to other methods
 #' 
 #' @examples
-#' \dontrun{
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #' id="case.id", to="case.id", from="infector", directed=FALSE)
-#' y <- subset.epi_contacts(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
-#' }
+#' y <- subset(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
+#'
 
 subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
 
