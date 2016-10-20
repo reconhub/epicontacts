@@ -65,7 +65,7 @@ graph3D <- function(epi_contacts,
 
     ## Create igraph object to pass on as data for 3D graph (because original epi_contacts object
     ## may contain NA's, which will hinder creation of 3D graph with threejs::graphjs()
-    x <- igraph.epi_contacts(epi_contacts)
+    x <- as.igraph.epi_contacts(epi_contacts)
 
     ## Get vertex attributes and prepare as input for graph
     v <- igraph::get.vertex.attribute(x)

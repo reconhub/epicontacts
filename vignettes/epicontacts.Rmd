@@ -58,7 +58,7 @@ Main features include:
 
 * **epi_contacts**: a new S3 class for storing line list and contacts datasets
 
-* **igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object
+* **as.igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object
 
 * **get_clusters**: assign clusters and corresponding cluster sizes to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes)
 
@@ -286,7 +286,7 @@ The current example is built is using `ggnetwork` package
 library(igraph) 
 
 # convert object for igraph processing
-net_igraph <- igraph.epi_contacts(x)
+net_igraph <- as.igraph.epi_contacts(x)
 
 # tree-like graph using the Reingold-Tilford graph layout algorithm
 l <- layout.reingold.tilford(net_igraph)
@@ -330,7 +330,7 @@ library(ggplot2)
 library(ggnetwork)
 library(intergraph)
 
-net_igraph  <-  igraph.epi_contacts(x_subset_N)
+net_igraph  <-  as.igraph.epi_contacts(x_subset_N)
 
 # For more information on conversion process
 net_ggnet <- asNetwork(net_igraph)

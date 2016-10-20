@@ -24,7 +24,7 @@
 
 
 get_clusters <- function(epi_contacts){
-    net <- igraph.epi_contacts(epi_contacts)
+    net <- as.igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
     # net_nodes <- data.frame(id =igraph::V(net)$id, cluster_member = cs$membership, stringsAsFactors = FALSE)
 
