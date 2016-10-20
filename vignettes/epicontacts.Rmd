@@ -60,7 +60,7 @@ Main features include:
 
 * **igraph.epi_contacts**: creates an `igraph` object from a `epi_contacts` object
 
-* **clusters_epi_contacts**: assign clusters and corresponding cluster sizes to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes)
+* **get_clusters**: assign clusters and corresponding cluster sizes to line list of an `epi_contacts` object (clusters being groups of connected individuals/nodes)
 
 * **ebola.sim**: simulated Ebola outbreak dataset
 
@@ -237,12 +237,12 @@ fisher.test(get_pairwise(x, "sex", f=table))
 
 #### Incorporate Cluster IDs and Sizes into the Line List
 
-The function `clusters_epi_contacts` adds a unique cluster identifier to the line list as a column named `cluster_member`. It also adds another column, `cluster_size`, corresponding to the size of the cluster. 
+The function `get_clusters` adds a unique cluster identifier to the line list as a column named `cluster_member`. It also adds another column, `cluster_size`, corresponding to the size of the cluster. 
 _Note: in this context,a  'cluster'  corresponds to groups of connected individuals (or connected components)._
 
 ```{r, message=FALSE}
 # adds two columns, one with cluster IDs and other with cluster sizes
-x_id <- clusters_epi_contacts(x)
+x_id <- get_clusters(x)
 
 # one cluster of 94 observations connected together with at least one edge, one cluster of 3 observations  and 65 single observations.
 table(x_id$linelist$cluster_size,x_id$linelist$cluster_member) 
