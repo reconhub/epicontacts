@@ -17,7 +17,8 @@
 #' y <- subset(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
 #'
 
-subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
+subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,cluster_id=NULL,cluster_size=NULL,
+                                cluster_size_min=NULL,cluster_size_max=NULL,...){
 
     ## Check if epi_contacts object and node/edge attributes are provided correctly, and exist in the dataset  
   
@@ -44,15 +45,17 @@ subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
     }))))
     stop("Edge attribute value is not found in dataset")
   
-    if(is.null(edge.attribute) & is.null(node.attribute)){
-        warning("No node or edge attributes provided, returning unmodified epi.contact object")
-        return(x)
+    #if(is.null(edge.attribute) & is.null(node.attribute)){
+    #    warning("No node or edge attributes provided, returning unmodified epi.contact object")
+    #    return(x)
+    #}
+  
+    if(!is.null(cluster_id)) x <- subset_clusters_by_id(x,cluster_id)
+    
+    if(!is.null(c(cluster_size,cluster_size_min,cluster_size_max))){
+        x <- subset_clusters_by_id(x,cluster_id,cluster_size_min,cluster_size_max)
     }
-
-    node.id <- x$linelist$id
-    edge.from <- x$contacts$from
-    edge.to <- x$contacts$to
-
+  
     if(!(is.null(node.attribute))){
         for(i in names(node.attribute)){
             if(class(node.attribute[[i]]) %in% c("character","factor","numeric")){
@@ -64,7 +67,6 @@ subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
                 x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] >= node.attribute[[i]][1] & x$linelist[[i]] <= node.attribute[[i]][2])
             }
         }
-        node.id <- x$linelist$id
     }
 
     if(!(is.null(edge.attribute))){
@@ -78,13 +80,7 @@ subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
                 x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] >= edge.attribute[[i]][1] & x$contacts[[i]] <= edge.attribute[[i]][2])
             }
         }
-        edge.from <- x$contacts$from
-        edge.to <- x$contacts$to
     }
-    
-    #Is degenerate I think - can be removed?
-    out <- x[i=node.id,j=edge.from,contacts="from"]
-    out <- out[i=node.id,edge.to,contacts="to"]
 
-    return(out)
+    return(x)
 }
