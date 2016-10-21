@@ -53,7 +53,7 @@ test_that("Return errors / warnings when expected", {
                "Node attribute of class date must contain a start and end date")
   
   expect_warning(subset.epi_contacts(x),
-                "No node or edge attributes provided, returning unmodified epi.contact object")
+                "No subsetting attributes provided, returning unmodified epi.contact object")
   
 })
 

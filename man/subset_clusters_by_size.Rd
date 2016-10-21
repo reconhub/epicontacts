@@ -4,11 +4,10 @@
 \alias{subset_clusters_by_size}
 \title{Subset clusters from epi_contacts object by cluster size}
 \usage{
-subset_clusters_by_size(epi_contacts, cs = NULL, cs_min = NULL,
-  cs_max = NULL)
+subset_clusters_by_size(x, cs = NULL, cs_min = NULL, cs_max = NULL)
 }
 \arguments{
-\item{epi_contacts}{an \code{\link{epi_contacts}} object}
+\item{x}{an \code{\link{epi_contacts}} object}
 
 \item{cs}{cluster size to be used for subsetting}
 
@@ -41,11 +40,11 @@ x_subset <- subset_clusters_by_size(x, cs_min = 12, cs_max = 15)
 x_subset <- subset_clusters_by_size(x, cs = 12)
 
 
-#' ## subset based on minimum cluster size
+## subset based on minimum cluster size
 x_subset <- subset_clusters_by_size(x, cs_min = 10)
 
 
-#' #' ## subset based on maximum cluster size
+## subset based on maximum cluster size
 x_subset <- subset_clusters_by_size(x, cs_max = 9)
 }
 \author{

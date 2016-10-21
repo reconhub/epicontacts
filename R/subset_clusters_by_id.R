@@ -7,7 +7,7 @@
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
-#' @param epi_contacts an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epi_contacts}} object
 #'
 #' @param id a character vector of case identifiers; the connected components attached to these
 #' cases will be retained in the output object.
@@ -30,13 +30,13 @@
 #'
 
 
-subset_clusters_by_id <- function(epi_contacts, id){
-    net <- igraph.epi_contacts(epi_contacts)
+subset_clusters_by_id <- function(x, id){
+    net <- as.igraph.epi_contacts(x)
     cs <- igraph::clusters(net)
     net_nodes <- data.frame(nodes =igraph::V(net)$id, cs_member = cs$membership, stringsAsFactors = FALSE)
     cluster_to_subset <- unique(net_nodes$cs_member[which(net_nodes$nodes %in% id)])
     id_to_subset <- net_nodes$nodes[ which(net_nodes$cs_member %in% cluster_to_subset)]
-    epi_subset <- epi_contacts[id_to_subset]
+    epi_subset <- x[id_to_subset]
     return(epi_subset)
 }
 

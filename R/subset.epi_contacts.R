@@ -1,22 +1,63 @@
 #' Subset an epi_contact object by factors
 #'
-#' @author Finlay Campbell
+#' This function subsets an \code{\link{epi_contacts}} object based on node, edge and/or cluster attributes.
+#' Specifying node attributes will return an \code{\link{epi_contacts}} object containing only individuals 
+#' with these given attributes in the linelist. Specifying edge attributes will return contacts with the 
+#' attributes provided. Specifying cluster attributes will return clusters of connected cases, and can be 
+#' defined by ids (returning clusters of cases connected to specified cases) or cluster sizes (returning 
+#' cluster of a specific, minimum or maximum size).
+#'
+#' @author Finlay Campbell (\email{f.campbell15@@imperial.ac.uk}), Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
 #' @export
 #'
 #' @param x an epi_contact object to be subsetted
+#' 
 #' @param node.attribute a named list defining the node attribute name and node attribute value (as a single value or vector of values).
 #' Dates must be provided as a vector of date objects, defining the range of dates included in the subset
+#' 
 #' @param edge.attribute a named list defining the edge attribute name and edge attribute value (as a single value or vector of values).
 #' Dates must be provided as a vector of date objects, defining the range of dates included in the subset
+#' 
+#' @param cluster_id a character vector of case identifiers; the connected components attached to these
+#' cases will be retained in the output object.
+#' 
+#' @param cs cluster size to be used for subsetting
+#'
+#' @param cs_min minimum cluster size for subsetting
+#'
+#' @param cs_max maximum cluster size for subsetting
+#' 
 #' @param ... further arguments passed on to other methods
 #' 
 #' @examples
+#' 
+#' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #' id="case.id", to="case.id", from="infector", directed=FALSE)
-#' y <- subset.epi_contacts(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
+#' 
+#' ## subset based on node and edge attributes
+#' x_subset <- subset(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
+#'
+#' ## subset a cluster connected to a given id (can be a vector of ids as well)
+#' id <- "cac51e"
+#' x_subset <- subset(x, cluster_id=id)
+#'
+#' ## subset based on cluster size range
+#' x_subset <- subset(x, cs_min = 12, cs_max = 15)
+#'
+#' ## subset based on single cluster size
+#' x_subset <- subset(x, cs = 12)
+#'
+#' ## subset based on minimum cluster size
+#' x_subset <- subset(x, cs_min = 10)
+#'
+#' ## subset based on maximum cluster size
+#' x_subset <- subset(x, cs_max = 9)
 
-subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
+
+subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,cluster_id=NULL,
+                                cs=NULL,cs_min=NULL,cs_max=NULL,...){
 
     ## Check if epi_contacts object and node/edge attributes are provided correctly, and exist in the dataset  
   
@@ -43,15 +84,11 @@ subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
     }))))
     stop("Edge attribute value is not found in dataset")
   
-    if(is.null(edge.attribute) & is.null(node.attribute)){
-        warning("No node or edge attributes provided, returning unmodified epi.contact object")
+    if(is.null(c(edge.attribute,node.attribute,cluster_id,cs,cs_min,cs_max))){
+        warning("No subsetting attributes provided, returning unmodified epi.contact object")
         return(x)
     }
-
-    node.id <- x$linelist$id
-    edge.from <- x$contacts$from
-    edge.to <- x$contacts$to
-
+  
     if(!(is.null(node.attribute))){
         for(i in names(node.attribute)){
             if(class(node.attribute[[i]]) %in% c("character","factor","numeric")){
@@ -63,7 +100,6 @@ subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
                 x$linelist <- dplyr::filter(x$linelist,x$linelist[[i]] >= node.attribute[[i]][1] & x$linelist[[i]] <= node.attribute[[i]][2])
             }
         }
-        node.id <- x$linelist$id
     }
 
     if(!(is.null(edge.attribute))){
@@ -77,13 +113,15 @@ subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,...){
                 x$contacts <- dplyr::filter(x$contacts,x$contacts[[i]] >= edge.attribute[[i]][1] & x$contacts[[i]] <= edge.attribute[[i]][2])
             }
         }
-        edge.from <- x$contacts$from
-        edge.to <- x$contacts$to
     }
-    
-    #Is degenerate I think - can be removed?
-    out <- x[i=node.id,j=edge.from,contacts="from"]
-    out <- out[i=node.id,edge.to,contacts="to"]
+  
+    if(!is.null(cluster_id)){
+        x <- subset_clusters_by_id(x,cluster_id)
+    }
+        
+    if(!is.null(c(cs,cs_min,cs_max))){
+        x <- subset_clusters_by_size(x,cs,cs_min,cs_max)
+    }
 
-    return(out)
+    return(x)
 }

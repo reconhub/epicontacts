@@ -1,6 +1,6 @@
 #' Assign cluster IDs to epi_contacts data
 #'
-#' This function assigns cluster ID's to the epi_contacts linelist. These ID's are derived from graph clusters in
+#' This function assigns clusters and respective cluster sizes to the epi_contacts linelist. These cluster memberships and sizes are derived from the graph clusters in
 #' the epi_contacts 'contacts' dataframe.
 #'
 #' @export
@@ -9,22 +9,22 @@
 #'
 #' @param epi_contacts an \code{\link{epi_contacts}} object
 #'
-#' @return An \code{\link{epi_contacts}} object whose 'linelist' dataframe contains a new column
-#' corresponding to cluster ID.
+#' @return An \code{\link{epi_contacts}} object whose 'linelist' dataframe contains new columns
+#' corresponding to cluster membership and size.
 #'
 #' @examples
 #' ## build data
-#' epi_contact <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
-#' ## add cluster ID to epi_contacts 'linelist'
-#' epi_contacts_with_ids <- clusters_epi_contacts(epi_contact)
+#' ## add cluster membership and sizes to epi_contacts 'linelist'
+#' x_clusters <- get_clusters(x)
 #'
 
 
-clusters_epi_contacts <- function(epi_contacts){
-    net <- igraph.epi_contacts(epi_contacts)
+get_clusters <- function(epi_contacts){
+    net <- as.igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
     # net_nodes <- data.frame(id =igraph::V(net)$id, cluster_member = cs$membership, stringsAsFactors = FALSE)
 
