@@ -62,7 +62,7 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
                              ...){
 
     ## make visNetwork inputs: nodes
-    nodes <- x$linelist
+    nodes <- data.frame(id=unique(c(x$linelist$id,x$contacts$from,x$contacts$to)))
     nodes$label <- nodes$id
     nodes$group <- as.character(nodes[,group])
     nodes$group[is.na(nodes$group)] <- "NA"
