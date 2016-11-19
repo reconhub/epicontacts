@@ -1,8 +1,6 @@
 #' Read linelist and contact data
 #'
-#' This function reads data stored as data.frame containing linelist (case information, where each
-#' row corresponds to a unique patient), and contacts between patients. See details for expected
-#' data formats.
+#' This function reads data stored as data.frame containing linelist (case information, where each row corresponds to a unique patient), and contacts between patients. See details for expected data formats.
 #'
 #' @export
 #'
@@ -10,23 +8,29 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @param linelist a data.frame with at least one columns providing unique patient identifiers
+#' @param linelist a \link{data.frame} with at least one column providing unique patient identifiers
 #'
-#' @param contacts an optional data.frame; if provided, it needs at least two columns indicating patients between which cases take place; these need not be referenced in the linelist
+#' @param contacts a \link{data.frame} that needs at least two columns indicating patients between which cases take place; these need not be referenced in the linelist
 #'
-#' @param id an index or name indicating which column in \code{linelist} contains unique identifiers
+#' @param id an index or name indicating which column in \code{linelist} contains unique identifiers; default is first column in \code{linelist} data frame
 #'
 #' @param from an index or name indicating which column in \code{contacts} contains the first case of a contact
 #'
 #' @param to an index or name indicating which column in \code{contacts} contains the second case of a contact
 #'
-#' @param directed a logical indicating if contact are directed, or not; note that contacts will be
-#' indicated as 'from' and 'to' even in non directed contacts
+#' @param directed a logical indicating if contacts are directed or not; default is \code{FALSE} but note that contacts will be indicated as 'from' and 'to' even in non-directed contacts
 #'
-#' @return A list with two data.frames named 'linelist', and 'contacts'; the first column of
-#' 'linelist' is named 'id', and contains a vector of character corresponding to unique identifiers;
-#' the first two columns of 'contacts' are named 'from' and 'to', and indicate contacts.
+#' @return An \code{epi_contacts} object in list format with three elements:
+#' 
+#' \itemize{
+#' \item \code{linelist}: data.frame of cases with first column 'id' containing character vector of unique identifiers
+#' \item \code{contacts}: data.frame of contacts with first two columns named 'from' and 'to' indicating unique pairs of contact between individuals
+#' \item \code{directed}: indicator as to whether or not the contacts are to be considered directed or not
+#' }
+#' 
+#' @details An \code{epi_contacts} object requires two components: a line list and a contact list. These are common formats in epidemiological outbreak analysis, and should be provided to the \code{make_epi_contacts} function as \link{data.frame} objects. Each row of the line list should contain unique observations of cases in the outbreak with unique features of case in columns. Each row of the contact list should contain unique pairs of contacts with unique features of contact in columns. The line list and contact list should share an identification scheme for individuals. 
 #'
+#' @references \url{http://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
 #' @examples
 #' ## make epi_contacts object from simulated Ebola data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts)
