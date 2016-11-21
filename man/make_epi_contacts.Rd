@@ -9,32 +9,53 @@ make_epi_contacts(linelist, contacts = NULL, id = 1L, from = 1L,
   to = 2L, directed = FALSE)
 }
 \arguments{
-\item{linelist}{a \link{data.frame} with at least one column providing unique patient identifiers}
+\item{linelist}{a \link{data.frame} with at least one column providing unique
+patient identifiers}
 
-\item{contacts}{a \link{data.frame} that needs at least two columns indicating patients between which cases take place; these need not be referenced in the linelist}
+\item{contacts}{a \link{data.frame} that needs at least two columns
+indicating patients between which cases take place; these need not be
+referenced in the linelist}
 
-\item{id}{an index or name indicating which column in \code{linelist} contains unique identifiers; default is first column in \code{linelist} data frame}
+\item{id}{an index or name indicating which column in \code{linelist}
+contains unique identifiers; default is first column in \code{linelist}
+data frame}
 
 \item{from}{an index or name indicating which column in \code{contacts} contains the first case of a contact}
 
 \item{to}{an index or name indicating which column in \code{contacts} contains the second case of a contact}
 
-\item{directed}{a logical indicating if contacts are directed or not; default is \code{FALSE} but note that contacts will be indicated as 'from' and 'to' even in non-directed contacts}
+\item{directed}{a logical indicating if contacts are directed or not; default
+is \code{FALSE} but note that contacts will be indicated as 'from' and
+'to' even in non-directed contacts}
 }
 \value{
 An \code{epi_contacts} object in list format with three elements:
 
 \itemize{
-\item \code{linelist}: data.frame of cases with first column 'id' containing character vector of unique identifiers
-\item \code{contacts}: data.frame of contacts with first two columns named 'from' and 'to' indicating unique pairs of contact between individuals
-\item \code{directed}: indicator as to whether or not the contacts are to be considered directed or not
+\item \code{linelist}: data.frame of cases with first column 'id'
+containing character vector of unique identifiers
+
+\item \code{contacts}: data.frame of contacts with first two columns named
+'from' and 'to' indicating unique pairs of contact between individuals
+
+\item \code{directed}: indicator as to whether or not the contacts are to be
+considered directed or not
 }
 }
 \description{
-This function reads data stored as data.frame containing linelist (case information, where each row corresponds to a unique patient), and contacts between patients. See details for expected data formats.
+This function reads data stored as data.frame containing linelist (case
+information, where each row corresponds to a unique patient), and contacts
+between patients. See details for expected data formats.
 }
 \details{
-An \code{epi_contacts} object requires two components: a line list and a contact list. These are common formats in epidemiological outbreak analysis, and should be provided to the \code{make_epi_contacts} function as \link{data.frame} objects. Each row of the line list should contain unique observations of cases in the outbreak with unique features of case in columns. Each row of the contact list should contain unique pairs of contacts with unique features of contact in columns. The line list and contact list should share an identification scheme for individuals.
+An \code{epi_contacts} object requires two components: a line list and a
+contact list. These are common formats in epidemiological outbreak
+analysis, and should be provided to the \code{make_epi_contacts} function
+as \link{data.frame} objects. Each row of the line list should contain
+unique observations of cases in the outbreak with unique features of case
+in columns. Each row of the contact list should contain unique pairs of
+contacts with unique features of contact in columns. The line list and
+contact list should share an identification scheme for individuals.
 }
 \examples{
 ## make epi_contacts object from simulated Ebola data
@@ -47,7 +68,8 @@ head(linelist)
 head(contacts)
 
 ## make object
-x <- make_epi_contacts(linelist, contacts, id="case.id", to="case.id", from="infector")
+x <- make_epi_contacts(linelist, contacts, id="case.id",
+                       to="case.id", from="infector")
 head(x$linelist)
 head(x$contacts)
 
