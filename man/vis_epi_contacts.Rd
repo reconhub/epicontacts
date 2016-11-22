@@ -46,11 +46,11 @@ This function plots \code{\link{epi_contacts}} objects using the \code{visNetwor
 if (require(outbreaks)) {
 
 ## example using MERS outbreak in Korea, 2014
-head(mers_kor_14[[1]])
-head(mers_kor_14[[2]])
+head(mers.korea.2015[[1]])
+head(mers.korea.2015[[2]])
 
-x <- make_epi_contacts(linelist=mers_kor_14[[1]],
-contacts=mers_kor_14[[2]], directed=TRUE)
+x <- make_epi_contacts(linelist=mers.korea.2015[[1]],
+contacts=mers.korea.2015[[2]], directed=TRUE)
 
 \dontrun{
 plot(x)
