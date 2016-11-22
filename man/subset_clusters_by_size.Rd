@@ -20,9 +20,10 @@ An \code{\link{epi_contacts}} object whose contact dataframe corresponds to
 all clusters of specified cluster sizes.
 }
 \description{
-This function subsets an \code{\link{epi_contacts}} object based on defined size(s) of clusters
-(clusters being groups of connected individuals/nodes). Subsetting may be done by specifying a
-particular cluster size of interest, minimum cluster size, maximum cluster size, or a range
+This function subsets an \code{\link{epi_contacts}} object based on defined
+size(s) of clusters (clusters being groups of connected
+individuals/nodes). Subsetting may be done by specifying a particular cluster
+size of interest, minimum cluster size, maximum cluster size, or a range
 (minimum and maximum) of cluster sizes.
 }
 \examples{

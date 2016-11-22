@@ -1,9 +1,10 @@
 
 #' Subset clusters from epi_contacts object by cluster size
 #'
-#' This function subsets an \code{\link{epi_contacts}} object based on defined size(s) of clusters
-#' (clusters being groups of connected individuals/nodes). Subsetting may be done by specifying a
-#' particular cluster size of interest, minimum cluster size, maximum cluster size, or a range
+#' This function subsets an \code{\link{epi_contacts}} object based on defined
+#' size(s) of clusters (clusters being groups of connected
+#' individuals/nodes). Subsetting may be done by specifying a particular cluster
+#' size of interest, minimum cluster size, maximum cluster size, or a range
 #' (minimum and maximum) of cluster sizes.
 #'
 #' @export
@@ -82,10 +83,13 @@ subset_clusters_by_size <- function(x, cs = NULL, cs_min = NULL, cs_max = NULL){
 
     csize <- seq(from = cs_min, to = cs_max, by = 1)
 
-    nodes <- data.frame(nodes =igraph::V(net)$id, cs_member = clusters$membership, stringsAsFactors = FALSE)
+    nodes <- data.frame(nodes =igraph::V(net)$id,
+                        cs_member = clusters$membership,
+                        stringsAsFactors = FALSE)
     cluster_to_subset <- which(clusters$csize %in% csize)
     nodes_to_subset <- nodes$nodes[ which(nodes$cs_member %in% cluster_to_subset)]
-    graph_subset <- igraph::induced_subgraph(net, igraph::V(net)$id %in% nodes_to_subset)
+    graph_subset <- igraph::induced_subgraph(net,
+                                             igraph::V(net)$id %in% nodes_to_subset)
 
     epi_subset <- x[nodes_to_subset]
     return(epi_subset)

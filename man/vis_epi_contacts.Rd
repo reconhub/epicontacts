@@ -12,11 +12,11 @@ vis_epi_contacts(x, group = "id", annot = c("id"), legend = TRUE,
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
-\item{group}{an index or character string indicating which field of the linelist should be used
-to color the nodes}
+\item{group}{an index or character string indicating which field of the
+linelist should be used to color the nodes}
 
-\item{annot}{an index or character string indicating which fields of the linelist should be used
-for annotating the nodes}
+\item{annot}{an index or character string indicating which fields of the
+linelist should be used for annotating the nodes}
 
 \item{legend}{a logical indicating whether a legend should be added to the plot}
 
@@ -26,13 +26,16 @@ for annotating the nodes}
 
 \item{NA_col}{the color used for unknown group}
 
-\item{width}{the width of the output, in html compatible format (e.g. '90\%' or '800px')}
+\item{width}{the width of the output, in html compatible format (e.g. '90\%'
+or '800px')}
 
 \item{height}{the height of the output, in html compatible format (e.g. '800px')}
 
-\item{selector}{a logical indicating if the selector tool should be used; defaults to TRUE}
+\item{selector}{a logical indicating if the selector tool should be used;
+defaults to TRUE}
 
-\item{editor}{a logical indicating if the editor tool should be used; defaults to FALSE}
+\item{editor}{a logical indicating if the editor tool should be used;
+defaults to FALSE}
 
 \item{...}{further arguments to be passed to \code{visNetwork}}
 }
@@ -40,7 +43,8 @@ for annotating the nodes}
 the same output as \code{visNetwork}
 }
 \description{
-This function plots \code{\link{epi_contacts}} objects using the \code{visNetwork} package.
+This function plots \code{\link{epi_contacts}} objects using the
+\code{visNetwork} package.
 }
 \examples{
 if (require(outbreaks)) {

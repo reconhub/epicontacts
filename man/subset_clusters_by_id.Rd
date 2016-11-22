@@ -9,16 +9,16 @@ subset_clusters_by_id(x, id)
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
-\item{id}{a character vector of case identifiers; the connected components attached to these
-cases will be retained in the output object.}
+\item{id}{a character vector of case identifiers; the connected components
+attached to these cases will be retained in the output object.}
 }
 \value{
-An \code{\link{epi_contacts}} object whose contact dataframe corresponds to
-all clusters containing specified case id.
+An \code{\link{epi_contacts}} object whose contact dataframe
+    corresponds to all clusters containing specified case id.
 }
 \description{
-This function subsets an \code{\link{epi_contacts}} object by identifying clusters of cases
-connected to specified cases.
+This function subsets an \code{\link{epi_contacts}} object by identifying
+clusters of cases connected to specified cases.
 }
 \examples{
 if (require(outbreaks)) {

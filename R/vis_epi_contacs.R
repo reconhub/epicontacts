@@ -1,6 +1,7 @@
 #' Plot epi_contacts objects using visNetwork
 #'
-#' This function plots \code{\link{epi_contacts}} objects using the \code{visNetwork} package.
+#' This function plots \code{\link{epi_contacts}} objects using the
+#' \code{visNetwork} package.
 #'
 #' @export
 #'
@@ -11,11 +12,11 @@
 #'
 #' @param x an \code{\link{epi_contacts}} object
 #'
-#' @param group an index or character string indicating which field of the linelist should be used
-#' to color the nodes
+#' @param group an index or character string indicating which field of the
+#'     linelist should be used to color the nodes
 #'
-#' @param annot an index or character string indicating which fields of the linelist should be used
-#' for annotating the nodes
+#' @param annot an index or character string indicating which fields of the
+#'     linelist should be used for annotating the nodes
 #'
 #' @param legend a logical indicating whether a legend should be added to the plot
 #'
@@ -25,13 +26,16 @@
 #'
 #' @param NA_col the color used for unknown group
 #'
-#' @param width the width of the output, in html compatible format (e.g. '90\%' or '800px')
+#' @param width the width of the output, in html compatible format (e.g. '90\%'
+#'     or '800px')
 #'
 #' @param height the height of the output, in html compatible format (e.g. '800px')
 #'
-#' @param selector a logical indicating if the selector tool should be used; defaults to TRUE
+#' @param selector a logical indicating if the selector tool should be used;
+#'     defaults to TRUE
 #'
-#' @param editor a logical indicating if the editor tool should be used; defaults to FALSE
+#' @param editor a logical indicating if the editor tool should be used;
+#'     defaults to FALSE
 #'
 #' @param ... further arguments to be passed to \code{visNetwork}
 #'
@@ -96,7 +100,8 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
       grp.col <- col_pal(K)
       grp.col[levels(nodes$group)=="NA"] <- NA_col
       for(i in seq_len(K)){
-        out <- out %>% visNetwork::visGroups(groupname = levels(nodes$group)[i], color = grp.col[i])
+          out <- out %>% visNetwork::visGroups(groupname = levels(nodes$group)[i],
+                                               color = grp.col[i])
       }
       
       ## add legend
