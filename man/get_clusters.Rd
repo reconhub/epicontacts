@@ -18,6 +18,7 @@ This function assigns clusters and respective cluster sizes to the epi_contacts 
 the epi_contacts 'contacts' dataframe.
 }
 \examples{
+if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
@@ -25,7 +26,7 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 
 ## add cluster membership and sizes to epi_contacts 'linelist'
 x_clusters <- get_clusters(x)
-
+}
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})

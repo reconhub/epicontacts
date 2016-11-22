@@ -26,6 +26,7 @@ particular cluster size of interest, minimum cluster size, maximum cluster size,
 (minimum and maximum) of cluster sizes.
 }
 \examples{
+if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
@@ -46,6 +47,7 @@ x_subset <- subset_clusters_by_size(x, cs_min = 10)
 
 ## subset based on maximum cluster size
 x_subset <- subset_clusters_by_size(x, cs_max = 9)
+}
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})

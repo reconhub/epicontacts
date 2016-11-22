@@ -17,6 +17,7 @@
 #' linelist exclusively
 #'
 #' @examples
+#' if (require(outbreaks)) {
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
@@ -30,7 +31,7 @@
 #' table(deg_out)
 #' head(deg_both)
 #' table(deg_both)
-#'
+#' }
 get_degree <- function(x, type=c("in", "out", "both"), only_linelist=FALSE){
     ## checks
     if (!inherits(x, "epi_contacts")) {

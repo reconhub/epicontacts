@@ -9,19 +9,23 @@ get_id(x, which = c("linelist", "contacts", "all", "common", "from", "to"))
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
-\item{which}{the type of ID to return (see description); value can be 'linelist', 'contacts',
-'all', or 'common'.}
+\item{which}{the type of ID to return (see description); value can be
+'linelist', 'contacts', 'all', 'common', 'from' or 'to'.}
 }
 \value{
 x a character vector of unique identifiers
 }
 \description{
-This accessor is used to extract unique identifiers from \code{\link{epi_contacts}} objects. The
-argument 'which' can be used to specify if IDs should include: linelist only ('linelist'),
-contacts only ('contacts'), the union of both ('all'), or the intersection of both ('common');
-two additional options are 'from' (ID 'giving' contacts) and 'to' (ID 'receiving' contacts).
+This accessor is used to extract unique identifiers from
+\code{\link{epi_contacts}} objects. The argument 'which' can be used to
+specify if IDs should include: linelist only ('linelist'), contacts only
+('contacts'), the union of both ('all'), or the intersection of both
+('common'); two additional options are 'from' (ID 'giving' contacts) and 'to'
+(ID 'receiving' contacts).
 }
 \examples{
+
+if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
@@ -32,6 +36,8 @@ id1 <- get_id(x)
 id2 <- get_id(x, "contacts")
 id3 <- get_id(x, "all")
 id4 <- get_id(x, "common")
+
+}
 
 ## check intersections and unions
 

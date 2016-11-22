@@ -19,7 +19,7 @@ shinyServer(function(input, output) {
 
         } else if (input$datasource == "MERS South Korea") {
 
-            epicontact <- make_epi_contacts(mers_kor_14[[1]],mers_kor_14[[2]], directed = TRUE)
+            epicontact <- make_epi_contacts(mers.korea.2015[[1]],mers.korea.2015[[2]], directed = TRUE)
 
             return(epicontact)
 

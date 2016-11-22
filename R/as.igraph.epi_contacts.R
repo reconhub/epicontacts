@@ -12,6 +12,8 @@
 #' @return An \code{igraph} object (from the \code{igraph} package).
 #'
 #' @examples
+#'
+#' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
@@ -26,7 +28,7 @@
 #' net <- as.igraph.epi_contacts(x)
 #' net
 #' plot(net)
-#'
+#' }
 
 as.igraph.epi_contacts <- function(x){
 #     ## We read in the epi_contacts object, which contains the two dataframes, the 'linelist' and the

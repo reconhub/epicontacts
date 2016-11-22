@@ -21,6 +21,7 @@ dataset. Whenever contacts are directed, the argument 'type' can be used to spec
 contact should be considered: 'in' (towards the case), 'out' (from the case), or 'both'.
 }
 \examples{
+if (require(outbreaks)) {
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
@@ -34,7 +35,7 @@ head(deg_out)
 table(deg_out)
 head(deg_both)
 table(deg_both)
-
+}
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})

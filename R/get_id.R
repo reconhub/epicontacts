@@ -1,9 +1,11 @@
 #' Access unique identifiers in epi_contacts objects
 #'
-#' This accessor is used to extract unique identifiers from \code{\link{epi_contacts}} objects. The
-#' argument 'which' can be used to specify if IDs should include: linelist only ('linelist'),
-#' contacts only ('contacts'), the union of both ('all'), or the intersection of both ('common');
-#' two additional options are 'from' (ID 'giving' contacts) and 'to' (ID 'receiving' contacts).
+#' This accessor is used to extract unique identifiers from
+#' \code{\link{epi_contacts}} objects. The argument 'which' can be used to
+#' specify if IDs should include: linelist only ('linelist'), contacts only
+#' ('contacts'), the union of both ('all'), or the intersection of both
+#' ('common'); two additional options are 'from' (ID 'giving' contacts) and 'to'
+#' (ID 'receiving' contacts).
 #'
 #' @export
 #'
@@ -11,12 +13,14 @@
 #'
 #' @param x an \code{\link{epi_contacts}} object
 #'
-#' @param which the type of ID to return (see description); value can be 'linelist', 'contacts',
-#' 'all', or 'common'.
+#' @param which the type of ID to return (see description); value can be
+#'     'linelist', 'contacts', 'all', 'common', 'from' or 'to'.
 #'
 #' @return x a character vector of unique identifiers
 #'
 #' @examples
+#'
+#' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
@@ -28,12 +32,15 @@
 #' id3 <- get_id(x, "all")
 #' id4 <- get_id(x, "common")
 #'
+#' }
+#'
 #' ## check intersections and unions
 #'
-get_id <- function(x, which=c("linelist","contacts","all","common","from","to")){
-    ## Issues with linelist and contacts is that there is no telling how much overlap there are
-    ## between the two datasets; whenever looking for a list of unique identifiers, one could in
-    ## fact refer to 6 different things which are covered here.
+get_id <- function(x, which = c("linelist", "contacts", "all", "common", "from", "to")){
+    ## Issues with linelist and contacts is that there is no telling how much
+    ## overlap there are between the two datasets; whenever looking for a list
+    ## of unique identifiers, one could in fact refer to 6 different things
+    ## which are covered here.
 
     ## checks
     if (!inherits(x, "epi_contacts")) {
@@ -69,4 +76,3 @@ get_id <- function(x, which=c("linelist","contacts","all","common","from","to"))
 
     return(out)
 }
-

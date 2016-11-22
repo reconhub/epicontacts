@@ -18,11 +18,11 @@ summary.epi_contacts <- function(object, ...){
 
     res <- list()
 
-    res$n.uniquecontacts <- length(get_id(x,"contacts"))
-    res$n.common <- length(get_id(x, "common"))
-    res$n.linelist <- length(get_id(x, "linelist"))
+    res$n_unique_contacts <- length(get_id(x,"contacts"))
+    res$n_common <- length(get_id(x, "common"))
+    res$n_linelist <- length(get_id(x, "linelist"))
     res$contacts.attributes <- names(x$contacts[,-c(1,2)])
-    res$linelist.attributes <- names(x$linelist[,-1])
+    res$linelist_attributes <- names(x$linelist[,-1])
 
     class(res) <- "summary_epi_contacts"
     return(res)

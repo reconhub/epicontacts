@@ -17,6 +17,8 @@ This function creates an igraph object from a given \code{\link{epi_contacts}} o
 a 'contacts' dataframe.
 }
 \examples{
+
+if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
@@ -31,7 +33,7 @@ x <- x[ids]
 net <- as.igraph.epi_contacts(x)
 net
 plot(net)
-
+}
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})

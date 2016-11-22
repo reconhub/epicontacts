@@ -58,6 +58,7 @@ contacts with unique features of contact in columns. The line list and
 contact list should share an identification scheme for individuals.
 }
 \examples{
+if (require(outbreaks)) {
 ## make epi_contacts object from simulated Ebola data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts)
 
@@ -72,7 +73,7 @@ x <- make_epi_contacts(linelist, contacts, id="case.id",
                        to="case.id", from="infector")
 head(x$linelist)
 head(x$contacts)
-
+}
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})

@@ -6,7 +6,7 @@ output:
         toc: true
 toc_depth: 4
 vignette: >
-    %\VignetteIndexEntry{Vignette Title}
+    %\VignetteIndexEntry{epicontacts overview}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
@@ -47,9 +47,6 @@ The package includes the following features:
 - **`as.igraph.epi_contacts()`**: create an `igraph` object from an epi_contacts object
 - **`get_clusters`**: assign clusters and corresponding cluster sizes to linelist of an epi_contacts object
 - **`graph3D()`**: 3D graph from an `epi_contacts` object
-- **`epicontacts_server()`**: run the epicontacts Shiny app on a local host
-- **`ebola.sim`**: simulated Ebola outbreak data in list format
-- **`mers_kor_14`**: 2014 MERS outbreak data from South Korea in list format
 
 ## Installation
 
@@ -59,7 +56,7 @@ The latest development version of `epicontacts` is available on GitHub[^1], and 
 
 ```{r eval=FALSE} 
 library(devtools)
-install_github("Hackout3/epicontacts")
+install_github("reconhub/epicontacts")
 ```
 
 ### CRAN
@@ -72,7 +69,8 @@ install.packages("epicontacts")
 
 Once installed, the package is ready for use.
 
-```{r} 
+```{r}
+library(outbreaks)
 library(epicontacts)
 ```
 
@@ -84,22 +82,22 @@ Each row of the line list should represent unique observations of cases, and eac
 
 ### Example Dataset
 
-The example that follows will use the `mers_kor_14`, which is a dataset (in *list* format) that is included in the package. 
+The example that follows will use the `mers.korea.2015`, which is a dataset (in *list* format) distributed in the *outbreaks* package. 
 
 ```{r}
-str(mers_kor_14)
+str(mers.korea.2015)
 ```
 
 What features are in the line list?
 
 ```{r}
-colnames((mers_kor_14[[1]]))
+colnames((mers.korea.2015$linelist))
 ```
 
 What about the contact dataset?
 
 ```{r}
-colnames((mers_kor_14[[2]]))
+colnames((mers.korea.2015$contacts))
 ```
 
 ### Creating `epi_contacts` Object
@@ -107,9 +105,9 @@ colnames((mers_kor_14[[2]]))
 In order to create the `epi_contacts` object, both the line list and contact data frames must be passed to `make_epi_contacts()`. This function accommodates instances when the respective identifiers are not the first columns of these data frames (see the "id", "from" and "to" arguments). `make_epi_contacts()` can also account for contact networks that have a direction (see "directed" argument).
 
 ```{r}
-merskor14 <- make_epi_contacts(linelist = mers_kor_14[[1]], contacts = mers_kor_14[[2]], directed = FALSE)
-class(merskor14)
-summary(merskor14)
+merskor15 <- make_epi_contacts(linelist = mers.korea.2015$linelist, contacts = mers.korea.2015$contacts, directed = FALSE)
+class(merskor15)
+summary(merskor15)
 ```
 
 ## Data Manipulation
@@ -127,14 +125,14 @@ The `summary()` method above provided counts for the number unique cases in both
     
 What are the first ten IDs in the contacts dataset?
 ```{r}  
-contacts_ids <- get_id(merskor14, "contacts")
+contacts_ids <- get_id(merskor15, "contacts")
 head(contacts_ids, n = 10)
 ```
 
 How many IDs are common to both?
 
 ```{r}
-length(get_id(merskor14, "common"))
+length(get_id(merskor15, "common"))
 ```
 
 ### Subsetting
@@ -142,21 +140,21 @@ length(get_id(merskor14, "common"))
 The `subset()` method for `epi_contacts` objects allows for, among other things, pruning of networks based on values of node and edge attributes. These values must be passed as named lists to the respective argument.
 
 ```{r}
-subset(merskor14, node.attribute = list("outcome" = "Dead", "sex" = "M"), edge.attribute = list("exposure" = "Emergency room"))
+subset(merskor15, node.attribute = list("outcome" = "Dead", "sex" = "M"), edge.attribute = list("exposure" = "Emergency room"))
 ```
 
 In addition to subsetting by node and edge attributes, networks can be pruned to only include components that are connected to certain nodes. The "id" argument takes a vector of nodes and returns the line list of individuals that "touch" those IDs.
 
 ```{r}
 nodes <- c("SK_14","SK_145")                  
-subset(merskor14, cluster_id = nodes)
+subset(merskor15, cluster_id = nodes)
 ```
 
 The `subset()` method for `epi_contacts` objects also accepts cluster size parameters (see "cs", "cs_min" and "cs_max" arguments).
     
 ```{r}   
-subset(merskor14, cs = 3)
-subset(merskor14, cs_min = 10, cs_max = 100)
+subset(merskor15, cs = 3)
+subset(merskor15, cs_min = 10, cs_max = 100)
 ```
 
 ## Visualisation
@@ -166,7 +164,7 @@ subset(merskor14, cs_min = 10, cs_max = 100)
 One of the main features of `epicontacts` is its visualisation capabilities. As a default, the package uses interactive plotting based on the `visNetwork` package[^2]. This interactivity is particularly useful for visualising large datasets.
 
 ```{r}
-plot(merskor14) 
+plot(merskor15) 
 ```
 
 The above is a generic method based on the `vis_epi_contacts()` and accepts a number of arguments to customize the plot appearance and functionality. For a full list of options use `?vis_epi_contacts()`
@@ -176,7 +174,7 @@ The above is a generic method based on the `vis_epi_contacts()` and accepts a nu
 `epicontacts` loads the `threejs` package to enable 3D visualisation tools with the `graph3D()` function[^3].
 
 ```{r}
-graph3D(merskor14, v_col_by = "sex", v.size = 0.5, g.title = "MERS Korea 2014")
+graph3D(merskor15, v_col_by = "sex", v.size = 0.5, g.title = "MERS Korea 2014")
 ```
 
 To interact with the plot:
@@ -201,7 +199,7 @@ epicontacts_server()
 The `get_pairwise()` function allows processing of variable(s) in the line list according to each pair in the contact dataset. For the following example, date of onset of disease is extracted from the line list in order to compute the difference between disease date of onset for each pair. The value that is produced from this comparison represents the **serial interval (si)**.
 
 ```{r} 
-si <- get_pairwise(merskor14, "dt_onset")   
+si <- get_pairwise(merskor15, "dt_onset")   
 summary(si)
 hist(si, col="grey", border="white", xlab="Days after symptoms",
     main="MERS Korea 2014\nSerial Interval")
@@ -210,9 +208,9 @@ hist(si, col="grey", border="white", xlab="Days after symptoms",
 The `get_pairwise()` will interpret the class of the column being used for comparison, and will adjust its method of comparing the values accordingly. For numbers and dates (like the **si** example above), the function will subtract the values. When applied to columns that are characters or categorical, `get_pairwise()` will paste values together. Because the function also allows for arbitrary processing (see "f" argument), these discrete combinations can be easily tabulated and analyzed.
     
 ```{r} 
-head(get_pairwise(merskor14, "sex"), n = 10)
-get_pairwise(merskor14, "sex", f=table)
-fisher.test(get_pairwise(merskor14, "sex", f=table)) 
+head(get_pairwise(merskor15, "sex"), n = 10)
+get_pairwise(merskor15, "sex", f=table)
+fisher.test(get_pairwise(merskor15, "sex", f=table)) 
 ```
 
 ### Identify Clusters
@@ -220,7 +218,7 @@ fisher.test(get_pairwise(merskor14, "sex", f=table))
 The `get_clusters()` function returns an augmented `epi_contacts` object that includes two extra features in the line list: *cluster_member* and *cluster_size*. In this context, a 'cluster' corresponds to groups of connected individuals or components.
 
 ```{r}
-names(get_clusters(merskor14)$linelist)
+names(get_clusters(merskor15)$linelist)
 ```
 
 ### Calculate Degree
@@ -230,7 +228,7 @@ The degree of a node corresponds to its number of edges or connections to other 
 **nb** use of "type" argument depends on whether or not the network is directed. 
 
 ```{r}  
-deg_both <- get_degree(merskor14, "both", only_linelist = TRUE)
+deg_both <- get_degree(merskor15, "both", only_linelist = TRUE)
 ```
 
 Which individuals have the ten most contacts?

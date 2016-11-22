@@ -39,6 +39,7 @@
 #' Original rthreejs code by B. W. Lewis: \url{https://github.com/bwlewis/rthreejs}.
 #'
 #' @examples
+#' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
@@ -49,9 +50,7 @@
 #'
 #' ## 3D graph
 #' g <- graph3D(x_subset)
-#'
-
-
+#' }
 
 graph3D <- function(epi_contacts,
                     label_column = "id",
