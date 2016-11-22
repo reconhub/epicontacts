@@ -1,4 +1,4 @@
-context("Converting data to epi_contact using read_contacts")
+context("Converting data to epi_contact using make_epi_contacts")
 
 test_that("Class and content are fine", {
     x <- make_epi_contacts(ebola.sim$linelist)
@@ -7,8 +7,8 @@ test_that("Class and content are fine", {
 })
 
 test_that("Errors happen when they should", {
-    expect_error(make_epi_contacts(ebola.sim$linelist[c(1,1,2,3,3,4,5,6),], ebola.sim$contacts),
-                 "Duplicated IDs detected in the linelist")
+    expect_error(make_epi_contacts(ebola.sim$linelist[c(1,1,2,3,3,4,5,6),], ebola.sim$contacts), "Duplicated IDs detected in the linelist")
+  expect_error(make_epi_contacts(linelist = NULL, contact = ebola.sim$contacts))
 })
 
 
