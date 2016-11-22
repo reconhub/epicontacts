@@ -54,6 +54,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -94,63 +97,23 @@ linelist exclusively</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='no'>x</span></div><div class='output co'>#&gt; 
-#&gt; /// Epidemiological Contacts //
-#&gt; 
-#&gt;   // class: epi_contacts
-#&gt;   // 5,888 cases in linelist; 3,800 contacts;  directed 
-#&gt; 
-#&gt;   // linelist
-#&gt; 
-#&gt; # A tibble: 5,888 × 9
-#&gt;        id generation date.of.infection date.of.onset date.of.hospitalisation
-#&gt; *   &lt;chr&gt;      &lt;int&gt;            &lt;date&gt;        &lt;date&gt;                  &lt;date&gt;
-#&gt; 1  d1fafd          0              &lt;NA&gt;    2014-04-07              2014-04-17
-#&gt; 2  53371b          1        2014-04-09    2014-04-15              2014-04-20
-#&gt; 3  f5c3d8          1        2014-04-18    2014-04-21              2014-04-25
-#&gt; 4  6c286a          2              &lt;NA&gt;    2014-04-27              2014-04-27
-#&gt; 5  0f58c4          2        2014-04-22    2014-04-26              2014-04-29
-#&gt; 6  49731d          0        2014-03-19    2014-04-25              2014-05-02
-#&gt; 7  f9149b          3              &lt;NA&gt;    2014-05-03              2014-05-04
-#&gt; 8  881bd4          3        2014-04-26    2014-05-01              2014-05-05
-#&gt; 9  e66fa4          2              &lt;NA&gt;    2014-04-21              2014-05-06
-#&gt; 10 20b688          3              &lt;NA&gt;    2014-05-05              2014-05-06
-#&gt; # ... with 5,878 more rows, and 4 more variables: date.of.outcome &lt;date&gt;,
-#&gt; #   outcome &lt;fctr&gt;, gender &lt;fctr&gt;, hospital &lt;fctr&gt;
-#&gt; 
-#&gt;   // contacts
-#&gt; 
-#&gt; # A tibble: 3,800 × 3
-#&gt;      from     to  source
-#&gt; *   &lt;chr&gt;  &lt;chr&gt;  &lt;fctr&gt;
-#&gt; 1  d1fafd 53371b   other
-#&gt; 2  cac51e f5c3d8 funeral
-#&gt; 3  f5c3d8 0f58c4   other
-#&gt; 4  0f58c4 881bd4   other
-#&gt; 5  8508df 40ae5f   other
-#&gt; 6  127d83 f547d6 funeral
-#&gt; 7  f5c3d8 d58402   other
-#&gt; 8  20b688 d8a13d   other
-#&gt; 9  2ae019 a3c8b8   other
-#&gt; 10 20b688 974bc1   other
-#&gt; # ... with 3,790 more rows
-#&gt; </div><div class='input'><span class='no'>deg_in</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>)
+<span class='no'>x</span>
+<span class='no'>deg_in</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>)
 <span class='no'>deg_out</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>, <span class='st'>"out"</span>)
 <span class='no'>deg_both</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>, <span class='st'>"both"</span>)
-<span class='fu'>head</span>(<span class='no'>deg_in</span>)</div><div class='output co'>#&gt; d1fafd cac51e f5c3d8 0f58c4 8508df 127d83 
-#&gt;      0      0      1      1      0      0 </div><div class='input'><span class='fu'>table</span>(<span class='no'>deg_in</span>)</div><div class='output co'>#&gt; deg_in
-#&gt;    0    1 
-#&gt; 1711 3800 </div><div class='input'><span class='fu'>head</span>(<span class='no'>deg_out</span>)</div><div class='output co'>#&gt; d1fafd cac51e f5c3d8 0f58c4 8508df 127d83 
-#&gt;      1      1      2      1      3      1 </div><div class='input'><span class='fu'>table</span>(<span class='no'>deg_out</span>)</div><div class='output co'>#&gt; deg_out
-#&gt;    0    1    2    3    4    5    6 
-#&gt; 2814 1867  606  183   34    6    1 </div><div class='input'><span class='fu'>head</span>(<span class='no'>deg_both</span>)</div><div class='output co'>#&gt; d1fafd cac51e f5c3d8 0f58c4 8508df 127d83 
-#&gt;      1      1      3      2      3      1 </div><div class='input'><span class='fu'>table</span>(<span class='no'>deg_both</span>)</div><div class='output co'>#&gt; deg_both
+<span class='fu'>head</span>(<span class='no'>deg_in</span>)
+<span class='fu'>table</span>(<span class='no'>deg_in</span>)
+<span class='fu'>head</span>(<span class='no'>deg_out</span>)
+<span class='fu'>table</span>(<span class='no'>deg_out</span>)
+<span class='fu'>head</span>(<span class='no'>deg_both</span>)
+<span class='fu'>table</span>(<span class='no'>deg_both</span>)
+}</div><div class='output co'>#&gt; deg_both
 #&gt;    1    2    3    4    5    6    7 
-#&gt; 3982 1093  341   71   20    3    1 </div><div class='input'>
-</div></pre>
+#&gt; 3982 1093  341   71   20    3    1 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
