@@ -14,8 +14,9 @@ An \code{\link{epi_contacts}} object whose 'linelist' dataframe contains new col
 corresponding to cluster membership and size.
 }
 \description{
-This function assigns clusters and respective cluster sizes to the epi_contacts linelist. These cluster memberships and sizes are derived from the graph clusters in
-the epi_contacts 'contacts' dataframe.
+This function assigns clusters and respective cluster sizes to the
+epi_contacts linelist. These cluster memberships and sizes are derived from
+the graph clusters in the epi_contacts 'contacts' dataframe.
 }
 \examples{
 if (require(outbreaks)) {

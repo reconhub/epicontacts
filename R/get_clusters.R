@@ -1,7 +1,8 @@
 #' Assign cluster IDs to epi_contacts data
 #'
-#' This function assigns clusters and respective cluster sizes to the epi_contacts linelist. These cluster memberships and sizes are derived from the graph clusters in
-#' the epi_contacts 'contacts' dataframe.
+#' This function assigns clusters and respective cluster sizes to the
+#' epi_contacts linelist. These cluster memberships and sizes are derived from
+#' the graph clusters in the epi_contacts 'contacts' dataframe.
 #'
 #' @export
 #'
@@ -27,14 +28,16 @@
 get_clusters <- function(epi_contacts){
     net <- as.igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
-    # net_nodes <- data.frame(id =igraph::V(net)$id, cluster_member = cs$membership, stringsAsFactors = FALSE)
-
-    # epi_contacts$linelist <- dplyr::left_join(epi_contacts$linelist, net_nodes, by = 'id')
-
-    cs_size <- data.frame(cluster_member = 1:length(cs$csize), cluster_size = cs$csize)
-    net_nodes <- data.frame(id =igraph::V(net)$id, cluster_member = cs$membership, stringsAsFactors = FALSE)
+    cs_size <- data.frame(cluster_member = seq_along(cs$csize),
+                          cluster_size = cs$csize)
+    
+    net_nodes <- data.frame(id =igraph::V(net)$id,
+                            cluster_member = cs$membership,
+                            stringsAsFactors = FALSE)
+    
     net_nodes <- dplyr::left_join(net_nodes, cs_size, by = "cluster_member")
-    epi_contacts$linelist <- dplyr::left_join(epi_contacts$linelist, net_nodes, by = 'id')
+    epi_contacts$linelist <- dplyr::left_join(epi_contacts$linelist,
+                                              net_nodes, by = "id")
 
     return(epi_contacts)
 }
