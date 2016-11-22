@@ -1,7 +1,4 @@
 context("Test get_pairwise")
-library(epicontacts)
-library(outbreaks)
-library(testthat)
 
 test_that("pairwise analysis: gender", {
     skip_on_cran()
