@@ -6,7 +6,7 @@ output:
         toc: true
 toc_depth: 4
 vignette: >
-    %\VignetteIndexEntry{Vignette Title}
+    %\VignetteIndexEntry{epicontacts overview}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
@@ -47,9 +47,8 @@ The package includes the following features:
 - **`as.igraph.epi_contacts()`**: create an `igraph` object from an epi_contacts object
 - **`get_clusters`**: assign clusters and corresponding cluster sizes to linelist of an epi_contacts object
 - **`graph3D()`**: 3D graph from an `epi_contacts` object
-- **`epicontacts_server()`**: run the epicontacts Shiny app on a local host
-- **`ebola.sim`**: simulated Ebola outbreak data in list format
-- **`mers_kor_14`**: 2014 MERS outbreak data from South Korea in list format
+
+
 
 ## Installation
 
@@ -59,7 +58,7 @@ The latest development version of `epicontacts` is available on GitHub[^1], and 
 
 ```{r eval=FALSE} 
 library(devtools)
-install_github("Hackout3/epicontacts")
+install_github("reconhub/epicontacts")
 ```
 
 ### CRAN
@@ -72,7 +71,8 @@ install.packages("epicontacts")
 
 Once installed, the package is ready for use.
 
-```{r} 
+```{r}
+library(outbreaks)
 library(epicontacts)
 ```
 
@@ -84,22 +84,22 @@ Each row of the line list should represent unique observations of cases, and eac
 
 ### Example Dataset
 
-The example that follows will use the `mers_kor_14`, which is a dataset (in *list* format) that is included in the package. 
+The example that follows will use the `mers.korea.2015`, which is a dataset (in *list* format) distributed in the *outbreaks* package. 
 
 ```{r}
-str(mers_kor_14)
+str(mers.korea.2015)
 ```
 
 What features are in the line list?
 
 ```{r}
-colnames((mers_kor_14[[1]]))
+colnames((mers.korea.2015[[1]]))
 ```
 
 What about the contact dataset?
 
 ```{r}
-colnames((mers_kor_14[[2]]))
+colnames((mers.korea.2015[[2]]))
 ```
 
 ### Creating `epi_contacts` Object
@@ -107,7 +107,7 @@ colnames((mers_kor_14[[2]]))
 In order to create the `epi_contacts` object, both the line list and contact data frames must be passed to `make_epi_contacts()`. This function accommodates instances when the respective identifiers are not the first columns of these data frames (see the "id", "from" and "to" arguments). `make_epi_contacts()` can also account for contact networks that have a direction (see "directed" argument).
 
 ```{r}
-merskor14 <- make_epi_contacts(linelist = mers_kor_14[[1]], contacts = mers_kor_14[[2]], directed = FALSE)
+merskor14 <- make_epi_contacts(linelist = mers.korea.2015[[1]], contacts = mers.korea.2015[[2]], directed = FALSE)
 class(merskor14)
 summary(merskor14)
 ```
