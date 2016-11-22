@@ -54,6 +54,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -73,10 +76,12 @@
     </div>
 
     
-    <p>This accessor is used to extract unique identifiers from <code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects. The
-argument &#39;which&#39; can be used to specify if IDs should include: linelist only (&#39;linelist&#39;),
-contacts only (&#39;contacts&#39;), the union of both (&#39;all&#39;), or the intersection of both (&#39;common&#39;);
-two additional options are &#39;from&#39; (ID &#39;giving&#39; contacts) and &#39;to&#39; (ID &#39;receiving&#39; contacts).</p>
+    <p>This accessor is used to extract unique identifiers from
+<code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects. The argument &#39;which&#39; can be used to
+specify if IDs should include: linelist only (&#39;linelist&#39;), contacts only
+(&#39;contacts&#39;), the union of both (&#39;all&#39;), or the intersection of both
+(&#39;common&#39;); two additional options are &#39;from&#39; (ID &#39;giving&#39; contacts) and &#39;to&#39;
+(ID &#39;receiving&#39; contacts).</p>
     
 
     <pre><span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='kw'>which</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linelist"</span>, <span class='st'>"contacts"</span>, <span class='st'>"all"</span>, <span class='st'>"common"</span>, <span class='st'>"from"</span>, <span class='st'>"to"</span>))</pre>
@@ -86,8 +91,8 @@ two additional options are &#39;from&#39; (ID &#39;giving&#39; contacts) and &#3
       <dt>x</dt>
       <dd>an <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object</dd>
       <dt>which</dt>
-      <dd>the type of ID to return (see description); value can be &#39;linelist&#39;, &#39;contacts&#39;,
-&#39;all&#39;, or &#39;common&#39;.</dd>
+      <dd>the type of ID to return (see description); value can be
+&#39;linelist&#39;, &#39;contacts&#39;, &#39;all&#39;, &#39;common&#39;, &#39;from&#39; or &#39;to&#39;.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -96,7 +101,9 @@ two additional options are &#39;from&#39; (ID &#39;giving&#39; contacts) and &#3
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## build data</span>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
+<span class='co'>## build data</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
@@ -106,6 +113,8 @@ two additional options are &#39;from&#39; (ID &#39;giving&#39; contacts) and &#3
 <span class='no'>id2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='st'>"contacts"</span>)
 <span class='no'>id3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='st'>"all"</span>)
 <span class='no'>id4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='st'>"common"</span>)
+
+}
 
 <span class='co'>## check intersections and unions</span></div></pre>
   </div>

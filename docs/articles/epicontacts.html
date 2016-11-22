@@ -21,6 +21,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -63,9 +66,6 @@
 <li><strong><code><a href="../reference/as.igraph.epi_contacts.html">as.igraph.epi_contacts()</a></code></strong>: create an <code>igraph</code> object from an epi_contacts object</li>
 <li><strong><code>get_clusters</code></strong>: assign clusters and corresponding cluster sizes to linelist of an epi_contacts object</li>
 <li><strong><code><a href="../reference/graph3D.html">graph3D()</a></code></strong>: 3D graph from an <code>epi_contacts</code> object</li>
-<li><strong><code><a href="../reference/epicontacts_server.html">epicontacts_server()</a></code></strong>: run the epicontacts Shiny app on a local host</li>
-<li><strong><code>ebola.sim</code></strong>: simulated Ebola outbreak data in list format</li>
-<li><strong><code>mers_kor_14</code></strong>: 2014 MERS outbreak data from South Korea in list format</li>
 </ul></div>
 </div>
 <div id="installation" class="section level2">
@@ -74,14 +74,15 @@
 <h3 class="hasAnchor"><html><body><a href="#github" class="anchor"> </a></body></html>GitHub</h3>
 <p>The latest development version of <code>epicontacts</code> is available on GitHub<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, and can be installed using the <code>devtools</code> package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
-<span class="kw">install_github</span>(<span class="st">"Hackout3/epicontacts"</span>)</code></pre></div>
+<span class="kw">install_github</span>(<span class="st">"reconhub/epicontacts"</span>)</code></pre></div>
 </div>
 <div id="cran" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#cran" class="anchor"> </a></body></html>CRAN</h3>
 <p>Alternatively, a stable release is availabe for installation via CRAN.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"epicontacts"</span>)</code></pre></div>
 <p>Once installed, the package is ready for use.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(epicontacts)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(outbreaks)
+<span class="kw">library</span>(epicontacts)</code></pre></div>
 </div>
 </div>
 <div id="loading-data" class="section level2">
@@ -90,10 +91,10 @@
 <p>Each row of the line list should represent unique observations of cases, and each row of the contact list should represent unique pairs of contacts. Each can include arbitrary features, but both datasets should share an identification scheme.</p>
 <div id="example-dataset" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#example-dataset" class="anchor"> </a></body></html>Example Dataset</h3>
-<p>The example that follows will use the <code>mers_kor_14</code>, which is a dataset (in <em>list</em> format) that is included in the package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(mers_kor_14)</code></pre></div>
+<p>The example that follows will use the <code>mers.korea.2015</code>, which is a dataset (in <em>list</em> format) distributed in the <em>outbreaks</em> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(mers.korea<span class="fl">.2015</span>)</code></pre></div>
 <pre><code>## List of 2
-##  $ :'data.frame':    162 obs. of  15 variables:
+##  $ linelist:'data.frame':    162 obs. of  15 variables:
 ##   ..$ id            : chr [1:162] "SK_1" "SK_2" "SK_3" "SK_4" ...
 ##   ..$ age           : int [1:162] 68 63 76 46 50 71 28 46 56 44 ...
 ##   ..$ age_class     : chr [1:162] "60-69" "60-69" "70-79" "40-49" ...
@@ -109,25 +110,25 @@
 ##   ..$ dt_diag       : Date[1:162], format: "2015-05-20" ...
 ##   ..$ outcome       : Factor w/ 2 levels "Alive","Dead": 1 1 2 1 1 2 1 1 1 1 ...
 ##   ..$ dt_death      : Date[1:162], format: NA ...
-##  $ :'data.frame':    98 obs. of  4 variables:
+##  $ contacts:'data.frame':    98 obs. of  4 variables:
 ##   ..$ from         : chr [1:98] "SK_14" "SK_14" "SK_14" "SK_14" ...
 ##   ..$ to           : chr [1:98] "SK_113" "SK_116" "SK_41" "SK_112" ...
 ##   ..$ exposure     : Factor w/ 5 levels "Contact with HCW",..: 2 2 2 2 2 2 2 2 2 2 ...
 ##   ..$ diff_dt_onset: int [1:98] 10 13 14 14 15 15 15 16 16 16 ...</code></pre>
 <p>What features are in the line list?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>((mers_kor_14[[<span class="dv">1</span>]]))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>((mers.korea<span class="fl">.2015</span>[[<span class="dv">1</span>]]))</code></pre></div>
 <pre><code>##  [1] "id"             "age"            "age_class"      "sex"           
 ##  [5] "place_infect"   "reporting_ctry" "loc_hosp"       "dt_onset"      
 ##  [9] "dt_report"      "week_report"    "dt_start_exp"   "dt_end_exp"    
 ## [13] "dt_diag"        "outcome"        "dt_death"</code></pre>
 <p>What about the contact dataset?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>((mers_kor_14[[<span class="dv">2</span>]]))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>((mers.korea<span class="fl">.2015</span>[[<span class="dv">2</span>]]))</code></pre></div>
 <pre><code>## [1] "from"          "to"            "exposure"      "diff_dt_onset"</code></pre>
 </div>
 <div id="creating-epi_contacts-object" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#creating-epi_contacts-object" class="anchor"> </a></body></html>Creating <code>epi_contacts</code> Object</h3>
 <p>In order to create the <code>epi_contacts</code> object, both the line list and contact data frames must be passed to <code><a href="../reference/make_epi_contacts.html">make_epi_contacts()</a></code>. This function accommodates instances when the respective identifiers are not the first columns of these data frames (see the &ldquo;id&rdquo;, &ldquo;from&rdquo; and &ldquo;to&rdquo; arguments). <code><a href="../reference/make_epi_contacts.html">make_epi_contacts()</a></code> can also account for contact networks that have a direction (see &ldquo;directed&rdquo; argument).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merskor14 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/make_epi_contacts.html">make_epi_contacts</a></span>(<span class="dt">linelist =</span> mers_kor_14[[<span class="dv">1</span>]], <span class="dt">contacts =</span> mers_kor_14[[<span class="dv">2</span>]], <span class="dt">directed =</span> <span class="ot">FALSE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merskor14 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/make_epi_contacts.html">make_epi_contacts</a></span>(<span class="dt">linelist =</span> mers.korea<span class="fl">.2015</span>[[<span class="dv">1</span>]], <span class="dt">contacts =</span> mers.korea<span class="fl">.2015</span>[[<span class="dv">2</span>]], <span class="dt">directed =</span> <span class="ot">FALSE</span>)
 <span class="kw">class</span>(merskor14)</code></pre></div>
 <pre><code>## [1] "epi_contacts"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(merskor14)</code></pre></div>
@@ -136,8 +137,7 @@
 ## // number of unique records in contact list: 97
 ## // number of contacts appearing in linelist: 97
 ## // percentage of contacts appearing in linelist: 59.88%
-## // attributes in linelist: age age_class sex place_infect reporting_ctry loc_hosp dt_onset dt_report week_report dt_start_exp dt_end_exp dt_diag outcome dt_death
-## // attributes in contacts: exposure diff_dt_onset</code></pre>
+## // attributes in linelist: age age_class sex place_infect reporting_ctry loc_hosp dt_onset dt_report week_report dt_start_exp dt_end_exp dt_diag outcome dt_death</code></pre>
 </div>
 </div>
 <div id="data-manipulation" class="section level2">
@@ -348,8 +348,8 @@
 </ul></div>
 <div id="shiny-interface" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#shiny-interface" class="anchor"> </a></body></html>Shiny Interface</h3>
-<p><code>epicontacts</code> includes an interactive mode that features a web interface built and designed using the Shiny framework<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. The &ldquo;server&rdquo; runs on a local host, and therefore can be viewed and used inside a web browser. With the package loaded, the app can be launched with the <code><a href="../reference/epicontacts_server.html">epicontacts_server()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/epicontacts_server.html">epicontacts_server</a></span>()</code></pre></div>
+<p><code>epicontacts</code> includes an interactive mode that features a web interface built and designed using the Shiny framework<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. The &ldquo;server&rdquo; runs on a local host, and therefore can be viewed and used inside a web browser. With the package loaded, the app can be launched with the <code>epicontacts_server()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">epicontacts_server</span>()</code></pre></div>
 </div>
 </div>
 <div id="analysis" class="section level2">

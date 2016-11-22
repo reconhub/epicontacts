@@ -54,6 +54,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -96,63 +99,27 @@ values)</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## example using MERS outbreak in Korea, 2014</span>
-<span class='fu'>head</span>(<span class='no'>mers_kor_14</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt;     id age age_class sex        place_infect reporting_ctry
-#&gt; 1 SK_1  68     60-69   M         Middle East    South Korea
-#&gt; 2 SK_2  63     60-69   F Outside Middle East    South Korea
-#&gt; 3 SK_3  76     70-79   M Outside Middle East    South Korea
-#&gt; 4 SK_4  46     40-49   F Outside Middle East    South Korea
-#&gt; 5 SK_5  50     50-59   M Outside Middle East    South Korea
-#&gt; 6 SK_6  71     70-79   M Outside Middle East    South Korea
-#&gt;                                              loc_hosp   dt_onset  dt_report
-#&gt; 1 Pyeongtaek St. Mary, Hospital, Pyeongtaek, Gyeonggi 2015-05-11 2015-05-19
-#&gt; 2 Pyeongtaek St. Mary, Hospital, Pyeongtaek, Gyeonggi 2015-05-18 2015-05-20
-#&gt; 3 Pyeongtaek St. Mary, Hospital, Pyeongtaek, Gyeonggi 2015-05-20 2015-05-20
-#&gt; 4 Pyeongtaek St. Mary, Hospital, Pyeongtaek, Gyeonggi 2015-05-25 2015-05-26
-#&gt; 5                           365 Yeollin Clinic, Seoul 2015-05-25 2015-05-27
-#&gt; 6 Pyeongtaek St. Mary, Hospital, Pyeongtaek, Gyeonggi 2015-05-24 2015-05-28
-#&gt;   week_report dt_start_exp dt_end_exp    dt_diag outcome   dt_death
-#&gt; 1     2014_21   2015-04-18 2015-05-04 2015-05-20   Alive       &lt;NA&gt;
-#&gt; 2     2014_21   2015-05-15 2015-05-20 2015-05-20   Alive       &lt;NA&gt;
-#&gt; 3     2014_21   2015-05-16 2015-05-16 2015-05-21    Dead 2015-06-04
-#&gt; 4     2014_22   2015-05-16 2015-05-20 2015-05-26   Alive       &lt;NA&gt;
-#&gt; 5     2014_22   2015-05-17 2015-05-17 2015-05-26   Alive       &lt;NA&gt;
-#&gt; 6     2014_22   2015-05-15 2015-05-17 2015-05-28    Dead 2015-06-01</div><div class='input'><span class='fu'>head</span>(<span class='no'>mers_kor_14</span><span class='kw'>[[</span><span class='fl'>2</span>]])</div><div class='output co'>#&gt;    from     to       exposure diff_dt_onset
-#&gt; 1 SK_14 SK_113 Emergency room            10
-#&gt; 2 SK_14 SK_116 Emergency room            13
-#&gt; 3 SK_14  SK_41 Emergency room            14
-#&gt; 4 SK_14 SK_112 Emergency room            14
-#&gt; 5 SK_14 SK_100 Emergency room            15
-#&gt; 6 SK_14 SK_114 Emergency room            15</div><div class='input'>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers_kor_14</span><span class='kw'>[[</span><span class='fl'>1</span>]],
-<span class='kw'>contacts</span><span class='kw'>=</span><span class='no'>mers_kor_14</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
+<span class='co'>## example using MERS outbreak in Korea, 2014</span>
+<span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
+<span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
+<span class='kw'>contacts</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
 <span class='co'>## estimate serial interval (onset-&gt;onset)</span>
 <span class='no'>SI</span> <span class='kw'>&lt;-</span> <span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"dt_onset"</span>)
-<span class='no'>SI</span></div><div class='output co'>#&gt;  [1] 10 13 14 14 15 15 15 16 16 16 17 18 18 18 18 19 19 19 20 20 20 21 21 22 22
-#&gt; [26] 22 24 24 24 25 17 15  2  7  9 10 14 15 14 22 15  5  9 27 10 12 14 17  9 14
-#&gt; [51] 14  6  6  9  9  9 10 12 13 21  5 14 16 20 21 13  3 11 11 12 12 12 12 13 13
-#&gt; [76] 14 15 15 16 18 21 22 12 11  9  3 10 10 10 10 11 12 12 13 14 16 17 18</div><div class='input'><span class='fu'>summary</span>(<span class='no'>SI</span>)</div><div class='output co'>#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#&gt;    2.00   11.00   14.00   14.47   18.00   27.00 </div><div class='input'><span class='fu'>hist</span>(<span class='no'>SI</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>"grey"</span>, <span class='kw'>border</span><span class='kw'>=</span><span class='st'>"white"</span>, <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"Days after symptoms"</span>,
-     <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"MERS Korea 2014 - Serial Interval"</span>)</div><img src='get_pairwise-10.png' alt='' width='540' height='400' /><div class='input'>
+<span class='no'>SI</span>
+<span class='fu'>summary</span>(<span class='no'>SI</span>)
+<span class='fu'>hist</span>(<span class='no'>SI</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='st'>"grey"</span>, <span class='kw'>border</span><span class='kw'>=</span><span class='st'>"white"</span>, <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"Days after symptoms"</span>,
+     <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"MERS Korea 2014 - Serial Interval"</span>)
+
 <span class='co'>## check gender mixing:</span>
-<span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"sex"</span>) <span class='co'># not good, we want 2-way table</span></div><div class='output co'>#&gt;  [1] &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot;
-#&gt;  [9] &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot;
-#&gt; [17] &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot;
-#&gt; [25] &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot;
-#&gt; [33] &quot;F -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot;
-#&gt; [41] &quot;M -&gt; F&quot; &quot;F -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot;
-#&gt; [49] &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;F -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot;
-#&gt; [57] &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot;
-#&gt; [65] &quot;M -&gt; F&quot; &quot;F -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot;
-#&gt; [73] &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot;
-#&gt; [81] &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;F -&gt; M&quot; &quot;M -&gt; F&quot; &quot;F -&gt; F&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot;
-#&gt; [89] &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; M&quot; &quot;M -&gt; M&quot; &quot;M -&gt; F&quot; &quot;M -&gt; F&quot;
-#&gt; [97] &quot;M -&gt; M&quot; &quot;M -&gt; M&quot;</div><div class='input'>
-<span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"sex"</span>, <span class='kw'>f</span><span class='kw'>=</span><span class='no'>table</span>) <span class='co'># use custom function</span></div><div class='output co'>#&gt;            values.to
-#&gt; values.from  F  M
-#&gt;           F  2  4
-#&gt;           M 38 54</div><div class='input'><span class='fu'>fisher.test</span>(<span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"sex"</span>, <span class='kw'>f</span><span class='kw'>=</span><span class='no'>table</span>)) <span class='co'># test association</span></div><div class='output co'>#&gt; 
+<span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"sex"</span>) <span class='co'># not good, we want 2-way table</span>
+
+<span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"sex"</span>, <span class='kw'>f</span><span class='kw'>=</span><span class='no'>table</span>) <span class='co'># use custom function</span>
+<span class='fu'>fisher.test</span>(<span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"sex"</span>, <span class='kw'>f</span><span class='kw'>=</span><span class='no'>table</span>)) <span class='co'># test association</span>
+}</div><img src='get_pairwise-2.png' alt='' width='540' height='400' /><div class='output co'>#&gt; 
 #&gt; 	Fisher&#39;s Exact Test for Count Data
 #&gt; 
 #&gt; data:  get_pairwise(x, &quot;sex&quot;, f = table)
@@ -163,8 +130,7 @@ values)</dd>
 #&gt; sample estimates:
 #&gt; odds ratio 
 #&gt;   0.712926 
-#&gt; </div><div class='input'>
-</div></pre>
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -54,6 +54,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -91,26 +94,23 @@ a &#39;contacts&#39; dataframe.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## build data</span>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
+<span class='co'>## build data</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
 <span class='co'>## subset data - keep 10 cases from linelist with contacts</span>
 <span class='no'>ids</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_id.html'>get_id</a></span>(<span class='no'>x</span>, <span class='st'>"common"</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>]
-<span class='no'>ids</span></div><div class='output co'>#&gt;  [1] &quot;d1fafd&quot; &quot;53371b&quot; &quot;f5c3d8&quot; &quot;0f58c4&quot; &quot;f9149b&quot; &quot;881bd4&quot; &quot;20b688&quot; &quot;40ae5f&quot;
-#&gt;  [9] &quot;f547d6&quot; &quot;f1f60f&quot;</div><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>[<span class='no'>ids</span>]
+<span class='no'>ids</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>[<span class='no'>ids</span>]
 
 <span class='co'>## make igraph object with associated attributes from epi_contacts object</span>
 <span class='no'>net</span> <span class='kw'>&lt;-</span> <span class='fu'>as.igraph.epi_contacts</span>(<span class='no'>x</span>)
-<span class='no'>net</span></div><div class='output co'>#&gt; IGRAPH DN-- 10 3 -- 
-#&gt; + attr: name (v/c), generation (v/n), date.of.infection (v/n),
-#&gt; | date.of.onset (v/n), date.of.hospitalisation (v/n), date.of.outcome
-#&gt; | (v/n), outcome (v/c), gender (v/c), hospital (v/c), id (v/c), source
-#&gt; | (e/c)
-#&gt; + edges (vertex names):
-#&gt; [1] d1fafd-&gt;53371b f5c3d8-&gt;0f58c4 0f58c4-&gt;881bd4</div><div class='input'><span class='fu'>plot</span>(<span class='no'>net</span>)</div><img src='as.igraph.epi_contacts-6.png' alt='' width='540' height='400' /><div class='input'>
-</div></pre>
+<span class='no'>net</span>
+<span class='fu'>plot</span>(<span class='no'>net</span>)
+}</div><img src='as.igraph.epi_contacts-2.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

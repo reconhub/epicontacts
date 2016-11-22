@@ -54,6 +54,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -136,56 +139,28 @@ contact list should share an identification scheme for individuals.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## make epi_contacts object from simulated Ebola data</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
+<span class='co'>## make epi_contacts object from simulated Ebola data</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epi_contacts</span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>)
 
 <span class='co'>## test reordering of columns</span>
 <span class='no'>linelist</span> <span class='kw'>&lt;-</span> <span class='no'>ebola.sim</span>$<span class='no'>linelist</span>[,<span class='fu'>rev</span>(<span class='fu'>seq_len</span>(<span class='fu'>ncol</span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>)))]
 <span class='no'>contacts</span> <span class='kw'>&lt;-</span> <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>[,<span class='fu'>rev</span>(<span class='fu'>seq_len</span>(<span class='fu'>ncol</span>(<span class='no'>ebola.sim</span>$<span class='no'>contacts</span>)))]
-<span class='fu'>head</span>(<span class='no'>linelist</span>)</div><div class='output co'>#&gt;             hospital gender outcome date.of.outcome date.of.hospitalisation
-#&gt; 1  Military Hospital      f    &lt;NA&gt;      2014-04-19              2014-04-17
-#&gt; 2 Connaught Hospital      m    &lt;NA&gt;            &lt;NA&gt;              2014-04-20
-#&gt; 3              other      f Recover      2014-04-30              2014-04-25
-#&gt; 4               &lt;NA&gt;      f   Death      2014-05-07              2014-04-27
-#&gt; 5              other      f Recover      2014-05-17              2014-04-29
-#&gt; 6               &lt;NA&gt;      f    &lt;NA&gt;      2014-05-07              2014-05-02
-#&gt;   date.of.onset date.of.infection generation case.id
-#&gt; 1    2014-04-07              &lt;NA&gt;          0  d1fafd
-#&gt; 2    2014-04-15        2014-04-09          1  53371b
-#&gt; 3    2014-04-21        2014-04-18          1  f5c3d8
-#&gt; 4    2014-04-27              &lt;NA&gt;          2  6c286a
-#&gt; 5    2014-04-26        2014-04-22          2  0f58c4
-#&gt; 6    2014-04-25        2014-03-19          0  49731d</div><div class='input'><span class='fu'>head</span>(<span class='no'>contacts</span>)</div><div class='output co'>#&gt;     source case.id infector
-#&gt; 2    other  53371b   d1fafd
-#&gt; 3  funeral  f5c3d8   cac51e
-#&gt; 5    other  0f58c4   f5c3d8
-#&gt; 8    other  881bd4   0f58c4
-#&gt; 11   other  40ae5f   8508df
-#&gt; 12 funeral  f547d6   127d83</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>linelist</span>)
+<span class='fu'>head</span>(<span class='no'>contacts</span>)
+
 <span class='co'>## make object</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epi_contacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>,
                        <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>)
-<span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>linelist</span>)</div><div class='output co'>#&gt;       id           hospital gender outcome date.of.outcome
-#&gt; 1 d1fafd  Military Hospital      f    &lt;NA&gt;      2014-04-19
-#&gt; 2 53371b Connaught Hospital      m    &lt;NA&gt;            &lt;NA&gt;
-#&gt; 3 f5c3d8              other      f Recover      2014-04-30
-#&gt; 4 6c286a               &lt;NA&gt;      f   Death      2014-05-07
-#&gt; 5 0f58c4              other      f Recover      2014-05-17
-#&gt; 6 49731d               &lt;NA&gt;      f    &lt;NA&gt;      2014-05-07
-#&gt;   date.of.hospitalisation date.of.onset date.of.infection generation
-#&gt; 1              2014-04-17    2014-04-07              &lt;NA&gt;          0
-#&gt; 2              2014-04-20    2014-04-15        2014-04-09          1
-#&gt; 3              2014-04-25    2014-04-21        2014-04-18          1
-#&gt; 4              2014-04-27    2014-04-27              &lt;NA&gt;          2
-#&gt; 5              2014-04-29    2014-04-26        2014-04-22          2
-#&gt; 6              2014-05-02    2014-04-25        2014-03-19          0</div><div class='input'><span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>contacts</span>)</div><div class='output co'>#&gt;      from     to  source
+<span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>linelist</span>)
+<span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>contacts</span>)
+}</div><div class='output co'>#&gt;      from     to  source
 #&gt; 2  d1fafd 53371b   other
 #&gt; 3  cac51e f5c3d8 funeral
 #&gt; 5  f5c3d8 0f58c4   other
 #&gt; 8  0f58c4 881bd4   other
 #&gt; 11 8508df 40ae5f   other
-#&gt; 12 127d83 f547d6 funeral</div><div class='input'>
-</div></pre>
+#&gt; 12 127d83 f547d6 funeral</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
