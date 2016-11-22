@@ -76,10 +76,11 @@
     </div>
 
     
-    <p>The &quot;[&quot; operator can be used to subset <code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects, retaining a specified
-set of case identifiers (<code>i</code> for the linelist, <code>j</code> for contacts). Note that unlike most
-classical R objects, there is no replacement method for <code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects,
-i.e. no operations such as <code>foo[i] &lt;- bar</code>.</p>
+    <p>The &quot;[&quot; operator can be used to subset <code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects,
+retaining a specified set of case identifiers (<code>i</code> for the linelist,
+<code>j</code> for contacts). Note that unlike most classical R objects, there is
+no replacement method for <code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects, i.e. no
+operations such as <code>foo[i] &lt;- bar</code>.</p>
     
 
     <pre># S3 method for epi_contacts
@@ -93,18 +94,19 @@ i.e. no operations such as <code>foo[i] &lt;- bar</code>.</p>
       <dt>i</dt>
       <dd>a character vector containing case ID to be retained in the linelist</dd>
       <dt>j</dt>
-      <dd>a character vector containing case ID to be retained in the contacts; defaults to the
-same as <code>i</code></dd>
+      <dd>a character vector containing case ID to be retained in the
+contacts; defaults to the same as <code>i</code></dd>
       <dt>contacts</dt>
-      <dd>a character string indicating on which basis contacts are retained (see details)</dd>
+      <dd>a character string indicating on which basis contacts are
+retained (see details)</dd>
       <dt>k</dt>
-      <dd>an integer, logical, or character vector subsetting the supplementary columns of
-<code>x$linelist</code>, i.e. the columns after &#39;id&#39;; i.e. <code>k=1</code> refers to the column immediately
-after &#39;id&#39;.</dd>
+      <dd>an integer, logical, or character vector subsetting the
+supplementary columns of <code>x$linelist</code>, i.e. the columns after &#39;id&#39;;
+i.e. <code>k=1</code> refers to the column immediately after &#39;id&#39;.</dd>
       <dt>l</dt>
-      <dd>an integer, logical, or character vector subsetting the supplementary columns of
-<code>x$contacts</code>, i.e. the columns after &#39;from&#39; and &#39;to&#39;; i.e. <code>l=1</code> refers to the column
-immediately after &#39;to&#39;.</dd>
+      <dd>an integer, logical, or character vector subsetting the
+supplementary columns of <code>x$contacts</code>, i.e. the columns after &#39;from&#39;
+and &#39;to&#39;; i.e. <code>l=1</code> refers to the column immediately after &#39;to&#39;.</dd>
       <dt>...</dt>
       <dd>not used (there for compatibility with generic)</dd>
     </dl>
@@ -113,13 +115,13 @@ immediately after &#39;to&#39;.</dd>
 
     <p>Details on the &#39;contacts&#39; argument; possible values are:
 <ul>
-<li>&#39;both&#39;contacts are retained only if both cases are in the subset
+<li> &#39;both&#39;: contacts are retained only if both cases are in the subset
 </li>
-<li>&#39;either&#39;contacts are retained if at least one of the cases is in the subset
+<li> &#39;either&#39;: contacts are retained if at least one of the cases is in the subset
 </li>
-<li>&#39;from&#39;contacts are retained only if the source (&#39;from&#39;) is in the subset
+<li> &#39;from&#39;: contacts are retained only if the source (&#39;from&#39;) is in the subset
 </li>
-<li>&#39;to&#39;contacts are retained only if the recipient (&#39;to&#39;) is in the subset
+<li> &#39;to&#39;: contacts are retained only if the recipient (&#39;to&#39;) is in the subset
 </li>
 </ul></p>
     
