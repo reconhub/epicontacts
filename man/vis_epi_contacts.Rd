@@ -59,6 +59,7 @@ plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
+VP Nagraj (\email{vpnagraj@virginia.edu})
 }
 \seealso{
 \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.

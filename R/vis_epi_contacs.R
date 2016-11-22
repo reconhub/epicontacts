@@ -5,7 +5,9 @@
 #' @export
 #'
 #'
-#' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
+#' @author 
+#' Thibaut Jombart (\email{thibautjombart@@gmail.com})
+#' VP Nagraj (\email{vpnagraj@@virginia.edu})
 #'
 #' @param x an \code{\link{epi_contacts}} object
 #'
@@ -61,64 +63,58 @@ vis_epi_contacts <- function(x, group="id", annot=c("id"),
                              selector=TRUE, editor=FALSE,
                              ...){
 
-    ## make visNetwork inputs: nodes
-    nodes <- data.frame(id=unique(c(x$linelist$id,x$contacts$from,x$contacts$to)))
-    nodes$label <- nodes$id
-    nodes$group <- as.character(nodes[,group])
-    nodes$group[is.na(nodes$group)] <- "NA"
-    nodes$group <- factor(nodes$group)
-
-    ## get annotations
-    temp <- nodes[, annot, drop=FALSE]
-    temp <- sapply(names(temp), function(e) paste(e, temp[,e], sep=": "))
-    nodes$title <- paste("<p>", apply(temp, 1, paste0, collapse="<br>"), "</p>")
-
-    ## make visNetwork inputs: edges
-    edges <- x$contacts
-    if (x$directed) {
+      ## make visNetwork inputs: nodes
+      nodes <- data.frame(id=unique(c(x$linelist$id,x$contacts$from,x$contacts$to)))
+      nodes$label <- nodes$id
+      ## join back to linelist to retrieve attributes for grouping
+      nodes <- suppressMessages(suppressWarnings(dplyr::left_join(nodes,x$linelist)))
+      nodes$group <- as.character(nodes[,group])
+      nodes$group[is.na(nodes$group)] <- "NA"
+      nodes$group <- factor(nodes$group)
+      
+      ## get annotations
+      temp <- nodes[, annot, drop=FALSE]
+      temp <- sapply(names(temp), function(e) paste(e, temp[,e], sep=": "))
+      nodes$title <- paste("<p>", apply(temp, 1, paste0, collapse="<br>"), "</p>")
+      
+      ## make visNetwork inputs: edges
+      edges <- x$contacts
+      if (x$directed) {
         edges$arrows <- "to"
-    }
-
-    ## OUTPUT
-
-    ## visNetwork output
-    out <- visNetwork::visNetwork(nodes, edges,
-                                  width=width, height=height, ...)
-
-    ## add group info/color
-    K <- length(unique(nodes$group))
-    grp.col <- col_pal(K)
-    grp.col[levels(nodes$group)=="NA"] <- NA_col
-    for(i in seq_len(K)){
+      }
+      
+      ## OUTPUT
+      
+      ## visNetwork output
+      out <- visNetwork::visNetwork(nodes, edges,
+        width=width, height=height, ...)
+      
+      ## add group info/color
+      K <- length(unique(nodes$group))
+      grp.col <- col_pal(K)
+      grp.col[levels(nodes$group)=="NA"] <- NA_col
+      for(i in seq_len(K)){
         out <- out %>% visNetwork::visGroups(groupname = levels(nodes$group)[i], color = grp.col[i])
-    }
-
-    ## add legend
-    if (legend && K<legend_max) {
+      }
+      
+      ## add legend
+     if (legend && K<legend_max) {
         out <- out %>% visNetwork::visLegend()
-    }
-
-    ## ## add selector / editor
-    ## if (selector) {
-    ##     selectedBy <- "group"
-    ## } else {
-    ##     selectedBy <- NULL
-    ## }
-    ## out <- out %>% visNetwork::visOptions(selectedBy=selectedBy, manipulation=editor)
-
-    ## set nodes borders
-    out <- out %>% visNetwork::visNodes(borderWidth=2)
-
-    ## options
-    out <- out %>% visNetwork::visOptions(highlightNearest=TRUE)
-
-    if (selector) {
-        out <- out %>% visNetwork::visOptions(selectedBy="group",
-                                              manipulation=editor, highlightNearest=TRUE)
-    } else if (editor) {
+      }
+      
+      ## set nodes borders
+      out <- out %>% visNetwork::visNodes(borderWidth=2)
+      
+      ## options
+      out <- out %>% visNetwork::visOptions(highlightNearest=TRUE)
+      
+      if (selector) {
+        out <- out %>% visNetwork::visOptions(selectedBy=group,
+          manipulation=editor, highlightNearest=list(enabled = TRUE))
+      } else if (editor) {
         out <- out %>% visNetwork::visOptions(manipulation=TRUE,
-                                              highlightNearest=TRUE)
+          highlightNearest=list(enabled = TRUE))
     }
-
+      
     return(out)
 }
