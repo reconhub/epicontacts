@@ -8,11 +8,13 @@
 #'
 #' @param epi_contacts an \code{\link{epi_contacts}} object
 #'
-#' @param label_column the column name in \code{linelist} to be used for node labels. Default is \code{id}
+#' @param label_column the column name in \code{linelist} to be used for node
+#'     labels. Default is \code{id}
 #'
 #' @param v_col_by the column name in \code{linelist} to be used for node colors
 #'
-#' @param v.col the color of all nodes in graph, unless \code{v_col_by} is defined. Default is 'darkturquoise'
+#' @param v.col the color of all nodes in graph, unless \code{v_col_by} is
+#'     defined. Default is 'darkturquoise'
 #'
 #' @param g.title the title of the graph, if needed
 #'
@@ -35,8 +37,12 @@
 #' (If you don't see your widget plot, try printing it with the \code{print} function.)
 #'
 #' @references
-#' Original three.js code by David Piegza: \url{https://github.com/davidpiegza/Graph-Visualization}.
-#' Original rthreejs code by B. W. Lewis: \url{https://github.com/bwlewis/rthreejs}.
+#'
+#' Original three.js code by David Piegza:
+#'     \url{https://github.com/davidpiegza/Graph-Visualization}.
+#'
+#' Original rthreejs code by B. W. Lewis:
+#' \url{https://github.com/bwlewis/rthreejs}.
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -62,8 +68,10 @@ graph3D <- function(epi_contacts,
                     v.size = 1,
                     e.size = .5) {
 
-    ## Create igraph object to pass on as data for 3D graph (because original epi_contacts object
-    ## may contain NA's, which will hinder creation of 3D graph with threejs::graphjs()
+    ## Create igraph object to pass on as data for 3D graph (because original
+    ## epi_contacts object may contain NA's, which will hinder creation of 3D
+    ## graph with threejs::graphjs()
+
     x <- as.igraph.epi_contacts(epi_contacts)
 
     ## Get vertex attributes and prepare as input for graph
@@ -107,7 +115,8 @@ graph3D <- function(epi_contacts,
     v <- v[ , c("label", "id", "size", "color")]
 
     ## Create 3D graph
-    g <- threejs::graphjs(edges = e, nodes = v, main = g.title, showLabels=FALSE, fg = g.fg, bg = g.bg)
+    g <- threejs::graphjs(edges = e, nodes = v, main = g.title,
+                          showLabels=FALSE, fg = g.fg, bg = g.bg)
     return(g)
 }
 

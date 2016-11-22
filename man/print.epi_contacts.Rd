@@ -12,8 +12,8 @@
 \item{...}{further parameters to be passed to other methods (currently not used)}
 }
 \description{
-This method prints the content of \code{epi_contacts} objects, giving a brief summary of the
-reported cases and contacts.
+This method prints the content of \code{epi_contacts} objects, giving a brief
+summary of the reported cases and contacts.
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})

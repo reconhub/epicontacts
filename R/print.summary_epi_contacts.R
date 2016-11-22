@@ -1,6 +1,7 @@
 #' Print method for summary_epi_contacts objects
 #'
-#' This method outputs a printed summary of the content of \code{summary_epi_contacts} objects.
+#' This method outputs a printed summary of the content of
+#' \code{summary_epi_contacts} objects.
 #'
 #' @export
 #'

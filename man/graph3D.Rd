@@ -11,11 +11,13 @@ graph3D(epi_contacts, label_column = "id", v_col_by = "NA",
 \arguments{
 \item{epi_contacts}{an \code{\link{epi_contacts}} object}
 
-\item{label_column}{the column name in \code{linelist} to be used for node labels. Default is \code{id}}
+\item{label_column}{the column name in \code{linelist} to be used for node
+labels. Default is \code{id}}
 
 \item{v_col_by}{the column name in \code{linelist} to be used for node colors}
 
-\item{v.col}{the color of all nodes in graph, unless \code{v_col_by} is defined. Default is 'darkturquoise'}
+\item{v.col}{the color of all nodes in graph, unless \code{v_col_by} is
+defined. Default is 'darkturquoise'}
 
 \item{g.title}{the title of the graph, if needed}
 
@@ -59,7 +61,10 @@ g <- graph3D(x_subset)
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
 }
 \references{
-Original three.js code by David Piegza: \url{https://github.com/davidpiegza/Graph-Visualization}.
-Original rthreejs code by B. W. Lewis: \url{https://github.com/bwlewis/rthreejs}.
+Original three.js code by David Piegza:
+    \url{https://github.com/davidpiegza/Graph-Visualization}.
+
+Original rthreejs code by B. W. Lewis:
+\url{https://github.com/bwlewis/rthreejs}.
 }
 

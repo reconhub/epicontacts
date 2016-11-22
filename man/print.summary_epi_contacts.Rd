@@ -12,7 +12,8 @@
 \item{...}{further parameters to be passed to other methods (currently not used)}
 }
 \description{
-This method outputs a printed summary of the content of \code{summary_epi_contacts} objects.
+This method outputs a printed summary of the content of
+\code{summary_epi_contacts} objects.
 }
 \author{
 VP Nagraj (\email{vpnagraj@virginia.edu})

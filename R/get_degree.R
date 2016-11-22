@@ -1,8 +1,9 @@
 #' Find node degree for epi_contacts objects
 #'
-#' This function computes the number of contacts per cases in a \code{\link{epi_contacts}}
-#' dataset. Whenever contacts are directed, the argument 'type' can be used to specify which kind of
-#' contact should be considered: 'in' (towards the case), 'out' (from the case), or 'both'.
+#' This function computes the number of contacts per cases in a
+#' \code{\link{epi_contacts}} dataset. Whenever contacts are directed, the
+#' argument 'type' can be used to specify which kind of contact should be
+#' considered: 'in' (towards the case), 'out' (from the case), or 'both'.
 #'
 #' @export
 #'
@@ -10,11 +11,11 @@
 #'
 #' @param x an \code{\link{epi_contacts}} object
 #'
-#' @param type the type of degree to be computed (see description); if contacts are not directed,
-#' this will be forced to 'both'
+#' @param type the type of degree to be computed (see description); if contacts
+#'     are not directed, this will be forced to 'both'
 #'
-#' @param only_linelist a logical indicating if cases whose degree is computed should be from the
-#' linelist exclusively
+#' @param only_linelist a logical indicating if cases whose degree is computed
+#'     should be from the linelist exclusively
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -57,7 +58,9 @@ get_degree <- function(x, type=c("in", "out", "both"), only_linelist=FALSE){
         out <- vapply(all_nodes, function(e) sum(e==x$contacts$from), FUN.VALUE=0L)
     }
     if (type=="both") {
-        out <- vapply(all_nodes, function(e) sum(e==c(x$contacts$from, x$contacts$to)), FUN.VALUE=0L)
+        out <- vapply(all_nodes,
+                      function(e) sum(e==c(x$contacts$from, x$contacts$to)),
+                      FUN.VALUE=0L)
     }
 
 

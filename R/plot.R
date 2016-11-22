@@ -1,7 +1,7 @@
 #' Plot epi_contacts objects
 #'
-#' This function plots \code{\link{epi_contacts}} objects using various approaches. The default
-#' method uses \code{\link{vis_epi_contacts}}.
+#' This function plots \code{\link{epi_contacts}} objects using various
+#' approaches. The default method uses \code{\link{vis_epi_contacts}}.
 #'
 #' @export
 #'

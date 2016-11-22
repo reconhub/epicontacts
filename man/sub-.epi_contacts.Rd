@@ -12,34 +12,36 @@
 
 \item{i}{a character vector containing case ID to be retained in the linelist}
 
-\item{j}{a character vector containing case ID to be retained in the contacts; defaults to the
-same as \code{i}}
+\item{j}{a character vector containing case ID to be retained in the
+contacts; defaults to the same as \code{i}}
 
-\item{contacts}{a character string indicating on which basis contacts are retained (see details)}
+\item{contacts}{a character string indicating on which basis contacts are
+retained (see details)}
 
-\item{k}{an integer, logical, or character vector subsetting the supplementary columns of
-\code{x$linelist}, i.e. the columns after 'id'; i.e. \code{k=1} refers to the column immediately
-after 'id'.}
+\item{k}{an integer, logical, or character vector subsetting the
+supplementary columns of \code{x$linelist}, i.e. the columns after 'id';
+i.e. \code{k=1} refers to the column immediately after 'id'.}
 
-\item{l}{an integer, logical, or character vector subsetting the supplementary columns of
-\code{x$contacts}, i.e. the columns after 'from' and 'to'; i.e. \code{l=1} refers to the column
-immediately after 'to'.}
+\item{l}{an integer, logical, or character vector subsetting the
+supplementary columns of \code{x$contacts}, i.e. the columns after 'from'
+and 'to'; i.e. \code{l=1} refers to the column immediately after 'to'.}
 
 \item{...}{not used (there for compatibility with generic)}
 }
 \description{
-The "[" operator can be used to subset \code{\link{epi_contacts}} objects, retaining a specified
-set of case identifiers (\code{i} for the linelist, \code{j} for contacts). Note that unlike most
-classical R objects, there is no replacement method for \code{\link{epi_contacts}} objects,
-i.e. no operations such as \code{foo[i] <- bar}.
+The "[" operator can be used to subset \code{\link{epi_contacts}} objects,
+retaining a specified set of case identifiers (\code{i} for the linelist,
+\code{j} for contacts). Note that unlike most classical R objects, there is
+no replacement method for \code{\link{epi_contacts}} objects, i.e. no
+operations such as \code{foo[i] <- bar}.
 }
 \details{
 Details on the 'contacts' argument; possible values are:
 \itemize{
-\item{'both'}{contacts are retained only if both cases are in the subset}
-\item{'either'}{contacts are retained if at least one of the cases is in the subset}
-\item{'from'}{contacts are retained only if the source ('from') is in the subset}
-\item{'to'}{contacts are retained only if the recipient ('to') is in the subset}
+\item 'both': contacts are retained only if both cases are in the subset
+\item 'either': contacts are retained if at least one of the cases is in the subset
+\item 'from': contacts are retained only if the source ('from') is in the subset
+\item 'to': contacts are retained only if the recipient ('to') is in the subset
 }
 }
 \examples{

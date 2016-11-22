@@ -1,8 +1,9 @@
 #' Characterise contacts by comparing case attributes
 #'
-#' This function extract attributes of cases involved in contacts using case information provided in
-#' the linelist of an \code{\link{epi_contacts}} dataset. If not provided, the function used to
-#' process attributes will adjust to the type of attribute selected (see details).
+#' This function extract attributes of cases involved in contacts using case
+#' information provided in the linelist of an \code{\link{epi_contacts}}
+#' dataset. If not provided, the function used to process attributes will adjust
+#' to the type of attribute selected (see details).
 #'
 #' @export
 #'
@@ -16,9 +17,9 @@
 #'
 #' @param f a function processing the attributes of 'from' and 'to'
 #'
-#' @param hard_NA a logical indicating if the output should be NA whenever one of the paired values
-#' is NA (TRUE, default); otherwise, 'NA' may be treated as another character (e.g. when pasting paired
-#' values)
+#' @param hard_NA a logical indicating if the output should be NA whenever one
+#'     of the paired values is NA (TRUE, default); otherwise, 'NA' may be
+#'     treated as another character (e.g. when pasting paired values)
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -43,10 +44,11 @@
 #' fisher.test(get_pairwise(x, "sex", f=table)) # test association
 #' }
 get_pairwise <- function(x, attribute, f=NULL, hard_NA=TRUE){
-    ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of
-    ## the contacts. 'f' is the function processing these paired values, with some pre-defined
-    ## behaviours for some types (dates, numeric); 'hard_NA' defines the behaviour for NAs, and if
-    ## TRUE will enforce a NA wherever the pair contained at least one NA.
+    ## This function pulls values of a variable defined in the linelist for the
+    ## 'from' and 'to' of the contacts. 'f' is the function processing these
+    ## paired values, with some pre-defined behaviours for some types (dates,
+    ## numeric); 'hard_NA' defines the behaviour for NAs, and if TRUE will
+    ## enforce a NA wherever the pair contained at least one NA.
 
     ## checks
     if (!inherits(x, "epi_contacts")) {
