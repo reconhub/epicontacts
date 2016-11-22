@@ -37,10 +37,12 @@
 #' \item{'to'}{contacts are retained only if the recipient ('to') is in the subset}
 #' }
 #' @examples
+#' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
+#' }
 "[.epi_contacts" <- function(x, i, j=i, contacts=c("both","either","from","to"),
                              k=TRUE, l=TRUE, ...){
     ## In all the following, i is used to subset the linelist, j to subset contacts. The variable

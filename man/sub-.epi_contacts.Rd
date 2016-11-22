@@ -43,10 +43,12 @@ Details on the 'contacts' argument; possible values are:
 }
 }
 \examples{
+if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
+}
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})

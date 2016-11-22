@@ -22,6 +22,7 @@
 #' all clusters of specified cluster sizes.
 #'
 #' @examples
+#' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
@@ -42,7 +43,7 @@
 #'
 #' ## subset based on maximum cluster size
 #' x_subset <- subset_clusters_by_size(x, cs_max = 9)
-
+#' }
 
 subset_clusters_by_size <- function(x, cs = NULL, cs_min = NULL, cs_max = NULL){
 

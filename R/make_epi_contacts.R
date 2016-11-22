@@ -57,6 +57,7 @@
 #'     \url{http://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
 #'
 #' @examples
+#' if (require(outbreaks)) {
 #' ## make epi_contacts object from simulated Ebola data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts)
 #'
@@ -71,7 +72,7 @@
 #'                        to="case.id", from="infector")
 #' head(x$linelist)
 #' head(x$contacts)
-#'
+#' }
 make_epi_contacts <- function(linelist, contacts=NULL, id=1L, from=1L, to=2L, directed=FALSE){
     
     ## We read data from linelist, which needs to contain at least one case, and

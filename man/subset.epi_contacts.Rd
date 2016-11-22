@@ -37,7 +37,7 @@ defined by ids (returning clusters of cases connected to specified cases) or clu
 cluster of a specific, minimum or maximum size).
 }
 \examples{
-
+if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 id="case.id", to="case.id", from="infector", directed=FALSE)
@@ -60,6 +60,7 @@ x_subset <- subset(x, cs_min = 10)
 
 ## subset based on maximum cluster size
 x_subset <- subset(x, cs_max = 9)
+}
 }
 \author{
 Finlay Campbell (\email{f.campbell15@imperial.ac.uk}), Nistara Randhawa (\email{nrandhawa@ucdavis.edu})

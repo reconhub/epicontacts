@@ -13,6 +13,7 @@
 #' corresponding to cluster membership and size.
 #'
 #' @examples
+#' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
@@ -20,7 +21,7 @@
 #'
 #' ## add cluster membership and sizes to epi_contacts 'linelist'
 #' x_clusters <- get_clusters(x)
-#'
+#' }
 
 
 get_clusters <- function(epi_contacts){

@@ -21,6 +21,7 @@
 #' values)
 #'
 #' @examples
+#' if (require(outbreaks)) {
 #' ## example using MERS outbreak in Korea, 2014
 #' head(mers_kor_14[[1]])
 #' head(mers_kor_14[[2]])
@@ -40,7 +41,7 @@
 #'
 #' get_pairwise(x, "sex", f=table) # use custom function
 #' fisher.test(get_pairwise(x, "sex", f=table)) # test association
-#'
+#' }
 get_pairwise <- function(x, attribute, f=NULL, hard_NA=TRUE){
     ## This function pulls values of a variable defined in the linelist for the 'from' and 'to' of
     ## the contacts. 'f' is the function processing these paired values, with some pre-defined

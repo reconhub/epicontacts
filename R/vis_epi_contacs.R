@@ -43,6 +43,7 @@
 #' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
 #'
 #' @examples
+#' if (require(outbreaks)) {
 #'
 #' ## example using MERS outbreak in Korea, 2014
 #' head(mers_kor_14[[1]])
@@ -55,6 +56,7 @@
 #' plot(x)
 #' plot(x, group="place_infect")
 #' plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
+#' }
 #' }
 vis_epi_contacts <- function(x, group="id", annot=c("id"),
                              legend=TRUE, legend_max=10,

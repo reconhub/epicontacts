@@ -31,7 +31,7 @@
 #' @param ... further arguments passed on to other methods
 #' 
 #' @examples
-#' 
+#' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #' id="case.id", to="case.id", from="infector", directed=FALSE)
@@ -54,7 +54,7 @@
 #'
 #' ## subset based on maximum cluster size
 #' x_subset <- subset(x, cs_max = 9)
-
+#' }
 
 subset.epi_contacts <- function(x,node.attribute=NULL,edge.attribute=NULL,cluster_id=NULL,
                                 cs=NULL,cs_min=NULL,cs_max=NULL,...){

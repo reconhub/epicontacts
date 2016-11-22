@@ -21,6 +21,7 @@ This function subsets an \code{\link{epi_contacts}} object by identifying cluste
 connected to specified cases.
 }
 \examples{
+if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
@@ -33,6 +34,7 @@ id <- "cac51e" ## it can be a vector of id as well
 ## subset based on cluster to which "cac51e" belongs
 x_subset <- subset_clusters_by_id(x, id)
 
+}
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
