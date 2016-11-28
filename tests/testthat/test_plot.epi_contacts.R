@@ -8,6 +8,6 @@ test_that("Plot argument matching works", {
     id="case.id", to="case.id", from="infector",
     directed=FALSE)
   
-  expect_error(plot(x, y = "visNetwor"))
+  expect_error(plot(x, y = "foobar"))
   
 })
