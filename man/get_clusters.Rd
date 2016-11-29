@@ -28,7 +28,7 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 y <- get_clusters(x, output = "epi_contacts")
 
 ## return a data.frame with linelist member ids and cluster memberships as factors
-z <- y <- get_clusters(x, output = "factor")
+z <- get_clusters(x, output = "factor")
 }
 }
 \author{

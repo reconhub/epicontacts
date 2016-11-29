@@ -23,9 +23,8 @@
 #' y <- get_clusters(x, output = "epi_contacts")
 #'
 #' ## return a data.frame with linelist member ids and cluster memberships as factors
-#' z <- y <- get_clusters(x, output = "factor")
+#' z <- get_clusters(x, output = "factor")
 #' }
-
 
 get_clusters <- function(epi_contacts, output = c("epi_contacts", "factor")){
     output <- match.arg(output)
@@ -39,7 +38,7 @@ get_clusters <- function(epi_contacts, output = c("epi_contacts", "factor")){
                             stringsAsFactors = FALSE)
     
     net_nodes <- dplyr::left_join(net_nodes, cs_size, by = "cluster_member")
-    if(output == "epi_contact") {
+    if(output == "epi_contacts") {
         epi_contacts$linelist <- dplyr::left_join(epi_contacts$linelist, net_nodes, by = "id")
         return(epi_contacts)
     } else {
