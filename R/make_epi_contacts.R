@@ -73,15 +73,14 @@
 #' head(x$linelist)
 #' head(x$contacts)
 #' }
-make_epi_contacts <- function(linelist, contacts=NULL, id=1L, from=1L, to=2L, directed=FALSE){
+make_epi_contacts <- function(linelist, contacts, id=1L, from=1L, to=2L, directed=FALSE){
     
     ## We read data from linelist, which needs to contain at least one case, and
-    ## contacts, which are optional. Sanity checks will include standard class
+    ## contacts. Sanity checks will include standard class
     ## and dimensionality checks, as well as uniqueness of IDs in the line list,
     ## and enforcing 'character' type for the unique IDs, and naming the case ID
     ## field 'id'. We also reorder data so that the first column of 'linelist'
     ## is 'id', and the first two columns of 'contacts' are 'from' and 'to'
-
 
     ## process linelist ##
     ## checks
@@ -113,11 +112,15 @@ make_epi_contacts <- function(linelist, contacts=NULL, id=1L, from=1L, to=2L, di
     names(linelist)[id] <- "id"
     linelist <- linelist[, c(id, setdiff(seq_len(ncol(linelist)), id))]
 
-
     ## process contacts ##
     ## checks
+    
+    if (is.null(contacts)) {
+        stop("contacts is NULL")
+    }
+    
     if (length(contacts)==1 && is.na(contacts)) {
-        contacts <- NULL
+        stop("contacts is NA")
     }
     if (!is.null(contacts)){
         if(nrow(contacts) < 1L) {
@@ -126,7 +129,6 @@ make_epi_contacts <- function(linelist, contacts=NULL, id=1L, from=1L, to=2L, di
         if (ncol(contacts) < 2L) {
             stop("contacts should have at least two columns")
         }
-
 
         ## reordering
         if (is.character(from)) {
