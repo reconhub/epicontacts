@@ -1,17 +1,16 @@
 #' Assign cluster IDs to epi_contacts data
 #'
-#' This function assigns clusters and respective cluster sizes to the
-#' epi_contacts linelist. These cluster memberships and sizes are derived from
-#' the graph clusters in the epi_contacts 'contacts' dataframe.
+#' This function identifies transitive clusters (i.e. connected components) and adds this information to the linelist data.
 #'
 #' @export
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
-#' @param epi_contacts an \code{\link{epi_contacts}} object
+#' @param epi_contacts an \code{\link{epi_contacts}} object.
 #'
-#' @return An \code{\link{epi_contacts}} object whose 'linelist' dataframe contains new columns
-#' corresponding to cluster membership and size.
+#' @param output either an \code{\link{epi_contacts}} object or a \link{factor} containing cluster memberships to which members of \code{\link{epi_contacts}} linelist belong to.
+#'
+#' @return An \code{\link{epi_contacts}} object whose 'linelist' dataframe contains new columns corresponding to cluster membership and size, or a \link{data.frame} containing member ids, cluster memberships as factors, and associated cluster sizes.
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -21,11 +20,15 @@
 #'                        directed=TRUE)
 #'
 #' ## add cluster membership and sizes to epi_contacts 'linelist'
-#' x_clusters <- get_clusters(x)
+#' y <- get_clusters(x, output = "epi_contacts")
+#'
+#' ## return a data.frame with linelist member ids and cluster memberships as factors
+#' z <- y <- get_clusters(x, output = "factor")
 #' }
 
 
-get_clusters <- function(epi_contacts){
+get_clusters <- function(epi_contacts, output = c("epi_contacts", "factor")){
+    output <- match.arg(output)
     net <- as.igraph.epi_contacts(epi_contacts)
     cs <- igraph::clusters(net)
     cs_size <- data.frame(cluster_member = seq_along(cs$csize),
@@ -36,9 +39,14 @@ get_clusters <- function(epi_contacts){
                             stringsAsFactors = FALSE)
     
     net_nodes <- dplyr::left_join(net_nodes, cs_size, by = "cluster_member")
-    epi_contacts$linelist <- dplyr::left_join(epi_contacts$linelist,
-                                              net_nodes, by = "id")
-
-    return(epi_contacts)
+    if(output == "epi_contact") {
+        epi_contacts$linelist <- dplyr::left_join(epi_contacts$linelist, net_nodes, by = "id")
+        return(epi_contacts)
+    } else {
+        f <- net_nodes[ net_nodes$id %in% epi_contacts$linelist$id, ]
+        f$cluster_member <- as.factor(f$cluster_member)
+        return(f)
+    }
 }
+
 
