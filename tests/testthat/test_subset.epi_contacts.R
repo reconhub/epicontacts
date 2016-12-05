@@ -17,22 +17,22 @@ test_that("Return errors / warnings when expected", {
   expect_error(subset.epi_contacts(x,
                                    node.attribute=list("gende"="f"),
                                    edge.attribute=list("source"="funeral")),
-               "Node attribute name is not found in dataset")
+               "gende is not an attribute found in dataset")
 
   expect_error(subset.epi_contacts(x,
                                    node.attribute=list("gender"="f"),
                                    edge.attribute=list("sourc"="funeral")),
-               "Edge attribute name is not found in dataset")
+               "sourc is not an attribute found in dataset")
 
   expect_error(subset.epi_contacts(x,
                                    node.attribute=list("gender"="n"),
                                    edge.attribute=list("source"="funeral")),
-               "Node attribute value is not found in dataset")
+               "Value for gender is not found in dataset")
 
   expect_error(subset.epi_contacts(x,
                                    node.attribute=list("gender"="f"),
                                    edge.attribute=list("source"="funera")),
-               "Edge attribute value is not found in dataset")
+               "Value for source is not found in dataset")
 
   expect_error(subset.epi_contacts(x,
                                    node.attribute=c("gender"),
@@ -47,12 +47,19 @@ test_that("Return errors / warnings when expected", {
   expect_error(subset.epi_contacts(x,
                                    node.attribute=list("gender"="f","date.of.infection"=c("2014-04-08","2015-03-28")),
                                    edge.attribute=list("source"="funeral")),
-               "Date node attributes must be provided as date object")
+               "date.of.infection must be provided as a date object")
 
   expect_error(subset.epi_contacts(x,
-                                   node.attribute=list("gender"="f","date.of.infection"=as.Date("2014-04-08")),
+                                   node.attribute=list("gender"="f",
+                                                       "date.of.infection"=as.Date(c("1990-04-08","1990-03-28"))),
                                    edge.attribute=list("source"="funeral")),
-               "Node attribute of class date must contain a start and end date")
+               "Dates provided for date.of.infection fall outside the range of the dataset")
+
+  expect_warning(subset.epi_contacts(x,
+                                     node.attribute=list("gender"="f",
+                                     "date.of.infection"=as.Date(c("2014-04-08","2014-04-08","2014-04-08"))),
+                                     edge.attribute=list("source"="funeral")),
+               "More than two date values provided for date.of.infection, using first two")
 
   expect_warning(subset.epi_contacts(x),
                 "No subsetting attributes provided, returning unmodified epi.contact object")
