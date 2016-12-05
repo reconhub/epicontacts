@@ -27,15 +27,18 @@
 #'                        directed=TRUE)
 #'
 #' ## get identifiers
-#' id1 <- get_id(x)
+#' id1 <- get_id(x, "linelist")
 #' id2 <- get_id(x, "contacts")
 #' id3 <- get_id(x, "all")
 #' id4 <- get_id(x, "common")
 #'
+#' ## check intersections and unions
+#' all.equal(union(id1, id2), id3)
+#' all.equal(intersect(id1, id2), id4)
+#'
 #' }
 #'
-#' ## check intersections and unions
-#'
+
 get_id <- function(x, which = c("linelist", "contacts", "all", "common", "from", "to")){
     ## Issues with linelist and contacts is that there is no telling how much
     ## overlap there are between the two datasets; whenever looking for a list

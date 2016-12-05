@@ -2,7 +2,8 @@
 #'
 #' This function reads data stored as data.frame containing linelist (case
 #' information, where each row corresponds to a unique patient), and contacts
-#' between patients. See details for expected data formats.
+#' between patients. Common identifiers should be used in the two data sources
+#' for matching to be achieved.
 #'
 #' @export
 #'
@@ -21,9 +22,11 @@
 #'     contains unique identifiers; default is first column in \code{linelist}
 #'     data frame
 #'
-#' @param from an index or name indicating which column in \code{contacts} contains the first case of a contact
+#' @param from an index or name indicating which column in \code{contacts}
+#'     contains the first case of a contact
 #'
-#' @param to an index or name indicating which column in \code{contacts} contains the second case of a contact
+#' @param to an index or name indicating which column in \code{contacts}
+#'     contains the second case of a contact
 #'
 #' @param directed a logical indicating if contacts are directed or not; default
 #'     is \code{FALSE} but note that contacts will be indicated as 'from' and
@@ -44,14 +47,16 @@
 #' 
 #' @details
 #'
-#' An \code{epi_contacts} object requires two components: a line list and a
-#' contact list. These are common formats in epidemiological outbreak
-#' analysis, and should be provided to the \code{make_epi_contacts} function
-#' as \link{data.frame} objects. Each row of the line list should contain
-#' unique observations of cases in the outbreak with unique features of case
-#' in columns. Each row of the contact list should contain unique pairs of
-#' contacts with unique features of contact in columns. The line list and
-#' contact list should share an identification scheme for individuals.
+#' An \code{epi_contacts} object can be created from two components:
+#' \itemize{
+#' \item a linelist provided as a \code{data.frame} where columns are
+#' different variables describing cases, and where each row is a different case.
+#' and a contact list.
+#' 
+#' \item a contact list provided as a \code{data.frame} where each row contains
+#' unique pairs of contacts with unique features of contact in columns. The line
+#' list and contact list should share an identification scheme for individuals.
+#' }
 #'
 #' @references
 #'     \url{http://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
@@ -73,7 +78,8 @@
 #' head(x$linelist)
 #' head(x$contacts)
 #' }
-make_epi_contacts <- function(linelist, contacts, id=1L, from=1L, to=2L, directed=FALSE){
+make_epi_contacts <- function(linelist, contacts, id=1L, from=1L, to=2L,
+                              directed=FALSE){
     
     ## We read data from linelist, which needs to contain at least one case, and
     ## contacts. Sanity checks will include standard class

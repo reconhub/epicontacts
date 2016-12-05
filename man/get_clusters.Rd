@@ -4,19 +4,18 @@
 \alias{get_clusters}
 \title{Assign cluster IDs to epi_contacts data}
 \usage{
-get_clusters(epi_contacts)
+get_clusters(epi_contacts, output = c("epi_contacts", "factor"))
 }
 \arguments{
-\item{epi_contacts}{an \code{\link{epi_contacts}} object}
+\item{epi_contacts}{an \code{\link{epi_contacts}} object.}
+
+\item{output}{either an \code{\link{epi_contacts}} object or a \link{factor} containing cluster memberships to which members of \code{\link{epi_contacts}} linelist belong to.}
 }
 \value{
-An \code{\link{epi_contacts}} object whose 'linelist' dataframe contains new columns
-corresponding to cluster membership and size.
+An \code{\link{epi_contacts}} object whose 'linelist' dataframe contains new columns corresponding to cluster membership and size, or a \link{data.frame} containing member ids, cluster memberships as factors, and associated cluster sizes.
 }
 \description{
-This function assigns clusters and respective cluster sizes to the
-epi_contacts linelist. These cluster memberships and sizes are derived from
-the graph clusters in the epi_contacts 'contacts' dataframe.
+This function identifies transitive clusters (i.e. connected components) and adds this information to the linelist data.
 }
 \examples{
 if (require(outbreaks)) {
@@ -26,7 +25,10 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        directed=TRUE)
 
 ## add cluster membership and sizes to epi_contacts 'linelist'
-x_clusters <- get_clusters(x)
+y <- get_clusters(x, output = "epi_contacts")
+
+## return a data.frame with linelist member ids and cluster memberships as factors
+z <- get_clusters(x, output = "factor")
 }
 }
 \author{
