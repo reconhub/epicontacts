@@ -11,14 +11,20 @@
 \arguments{
 \item{x}{an epi_contact object to be subsetted}
 
-\item{node.attribute}{a named list defining the node attribute name and node attribute value (as a single value or vector of values).
-Dates must be provided as a vector of date objects, defining the range of dates included in the subset. If only one date is provided, only node attributes with that date will be returned.}
+\item{node.attribute}{a named list defining the node attribute name and node
+attribute value (as a single value or vector of values).  Dates must be
+provided as a vector of date objects, defining the range of dates
+included in the subset. If only one date is provided, only node
+attributes with that date will be returned.}
 
-\item{edge.attribute}{a named list defining the edge attribute name and edge attribute value (as a single value or vector of values).
-Dates must be provided as a vector of date objects, defining the range of dates included in the subset. If only one date is provided, only edge attributes with that date will be returned.}
+\item{edge.attribute}{a named list defining the edge attribute name and edge
+attribute value (as a single value or vector of values).  Dates must be
+provided as a vector of date objects, defining the range of dates
+included in the subset. If only one date is provided, only edge
+attributes with that date will be returned.}
 
-\item{cluster_id}{a character vector of case identifiers; the connected components attached to these
-cases will be retained in the output object.}
+\item{cluster_id}{a character vector of case identifiers; the connected
+components attached to these cases will be retained in the output object.}
 
 \item{cs}{cluster size to be used for subsetting}
 
@@ -29,11 +35,13 @@ cases will be retained in the output object.}
 \item{...}{further arguments passed on to other methods}
 }
 \description{
-This function subsets an \code{\link{epi_contacts}} object based on node, edge and/or cluster attributes.
-Specifying node attributes will return an \code{\link{epi_contacts}} object containing only individuals
-with these given attributes in the linelist. Specifying edge attributes will return contacts with the
-attributes provided. Specifying cluster attributes will return clusters of connected cases, and can be
-defined by ids (returning clusters of cases connected to specified cases) or cluster sizes (returning
+This function subsets an \code{\link{epi_contacts}} object based on node,
+edge and/or cluster attributes. Specifying node attributes will return an
+\code{\link{epi_contacts}} object containing only individuals with these
+given attributes in the linelist. Specifying edge attributes will return
+contacts with the attributes provided. Specifying cluster attributes will
+return clusters of connected cases, and can be defined by ids (returning
+clusters of cases connected to specified cases) or cluster sizes (returning
 cluster of a specific, minimum or maximum size).
 }
 \examples{
@@ -43,9 +51,11 @@ x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 id="case.id", to="case.id", from="infector", directed=FALSE)
 
 ## subset based on node and edge attributes
-x_subset <- subset(x, node.attribute=list("gender"="f"), edge.attribute=list("source"="funeral"))
+x_subset <- subset(x, node.attribute=list("gender"="f"),
+                   edge.attribute=list("source"="funeral"))
 
-## subset a cluster connected to a given id (can be a vector of ids as well)
+## subset a cluster connected to a given id
+## (can be a vector of ids as well)
 id <- "cac51e"
 x_subset <- subset(x, cluster_id=id)
 
@@ -63,6 +73,7 @@ x_subset <- subset(x, cs_max = 9)
 }
 }
 \author{
-Finlay Campbell (\email{f.campbell15@imperial.ac.uk}), Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
+Finlay Campbell (\email{f.campbell15@imperial.ac.uk}), Nistara
+    Randhawa (\email{nrandhawa@ucdavis.edu})
 }
 
