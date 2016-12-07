@@ -4,29 +4,32 @@
 \alias{[.epi_contacts}
 \title{Subset epi_contacts objects based on case identifiers}
 \usage{
-\method{[}{epi_contacts}(x, i, j = i, contacts = c("both", "either", "from",
-  "to"), k = TRUE, l = TRUE, ...)
+\method{[}{epi_contacts}(x, i, j, k = TRUE, l = TRUE, contacts = c("both",
+  "either", "from", "to"), ...)
 }
 \arguments{
-\item{x}{an \code{\link{epi_contacts}} object}
+\item{x}{An \code{\link{epi_contacts}} object}
 
-\item{i}{a character vector containing case ID to be retained in the linelist}
+\item{i}{A character vector containing case ID to be retained in the
+linelist; alternatively, an integer or logical vector used to subset the
+rows of the \code{$linelist} component.}
 
-\item{j}{a character vector containing case ID to be retained in the
-contacts; defaults to the same as \code{i}}
+\item{j}{A character vector containing case ID to be retained in the
+contacts; ; alternatively, an integer or logical vector used to subset
+the rows of the \code{$contacts} component.}
 
-\item{contacts}{a character string indicating on which basis contacts are
-retained (see details)}
-
-\item{k}{an integer, logical, or character vector subsetting the
+\item{k}{An integer, logical, or character vector subsetting the
 supplementary columns of \code{x$linelist}, i.e. the columns after 'id';
 i.e. \code{k=1} refers to the column immediately after 'id'.}
 
-\item{l}{an integer, logical, or character vector subsetting the
+\item{l}{An integer, logical, or character vector subsetting the
 supplementary columns of \code{x$contacts}, i.e. the columns after 'from'
 and 'to'; i.e. \code{l=1} refers to the column immediately after 'to'.}
 
-\item{...}{not used (there for compatibility with generic)}
+\item{contacts}{A character string indicating the rules for retaining
+contacts when \code{j} indicates case IDs (see details).}
+
+\item{...}{Not used (there for compatibility with generic).}
 }
 \description{
 The "[" operator can be used to subset \code{\link{epi_contacts}} objects,
@@ -38,18 +41,53 @@ operations such as \code{foo[i] <- bar}.
 \details{
 Details on the 'contacts' argument; possible values are:
 \itemize{
-\item 'both': contacts are retained only if both cases are in the subset
-\item 'either': contacts are retained if at least one of the cases is in the subset
-\item 'from': contacts are retained only if the source ('from') is in the subset
-\item 'to': contacts are retained only if the recipient ('to') is in the subset
+\item 'both': contacts are retained only if both cases are in \code{j}
+\item 'either': contacts are retained if at least one of the cases is in \code{j}
+\item 'from': contacts are retained only if the source ('from') is in \code{j}
+\item 'to': contacts are retained only if the recipient ('to') is in \code{j}
 }
 }
 \examples{
 if (require(outbreaks)) {
 ## build data
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
-                       id="case.id", to="case.id", from="infector",
-                       directed=TRUE)
+                       id = "case.id", to = "case.id", from = "infector",
+                       directed = TRUE)
+
+## subset first 10 linelist cases
+x[1:10]
+
+## same, remove contacts
+x[1:10, j = FALSE]
+
+## subset first 10 contacts
+x[j = 1:10]
+
+## remove the metadata
+x[k = FALSE, j = FALSE]
+
+## keep contacts where both cases are in linelist
+x[j = get_id(x, "linelist"), contacts = "both"]
+
+## keep contacts from a specific case '916d0a'
+x[j = "916d0a", contacts = "from"]
+
+## more complex: keep all cases and contacts with > 4 secondary contacts
+## i) find cases to keep
+temp <- table(x$contacts$from)
+temp[temp > 4]
+to.keep <- names(temp)[temp > 4]
+to.keep
+
+## subset the contacts
+y <- x[j = to.keep, contacts = "either"]
+y
+
+## keep only relevant entries in the linelist
+y <- y[i = get_id(y, "contacts")]
+
+## visualise result
+plot(y)
 }
 }
 \author{

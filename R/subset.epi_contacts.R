@@ -126,23 +126,25 @@ subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
 
     ## A function to subset a dataset (x$linelist or x$contacts) by a node or
     ## edge attribute
-    to.keep <- function(name.attribute,list.attributes,dataset) {
+    find.id.to.keep <- function(name.attribute,list.attributes,dataset) {
 
         attribute <- list.attributes[[name.attribute]]
         data <- dataset[[name.attribute]]
 
         if (inherits(attribute,"Date")) {
-            to.keep <- data >= attribute[1] & data <= attribute[2]
+            out <- data >= attribute[1] & data <= attribute[2]
         } else {
-            to.keep <- data %in% attribute
+            out <- data %in% attribute
         }
 
-        return(to.keep)
+        return(out)
     }
 
     ## Check if epi_contacts object, node.attribute and edge.attribute are
     ## provided correctly
-    if (!inherits(x, "epi_contacts")) stop("x is not an 'epi_contacts' object")
+    if (!inherits(x, "epi_contacts")) {
+        stop("x is not an 'epi_contacts' object")
+    }
     sub.attr <- c(edge.attribute, node.attribute,
                   cluster_id, cs, cs_min, cs_max)
     if (is.null(sub.attr)) {
@@ -171,27 +173,29 @@ subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
     ## Apply the subs function across all attributes provided in node.attribute
     if (!(is.null(node.attribute))) {
         for (name.attribute in names.na) {
-            to.keep <- to.keep(name.attribute,node.attribute,x$linelist)
-            x <- x[i=to.keep]
+            to.keep <- find.id.to.keep(name.attribute,node.attribute,x$linelist)
+            x <- x[i = to.keep]
         }
     }
 
     ## Apply the subs function across all attributes provided in edge.attribute
     if (!(is.null(edge.attribute))){
         for (name.attribute in names.ea) {
-            to.keep <- to.keep(name.attribute,edge.attribute,x$contacts)
-            x <- x[j=to.keep]
+            to.keep <- find.id.to.keep(name.attribute,
+                                       edge.attribute,
+                                       x$contacts)
+            x <- x[j = to.keep]
         }
     }
 
     ## Apply subset_clusters_by_id
     if (!is.null(cluster_id)) {
-        x <- subset_clusters_by_id(x,cluster_id)
+        x <- subset_clusters_by_id(x, cluster_id)
     }
 
     ## Apply subset_clusters_by_size
-    if (!is.null(c(cs,cs_min,cs_max))) {
-        x <- subset_clusters_by_size(x,cs,cs_min,cs_max)
+    if (!is.null(c(cs, cs_min, cs_max))) {
+        x <- subset_clusters_by_size(x, cs, cs_min, cs_max)
     }
 
     return(x)

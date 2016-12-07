@@ -47,7 +47,7 @@ fisher.test(get_pairwise(x, "sex", f=table)) # test association
 }
 }
 \author{
-Tom Crellen (\email{tomcrellen@gmail.com})
 Thibaut Jombart (\email{thibautjombart@gmail.com})
+Tom Crellen (\email{tomcrellen@gmail.com})
 }
 
