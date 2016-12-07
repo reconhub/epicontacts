@@ -62,7 +62,7 @@ test_that("Return errors / warnings when expected", {
                "More than two date values provided for date.of.infection, using first two")
 
   expect_warning(subset.epi_contacts(x),
-                "No subsetting attributes provided, returning unmodified epi.contact object")
+                "No subsetting attributes provided, returning input object")
 
 })
 
