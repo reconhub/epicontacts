@@ -69,31 +69,32 @@
 
 subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
                                 cluster_id = NULL, cs = NULL, cs_min = NULL,
-                                cs_max = NULL, ...){## A function to check node.attribute and edge.attribute for errors;
+                                cs_max = NULL, ...){
+    ## A function to check node.attribute and edge.attribute for errors;
     ## arguments are:
 
     ## - name.attribute is the name of the attribute being checked
     ## (e.g. "date.of.infection")
-    
+
     ## - list.attributes is the named list of attributes (either node.attribute
     ## or edge.attribute)
 
     ## - dataset is the dataframe describing the attribute values in the data
     ## (x$linelist or x$contacts)
-    
+
     check <- function(name.attribute, list.attributes, dataset) {
-        
+
         if (!name.attribute %in% names(dataset))
             stop(paste(name.attribute,"is not an attribute found in dataset"))
-        
+
         ## Attribute is a single node or edge attribute value (e.g. "f", if
         ## name.attribute is "gender")
         attribute <- list.attributes[[name.attribute]]
-        
+
         ## Data is the set of node or attribute values found in the data (e.g. a
         ## vector of infection dates)
         data <- dataset[[name.attribute]]
-        
+
         if (inherits(data,"Date")) {
             if (!inherits(attribute,"Date"))
                 stop(paste(name.attribute,"must be provided as a date object"))
@@ -115,31 +116,30 @@ subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
                 stop(paste("Dates provided for",
                            name.attribute,
                            "fall outside the range of the dataset"))
-            
+
         } else if (!attribute %in% data)
             stop(paste("Value for", name.attribute, "is not found in dataset"))
-        
+
         return(attribute)
-        
+
     }
-    
+
     ## A function to subset a dataset (x$linelist or x$contacts) by a node or
     ## edge attribute
-    subs <- function(name.attribute,list.attributes,dataset) {
-        
+    to.keep <- function(name.attribute,list.attributes,dataset) {
+
         attribute <- list.attributes[[name.attribute]]
         data <- dataset[[name.attribute]]
-        
+
         if (inherits(attribute,"Date")) {
             to.keep <- data >= attribute[1] & data <= attribute[2]
-            dataset <- dplyr::filter(dataset, to.keep)
         } else {
-            dataset <- dplyr::filter(dataset, data %in% attribute)
+            to.keep <- data %in% attribute
         }
-        
-        return(dataset)
+
+        return(to.keep)
     }
-    
+
     ## Check if epi_contacts object, node.attribute and edge.attribute are
     ## provided correctly
     if (!inherits(x, "epi_contacts")) stop("x is not an 'epi_contacts' object")
@@ -157,37 +157,42 @@ subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
         !inherits(edge.attribute,"list")) {
         stop("edge.attribute is not a list")
     }
-       
-    
+
+    names.na <- names(node.attribute)
+    names.ea <- names(edge.attribute)
+
     ## Apply checks to node.attribute and edge.attribute
-    node.attribute <- sapply(names(node.attribute), check, node.attribute,
-                             x$linelist, USE.NAMES=TRUE,simplify=FALSE)
-    edge.attribute <- sapply(names(edge.attribute), check, edge.attribute,
-                             x$contacts, USE.NAMES=TRUE, simplify=FALSE)
-    
+    node.attribute <- lapply(names.na, check, node.attribute, x$linelist)
+    names(node.attribute) <- names.na
+
+    edge.attribute <- lapply(names.ea, check, edge.attribute, x$contacts)
+    names(edge.attribute) <- names.ea
+
     ## Apply the subs function across all attributes provided in node.attribute
     if (!(is.null(node.attribute))) {
-        for (name.attribute in names(node.attribute)) {
-            x$linelist <- subs(name.attribute,node.attribute,x$linelist)
+        for (name.attribute in names.na) {
+            to.keep <- to.keep(name.attribute,node.attribute,x$linelist)
+            x <- x[i=to.keep]
         }
     }
-    
+
     ## Apply the subs function across all attributes provided in edge.attribute
     if (!(is.null(edge.attribute))){
-        for (name.attribute in names(edge.attribute)) {
-            x$contacts <- subs(name.attribute,edge.attribute,x$contacts)
+        for (name.attribute in names.ea) {
+            to.keep <- to.keep(name.attribute,edge.attribute,x$contacts)
+            x <- x[j=to.keep]
         }
     }
-    
+
     ## Apply subset_clusters_by_id
     if (!is.null(cluster_id)) {
         x <- subset_clusters_by_id(x,cluster_id)
     }
-        
+
     ## Apply subset_clusters_by_size
     if (!is.null(c(cs,cs_min,cs_max))) {
         x <- subset_clusters_by_size(x,cs,cs_min,cs_max)
     }
-    
+
     return(x)
 }
