@@ -18,22 +18,26 @@
 #'     should be from the linelist exclusively
 #'
 #' @examples
+#' ## make epi_contacts object
 #' if (require(outbreaks)) {
 #' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #' x
+#'
+#' ## compute in-degree
 #' deg_in <- get_degree(x)
-#' deg_out <- get_degree(x, "out")
-#' deg_both <- get_degree(x, "both")
-#' head(deg_in)
 #' table(deg_in)
-#' head(deg_out)
-#' table(deg_out)
-#' head(deg_both)
-#' table(deg_both)
+#'
+#' ## compute out-degree
+#' deg_out <- get_degree(x, "out")
+#' barplot(table(deg_out), main = "Reproduction number distribution")
+#' mtext(side = 3, "(based on case out-degree)")
+#' 
 #' }
-get_degree <- function(x, type=c("in", "out", "both"), only_linelist=FALSE){
+#' 
+get_degree <- function(x, type = c("in", "out", "both"),
+                       only_linelist = FALSE) {
     ## checks
     if (!inherits(x, "epi_contacts")) {
         stop("x is not an 'epi_contacts' object")
@@ -52,15 +56,17 @@ get_degree <- function(x, type=c("in", "out", "both"), only_linelist=FALSE){
 
     ## compute degrees
     if (type=="in") {
-        out <- vapply(all_nodes, function(e) sum(e==x$contacts$to), FUN.VALUE=0L)
+        out <- vapply(all_nodes, function(e) sum(e == x$contacts$to),
+                      FUN.VALUE = 0L)
     }
     if (type=="out") {
-        out <- vapply(all_nodes, function(e) sum(e==x$contacts$from), FUN.VALUE=0L)
+        out <- vapply(all_nodes, function(e) sum(e == x$contacts$from),
+                      FUN.VALUE=0L)
     }
     if (type=="both") {
         out <- vapply(all_nodes,
-                      function(e) sum(e==c(x$contacts$from, x$contacts$to)),
-                      FUN.VALUE=0L)
+                      function(e) sum(e == c(x$contacts$from, x$contacts$to)),
+                      FUN.VALUE = 0L)
     }
 
 
