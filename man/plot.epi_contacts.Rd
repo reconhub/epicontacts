@@ -12,6 +12,9 @@
 \item{y}{a character string indicating the plotting method to be used}
 
 \item{...}{further arguments passed to the plotting method}
+
+\item{thin}{A logical indicating if the data should be thinned so that only
+cases with contacts should be plotted.}
 }
 \description{
 This function plots \code{\link{epi_contacts}} objects using various
@@ -23,8 +26,8 @@ if (require(outbreaks)) {
 head(mers.korea.2015[[1]])
 head(mers.korea.2015[[2]])
 
-x <- make_epi_contacts(linelist=mers.korea.2015[[1]],
-contacts=mers.korea.2015[[2]], directed=TRUE)
+x <- make_epi_contacts(linelist = mers.korea.2015[[1]],
+                       contacts = mers.korea.2015[[2]], directed=TRUE)
 
 \dontrun{
 plot(x)

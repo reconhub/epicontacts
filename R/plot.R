@@ -9,6 +9,9 @@
 #'
 #' @param y a character string indicating the plotting method to be used
 #'
+#' @param thin A logical indicating if the data should be thinned so that only
+#'     cases with contacts should be plotted.
+#' 
 #' @param ... further arguments passed to the plotting method
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
@@ -21,8 +24,8 @@
 #' head(mers.korea.2015[[1]])
 #' head(mers.korea.2015[[2]])
 #'
-#' x <- make_epi_contacts(linelist=mers.korea.2015[[1]],
-#' contacts=mers.korea.2015[[2]], directed=TRUE)
+#' x <- make_epi_contacts(linelist = mers.korea.2015[[1]],
+#'                        contacts = mers.korea.2015[[2]], directed=TRUE)
 #'
 #' \dontrun{
 #' plot(x)
@@ -32,6 +35,9 @@
 #' }
 plot.epi_contacts <- function(x, y=c("visNetwork"), ...){
     ## checks
+    if (thin) {
+        x <- thin(x)
+    }
     y <- match.arg(y)
 
     ## make plots
