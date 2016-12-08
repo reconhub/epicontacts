@@ -137,6 +137,9 @@ subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
             out <- data %in% attribute
         }
 
+        ## Treat NA as FALSE
+        out[is.na(out)] <- FALSE
+
         return(out)
     }
 
@@ -173,7 +176,9 @@ subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
     ## Apply the subs function across all attributes provided in node.attribute
     if (!(is.null(node.attribute))) {
         for (name.attribute in names.na) {
-            to.keep <- find.id.to.keep(name.attribute,node.attribute,x$linelist)
+            to.keep <- find.id.to.keep(name.attribute,
+                                       node.attribute,
+                                       x$linelist)
             x <- x[i = to.keep]
         }
     }

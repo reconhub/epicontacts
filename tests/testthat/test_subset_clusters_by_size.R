@@ -27,7 +27,7 @@ test_that("Returns clusters with the correct size", {
     x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts, id="case.id",
                            to="case.id", from="infector", directed=FALSE)
 
-    y <- subset_clusters_by_size(x,cs_max=10)
+    y <- subset(x,cs_max=10)
     net <- as.igraph.epi_contacts(y)
     clusters <- igraph::clusters(net)
     expect_true(all(clusters$csize<=10))
