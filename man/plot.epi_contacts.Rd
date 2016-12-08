@@ -4,17 +4,17 @@
 \alias{plot.epi_contacts}
 \title{Plot epi_contacts objects}
 \usage{
-\method{plot}{epi_contacts}(x, y = c("visNetwork"), ...)
+\method{plot}{epi_contacts}(x, y = c("visNetwork"), thin = TRUE, ...)
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
 \item{y}{a character string indicating the plotting method to be used}
 
-\item{...}{further arguments passed to the plotting method}
-
 \item{thin}{A logical indicating if the data should be thinned so that only
 cases with contacts should be plotted.}
+
+\item{...}{further arguments passed to the plotting method}
 }
 \description{
 This function plots \code{\link{epi_contacts}} objects using various
@@ -31,8 +31,8 @@ x <- make_epi_contacts(linelist = mers.korea.2015[[1]],
 
 \dontrun{
 plot(x)
-plot(x, group="place_infect")
-plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
+plot(x, group = "place_infect")
+plot(x, group = "loc_hosp", legend_max = 20, annot = TRUE)
 }
 }
 }

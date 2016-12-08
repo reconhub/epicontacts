@@ -29,11 +29,11 @@
 #'
 #' \dontrun{
 #' plot(x)
-#' plot(x, group="place_infect")
-#' plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
+#' plot(x, group = "place_infect")
+#' plot(x, group = "loc_hosp", legend_max = 20, annot = TRUE)
 #' }
 #' }
-plot.epi_contacts <- function(x, y=c("visNetwork"), ...){
+plot.epi_contacts <- function(x, y = c("visNetwork"), thin = TRUE, ...){
     ## checks
     if (thin) {
         x <- thin(x)
