@@ -18,9 +18,13 @@ test_that("Thin ouputs are correct", {
     ## check outputs
     expect_equal(nrow(thin(x)$linelist), 4352)
     expect_equal(dim(thin(x)$contacts), dim(x$contacts))
-    expect_equal(dim(thin(x, 2)$contacts), dim(x$contacts))
+    expect_equal(nrow(thin(x, 2)$contacts), 2161)
 
     expect_equal(length(get_id(y, "contacts")),
                  nrow(thin(y)$linelist))
 
+    expect_true(all(get_id(thin(x)) %in% get_id(x, "contacts")))
+    expect_true(all(get_id(thin(x,2), "contacts") %in%
+                    get_id(x)))
+    
 })
