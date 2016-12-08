@@ -1,5 +1,13 @@
 
 
+```
+## Loading required package: printr
+```
+
+```
+## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called 'printr'
+```
 
 
 Welcome to the *epicontacts* package!
@@ -58,6 +66,8 @@ The main features of the package include:
 
 * **`x[i,j,contacts]`:** subset an `epi_contacts` object by retaining specified cases
 
+* **`thin`:** retains matching cases in linelist / contacts
+
 * **`summary`:** summary for  `epi_contacts` objects
 
 * **`plot`:** plot for  `epi_contacts` objects; various types of plot are available; default to `vis_epi_contacts`
@@ -93,7 +103,7 @@ More detailed tutorials are distributed as vignettes with the package:
 
 ```r
 vignette(package="epicontacts")
-#> Vignettes not found
+#> Error in find.package(package, lib.loc): there is no package called 'epicontacts'
 ```
 
 To open these, type:
