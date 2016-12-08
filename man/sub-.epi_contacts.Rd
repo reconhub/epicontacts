@@ -84,7 +84,7 @@ y <- x[j = to.keep, contacts = "either"]
 y
 
 ## keep only relevant entries in the linelist
-y <- y[i = get_id(y, "contacts")]
+y <- thin(y)
 
 ## visualise result
 plot(y)
@@ -92,5 +92,8 @@ plot(y)
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
+}
+\seealso{
+\code{\link{thin}} to retain matching cases in linelist or contacts.
 }
 

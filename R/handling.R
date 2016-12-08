@@ -41,6 +41,8 @@
 #' \item 'from': contacts are retained only if the source ('from') is in \code{j}
 #' \item 'to': contacts are retained only if the recipient ('to') is in \code{j}
 #' }
+#'
+#' @seealso \code{\link{thin}} to retain matching cases in linelist or contacts.
 #' 
 #' @examples
 #' if (require(outbreaks)) {
@@ -79,7 +81,7 @@
 #' y
 #'
 #' ## keep only relevant entries in the linelist
-#' y <- y[i = get_id(y, "contacts")]
+#' y <- thin(y)
 #'
 #' ## visualise result
 #' plot(y)
