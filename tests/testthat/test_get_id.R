@@ -48,14 +48,3 @@ test_that("Errors / warnings happen when they should", {
     expect_warning(get_id(x, "to"),
                    "x is not directed; 'to' has no particular meaning")
 })
-
-
-
-
-
-test_that("expected errors", {
-    skip_on_cran()
-    
-    expect_error(get_pairwise(NULL),
-                 "x is not an 'epi_contacts' object")
-})
