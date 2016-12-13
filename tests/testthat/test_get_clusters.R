@@ -13,7 +13,7 @@ test_that("igraph functions perform as expected", {
   
 })
 
-test_that("join of cluster id to linelist works", {
+test_that("construction of net nodes works", {
   
   skip_on_cran()
   
