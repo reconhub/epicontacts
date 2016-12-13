@@ -22,21 +22,24 @@ argument 'type' can be used to specify which kind of contact should be
 considered: 'in' (towards the case), 'out' (from the case), or 'both'.
 }
 \examples{
+## make epi_contacts object
 if (require(outbreaks)) {
 x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
 x
+
+## compute in-degree
 deg_in <- get_degree(x)
-deg_out <- get_degree(x, "out")
-deg_both <- get_degree(x, "both")
-head(deg_in)
 table(deg_in)
-head(deg_out)
-table(deg_out)
-head(deg_both)
-table(deg_both)
+
+## compute out-degree
+deg_out <- get_degree(x, "out")
+barplot(table(deg_out), main = "Reproduction number distribution")
+mtext(side = 3, "(based on case out-degree)")
+
 }
+
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})

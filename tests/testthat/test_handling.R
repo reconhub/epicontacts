@@ -1,44 +1,63 @@
-context("Subsetting epi_contacts by IDs")
+context("Handling: [ operator")
 
-test_that("Data with specified IDs are extracted fine", {
+test_that("Various subsetting using [", {
     x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
-                           id="case.id", to="case.id", from="infector",
-                           directed=TRUE)
+                           id = "case.id", to = "case.id", from = "infector",
+                           directed = TRUE)
 
-    ## get identifiers
-    x1 <- x[get_id(x, "linelist")[1:10],]
-    x2 <- x[get_id(x, "contacts")[1:10],]
-    x3 <- x[get_id(x, "contacts")[1:10], contacts="either"]
-    x4 <- x[get_id(x, "from")[1:3], contacts="from"]
-    x5 <- x[,k=1:2,l=1]
+    ## make subsets
+    x0 <- x["toto", "tata"]
+    x1 <- x[get_id(x, "linelist")[1:10]]
+    x2 <- x[j = get_id(x, "contacts")[1:10], contacts = "either"]
+    x3 <- x[j = get_id(x, "contacts")[1:10], contacts = "both"]
+    x4 <- x[j = get_id(x, "from")[1:3], contacts="from"]
+    x5 <- x[j = get_id(x, "to")[1:3], contacts="to"]
+    x6 <- x[1:3, 1:3, k = 2:1, l = 1]
+    x7 <- x[k = FALSE, l = FALSE]
 
+    expect_is(x0, "epi_contacts")
     expect_is(x1, "epi_contacts")
     expect_is(x2, "epi_contacts")
     expect_is(x3, "epi_contacts")
     expect_is(x4, "epi_contacts")
     expect_is(x5, "epi_contacts")
+    expect_is(x6, "epi_contacts")
+    expect_is(x7, "epi_contacts")
 
-    expect_equal(nrow(x1$linelist),10)
-    expect_equal(nrow(x2$linelist),7)
-    expect_equal(nrow(x3$contacts),16)
-    expect_equal(nrow(x4$linelist),2)
-    expect_equal(nrow(x4$contacts),4)
-    expect_equal(ncol(x5$linelist),3)
-    expect_equal(ncol(x5$contacts),3)
-    expect_equal(nrow(x5$linelist),nrow(x$linelist))
-    expect_equal(nrow(x5$contacts),nrow(x$contacts))
+    expect_equal(nrow(x0$linelist), 0)
+    expect_equal(nrow(x0$contacts), 0)
+    
+    expect_equal(nrow(x2$linelist), nrow(x$linelist))
+    expect_equal(nrow(x2$contacts), 16)
+
+    expect_equal(nrow(x3$linelist), nrow(x$linelist))
+    expect_true(all(get_id(x3, "contacts") %in% get_id(x, "contacts")[1:10]))
+    expect_equal(nrow(x3$contacts), 3)
+
+    expect_equal(nrow(x4$linelist), nrow(x$linelist))
+    expect_true(all(get_id(x4, "from") %in% get_id(x, "from")[1:3]))
+    expect_equal(nrow(x4$contacts), 4)
+
+    expect_equal(nrow(x5$linelist), nrow(x$linelist))
+    expect_true(all(get_id(x5, "to") %in% get_id(x, "to")[1:3]))
+    expect_equal(nrow(x5$contacts), 3)
+
+    expect_equal(dim(x6$linelist), c(3,3))
+    expect_equal(dim(x6$contacts), c(3,3))
+    expect_identical(names(x6$linelist), names(x$linelist)[c(1,3,2)])
+
+    expect_equal(dim(x7$linelist), c(nrow(x$linelist), 1))
+    expect_equal(dim(x7$contacts), c(nrow(x$contacts), 2))
+
 })
 
 test_that("Errors / warnings happen when they should", {
     x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
-                           id="case.id", to="case.id", from="infector",
-                           directed=FALSE)
+                           id = "case.id", to = "case.id", from = "infector",
+                           directed = FALSE)
 
-    expect_error(x[i=get_id(x),, contacts="tamere"],
+    expect_error(x[j = get_id(x)[1:100], contacts="tamere"],
                  ".*should be one of.*")
-
-    expect_warning(x[1,],
-                   ".*logicals and integers cannot be used to subset epi_contacts objects.*")
 })
 
 

@@ -2,7 +2,7 @@ context("Subsetting epi_contacts by node and edge attributes")
 
 test_that("Return errors / warnings when expected", {
 
- skip_on_cran()
+  skip_on_cran()
 
   x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
                          id="case.id", to="case.id", from="infector",
@@ -49,20 +49,15 @@ test_that("Return errors / warnings when expected", {
                                    edge.attribute=list("source"="funeral")),
                "date.of.infection must be provided as a date object")
 
-  expect_error(subset.epi_contacts(x,
-                                   node.attribute=list("gender"="f",
-                                                       "date.of.infection"=as.Date(c("1990-04-08","1990-03-28"))),
-                                   edge.attribute=list("source"="funeral")),
-               "Dates provided for date.of.infection fall outside the range of the dataset")
-
   expect_warning(subset.epi_contacts(x,
                                      node.attribute=list("gender"="f",
-                                     "date.of.infection"=as.Date(c("2014-04-08","2014-04-08","2014-04-08"))),
-                                     edge.attribute=list("source"="funeral")),
+                                                         "date.of.infection"=
+                                                         as.Date(c("2014-04-08","2015-03-28","2014-04-08"))),
+                                   edge.attribute=list("source"="funeral")),
                "More than two date values provided for date.of.infection, using first two")
 
   expect_warning(subset.epi_contacts(x),
-                "No subsetting attributes provided, returning unmodified epi.contact object")
+               "No subsetting attributes provided, returning input object")
 
 })
 
@@ -82,9 +77,9 @@ test_that("Returns epi_contacts object subsetted correctly", {
                            edge.attribute=list("source"="funeral"))
 
   expect_is(y,"epi_contacts")
-  expect_true(all(y$linelist$gender=="f") &
-              min(y$linelist$date.of.infection) >= dates[1] &
-              max(y$linelist$date.of.infection) <= dates[2] &
+  expect_true(all(y$linelist$gender=="f") &&
+              min(y$linelist$date.of.infection) >= dates[1] &&
+              max(y$linelist$date.of.infection) <= dates[2] &&
               all(y$contacts$source=="funeral"))
 
 })

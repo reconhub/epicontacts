@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @author
-#' Tom Crellen (\email{tomcrellen@@gmail.com})
 #' Thibaut Jombart (\email{thibautjombart@@gmail.com})
+#' Tom Crellen (\email{tomcrellen@@gmail.com})
 #'
 #' @param x an \code{\link{epi_contacts}} object
 #'

@@ -20,9 +20,11 @@ referenced in the linelist}
 contains unique identifiers; default is first column in \code{linelist}
 data frame}
 
-\item{from}{an index or name indicating which column in \code{contacts} contains the first case of a contact}
+\item{from}{an index or name indicating which column in \code{contacts}
+contains the first case of a contact}
 
-\item{to}{an index or name indicating which column in \code{contacts} contains the second case of a contact}
+\item{to}{an index or name indicating which column in \code{contacts}
+contains the second case of a contact}
 
 \item{directed}{a logical indicating if contacts are directed or not; default
 is \code{FALSE} but note that contacts will be indicated as 'from' and
@@ -45,17 +47,20 @@ considered directed or not
 \description{
 This function reads data stored as data.frame containing linelist (case
 information, where each row corresponds to a unique patient), and contacts
-between patients. See details for expected data formats.
+between patients. Common identifiers should be used in the two data sources
+for matching to be achieved.
 }
 \details{
-An \code{epi_contacts} object requires two components: a line list and a
-contact list. These are common formats in epidemiological outbreak
-analysis, and should be provided to the \code{make_epi_contacts} function
-as \link{data.frame} objects. Each row of the line list should contain
-unique observations of cases in the outbreak with unique features of case
-in columns. Each row of the contact list should contain unique pairs of
-contacts with unique features of contact in columns. The line list and
-contact list should share an identification scheme for individuals.
+An \code{epi_contacts} object can be created from two components:
+\itemize{
+\item a linelist provided as a \code{data.frame} where columns are
+different variables describing cases, and where each row is a different case.
+and a contact list.
+
+\item a contact list provided as a \code{data.frame} where each row contains
+unique pairs of contacts with unique features of contact in columns. The line
+list and contact list should share an identification scheme for individuals.
+}
 }
 \examples{
 if (require(outbreaks)) {
