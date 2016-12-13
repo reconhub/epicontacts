@@ -4,12 +4,15 @@
 \alias{plot.epi_contacts}
 \title{Plot epi_contacts objects}
 \usage{
-\method{plot}{epi_contacts}(x, y = c("visNetwork"), ...)
+\method{plot}{epi_contacts}(x, y = c("visNetwork"), thin = TRUE, ...)
 }
 \arguments{
 \item{x}{an \code{\link{epi_contacts}} object}
 
 \item{y}{a character string indicating the plotting method to be used}
+
+\item{thin}{A logical indicating if the data should be thinned so that only
+cases with contacts should be plotted.}
 
 \item{...}{further arguments passed to the plotting method}
 }
@@ -23,13 +26,13 @@ if (require(outbreaks)) {
 head(mers.korea.2015[[1]])
 head(mers.korea.2015[[2]])
 
-x <- make_epi_contacts(linelist=mers.korea.2015[[1]],
-contacts=mers.korea.2015[[2]], directed=TRUE)
+x <- make_epi_contacts(linelist = mers.korea.2015[[1]],
+                       contacts = mers.korea.2015[[2]], directed=TRUE)
 
 \dontrun{
 plot(x)
-plot(x, group="place_infect")
-plot(x, group="loc_hosp", legend_max=20, annot=TRUE)
+plot(x, group = "place_infect")
+plot(x, group = "loc_hosp", legend_max = 20, annot = TRUE)
 }
 }
 }

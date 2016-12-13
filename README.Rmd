@@ -67,6 +67,8 @@ The main features of the package include:
 
 * **`x[i,j,contacts]`:** subset an `epi_contacts` object by retaining specified cases
 
+* **`thin`:** retains matching cases in linelist / contacts
+
 * **`summary`:** summary for  `epi_contacts` objects
 
 * **`plot`:** plot for  `epi_contacts` objects; various types of plot are available; default to `vis_epi_contacts`

@@ -1,4 +1,4 @@
-context("Subsetting clusters by size")
+context("Subsetting clusters by ID")
 
 test_that("Returns clusters with the correct ids", {
 
