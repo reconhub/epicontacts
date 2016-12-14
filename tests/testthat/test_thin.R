@@ -1,7 +1,7 @@
 context("Thin")
 
 test_that("Thin ouputs are correct", {
-    x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                            id = "case.id", to = "case.id", from = "infector",
                            directed = TRUE)
 
@@ -9,7 +9,7 @@ test_that("Thin ouputs are correct", {
 
 
     ## check expected errors
-    expect_error(thin(1), "x is not an epi_contacts object")
+    expect_error(thin(1), "x is not an epicontacts object")
     msg <- paste0("Wrong values for 'what'; accepted values are:\n",
                       "'linelist', 'contact', 1, 2")       
     expect_error(thin(x, 3), msg)

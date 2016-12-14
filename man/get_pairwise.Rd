@@ -7,7 +7,7 @@
 get_pairwise(x, attribute, f = NULL, hard_NA = TRUE)
 }
 \arguments{
-\item{x}{an \code{\link{epi_contacts}} object}
+\item{x}{an \code{\link{epicontacts}} object}
 
 \item{attribute}{the attribute to be examined between contact pairs}
 
@@ -19,7 +19,7 @@ treated as another character (e.g. when pasting paired values)}
 }
 \description{
 This function extract attributes of cases involved in contacts using case
-information provided in the linelist of an \code{\link{epi_contacts}}
+information provided in the linelist of an \code{\link{epicontacts}}
 dataset. If not provided, the function used to process attributes will adjust
 to the type of attribute selected (see details).
 }
@@ -29,7 +29,7 @@ if (require(outbreaks)) {
 head(mers.korea.2015[[1]])
 head(mers.korea.2015[[2]])
 
-x <- make_epi_contacts(linelist=mers.korea.2015[[1]],
+x <- make_epicontacts(linelist=mers.korea.2015[[1]],
 contacts=mers.korea.2015[[2]], directed=TRUE)
 
 ## estimate serial interval (onset->onset)

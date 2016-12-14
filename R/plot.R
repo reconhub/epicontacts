@@ -1,11 +1,11 @@
-#' Plot epi_contacts objects
+#' Plot epicontacts objects
 #'
-#' This function plots \code{\link{epi_contacts}} objects using various
-#' approaches. The default method uses \code{\link{vis_epi_contacts}}.
+#' This function plots \code{\link{epicontacts}} objects using various
+#' approaches. The default method uses \code{\link{vis_epicontacts}}.
 #'
 #' @export
 #'
-#' @param x an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epicontacts}} object
 #'
 #' @param y a character string indicating the plotting method to be used
 #'
@@ -16,7 +16,7 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @seealso \code{\link{vis_epi_contacts}}, which uses the package \code{visNetwork}.
+#' @seealso \code{\link{vis_epicontacts}}, which uses the package \code{visNetwork}.
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -24,7 +24,7 @@
 #' head(mers.korea.2015[[1]])
 #' head(mers.korea.2015[[2]])
 #'
-#' x <- make_epi_contacts(linelist = mers.korea.2015[[1]],
+#' x <- make_epicontacts(linelist = mers.korea.2015[[1]],
 #'                        contacts = mers.korea.2015[[2]], directed=TRUE)
 #'
 #' \dontrun{
@@ -33,7 +33,7 @@
 #' plot(x, group = "loc_hosp", legend_max = 20, annot = TRUE)
 #' }
 #' }
-plot.epi_contacts <- function(x, y = c("visNetwork"), thin = TRUE, ...){
+plot.epicontacts <- function(x, y = c("visNetwork"), thin = TRUE, ...){
     ## checks
     if (thin) {
         x <- thin(x)
@@ -42,7 +42,7 @@ plot.epi_contacts <- function(x, y = c("visNetwork"), thin = TRUE, ...){
 
     ## make plots
     if (y=="visNetwork") {
-        return(vis_epi_contacts(x, ...))
+        return(vis_epicontacts(x, ...))
     }
 
 }

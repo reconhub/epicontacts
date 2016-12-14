@@ -1,18 +1,18 @@
-#' Summary method for epi_contacts objects
+#' Summary method for epicontacts objects
 #'
-#' This method outputs a summary of the content of \code{epi_contacts} objects.
+#' This method outputs a summary of the content of \code{epicontacts} objects.
 #'
 #' @export
 #'
-#' @aliases summary_epi_contacts
+#' @aliases summary_epicontacts
 #'
 #' @author VP Nagraj (\email{vpnagraj@virginia.edu})
 #'
-#' @param object an \code{\link{epi_contacts}} object
+#' @param object an \code{\link{epicontacts}} object
 #'
 #' @param ... further parameters to be passed to other methods (currently not used)
 #'
-summary.epi_contacts <- function(object, ...){
+summary.epicontacts <- function(object, ...){
 
     x <- object
 
@@ -24,6 +24,6 @@ summary.epi_contacts <- function(object, ...){
     res$contacts.attributes <- names(x$contacts[,-c(1,2)])
     res$linelist_attributes <- names(x$linelist[,-1])
 
-    class(res) <- "summary_epi_contacts"
+    class(res) <- "summary_epicontacts"
     return(res)
 }

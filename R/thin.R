@@ -1,7 +1,7 @@
 #' Thin data to retain matching linelist / contacts
 #'
 #' This function can be used to remove ('thin') data from
-#' \code{\link{epi_contacts}} objects to ensure stricter matching of linelists
+#' \code{\link{epicontacts}} objects to ensure stricter matching of linelists
 #' and contacts. It has two behaviours, triggered by the argument \code{what}:
 #' either dit thins data from \code{$linelist}, keeping only cases that are in
 #' \code{$contacts} (\code{thin = "linelist"}, default), or the converse,
@@ -11,7 +11,7 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @param x An \code{\link{epi_contacts}} object.
+#' @param x An \code{\link{epicontacts}} object.
 #'
 #' @param what A character string or integer determining which type of data is
 #'     removed ('thinned'). "linelist" / 1 indicates that only cases appearing
@@ -23,7 +23,7 @@
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id = "case.id", to = "case.id", from = "infector",
 #'                        directed = TRUE)
 #'
@@ -32,8 +32,8 @@
 #' 
 #' }
 thin <- function(x, what = "linelist") {
-    if (!inherits(x, "epi_contacts")) {
-        stop("x is not an epi_contacts object")
+    if (!inherits(x, "epicontacts")) {
+        stop("x is not an epicontacts object")
     }
 
     what <- what[1]

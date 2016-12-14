@@ -7,7 +7,7 @@
 thin(x, what = "linelist")
 }
 \arguments{
-\item{x}{An \code{\link{epi_contacts}} object.}
+\item{x}{An \code{\link{epicontacts}} object.}
 
 \item{what}{A character string or integer determining which type of data is
 removed ('thinned'). "linelist" / 1 indicates that only cases appearing
@@ -17,7 +17,7 @@ indicates that only cases appearing in \code{$linelist} are kept in
 }
 \description{
 This function can be used to remove ('thin') data from
-\code{\link{epi_contacts}} objects to ensure stricter matching of linelists
+\code{\link{epicontacts}} objects to ensure stricter matching of linelists
 and contacts. It has two behaviours, triggered by the argument \code{what}:
 either dit thins data from \code{$linelist}, keeping only cases that are in
 \code{$contacts} (\code{thin = "linelist"}, default), or the converse,
@@ -26,7 +26,7 @@ i.e. removing contacts which are not fully documented in the linelist.
 \examples{
 if (require(outbreaks)) {
 ## build data
-x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                        id = "case.id", to = "case.id", from = "infector",
                        directed = TRUE)
 

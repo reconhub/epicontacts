@@ -1,7 +1,7 @@
 context("Handling: [ operator")
 
 test_that("Various subsetting using [", {
-    x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                            id = "case.id", to = "case.id", from = "infector",
                            directed = TRUE)
 
@@ -15,14 +15,14 @@ test_that("Various subsetting using [", {
     x6 <- x[1:3, 1:3, k = 2:1, l = 1]
     x7 <- x[k = FALSE, l = FALSE]
 
-    expect_is(x0, "epi_contacts")
-    expect_is(x1, "epi_contacts")
-    expect_is(x2, "epi_contacts")
-    expect_is(x3, "epi_contacts")
-    expect_is(x4, "epi_contacts")
-    expect_is(x5, "epi_contacts")
-    expect_is(x6, "epi_contacts")
-    expect_is(x7, "epi_contacts")
+    expect_is(x0, "epicontacts")
+    expect_is(x1, "epicontacts")
+    expect_is(x2, "epicontacts")
+    expect_is(x3, "epicontacts")
+    expect_is(x4, "epicontacts")
+    expect_is(x5, "epicontacts")
+    expect_is(x6, "epicontacts")
+    expect_is(x7, "epicontacts")
 
     expect_equal(nrow(x0$linelist), 0)
     expect_equal(nrow(x0$contacts), 0)
@@ -52,7 +52,7 @@ test_that("Various subsetting using [", {
 })
 
 test_that("Errors / warnings happen when they should", {
-    x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                            id = "case.id", to = "case.id", from = "infector",
                            directed = FALSE)
 

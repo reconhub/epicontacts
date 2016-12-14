@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot epi_contacts objects using visNetwork — vis_epi_contacts • epicontacts</title>
+<title>Plot epicontacts objects using visNetwork — vis_epicontacts • epicontacts</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,15 +72,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot epi_contacts objects using visNetwork</h1>
+    <h1>Plot epicontacts objects using visNetwork</h1>
     </div>
 
     
-    <p>This function plots <code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects using the
+    <p>This function plots <code><a href='make_epicontacts.html'>epicontacts</a></code> objects using the
 <code>visNetwork</code> package.</p>
     
 
-    <pre><span class='fu'>vis_epi_contacts</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"id"</span>), <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre><span class='fu'>vis_epicontacts</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"id"</span>), <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>legend_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>col_pal</span> <span class='kw'>=</span> <span class='no'>cases_pal</span>, <span class='kw'>NA_col</span> <span class='kw'>=</span> <span class='st'>"lightgrey"</span>,
   <span class='kw'>width</span> <span class='kw'>=</span> <span class='st'>"90%"</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='st'>"700px"</span>, <span class='kw'>selector</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>editor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>)</pre>
@@ -88,7 +88,7 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>an <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object</dd>
+      <dd>an <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
       <dt>group</dt>
       <dd>an index or character string indicating which field of the
 linelist should be used to color the nodes</dd>
@@ -134,7 +134,7 @@ defaults to FALSE</dd>
 <span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
 <span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
 
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
 <span class='kw'>contacts</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
 <span class='co'>## Not run: ------------------------------------</span>

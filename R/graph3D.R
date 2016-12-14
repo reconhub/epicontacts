@@ -6,7 +6,7 @@
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
-#' @param epi_contacts an \code{\link{epi_contacts}} object
+#' @param epicontacts an \code{\link{epicontacts}} object
 #'
 #' @param label_column the column name in \code{linelist} to be used for node
 #'     labels. Default is \code{id}
@@ -47,7 +47,7 @@
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
@@ -58,7 +58,7 @@
 #' g <- graph3D(x_subset)
 #' }
 
-graph3D <- function(epi_contacts,
+graph3D <- function(epicontacts,
                     label_column = "id",
                     v_col_by = "NA",
                     v.col = "darkturquoise",
@@ -69,10 +69,10 @@ graph3D <- function(epi_contacts,
                     e.size = .5) {
 
     ## Create igraph object to pass on as data for 3D graph (because original
-    ## epi_contacts object may contain NA's, which will hinder creation of 3D
+    ## epicontacts object may contain NA's, which will hinder creation of 3D
     ## graph with threejs::graphjs()
 
-    x <- as.igraph.epi_contacts(epi_contacts)
+    x <- as.igraph.epicontacts(epicontacts)
 
     ## Get vertex attributes and prepare as input for graph
     v <- igraph::get.vertex.attribute(x)

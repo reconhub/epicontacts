@@ -1,7 +1,7 @@
-#' Access unique identifiers in epi_contacts objects
+#' Access unique identifiers in epicontacts objects
 #'
 #' This accessor is used to extract unique identifiers from
-#' \code{\link{epi_contacts}} objects. The argument 'which' can be used to
+#' \code{\link{epicontacts}} objects. The argument 'which' can be used to
 #' specify if IDs should include: linelist only ('linelist'), contacts only
 #' ('contacts'), the union of both ('all'), or the intersection of both
 #' ('common'); two additional options are 'from' (ID 'giving' contacts) and 'to'
@@ -11,7 +11,7 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @param x an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epicontacts}} object
 #'
 #' @param which the type of ID to return (see description); value can be
 #'     'linelist', 'contacts', 'all', 'common', 'from' or 'to'.
@@ -22,7 +22,7 @@
 #'
 #' if (require(outbreaks)) {
 #' ## build data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
@@ -46,8 +46,8 @@ get_id <- function(x, which = c("linelist", "contacts", "all", "common", "from",
     ## which are covered here.
 
     ## checks
-    if (!inherits(x, "epi_contacts")) {
-        stop("x is not an 'epi_contacts' object")
+    if (!inherits(x, "epicontacts")) {
+        stop("x is not an 'epicontacts' object")
     }
     which <- match.arg(which)
 

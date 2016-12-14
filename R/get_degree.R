@@ -1,7 +1,7 @@
-#' Find node degree for epi_contacts objects
+#' Find node degree for epicontacts objects
 #'
 #' This function computes the number of contacts per cases in a
-#' \code{\link{epi_contacts}} dataset. Whenever contacts are directed, the
+#' \code{\link{epicontacts}} dataset. Whenever contacts are directed, the
 #' argument 'type' can be used to specify which kind of contact should be
 #' considered: 'in' (towards the case), 'out' (from the case), or 'both'.
 #'
@@ -9,7 +9,7 @@
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @param x an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epicontacts}} object
 #'
 #' @param type the type of degree to be computed (see description); if contacts
 #'     are not directed, this will be forced to 'both'
@@ -18,9 +18,9 @@
 #'     should be from the linelist exclusively
 #'
 #' @examples
-#' ## make epi_contacts object
+#' ## make epicontacts object
 #' if (require(outbreaks)) {
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #' x
@@ -39,8 +39,8 @@
 get_degree <- function(x, type = c("in", "out", "both"),
                        only_linelist = FALSE) {
     ## checks
-    if (!inherits(x, "epi_contacts")) {
-        stop("x is not an 'epi_contacts' object")
+    if (!inherits(x, "epicontacts")) {
+        stop("x is not an 'epicontacts' object")
     }
     type <- match.arg(type)
 

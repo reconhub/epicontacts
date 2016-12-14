@@ -1,24 +1,24 @@
-#' Subset epi_contacts by case-specified clusters
+#' Subset epicontacts by case-specified clusters
 #'
-#' This function subsets an \code{\link{epi_contacts}} object by identifying
+#' This function subsets an \code{\link{epicontacts}} object by identifying
 #' clusters of cases connected to specified cases.
 #'
 #' @export
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
-#' @param x an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epicontacts}} object
 #'
 #' @param id a character vector of case identifiers; the connected components
 #'     attached to these cases will be retained in the output object.
 #'
-#' @return An \code{\link{epi_contacts}} object whose contact dataframe
+#' @return An \code{\link{epicontacts}} object whose contact dataframe
 #'     corresponds to all clusters containing specified case id.
 #'
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
@@ -32,7 +32,7 @@
 #' }
 
 subset_clusters_by_id <- function(x, id){
-    net <- as.igraph.epi_contacts(x)
+    net <- as.igraph.epicontacts(x)
     cs <- igraph::clusters(net)
     net_nodes <- data.frame(nodes =igraph::V(net)$id,
                             cs_member = cs$membership,

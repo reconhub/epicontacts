@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Access unique identifiers in epi_contacts objects — get_id • epicontacts</title>
+<title>Access unique identifiers in epicontacts objects — get_id • epicontacts</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,12 +72,12 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Access unique identifiers in epi_contacts objects</h1>
+    <h1>Access unique identifiers in epicontacts objects</h1>
     </div>
 
     
     <p>This accessor is used to extract unique identifiers from
-<code><a href='make_epi_contacts.html'>epi_contacts</a></code> objects. The argument &#39;which&#39; can be used to
+<code><a href='make_epicontacts.html'>epicontacts</a></code> objects. The argument &#39;which&#39; can be used to
 specify if IDs should include: linelist only (&#39;linelist&#39;), contacts only
 (&#39;contacts&#39;), the union of both (&#39;all&#39;), or the intersection of both
 (&#39;common&#39;); two additional options are &#39;from&#39; (ID &#39;giving&#39; contacts) and &#39;to&#39;
@@ -89,7 +89,7 @@ specify if IDs should include: linelist only (&#39;linelist&#39;), contacts only
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>an <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object</dd>
+      <dd>an <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
       <dt>which</dt>
       <dd>the type of ID to return (see description); value can be
 &#39;linelist&#39;, &#39;contacts&#39;, &#39;all&#39;, &#39;common&#39;, &#39;from&#39; or &#39;to&#39;.</dd>
@@ -104,7 +104,7 @@ specify if IDs should include: linelist only (&#39;linelist&#39;), contacts only
     <pre class="examples"><div class='input'>
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 

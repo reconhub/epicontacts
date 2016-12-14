@@ -1,17 +1,17 @@
-#' Print method for summary_epi_contacts objects
+#' Print method for summary_epicontacts objects
 #'
 #' This method outputs a printed summary of the content of
-#' \code{summary_epi_contacts} objects.
+#' \code{summary_epicontacts} objects.
 #'
 #' @export
 #'
 #' @author VP Nagraj (\email{vpnagraj@virginia.edu})
 #'
-#' @param x a \code{\link{summary_epi_contacts}} object
+#' @param x a \code{\link{summary_epicontacts}} object
 #'
 #' @param ... further parameters to be passed to other methods (currently not used)
 #'
-print.summary_epi_contacts <- function(x, ...){
+print.summary_epicontacts <- function(x, ...){
 
     if (!is.null(x$n_linelist)) {
         cat("\n// number of records in linelist:", x$n_linelist)

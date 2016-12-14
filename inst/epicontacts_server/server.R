@@ -8,7 +8,7 @@ shinyServer(function(input, output) {
 
         if (input$datasource == "Ebola Simulation") {
 
-            epicontact <- make_epi_contacts(ebola.sim$linelist,ebola.sim$contacts, directed = TRUE)
+            epicontact <- make_epicontacts(ebola.sim$linelist,ebola.sim$contacts, directed = TRUE)
 
             # subset the first 100 records so the network isn't too big
             x <- get_id(epicontact, "common")[1:100]
@@ -19,7 +19,7 @@ shinyServer(function(input, output) {
 
         } else if (input$datasource == "MERS South Korea") {
 
-            epicontact <- make_epi_contacts(mers.korea.2015[[1]],mers.korea.2015[[2]], directed = TRUE)
+            epicontact <- make_epicontacts(mers.korea.2015[[1]],mers.korea.2015[[2]], directed = TRUE)
 
             return(epicontact)
 
@@ -33,7 +33,7 @@ shinyServer(function(input, output) {
             contacts <-
                 readr::read_csv(input$contacts$datapath)
 
-            epicontact <- make_epi_contacts(linelist,contacts, directed = input$directed)
+            epicontact <- make_epicontacts(linelist,contacts, directed = input$directed)
 
             return(epicontact)
         }
@@ -63,7 +63,7 @@ shinyServer(function(input, output) {
 
         names(subsetarglist)[1] <- input$interact
 
-        # call epi_contacts method for subsetting
+        # call epicontacts method for subsetting
         subset(dat, node.attribute = subsetarglist)
 
     })

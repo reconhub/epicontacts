@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create igraph object from contact data — as.igraph.epi_contacts • epicontacts</title>
+<title>Create igraph object from contact data — as.igraph.epicontacts • epicontacts</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,16 +76,16 @@
     </div>
 
     
-    <p>This function creates an igraph object from a given <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object containing
+    <p>This function creates an igraph object from a given <code><a href='make_epicontacts.html'>epicontacts</a></code> object containing
 a &#39;contacts&#39; dataframe.</p>
     
 
-    <pre><span class='fu'>as.igraph.epi_contacts</span>(<span class='no'>x</span>)</pre>
+    <pre><span class='fu'>as.igraph.epicontacts</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>An <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object.</dd>
+      <dd>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -97,7 +97,7 @@ a &#39;contacts&#39; dataframe.</p>
     <pre class="examples"><div class='input'>
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
@@ -106,11 +106,11 @@ a &#39;contacts&#39; dataframe.</p>
 <span class='no'>ids</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>[<span class='no'>ids</span>]
 
-<span class='co'>## make igraph object with associated attributes from epi_contacts object</span>
-<span class='no'>net</span> <span class='kw'>&lt;-</span> <span class='fu'>as.igraph.epi_contacts</span>(<span class='no'>x</span>)
+<span class='co'>## make igraph object with associated attributes from epicontacts object</span>
+<span class='no'>net</span> <span class='kw'>&lt;-</span> <span class='fu'>as.igraph.epicontacts</span>(<span class='no'>x</span>)
 <span class='no'>net</span>
 <span class='fu'>plot</span>(<span class='no'>net</span>)
-}</div><img src='as.igraph.epi_contacts-2.png' alt='' width='540' height='400' /></pre>
+}</div><img src='as.igraph.epicontacts-2.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

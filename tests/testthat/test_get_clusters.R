@@ -4,11 +4,11 @@ test_that("igraph functions perform as expected", {
   
   skip_on_cran()
   
-  x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   
-  net <- as.igraph.epi_contacts(x)
+  net <- as.igraph.epicontacts(x)
   expect_is(net, "igraph")
   
 })
@@ -17,11 +17,11 @@ test_that("construction of net nodes works", {
   
   skip_on_cran()
   
-  x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   
-  net <- as.igraph.epi_contacts(x)
+  net <- as.igraph.epicontacts(x)
   cs <- igraph::clusters(net)
   cs_size <- data.frame(cluster_member = seq_along(cs$csize),
     cluster_size = cs$csize)

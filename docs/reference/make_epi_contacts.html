@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read linelist and contact data — make_epi_contacts • epicontacts</title>
+<title>Read linelist and contact data — make_epicontacts • epicontacts</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -81,7 +81,7 @@ information, where each row corresponds to a unique patient), and contacts
 between patients. See details for expected data formats.</p>
     
 
-    <pre><span class='fu'>make_epi_contacts</span>(<span class='no'>linelist</span>, <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+    <pre><span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
   <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2L</span>, <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -109,7 +109,7 @@ is <code>FALSE</code> but note that contacts will be indicated as &#39;from&#39;
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An <code>epi_contacts</code> object in list format with three elements:</p>
+    <p>An <code>epicontacts</code> object in list format with three elements:</p>
     <p><ul>
 <li> <code>linelist</code>: data.frame of cases with first column &#39;id&#39;
 containing character vector of unique identifiers</p>
@@ -124,9 +124,9 @@ considered directed or not
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>An <code>epi_contacts</code> object requires two components: a line list and a
+    <p>An <code>epicontacts</code> object requires two components: a line list and a
 contact list. These are common formats in epidemiological outbreak
-analysis, and should be provided to the <code>make_epi_contacts</code> function
+analysis, and should be provided to the <code>make_epicontacts</code> function
 as data.frame objects. Each row of the line list should contain
 unique observations of cases in the outbreak with unique features of case
 in columns. Each row of the contact list should contain unique pairs of
@@ -140,8 +140,8 @@ contact list should share an identification scheme for individuals.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
-<span class='co'>## make epi_contacts object from simulated Ebola data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epi_contacts</span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>)
+<span class='co'>## make epicontacts object from simulated Ebola data</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>)
 
 <span class='co'>## test reordering of columns</span>
 <span class='no'>linelist</span> <span class='kw'>&lt;-</span> <span class='no'>ebola.sim</span>$<span class='no'>linelist</span>[,<span class='fu'>rev</span>(<span class='fu'>seq_len</span>(<span class='fu'>ncol</span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>)))]
@@ -150,7 +150,7 @@ contact list should share an identification scheme for individuals.</p>
 <span class='fu'>head</span>(<span class='no'>contacts</span>)
 
 <span class='co'>## make object</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epi_contacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>,
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>,
                        <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>)
 <span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>linelist</span>)
 <span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>contacts</span>)

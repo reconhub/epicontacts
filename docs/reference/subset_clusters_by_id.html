@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Subset epi_contacts by case-specified clusters — subset_clusters_by_id • epicontacts</title>
+<title>Subset epicontacts by case-specified clusters — subset_clusters_by_id • epicontacts</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,11 +72,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Subset epi_contacts by case-specified clusters</h1>
+    <h1>Subset epicontacts by case-specified clusters</h1>
     </div>
 
     
-    <p>This function subsets an <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object by identifying
+    <p>This function subsets an <code><a href='make_epicontacts.html'>epicontacts</a></code> object by identifying
 clusters of cases connected to specified cases.</p>
     
 
@@ -85,7 +85,7 @@ clusters of cases connected to specified cases.</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>an <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object</dd>
+      <dd>an <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
       <dt>id</dt>
       <dd>a character vector of case identifiers; the connected components
 attached to these cases will be retained in the output object.</dd>
@@ -93,14 +93,14 @@ attached to these cases will be retained in the output object.</dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object whose contact dataframe
+    <p>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object whose contact dataframe
     corresponds to all clusters containing specified case id.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 

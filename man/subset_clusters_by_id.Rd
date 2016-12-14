@@ -2,28 +2,28 @@
 % Please edit documentation in R/subset_clusters_by_id.R
 \name{subset_clusters_by_id}
 \alias{subset_clusters_by_id}
-\title{Subset epi_contacts by case-specified clusters}
+\title{Subset epicontacts by case-specified clusters}
 \usage{
 subset_clusters_by_id(x, id)
 }
 \arguments{
-\item{x}{an \code{\link{epi_contacts}} object}
+\item{x}{an \code{\link{epicontacts}} object}
 
 \item{id}{a character vector of case identifiers; the connected components
 attached to these cases will be retained in the output object.}
 }
 \value{
-An \code{\link{epi_contacts}} object whose contact dataframe
+An \code{\link{epicontacts}} object whose contact dataframe
     corresponds to all clusters containing specified case id.
 }
 \description{
-This function subsets an \code{\link{epi_contacts}} object by identifying
+This function subsets an \code{\link{epicontacts}} object by identifying
 clusters of cases connected to specified cases.
 }
 \examples{
 if (require(outbreaks)) {
 ## build data
-x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
 
