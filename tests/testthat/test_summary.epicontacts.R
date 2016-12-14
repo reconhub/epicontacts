@@ -1,9 +1,9 @@
-context("Printing of epi_contacts summary objects")
+context("Printing of epicontacts summary objects")
 
 test_that("Printing summaries works", {
     skip_on_cran()
 
-    x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                            id="case.id", to="case.id", from="infector",
                            directed=FALSE)
 

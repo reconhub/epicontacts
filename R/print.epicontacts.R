@@ -1,17 +1,17 @@
-#' Print method for epi_contacts objects
+#' Print method for epicontacts objects
 #'
-#' This method prints the content of \code{epi_contacts} objects, giving a brief
+#' This method prints the content of \code{epicontacts} objects, giving a brief
 #' summary of the reported cases and contacts.
 #'
 #' @export
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @param x an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epicontacts}} object
 #'
 #' @param ... further parameters to be passed to other methods (currently not used)
 #'
-print.epi_contacts <- function(x, ...){
+print.epicontacts <- function(x, ...){
     cat("\n/// Epidemiological Contacts //\n")
     cat("\n  // class:", paste(class(x), collapse=", "))
     cat("\n  //", format(nrow(x$linelist),big.mark=","),

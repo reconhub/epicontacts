@@ -1,7 +1,7 @@
 #' Characterise contacts by comparing case attributes
 #'
 #' This function extract attributes of cases involved in contacts using case
-#' information provided in the linelist of an \code{\link{epi_contacts}}
+#' information provided in the linelist of an \code{\link{epicontacts}}
 #' dataset. If not provided, the function used to process attributes will adjust
 #' to the type of attribute selected (see details).
 #'
@@ -11,7 +11,7 @@
 #' Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #' Tom Crellen (\email{tomcrellen@@gmail.com})
 #'
-#' @param x an \code{\link{epi_contacts}} object
+#' @param x an \code{\link{epicontacts}} object
 #'
 #' @param attribute the attribute to be examined between contact pairs
 #'
@@ -27,7 +27,7 @@
 #' head(mers.korea.2015[[1]])
 #' head(mers.korea.2015[[2]])
 #'
-#' x <- make_epi_contacts(linelist=mers.korea.2015[[1]],
+#' x <- make_epicontacts(linelist=mers.korea.2015[[1]],
 #' contacts=mers.korea.2015[[2]], directed=TRUE)
 #'
 #' ## estimate serial interval (onset->onset)
@@ -51,8 +51,8 @@ get_pairwise <- function(x, attribute, f=NULL, hard_NA=TRUE){
     ## enforce a NA wherever the pair contained at least one NA.
 
     ## checks
-    if (!inherits(x, "epi_contacts")) {
-        stop("x is not an 'epi_contacts' object")
+    if (!inherits(x, "epicontacts")) {
+        stop("x is not an 'epicontacts' object")
     }
     if (!is.character(attribute)) {
         attribute <- names(x$linelist)[attribute]

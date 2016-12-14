@@ -1,6 +1,6 @@
-#' Plot epi_contacts objects using visNetwork
+#' Plot epicontacts objects using visNetwork
 #'
-#' This function plots \code{\link{epi_contacts}} objects using the
+#' This function plots \code{\link{epicontacts}} objects using the
 #' \code{visNetwork} package.
 #'
 #' @export
@@ -10,7 +10,7 @@
 #' Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #' VP Nagraj (\email{vpnagraj@@virginia.edu})
 #'
-#' @param x An \code{\link{epi_contacts}} object.
+#' @param x An \code{\link{epicontacts}} object.
 #'
 #' @param group An index or character string indicating which field of the
 #'     linelist should be used to color the nodes.
@@ -53,7 +53,7 @@
 #' head(mers.korea.2015[[1]])
 #' head(mers.korea.2015[[2]])
 #'
-#' x <- make_epi_contacts(linelist=mers.korea.2015[[1]],
+#' x <- make_epicontacts(linelist=mers.korea.2015[[1]],
 #'                        contacts = mers.korea.2015[[2]],
 #'                        directed=TRUE)
 #'
@@ -63,7 +63,7 @@
 #' plot(x, group = "loc_hosp", legend_max=20, annot=TRUE)
 #' }
 #' }
-vis_epi_contacts <- function(x, group = "id", annot  =  TRUE,
+vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
                              legend = TRUE, legend_max = 10,
                              col_pal = cases_pal, NA_col = "lightgrey",
                              width = "90%", height = "700px",

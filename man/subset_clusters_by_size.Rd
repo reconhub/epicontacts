@@ -2,12 +2,12 @@
 % Please edit documentation in R/subset_clusters_by_size.R
 \name{subset_clusters_by_size}
 \alias{subset_clusters_by_size}
-\title{Subset clusters from epi_contacts object by cluster size}
+\title{Subset clusters from epicontacts object by cluster size}
 \usage{
 subset_clusters_by_size(x, cs = NULL, cs_min = NULL, cs_max = NULL)
 }
 \arguments{
-\item{x}{an \code{\link{epi_contacts}} object}
+\item{x}{an \code{\link{epicontacts}} object}
 
 \item{cs}{cluster size to be used for subsetting}
 
@@ -16,11 +16,11 @@ subset_clusters_by_size(x, cs = NULL, cs_min = NULL, cs_max = NULL)
 \item{cs_max}{maximum cluster size for subsetting}
 }
 \value{
-An \code{\link{epi_contacts}} object whose contact dataframe corresponds to
+An \code{\link{epicontacts}} object whose contact dataframe corresponds to
 all clusters of specified cluster sizes.
 }
 \description{
-This function subsets an \code{\link{epi_contacts}} object based on defined
+This function subsets an \code{\link{epicontacts}} object based on defined
 size(s) of clusters (clusters being groups of connected
 individuals/nodes). Subsetting may be done by specifying a particular cluster
 size of interest, minimum cluster size, maximum cluster size, or a range
@@ -29,7 +29,7 @@ size of interest, minimum cluster size, maximum cluster size, or a range
 \examples{
 if (require(outbreaks)) {
 ## build data
-x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
 

@@ -4,12 +4,12 @@
 \alias{graph3D}
 \title{Interactive 3D Force-directed graph from epi_contact object}
 \usage{
-graph3D(epi_contacts, label_column = "id", v_col_by = "NA",
+graph3D(epicontacts, label_column = "id", v_col_by = "NA",
   v.col = "darkturquoise", g.title = "", g.bg = "white",
   g.fg = "darkturquoise", v.size = 1, e.size = 0.5)
 }
 \arguments{
-\item{epi_contacts}{an \code{\link{epi_contacts}} object}
+\item{epicontacts}{an \code{\link{epicontacts}} object}
 
 \item{label_column}{the column name in \code{linelist} to be used for node
 labels. Default is \code{id}}
@@ -46,7 +46,7 @@ Double-click or tap on the plot to reset the view.
 \examples{
 if (require(outbreaks)) {
 ## build data
-x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
 

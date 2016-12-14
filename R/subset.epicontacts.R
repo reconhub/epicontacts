@@ -1,8 +1,8 @@
 #' Subset an epi_contact object by factors
 #'
-#' This function subsets an \code{\link{epi_contacts}} object based on node,
+#' This function subsets an \code{\link{epicontacts}} object based on node,
 #' edge and/or cluster attributes. Specifying node attributes will return an
-#' \code{\link{epi_contacts}} object containing only individuals with these
+#' \code{\link{epicontacts}} object containing only individuals with these
 #' given attributes in the linelist. Specifying edge attributes will return
 #' contacts with the attributes provided. Specifying cluster attributes will
 #' return clusters of connected cases, and can be defined by ids (returning
@@ -42,7 +42,7 @@
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #' id="case.id", to="case.id", from="infector", directed=FALSE)
 #'
 #' ## subset based on node and edge attributes
@@ -67,7 +67,7 @@
 #' x_subset <- subset(x, cs_max = 9)
 #' }
 
-subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
+subset.epicontacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
                                 cluster_id = NULL, cs = NULL, cs_min = NULL,
                                 cs_max = NULL, ...){
     ## A function to check node.attribute and edge.attribute for errors;
@@ -143,10 +143,10 @@ subset.epi_contacts <- function(x,node.attribute = NULL, edge.attribute = NULL,
         return(out)
     }
 
-    ## Check if epi_contacts object, node.attribute and edge.attribute are
+    ## Check if epicontacts object, node.attribute and edge.attribute are
     ## provided correctly
-    if (!inherits(x, "epi_contacts")) {
-        stop("x is not an 'epi_contacts' object")
+    if (!inherits(x, "epicontacts")) {
+        stop("x is not an 'epicontacts' object")
     }
     sub.attr <- c(edge.attribute, node.attribute,
                   cluster_id, cs, cs_min, cs_max)

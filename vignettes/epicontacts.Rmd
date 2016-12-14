@@ -28,25 +28,25 @@ At minimum, `epicontacts` requires input data partitioned as follows:
 
 2. A **contact** dataset that maps the relationships between individuals (i.e. edges between nodes), and can contain any attributes qualifying each relationship such as exposure, serial interval, etc.
 
-**nb** for more on how to create an `epi_contacts` object see [loading data](#loading-data).
+**nb** for more on how to create an `epicontacts` object see [loading data](#loading-data).
 
 ### Contents
 
 The package includes the following features:
 
-- **`epi_contacts`**: S3 class for storing line lists and contact datasets
-- **`make_epi_contacts()`**: a constructor for the `epi_contacts` class
-- **`get_id()`**: access unique IDs in an `epi_contacts` with various options
-- **`get_pairwise()`**: extract attributes of record(s) in contacts database using information provided in the linelist data of an `epi_contacts` object.
-- **`get_degree()`**: access degree of cases in `epi_contacts` with various options
-- **`x[i,j,contacts]`**: subset an `epi_contacts` object by retaining specified cases
-- **`subset()`**: subset an `epi_contacts` object by attributes or cluster characteristics
-- **`summary()`**: summary for  `epi_contacts` objects
-- **`plot()`**: plot for  `epi_contacts` objects; various types of plot are available; default to `vis_epi_contacts()`
-- **`vis_epi_contacts()`**: plot an `epi_contacts` object using `visNetwork`
-- **`as.igraph.epi_contacts()`**: create an `igraph` object from an epi_contacts object
-- **`get_clusters`**: assign clusters and corresponding cluster sizes to linelist of an epi_contacts object
-- **`graph3D()`**: 3D graph from an `epi_contacts` object
+- **`epicontacts`**: S3 class for storing line lists and contact datasets
+- **`make_epicontacts()`**: a constructor for the `epicontacts` class
+- **`get_id()`**: access unique IDs in an `epicontacts` with various options
+- **`get_pairwise()`**: extract attributes of record(s) in contacts database using information provided in the linelist data of an `epicontacts` object.
+- **`get_degree()`**: access degree of cases in `epicontacts` with various options
+- **`x[i,j,contacts]`**: subset an `epicontacts` object by retaining specified cases
+- **`subset()`**: subset an `epicontacts` object by attributes or cluster characteristics
+- **`summary()`**: summary for  `epicontacts` objects
+- **`plot()`**: plot for  `epicontacts` objects; various types of plot are available; default to `vis_epicontacts()`
+- **`vis_epicontacts()`**: plot an `epicontacts` object using `visNetwork`
+- **`as.igraph.epicontacts()`**: create an `igraph` object from an epicontacts object
+- **`get_clusters`**: assign clusters and corresponding cluster sizes to linelist of an epicontacts object
+- **`graph3D()`**: 3D graph from an `epicontacts` object
 
 ## Installation
 
@@ -76,7 +76,7 @@ library(epicontacts)
 
 ## Loading Data
 
-`epicontacts` provides a convenient structure to store heterogeneous epidemiological contact network data (i.e. nodes and edges) in a single object. The `epi_contacts` class must contain two components: a line list and a contact dataset. 
+`epicontacts` provides a convenient structure to store heterogeneous epidemiological contact network data (i.e. nodes and edges) in a single object. The `epicontacts` class must contain two components: a line list and a contact dataset. 
 
 Each row of the line list should represent unique observations of cases, and each row of the contact list should represent unique pairs of contacts. Each can include arbitrary features, but both datasets should share an identification scheme.
 
@@ -100,12 +100,12 @@ What about the contact dataset?
 colnames((mers.korea.2015$contacts))
 ```
 
-### Creating `epi_contacts` Object
+### Creating `epicontacts` Object
 
-In order to create the `epi_contacts` object, both the line list and contact data frames must be passed to `make_epi_contacts()`. This function accommodates instances when the respective identifiers are not the first columns of these data frames (see the "id", "from" and "to" arguments). `make_epi_contacts()` can also account for contact networks that have a direction (see "directed" argument).
+In order to create the `epicontacts` object, both the line list and contact data frames must be passed to `make_epicontacts()`. This function accommodates instances when the respective identifiers are not the first columns of these data frames (see the "id", "from" and "to" arguments). `make_epicontacts()` can also account for contact networks that have a direction (see "directed" argument).
 
 ```{r}
-merskor15 <- make_epi_contacts(linelist = mers.korea.2015$linelist, contacts = mers.korea.2015$contacts, directed = FALSE)
+merskor15 <- make_epicontacts(linelist = mers.korea.2015$linelist, contacts = mers.korea.2015$contacts, directed = FALSE)
 class(merskor15)
 summary(merskor15)
 ```
@@ -137,7 +137,7 @@ length(get_id(merskor15, "common"))
 
 ### Subsetting
 
-The `subset()` method for `epi_contacts` objects allows for, among other things, pruning of networks based on values of node and edge attributes. These values must be passed as named lists to the respective argument.
+The `subset()` method for `epicontacts` objects allows for, among other things, pruning of networks based on values of node and edge attributes. These values must be passed as named lists to the respective argument.
 
 ```{r}
 subset(merskor15, node.attribute = list("outcome" = "Dead", "sex" = "M"), edge.attribute = list("exposure" = "Emergency room"))
@@ -150,7 +150,7 @@ nodes <- c("SK_14","SK_145")
 subset(merskor15, cluster_id = nodes)
 ```
 
-The `subset()` method for `epi_contacts` objects also accepts cluster size parameters (see "cs", "cs_min" and "cs_max" arguments).
+The `subset()` method for `epicontacts` objects also accepts cluster size parameters (see "cs", "cs_min" and "cs_max" arguments).
     
 ```{r}   
 subset(merskor15, cs = 3)
@@ -167,7 +167,7 @@ One of the main features of `epicontacts` is its visualisation capabilities. As 
 plot(merskor15) 
 ```
 
-The above is a generic method based on the `vis_epi_contacts()` and accepts a number of arguments to customize the plot appearance and functionality. For a full list of options use `?vis_epi_contacts()`
+The above is a generic method based on the `vis_epicontacts()` and accepts a number of arguments to customize the plot appearance and functionality. For a full list of options use `?vis_epicontacts()`
 
 ### 3D
 
@@ -215,7 +215,7 @@ fisher.test(get_pairwise(merskor15, "sex", f=table))
 
 ### Identify Clusters
 
-The `get_clusters()` function returns an augmented `epi_contacts` object that includes two extra features in the line list: *cluster_member* and *cluster_size*. In this context, a 'cluster' corresponds to groups of connected individuals or components.
+The `get_clusters()` function returns an augmented `epicontacts` object that includes two extra features in the line list: *cluster_member* and *cluster_size*. In this context, a 'cluster' corresponds to groups of connected individuals or components.
 
 ```{r}
 names(get_clusters(merskor15)$linelist)
@@ -223,7 +223,7 @@ names(get_clusters(merskor15)$linelist)
 
 ### Calculate Degree
 
-The degree of a node corresponds to its number of edges or connections to other nodes. `get_degree()` provides an easy method for calculating this value for `epi_contacts` networks. A high degree in this context indicates an individual who was in contact with many others.
+The degree of a node corresponds to its number of edges or connections to other nodes. `get_degree()` provides an easy method for calculating this value for `epicontacts` networks. A high degree in this context indicates an individual who was in contact with many others.
 
 **nb** use of "type" argument depends on whether or not the network is directed. 
 

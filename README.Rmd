@@ -55,35 +55,35 @@ Note that this requires the package *devtools* installed.
 
 The main features of the package include:
 
-* **`epi_contacts`:** a new S3 class for storing linelists and contacts data
+* **`epicontacts`:** a new S3 class for storing linelists and contacts data
 
-* **`make_epi_contacts`:** a constructor for the new `epi_contacts` class
+* **`make_epicontacts`:** a constructor for the new `epicontacts` class
 
-* **`get_id`:** access unique IDs in an `epi_contacts` with various options
+* **`get_id`:** access unique IDs in an `epicontacts` with various options
 
-* **`get_pairwise`**:  extract attributes of record(s) in contacts database using information provided in the linelist data of an `epi_contacts` object.
+* **`get_pairwise`**:  extract attributes of record(s) in contacts database using information provided in the linelist data of an `epicontacts` object.
 
-* **`get_degree`:** access degree of cases in `epi_contacts` with various options
+* **`get_degree`:** access degree of cases in `epicontacts` with various options
 
-* **`x[i,j,contacts]`:** subset an `epi_contacts` object by retaining specified cases
+* **`x[i,j,contacts]`:** subset an `epicontacts` object by retaining specified cases
 
 * **`thin`:** retains matching cases in linelist / contacts
 
-* **`summary`:** summary for  `epi_contacts` objects
+* **`summary`:** summary for  `epicontacts` objects
 
-* **`plot`:** plot for  `epi_contacts` objects; various types of plot are available; default to `vis_epi_contacts`
+* **`plot`:** plot for  `epicontacts` objects; various types of plot are available; default to `vis_epicontacts`
 
-* **`vis_epi_contacts`:** plot an `epi_contacts` object using `visNetwork
+* **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork
 `
-* **`as.igraph.epi_contacts`:** create an `igraph` object from a epi_contacts object
+* **`as.igraph.epicontacts`:** create an `igraph` object from a epicontacts object
 
-* **`clusters_epi_contacts`:** assign clusters and corresponding cluster sizes to linelist of an epi_contacts object (clusters being groups of connected individuals/nodes).
+* **`clusters_epicontacts`:** assign clusters and corresponding cluster sizes to linelist of an epicontacts object (clusters being groups of connected individuals/nodes).
 
-* **`subset_clusters_by_id`**: subset an `epi_contacts` object based on a IDs of cases of interest.
+* **`subset_clusters_by_id`**: subset an `epicontacts` object based on a IDs of cases of interest.
 
-* **`subset_clusters_by_size`**:  subset an `epi_contacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes).
+* **`subset_clusters_by_size`**:  subset an `epicontacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes).
 
-* **`graph3D`**: 3D graph from an `epi_contacts` object.
+* **`graph3D`**: 3D graph from an `epicontacts` object.
 
 * **`epicontacts_server`**: run the epicontacts Shiny app on a local host
 

@@ -7,7 +7,7 @@
 #'
 #' @export
 #'
-#' @aliases make_epi_contacts epi_contacts
+#' @aliases make_epicontacts epicontacts
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
@@ -32,7 +32,7 @@
 #'     is \code{FALSE} but note that contacts will be indicated as 'from' and
 #'     'to' even in non-directed contacts
 #'
-#' @return An \code{epi_contacts} object in list format with three elements:
+#' @return An \code{epicontacts} object in list format with three elements:
 #' 
 #' \itemize{
 #' \item \code{linelist}: data.frame of cases with first column 'id'
@@ -47,7 +47,7 @@
 #' 
 #' @details
 #'
-#' An \code{epi_contacts} object can be created from two components:
+#' An \code{epicontacts} object can be created from two components:
 #' \itemize{
 #' \item a linelist provided as a \code{data.frame} where columns are
 #' different variables describing cases, and where each row is a different case.
@@ -63,8 +63,8 @@
 #'
 #' @examples
 #' if (require(outbreaks)) {
-#' ## make epi_contacts object from simulated Ebola data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts)
+#' ## make epicontacts object from simulated Ebola data
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts)
 #'
 #' ## test reordering of columns
 #' linelist <- ebola.sim$linelist[,rev(seq_len(ncol(ebola.sim$linelist)))]
@@ -73,12 +73,12 @@
 #' head(contacts)
 #'
 #' ## make object
-#' x <- make_epi_contacts(linelist, contacts, id="case.id",
+#' x <- make_epicontacts(linelist, contacts, id="case.id",
 #'                        to="case.id", from="infector")
 #' head(x$linelist)
 #' head(x$contacts)
 #' }
-make_epi_contacts <- function(linelist, contacts, id=1L, from=1L, to=2L,
+make_epicontacts <- function(linelist, contacts, id=1L, from=1L, to=2L,
                               directed=FALSE){
     
     ## We read data from linelist, which needs to contain at least one case, and
@@ -150,6 +150,6 @@ make_epi_contacts <- function(linelist, contacts, id=1L, from=1L, to=2L,
     ## Build final output
     out <- list(linelist=linelist, contacts=contacts, directed=directed)
 
-    class(out) <- c("epi_contacts")
+    class(out) <- c("epicontacts")
     return(out)
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Subset an epi_contact object by factors — subset.epi_contacts • epicontacts</title>
+<title>Subset an epi_contact object by factors — subset.epicontacts • epicontacts</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,15 +76,15 @@
     </div>
 
     
-    <p>This function subsets an <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object based on node, edge and/or cluster attributes.
-Specifying node attributes will return an <code><a href='make_epi_contacts.html'>epi_contacts</a></code> object containing only individuals 
+    <p>This function subsets an <code><a href='make_epicontacts.html'>epicontacts</a></code> object based on node, edge and/or cluster attributes.
+Specifying node attributes will return an <code><a href='make_epicontacts.html'>epicontacts</a></code> object containing only individuals 
 with these given attributes in the linelist. Specifying edge attributes will return contacts with the 
 attributes provided. Specifying cluster attributes will return clusters of connected cases, and can be 
 defined by ids (returning clusters of cases connected to specified cases) or cluster sizes (returning 
 cluster of a specific, minimum or maximum size).</p>
     
 
-    <pre><span class='co'># S3 method for epi_contacts</span>
+    <pre><span class='co'># S3 method for epicontacts</span>
 <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>node.attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>edge.attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cluster_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>cs_max</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
@@ -116,7 +116,7 @@ cases will be retained in the output object.</dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epi_contacts.html'>make_epi_contacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>,
 <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>, <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
 
 <span class='co'>## subset based on node and edge attributes</span>

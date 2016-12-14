@@ -1,16 +1,16 @@
-#' Subset epi_contacts objects based on case identifiers
+#' Subset epicontacts objects based on case identifiers
 #'
-#' The "[" operator can be used to subset \code{\link{epi_contacts}} objects,
+#' The "[" operator can be used to subset \code{\link{epicontacts}} objects,
 #' retaining a specified set of case identifiers (\code{i} for the linelist,
 #' \code{j} for contacts). Note that unlike most classical R objects, there is
-#' no replacement method for \code{\link{epi_contacts}} objects, i.e. no
+#' no replacement method for \code{\link{epicontacts}} objects, i.e. no
 #' operations such as \code{foo[i] <- bar}.
 #'
 #' @export
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #'
-#' @param x An \code{\link{epi_contacts}} object
+#' @param x An \code{\link{epicontacts}} object
 #'
 #' @param i A character vector containing case ID to be retained in the
 #'     linelist; alternatively, an integer or logical vector used to subset the
@@ -47,7 +47,7 @@
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id = "case.id", to = "case.id", from = "infector",
 #'                        directed = TRUE)
 #'
@@ -86,7 +86,7 @@
 #' ## visualise result
 #' plot(y)
 #' }
-"[.epi_contacts" <- function(x, i, j,
+"[.epicontacts" <- function(x, i, j,
                              k = TRUE, l = TRUE,
                              contacts = c("both", "either", "from", "to"),
                              ...) {

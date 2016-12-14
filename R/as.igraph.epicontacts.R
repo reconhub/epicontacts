@@ -1,13 +1,13 @@
 #' Create igraph object from contact data
 #'
-#' This function creates an igraph object from a given \code{\link{epi_contacts}} object containing
+#' This function creates an igraph object from a given \code{\link{epicontacts}} object containing
 #' a 'contacts' dataframe.
 #'
 #' @export
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
-#' @param x An \code{\link{epi_contacts}} object.
+#' @param x An \code{\link{epicontacts}} object.
 #'
 #' @return An \code{igraph} object (from the \code{igraph} package).
 #'
@@ -15,7 +15,7 @@
 #'
 #' if (require(outbreaks)) {
 #' ## build data
-#' x <- make_epi_contacts(ebola.sim$linelist, ebola.sim$contacts,
+#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
 #'                        id="case.id", to="case.id", from="infector",
 #'                        directed=TRUE)
 #'
@@ -24,13 +24,13 @@
 #' ids
 #' x <- x[ids]
 #'
-#' ## make igraph object with associated attributes from epi_contacts object
-#' net <- as.igraph.epi_contacts(x)
+#' ## make igraph object with associated attributes from epicontacts object
+#' net <- as.igraph.epicontacts(x)
 #' net
 #' plot(net)
 #' }
 
-as.igraph.epi_contacts <- function(x){
+as.igraph.epicontacts <- function(x){
     ## Create vertex dataframe using combination of linelist and contacts
     all_ids <- data.frame(id = get_id(x, "all"), stringsAsFactors = FALSE)
     verts <- dplyr::full_join(x$linelist, all_ids, by = "id")
