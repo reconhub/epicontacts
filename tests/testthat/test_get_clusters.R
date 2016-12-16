@@ -34,3 +34,17 @@ test_that("construction of net nodes works", {
   expect_named(net_nodes, c("id", "cluster_member","cluster_size"), ignore.order = TRUE)
   
 })
+
+test_that("get_clusters returns epicontacts object", {
+  
+  skip_on_cran()
+  
+  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    id="case.id", to="case.id", from="infector",
+    directed=TRUE)
+  
+  y <- get_clusters(x)
+  
+  expect_is(y, "epicontacts")
+})
+
