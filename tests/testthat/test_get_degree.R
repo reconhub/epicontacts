@@ -4,7 +4,7 @@ test_that("the both argument is working as expected", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   
@@ -20,7 +20,7 @@ test_that("get_degree is producing a named vector that is not null", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   
@@ -35,7 +35,7 @@ test_that("degree computed only in line list is working as expected", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   

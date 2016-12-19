@@ -101,11 +101,11 @@ approaches. The default method uses <code><a href='vis_epicontacts.html'>vis_epi
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## example using MERS outbreak in Korea, 2014</span>
-<span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
-<span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+<span class='fu'>head</span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
+<span class='fu'>head</span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
 
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
-<span class='kw'>contacts</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
+<span class='kw'>contacts</span><span class='kw'>=</span><span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># plot(x)</span>

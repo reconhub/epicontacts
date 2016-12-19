@@ -1,7 +1,7 @@
 context("Thin")
 
 test_that("Thin ouputs are correct", {
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id = "case.id", to = "case.id", from = "infector",
                            directed = TRUE)
 

@@ -4,7 +4,7 @@ test_that("Return errors / warnings when expected", {
 
   skip_on_cran()
 
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                          id="case.id", to="case.id", from="infector",
                          directed=FALSE)
 
@@ -24,8 +24,8 @@ test_that("Returns clusters with the correct size", {
 
     skip_on_cran()
 
-    x <- make_epicontacts(ebola.sim$linelist,
-                           ebola.sim$contacts, id="case.id",
+    x <- make_epicontacts(ebola_sim$linelist,
+                           ebola_sim$contacts, id="case.id",
                            to="case.id", from="infector",
                            directed=FALSE)
 

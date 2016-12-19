@@ -4,11 +4,11 @@ test_that("Return errors / warnings when expected", {
 
   skip_on_cran()
 
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                          id="case.id", to="case.id", from="infector",
                          directed=FALSE)
 
-  not.epicontacts <- list("linelist"=ebola.sim$linelist,"contacts"=ebola.sim$contacts,"directed"=FALSE)
+  not.epicontacts <- list("linelist"=ebola_sim$linelist,"contacts"=ebola_sim$contacts,"directed"=FALSE)
   expect_error(subset.epicontacts(not.epicontacts,
                                    node.attribute=list("gender"="f"),
                                    edge.attribute=list("source"="funeral")),
@@ -65,7 +65,7 @@ test_that("Returns epicontacts object subsetted correctly", {
 
   skip_on_cran()
 
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                          id="case.id", to="case.id", from="infector",
                          directed=FALSE)
 

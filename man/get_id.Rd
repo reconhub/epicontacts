@@ -27,7 +27,7 @@ specify if IDs should include: linelist only ('linelist'), contacts only
 
 if (require(outbreaks)) {
 ## build data
-x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
 

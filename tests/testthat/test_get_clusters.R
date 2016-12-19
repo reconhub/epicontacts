@@ -4,7 +4,7 @@ test_that("igraph functions perform as expected", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   
@@ -17,7 +17,7 @@ test_that("construction of net nodes works", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   
@@ -39,7 +39,7 @@ test_that("get_clusters returns epicontacts object", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=TRUE)
   

@@ -102,11 +102,11 @@ treated as another character (e.g. when pasting paired values)</dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## example using MERS outbreak in Korea, 2014</span>
-<span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
-<span class='fu'>head</span>(<span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+<span class='fu'>head</span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
+<span class='fu'>head</span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
 
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
-<span class='kw'>contacts</span><span class='kw'>=</span><span class='no'>mers.korea.2015</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
+<span class='kw'>contacts</span><span class='kw'>=</span><span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
 <span class='co'>## estimate serial interval (onset-&gt;onset)</span>
 <span class='no'>SI</span> <span class='kw'>&lt;-</span> <span class='fu'>get_pairwise</span>(<span class='no'>x</span>, <span class='st'>"dt_onset"</span>)

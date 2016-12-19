@@ -141,11 +141,11 @@ contact list should share an identification scheme for individuals.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## make epicontacts object from simulated Ebola data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>)
 
 <span class='co'>## test reordering of columns</span>
-<span class='no'>linelist</span> <span class='kw'>&lt;-</span> <span class='no'>ebola.sim</span>$<span class='no'>linelist</span>[,<span class='fu'>rev</span>(<span class='fu'>seq_len</span>(<span class='fu'>ncol</span>(<span class='no'>ebola.sim</span>$<span class='no'>linelist</span>)))]
-<span class='no'>contacts</span> <span class='kw'>&lt;-</span> <span class='no'>ebola.sim</span>$<span class='no'>contacts</span>[,<span class='fu'>rev</span>(<span class='fu'>seq_len</span>(<span class='fu'>ncol</span>(<span class='no'>ebola.sim</span>$<span class='no'>contacts</span>)))]
+<span class='no'>linelist</span> <span class='kw'>&lt;-</span> <span class='no'>ebola_sim</span>$<span class='no'>linelist</span>[,<span class='fu'>rev</span>(<span class='fu'>seq_len</span>(<span class='fu'>ncol</span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>)))]
+<span class='no'>contacts</span> <span class='kw'>&lt;-</span> <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>[,<span class='fu'>rev</span>(<span class='fu'>seq_len</span>(<span class='fu'>ncol</span>(<span class='no'>ebola_sim</span>$<span class='no'>contacts</span>)))]
 <span class='fu'>head</span>(<span class='no'>linelist</span>)
 <span class='fu'>head</span>(<span class='no'>contacts</span>)
 

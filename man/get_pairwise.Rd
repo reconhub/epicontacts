@@ -26,11 +26,11 @@ to the type of attribute selected (see details).
 \examples{
 if (require(outbreaks)) {
 ## example using MERS outbreak in Korea, 2014
-head(mers.korea.2015[[1]])
-head(mers.korea.2015[[2]])
+head(mers_korea_2015[[1]])
+head(mers_korea_2015[[2]])
 
-x <- make_epicontacts(linelist=mers.korea.2015[[1]],
-contacts=mers.korea.2015[[2]], directed=TRUE)
+x <- make_epicontacts(linelist=mers_korea_2015[[1]],
+contacts=mers_korea_2015[[2]], directed=TRUE)
 
 ## estimate serial interval (onset->onset)
 SI <- get_pairwise(x, "dt_onset")

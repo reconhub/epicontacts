@@ -4,8 +4,8 @@
 ## #' \itemize{
 ## #' \item{interactive network visualization}
 ## #' \item{ability to upload new data (as .csv files in line list and contact list formats)}
-## #' \item{demonstration data from the \code{\link{mers.korea.2015}} dataset}
-## #' \item{demonstration data from the \code{\link{ebola.sim}} dataset (100 records)}
+## #' \item{demonstration data from the \code{\link{mers_korea_2015}} dataset}
+## #' \item{demonstration data from the \code{\link{ebola_sim}} dataset (100 records)}
 ## #' }
 ## #'
 ## #' @export

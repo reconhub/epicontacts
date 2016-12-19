@@ -64,11 +64,11 @@
 #' @examples
 #' if (require(outbreaks)) {
 #' ## make epicontacts object from simulated Ebola data
-#' x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts)
+#' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts)
 #'
 #' ## test reordering of columns
-#' linelist <- ebola.sim$linelist[,rev(seq_len(ncol(ebola.sim$linelist)))]
-#' contacts <- ebola.sim$contacts[,rev(seq_len(ncol(ebola.sim$contacts)))]
+#' linelist <- ebola_sim$linelist[,rev(seq_len(ncol(ebola_sim$linelist)))]
+#' contacts <- ebola_sim$contacts[,rev(seq_len(ncol(ebola_sim$contacts)))]
 #' head(linelist)
 #' head(contacts)
 #'

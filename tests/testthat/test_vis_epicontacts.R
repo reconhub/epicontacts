@@ -4,7 +4,7 @@ test_that("Returns properly grouped plot", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=FALSE)
   
@@ -18,7 +18,7 @@ test_that("Returns error when grouping specification is not in line list", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=FALSE)
   
@@ -30,7 +30,7 @@ test_that("Returns error when annotation specification is not in line list", {
   
   skip_on_cran()
   
-  x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id="case.id", to="case.id", from="infector",
     directed=FALSE)
   

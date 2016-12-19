@@ -82,22 +82,22 @@ Each row of the line list should represent unique observations of cases, and eac
 
 ### Example Dataset
 
-The example that follows will use the `mers.korea.2015`, which is a dataset (in *list* format) distributed in the *outbreaks* package. 
+The example that follows will use the `mers_korea_2015`, which is a dataset (in *list* format) distributed in the *outbreaks* package. 
 
 ```{r}
-str(mers.korea.2015)
+str(mers_korea_2015)
 ```
 
 What features are in the line list?
 
 ```{r}
-colnames((mers.korea.2015$linelist))
+colnames((mers_korea_2015$linelist))
 ```
 
 What about the contact dataset?
 
 ```{r}
-colnames((mers.korea.2015$contacts))
+colnames((mers_korea_2015$contacts))
 ```
 
 ### Creating `epicontacts` Object
@@ -105,7 +105,8 @@ colnames((mers.korea.2015$contacts))
 In order to create the `epicontacts` object, both the line list and contact data frames must be passed to `make_epicontacts()`. This function accommodates instances when the respective identifiers are not the first columns of these data frames (see the "id", "from" and "to" arguments). `make_epicontacts()` can also account for contact networks that have a direction (see "directed" argument).
 
 ```{r}
-merskor15 <- make_epicontacts(linelist = mers.korea.2015$linelist, contacts = mers.korea.2015$contacts, directed = FALSE)
+merskor15 <- make_epicontacts(linelist = mers_korea_2015$linelist,
+contacts = mers_korea_2015$contacts, directed = FALSE)
 class(merskor15)
 summary(merskor15)
 ```

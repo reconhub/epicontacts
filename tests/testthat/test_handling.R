@@ -1,7 +1,7 @@
 context("Handling: [ operator")
 
 test_that("Various subsetting using [", {
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id = "case.id", to = "case.id", from = "infector",
                            directed = TRUE)
 
@@ -52,7 +52,7 @@ test_that("Various subsetting using [", {
 })
 
 test_that("Errors / warnings happen when they should", {
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id = "case.id", to = "case.id", from = "infector",
                            directed = FALSE)
 

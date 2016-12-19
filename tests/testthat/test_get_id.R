@@ -3,7 +3,7 @@ context("Extracting IDs from epi_contact")
 test_that("IDs are extracted fine", {
     skip_on_cran()
 
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id="case.id", to="case.id", from="infector",
                            directed=TRUE)
 
@@ -35,7 +35,7 @@ test_that("IDs are extracted fine", {
 test_that("Errors / warnings happen when they should", {
     skip_on_cran()
 
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id="case.id", to="case.id", from="infector",
                            directed=FALSE)
 

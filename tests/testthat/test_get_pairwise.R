@@ -3,7 +3,7 @@ context("Test get_pairwise")
 test_that("pairwise analysis: gender", {
     skip_on_cran()
     
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id="case.id", to="case.id", from="infector",
                            directed=TRUE)
 
@@ -24,7 +24,7 @@ test_that("pairwise analysis: gender", {
 test_that("provide false characters", {
     skip_on_cran()
 
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id="case.id", to="case.id", from="infector",
                            directed=TRUE)
 
@@ -51,8 +51,8 @@ test_that("different types of attributes", {
     skip_on_cran()
 
     ## need to add a numeric entry to the linelist
-    ebola.sim$num <- as.numeric(ebola.sim$linelist$generation)
-    x <- make_epicontacts(ebola.sim$linelist, ebola.sim$contacts,
+    ebola_sim$num <- as.numeric(ebola_sim$linelist$generation)
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id="case.id", to="case.id", from="infector",
                            directed=TRUE)
 
