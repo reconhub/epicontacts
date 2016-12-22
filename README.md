@@ -84,9 +84,6 @@ The main features of the package include:
 
 * **`graph3D`**: 3D graph from an `epicontacts` object.
 
-* **`epicontacts_server`**: run the epicontacts Shiny app on a local host
-
-
 
 
 <br>
