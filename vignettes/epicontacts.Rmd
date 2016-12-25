@@ -175,7 +175,7 @@ The above is a generic method based on the `vis_epicontacts()` and accepts a num
 `epicontacts` loads the `threejs` package to enable 3D visualisation tools with the `graph3D()` function[^3].
 
 ```{r}
-graph3D(merskor15, v_col_by = "sex", v.size = 0.5, g.title = "MERS Korea 2014")
+graph3D(merskor15, v_col_by = "sex", v_size = 0.5, g_title = "MERS Korea 2014")
 ```
 
 To interact with the plot:

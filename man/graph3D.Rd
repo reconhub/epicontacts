@@ -5,8 +5,8 @@
 \title{Interactive 3D Force-directed graph from epi_contact object}
 \usage{
 graph3D(epicontacts, label_column = "id", v_col_by = "NA",
-  v.col = "darkturquoise", g.title = "", g.bg = "white",
-  g.fg = "darkturquoise", v.size = 1, e.size = 0.5)
+  v_col = "darkturquoise", g_title = "", g_bg = "white",
+  g_fg = "darkturquoise", v_size = 1, e_size = 0.5)
 }
 \arguments{
 \item{epicontacts}{an \code{\link{epicontacts}} object}
@@ -16,18 +16,18 @@ labels. Default is \code{id}}
 
 \item{v_col_by}{the column name in \code{linelist} to be used for node colors}
 
-\item{v.col}{the color of all nodes in graph, unless \code{v_col_by} is
+\item{v_col}{the color of all nodes in graph, unless \code{v_col_by} is
 defined. Default is 'darkturquoise'}
 
-\item{g.title}{the title of the graph, if needed}
+\item{g_title}{the title of the graph, if needed}
 
-\item{g.bg}{background color of graph. Default is 'black'}
+\item{g_bg}{background color of graph. Default is 'black'}
 
-\item{g.fg}{foreground color of graph. Default is 'darkturquoise'}
+\item{g_fg}{foreground color of graph. Default is 'darkturquoise'}
 
-\item{v.size}{size of nodes in graph. Default is 1}
+\item{v_size}{size of nodes in graph. Default is 1}
 
-\item{e.size}{width of edges in graph. Default is 0.5}
+\item{e_size}{width of edges in graph. Default is 0.5}
 }
 \value{
 An htmlwidget object that is displayed using the object's show or print method.

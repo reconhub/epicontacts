@@ -13,18 +13,18 @@
 #'
 #' @param v_col_by the column name in \code{linelist} to be used for node colors
 #'
-#' @param v.col the color of all nodes in graph, unless \code{v_col_by} is
+#' @param v_col the color of all nodes in graph, unless \code{v_col_by} is
 #'     defined. Default is 'darkturquoise'
 #'
-#' @param g.title the title of the graph, if needed
+#' @param g_title the title of the graph, if needed
 #'
-#' @param g.bg background color of graph. Default is 'black'
+#' @param g_bg background color of graph. Default is 'black'
 #'
-#' @param g.fg foreground color of graph. Default is 'darkturquoise'
+#' @param g_fg foreground color of graph. Default is 'darkturquoise'
 #'
-#' @param v.size size of nodes in graph. Default is 1
+#' @param v_size size of nodes in graph. Default is 1
 #'
-#' @param e.size width of edges in graph. Default is 0.5
+#' @param e_size width of edges in graph. Default is 0.5
 #'
 #' @note All colors must be specified as color names like "red", "blue", etc. or
 #' as hexadecimal color values without opacity channel, for example "#FF0000", "#0a3e55"
@@ -61,12 +61,12 @@
 graph3D <- function(epicontacts,
                     label_column = "id",
                     v_col_by = "NA",
-                    v.col = "darkturquoise",
-                    g.title = "",
-                    g.bg = "white",
-                    g.fg = "darkturquoise",
-                    v.size = 1,
-                    e.size = .5) {
+                    v_col = "darkturquoise",
+                    g_title = "",
+                    g_bg = "white",
+                    g_fg = "darkturquoise",
+                    v_size = 1,
+                    e_size = .5) {
 
     ## Create igraph object to pass on as data for 3D graph (because original
     ## epicontacts object may contain NA's, which will hinder creation of 3D
@@ -82,11 +82,11 @@ graph3D <- function(epicontacts,
     v$id = 1:nrow(v) ## required by threejs::graphjs(). It has to be an integer.
 
     # Set node attributes
-    if(v_col_by == "NA" & v.col == "darkturquoise") {
+    if(v_col_by == "NA" & v_col == "darkturquoise") {
         v$color = "darkturquoise"
     } else {
-        if(v_col_by == "NA" & v.col != "darkturquoise") {
-            v$color = v.col
+        if(v_col_by == "NA" & v_col != "darkturquoise") {
+            v$color = v_col
         } else {
             if(v_col_by != "NA") {
                 gp <- as.character(v[[v_col_by]])
@@ -105,18 +105,18 @@ graph3D <- function(epicontacts,
     colnames(e) = c("from", "to")
 
     ## Set edge attributes
-    e$size = e.size
+    e$size = e_size
     e$color = "lightgrey"
 
     ## Set vertex attributes
-    v$size = v.size
+    v$size = v_size
 
     ## Subset vertex dataframe for graphjs
     v <- v[ , c("label", "id", "size", "color")]
 
     ## Create 3D graph
-    g <- threejs::graphjs(edges = e, nodes = v, main = g.title,
-                          showLabels=FALSE, fg = g.fg, bg = g.bg)
+    g <- threejs::graphjs(edges = e, nodes = v, main = g_title,
+                          showLabels=FALSE, fg = g_fg, bg = g_bg)
     return(g)
 }
 
