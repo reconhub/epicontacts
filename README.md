@@ -1,13 +1,5 @@
 
 
-```
-## Loading required package: printr
-```
-
-```
-## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called 'printr'
-```
 
 
 Welcome to the *epicontacts* package!
@@ -17,7 +9,7 @@ Welcome to the *epicontacts* package!
 
 [![Travis-CI Build Status](https://travis-ci.org/reconhub/epicontacts.svg?branch=master)](https://travis-ci.org/reconhub/epicontacts)
 
-[![Coverage Status](https://img.shields.io/codecov/c/github/reconhub/epicontacts/master.svg)](https://codecov.io/github/reconhub/epicontacts?branch=master)
+[![Coverage Status](https://codecov.io/github/reconhub/epicontacts/coverage.svg?branch=master)](https://codecov.io/github/reconhub/epicontacts?branch=master)
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/epicontacts)](https://cran.r-project.org/package=epicontacts)
 
@@ -100,7 +92,7 @@ More detailed tutorials are distributed as vignettes with the package:
 
 ```r
 vignette(package="epicontacts")
-#> Error in find.package(package, lib.loc): there is no package called 'epicontacts'
+#> no vignettes found
 ```
 
 To open these, type:
