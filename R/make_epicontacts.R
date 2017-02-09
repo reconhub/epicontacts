@@ -98,9 +98,6 @@ make_epicontacts <- function(linelist, contacts, id=1L, from=1L, to=2L,
     if (length(linelist)==1 && is.na(linelist)) {
         stop("linelist is NA")
     }
-    if (nrow(linelist) < 1L) {
-        stop("linelist should have at least one row")
-    }
     if (ncol(linelist) < 1L) {
         stop("linelist should have at least one column")
     }
@@ -129,9 +126,6 @@ make_epicontacts <- function(linelist, contacts, id=1L, from=1L, to=2L,
         stop("contacts is NA")
     }
     if (!is.null(contacts)){
-        if(nrow(contacts) < 1L) {
-            stop("contacts should have at least one row")
-        }
         if (ncol(contacts) < 2L) {
             stop("contacts should have at least two columns")
         }
