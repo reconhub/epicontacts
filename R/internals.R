@@ -27,12 +27,12 @@ cases_pal <- function(n){
 
 ## from adegenet::fac2col
 
-char2col <- function (x, pal = cases_pal, na.col = "grey"){
+char2col <- function (x, pal = cases_pal, NA_col = "lightgrey"){
   x <- factor(x)
   lev <- levels(x)
   nlev <- length(lev)
   col <- pal(nlev)
-  res <- rep(na.col, length(x))
+  res <- rep(NA_col, length(x))
   res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
   return(res)
 }
