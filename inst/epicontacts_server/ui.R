@@ -7,7 +7,7 @@ shinyUI(fluidPage(
 
     sidebarLayout(
         sidebarPanel(
-            radioButtons("datasource", "Data", choices = c("Ebola Simulation","MERS South Korea", "Upload Data")),
+            radioButtons("datasource", "Data", choices = c("Ebola Simulation", "MERS South Korea", "Upload Data")),
             conditionalPanel(
             condition = "input.datasource == 'Upload Data'",
             fileInput('linelist', 'Choose A Line List File To Upload',
