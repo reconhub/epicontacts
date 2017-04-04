@@ -76,4 +76,3 @@ x_subset <- subset(x, cs_max = 9)
 Finlay Campbell (\email{f.campbell15@imperial.ac.uk}), Nistara
     Randhawa (\email{nrandhawa@ucdavis.edu})
 }
-

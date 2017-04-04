@@ -44,4 +44,3 @@ mtext(side = 3, "(based on case out-degree)")
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
-
