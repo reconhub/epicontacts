@@ -79,32 +79,34 @@
     <p>This function creates a 3D graph from an epi_contact object</p>
     
 
-    <pre><span class='fu'>graph3D</span>(<span class='no'>epicontacts</span>, <span class='kw'>label_column</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>v_col_by</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>v.col</span> <span class='kw'>=</span> <span class='st'>"darkturquoise"</span>, <span class='kw'>g.title</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>g.bg</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>g.fg</span> <span class='kw'>=</span> <span class='st'>"darkturquoise"</span>, <span class='kw'>v.size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>e.size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+    <pre><span class='fu'>graph3D</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>col_pal</span> <span class='kw'>=</span> <span class='no'>cases_pal</span>,
+  <span class='kw'>NA_col</span> <span class='kw'>=</span> <span class='st'>"lightgrey"</span>, <span class='kw'>g_title</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>bg_col</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>label_col</span> <span class='kw'>=</span> <span class='st'>"darkgrey"</span>, <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>edge_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>epicontacts</dt>
-      <dd>an <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
-      <dt>label_column</dt>
-      <dd>the column name in <code>linelist</code> to be used for node
-labels. Default is <code>id</code></dd>
-      <dt>v_col_by</dt>
-      <dd>the column name in <code>linelist</code> to be used for node colors</dd>
-      <dt>v.col</dt>
-      <dd>the color of all nodes in graph, unless <code>v_col_by</code> is
-defined. Default is &#39;darkturquoise&#39;</dd>
-      <dt>g.title</dt>
-      <dd>the title of the graph, if needed</dd>
-      <dt>g.bg</dt>
-      <dd>background color of graph. Default is &#39;black&#39;</dd>
-      <dt>g.fg</dt>
-      <dd>foreground color of graph. Default is &#39;darkturquoise&#39;</dd>
-      <dt>v.size</dt>
-      <dd>size of nodes in graph. Default is 1</dd>
-      <dt>e.size</dt>
-      <dd>width of edges in graph. Default is 0.5</dd>
+      <dt>x</dt>
+      <dd>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
+      <dt>group</dt>
+      <dd>An index or character string indicating which field of the
+linelist should be used to color the nodes. Default is <code>id</code></dd>
+      <dt>annot</dt>
+      <dd>An index or character string indicating which fields of the
+linelist should be used for annotating the nodes.</dd>
+      <dt>col_pal</dt>
+      <dd>A color palette for the groups.</dd>
+      <dt>NA_col</dt>
+      <dd>The color used for unknown group.</dd>
+      <dt>g_title</dt>
+      <dd>The title of the graph.</dd>
+      <dt>bg_col</dt>
+      <dd>The background color of graph.</dd>
+      <dt>label_col</dt>
+      <dd>The color of the graph title and labels of groups.</dd>
+      <dt>node_size</dt>
+      <dd>The sizes of graph nodes.</dd>
+      <dt>edge_size</dt>
+      <dd>The width of graph edges.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -129,16 +131,14 @@ as hexadecimal color values without opacity channel, for example &quot;#FF0000&q
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
-<span class='co'>## build data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>,
-                       <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
-                       <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span>$<span class='no'>linelist</span>,
+                      <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span>$<span class='no'>contacts</span>,
+                      <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='co'>## subset based on single cluster size</span>
-<span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='subset_clusters_by_size.html'>subset_clusters_by_size</a></span>(<span class='no'>x</span>, <span class='fl'>10</span>, <span class='fl'>12</span>)
-
-<span class='co'>## 3D graph</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>graph3D</span>(<span class='no'>x_subset</span>)
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># graph3D(x)</span>
+<span class='co'># graph3D(x, group = "sex", g_title = "MERS Korea 2014")</span>
+<span class='co'>## ---------------------------------------------</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

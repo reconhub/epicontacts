@@ -76,23 +76,22 @@
     </div>
 
     
-    <p>This function assigns clusters and respective cluster sizes to the
-epicontacts linelist. These cluster memberships and sizes are derived from
-the graph clusters in the epicontacts &#39;contacts&#39; dataframe.</p>
+    <p>This function identifies transitive clusters (i.e. connected components) and adds this information to the linelist data.</p>
     
 
-    <pre><span class='fu'>get_clusters</span>(<span class='no'>epicontacts</span>)</pre>
+    <pre><span class='fu'>get_clusters</span>(<span class='no'>epicontacts</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"epicontacts"</span>, <span class='st'>"factor"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>epicontacts</dt>
-      <dd>an <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
+      <dd>an <code><a href='make_epicontacts.html'>epicontacts</a></code> object.</dd>
+      <dt>output</dt>
+      <dd>either an <code><a href='make_epicontacts.html'>epicontacts</a></code> object or a factor containing cluster memberships to which members of <code><a href='make_epicontacts.html'>epicontacts</a></code> linelist belong to.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object whose &#39;linelist&#39; dataframe contains new columns
-corresponding to cluster membership and size.</p>
+    <p>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object whose &#39;linelist&#39; dataframe contains new columns corresponding to cluster membership and size, or a data.frame containing member ids, cluster memberships as factors, and associated cluster sizes.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -103,7 +102,10 @@ corresponding to cluster membership and size.</p>
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
 <span class='co'>## add cluster membership and sizes to epicontacts 'linelist'</span>
-<span class='no'>x_clusters</span> <span class='kw'>&lt;-</span> <span class='fu'>get_clusters</span>(<span class='no'>x</span>)
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>get_clusters</span>(<span class='no'>x</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"epicontacts"</span>)
+
+<span class='co'>## return a data.frame with linelist member ids and cluster memberships as factors</span>
+<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>get_clusters</span>(<span class='no'>x</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"factor"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

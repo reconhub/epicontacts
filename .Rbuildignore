@@ -5,3 +5,4 @@
 docs/
 README.Rmd
 ^appveyor\.yml$
+figs/

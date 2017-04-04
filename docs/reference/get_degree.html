@@ -98,23 +98,24 @@ should be from the linelist exclusively</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
+    <pre class="examples"><div class='input'><span class='co'>## make epicontacts object</span>
+<span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>,
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>x</span>
+
+<span class='co'>## compute in-degree</span>
 <span class='no'>deg_in</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>)
-<span class='no'>deg_out</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>, <span class='st'>"out"</span>)
-<span class='no'>deg_both</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>, <span class='st'>"both"</span>)
-<span class='fu'>head</span>(<span class='no'>deg_in</span>)
 <span class='fu'>table</span>(<span class='no'>deg_in</span>)
-<span class='fu'>head</span>(<span class='no'>deg_out</span>)
-<span class='fu'>table</span>(<span class='no'>deg_out</span>)
-<span class='fu'>head</span>(<span class='no'>deg_both</span>)
-<span class='fu'>table</span>(<span class='no'>deg_both</span>)
-}</div><div class='output co'>#&gt; deg_both
-#&gt;    1    2    3    4    5    6    7 
-#&gt; 3982 1093  341   71   20    3    1 </div></pre>
+
+<span class='co'>## compute out-degree</span>
+<span class='no'>deg_out</span> <span class='kw'>&lt;-</span> <span class='fu'>get_degree</span>(<span class='no'>x</span>, <span class='st'>"out"</span>)
+<span class='fu'>barplot</span>(<span class='fu'>table</span>(<span class='no'>deg_out</span>), <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Reproduction number distribution"</span>)
+<span class='fu'>mtext</span>(<span class='kw'>side</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"(based on case out-degree)"</span>)
+
+}</div><img src='get_degree-2.png' alt='' width='540' height='400' /><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
