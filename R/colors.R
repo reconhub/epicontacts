@@ -59,9 +59,10 @@ cases_pal <- function(n){
 #' @export
 #' @rdname colors
 
-spectral <- colorRampPalette(c("#D53E4F","#F46D43","#FDAE61",
-                               "#FEE08B","#FFFFBF","#E6F598",
-                               "#ABDDA4","#66C2A5","#3288BD"))
+spectral <- grDevices::colorRampPalette(
+    c("#D53E4F","#F46D43","#FDAE61",
+      "#FEE08B","#FFFFBF","#E6F598",
+      "#ABDDA4","#66C2A5","#3288BD"))
 
 
 
@@ -100,8 +101,9 @@ char2col <- function (x, pal = cases_pal, NA_col = "lightgrey"){
 #' transparency, and 1 for full opacity.
 
 transp <- function(col, alpha = .5){
-    res <- apply(col2rgb(col), 2,
-                 function(c) rgb(c[1]/255, c[2]/255, c[3]/255, alpha))
+    res <- apply(grDevices::col2rgb(col), 2,
+                 function(c)
+                 grDevices::rgb(c[1]/255, c[2]/255, c[3]/255, alpha))
     return(res)
 }
 
