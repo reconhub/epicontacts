@@ -6,25 +6,27 @@
 #'
 #' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
-#' @param epicontacts an \code{\link{epicontacts}} object
+#' @param x An \code{\link{epicontacts}} object
 #'
-#' @param label_column the column name in \code{linelist} to be used for node
-#'     labels. Default is \code{id}
+#' @param group An index or character string indicating which field of the
+#'     linelist should be used to color the nodes. Default is \code{id}
 #'
-#' @param v_col_by the column name in \code{linelist} to be used for node colors
+#' @param annot An index or character string indicating which fields of the
+#'     linelist should be used for annotating the nodes.
 #'
-#' @param v_col the color of all nodes in graph, unless \code{v_col_by} is
-#'     defined. Default is 'darkturquoise'
+#' @param col_pal A color palette for the groups.
 #'
-#' @param g_title the title of the graph, if needed
+#' @param NA_col The color used for unknown group.
 #'
-#' @param g_bg background color of graph. Default is 'black'
+#' @param g_title The title of the graph.
 #'
-#' @param g_fg foreground color of graph. Default is 'darkturquoise'
+#' @param bg_col The background color of graph.
 #'
-#' @param v_size size of nodes in graph. Default is 1
+#' @param label_col The color of the graph title and labels of groups.
 #'
-#' @param e_size width of edges in graph. Default is 0.5
+#' @param node_size The sizes of graph nodes.
+#'
+#' @param edge_size The width of graph edges.
 #'
 #' @note All colors must be specified as color names like "red", "blue", etc. or
 #' as hexadecimal color values without opacity channel, for example "#FF0000", "#0a3e55"
@@ -46,77 +48,89 @@
 #'
 #' @examples
 #' if (require(outbreaks)) {
-#' ## build data
-#' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-#'                        id="case.id", to="case.id", from="infector",
-#'                        directed=TRUE)
+#' x <- make_epicontacts(linelist = mers_korea_2015$linelist,
+#'                       contacts = mers_korea_2015$contacts,
+#'                       directed = FALSE)
 #'
-#' ## subset based on single cluster size
-#' x_subset <- subset_clusters_by_size(x, 10, 12)
-#'
-#' ## 3D graph
-#' g <- graph3D(x_subset)
+#' \dontrun{
+#' graph3D(x)
+#' graph3D(x, group = "sex", g_title = "MERS Korea 2014")
+#' }
 #' }
 
-graph3D <- function(epicontacts,
-                    label_column = "id",
-                    v_col_by = "NA",
-                    v_col = "darkturquoise",
+graph3D <- function(x,
+                    group = "id",
+                    annot = TRUE,
+                    col_pal = cases_pal,
+                    NA_col = "lightgrey",
                     g_title = "",
-                    g_bg = "white",
-                    g_fg = "darkturquoise",
-                    v_size = 1,
-                    e_size = .5) {
+                    bg_col = "white",
+                    label_col = "darkgrey",
+                    node_size = 1,
+                    edge_size = .5) {
 
     ## Create igraph object to pass on as data for 3D graph (because original
     ## epicontacts object may contain NA's, which will hinder creation of 3D
     ## graph with threejs::graphjs()
 
-    x <- as.igraph.epicontacts(epicontacts)
+    x <- subset_clusters_by_size(x, cs_min = 2)
+    x <- as.igraph.epicontacts(x)
 
     ## Get vertex attributes and prepare as input for graph
-    v <- igraph::get.vertex.attribute(x)
-    v <- as.data.frame(v, stringsAsFactors = FALSE)
+    nodes <- igraph::get.vertex.attribute(x)
+    nodes <- as.data.frame(nodes, stringsAsFactors = FALSE)
 
-    v$label <- v$id ## assigning the unique identifier as default label
-    v$id = 1:nrow(v) ## required by threejs::graphjs(). It has to be an integer.
+    # attribute for grouping
+    nodes$group <- as.character(nodes[,group])
+    nodes$group[is.na(nodes$group)] <- "NA"
+    nodes$group <- factor(nodes$group)
+
+    # changing original "id" column to one required by threejs::graphjs()
+    #   & backing up old id
+    nodes$orig_id <- nodes$id 
+    nodes$id <- 1:nrow(nodes) # has to be integer
+
+
 
     # Set node attributes
-    if(v_col_by == "NA" & v_col == "darkturquoise") {
-        v$color = "darkturquoise"
-    } else {
-        if(v_col_by == "NA" & v_col != "darkturquoise") {
-            v$color = v_col
+    # node color
+    K <- length(unique(nodes$group))
+    grp.col <- col_pal(K)
+    grp.col[levels(nodes$group)=="NA"] <- NA_col
+    
+    nodes$color <- grp.col[factor(nodes$group)]
+
+    if(annot) {
+        if(group == "id") {
+            nodes$label <- nodes$label <- sprintf( "id: %s", nodes$orig_id)
         } else {
-            if(v_col_by != "NA") {
-                gp <- as.character(v[[v_col_by]])
-                pal <- colorspace::rainbow_hcl(length(unique(gp[ !is.na(gp) ])))
-                cols <- pal[factor(gp)]
-                cols[ is.na(cols) ] <- "lightgrey"
-                v$color <- cols
-                v$label <- sprintf( "id: %s, %s: %s", v$label, v_col_by, gp )
-            }
+            nodes$label <- sprintf( "id: %s, %s: %s",
+                                   nodes$orig_id,group, nodes$group)
         }
+    } else {
+        nodes$label = ""
     }
+    
 
     ## Get edge list and format prepare as input for graph
-    e <- igraph::get.edgelist(x, names=FALSE)
-    e <- as.data.frame(e, stringsAsFactors = FALSE)
-    colnames(e) = c("from", "to")
+    edges <- igraph::get.edgelist(x, names=FALSE)
+    edges <- as.data.frame(edges, stringsAsFactors = FALSE)
+    colnames(edges) = c("from", "to")
 
     ## Set edge attributes
-    e$size = e_size
-    e$color = "lightgrey"
+    edges$size = edge_size
+    edges$color = "lightgrey"
 
     ## Set vertex attributes
-    v$size = v_size
+    nodes$size = node_size
 
     ## Subset vertex dataframe for graphjs
-    v <- v[ , c("label", "id", "size", "color")]
+    nodes <- nodes[ , c("group", "id", "orig_id", "size", "color", "label")]
 
     ## Create 3D graph
-    g <- threejs::graphjs(edges = e, nodes = v, main = g_title,
-                          showLabels=FALSE, fg = g_fg, bg = g_bg)
+    g <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
+                          showLabels=FALSE, fg = label_col, bg = bg_col)
     return(g)
 }
+
 
