@@ -8,15 +8,14 @@ Welcome to the *epicontacts* package!
 <br>
 
 [![Travis-CI Build Status](https://travis-ci.org/reconhub/epicontacts.svg?branch=master)](https://travis-ci.org/reconhub/epicontacts)
-
+[![Build status](https://ci.appveyor.com/api/projects/status/7fj30xjlesja0vbr/branch/master?svg=true)](https://ci.appveyor.com/project/thibautjombart/epicontacts/branch/master)
 [![Coverage Status](https://codecov.io/github/reconhub/epicontacts/coverage.svg?branch=master)](https://codecov.io/github/reconhub/epicontacts?branch=master)
-
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/epicontacts)](https://cran.r-project.org/package=epicontacts)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/epicontacts)](https://cran.r-project.org/package=epicontacts)
 
 
 
 
-<br>
 <br>
 
 # Installing the package
@@ -35,10 +34,6 @@ devtools::install_github("reconhub/epicontacts")
 
 Note that this requires the package *devtools* installed.
 
-
-
-<br>
-<br>
 
 
 
@@ -78,12 +73,8 @@ The main features of the package include:
 
 
 
-<br>
-<br>
 
 # Resources
-
-<br>
 
 ## Vignettes
 
@@ -103,8 +94,7 @@ vignette("customize_plot", package="epicontacts")
 vignette("epicontacts_class", package="epicontacts")
 ```
 
-<br>
-<br>
+
 
 ## Websites
 
@@ -120,8 +110,6 @@ The following websites are available:
 [https://CRAN.R-project.org/package=epicontacts](https://CRAN.R-project.org/package=epicontacts)
 
 
-<br>
-<br>
 
 ## Getting help online
 
@@ -131,9 +119,6 @@ Bug reports and feature requests should be posted on *github* using the [*issue*
 
 
 
-
-<br>
-<br>
 
 # A quick overview
 
@@ -148,9 +133,6 @@ functionalities. See the [*vignettes section*](#vignettes) for more detailed tut
 
 
 
-
-<br>
-<br>
 
 # Contributors (by alphabetic order):
 - [Thomas Crellen](https://github.com/tc13)

@@ -26,8 +26,8 @@ test_that("get_degree is producing a named vector that is not null", {
   
   deg <- get_degree(x)
   
-  expect_more_than(length(deg), 0)
-  expect_more_than(length(names(deg)), 0)
+  expect_gt(length(deg), 0)
+  expect_gt(length(names(deg)), 0)
   
 })
 

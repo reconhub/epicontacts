@@ -44,7 +44,8 @@ The same output as \code{visNetwork}.
 }
 \description{
 This function plots \code{\link{epicontacts}} objects using the
-\code{visNetwork} package.
+\code{visNetwork} package. The produced object is an \code{htmlwidget} which
+will need rendering within a web browser.
 }
 \examples{
 if (require(outbreaks)) {
