@@ -38,4 +38,3 @@ plot(net)
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
 }
-

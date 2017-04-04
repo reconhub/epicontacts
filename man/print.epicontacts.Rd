@@ -18,4 +18,3 @@ summary of the reported cases and contacts.
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
-

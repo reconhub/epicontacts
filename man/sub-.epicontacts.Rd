@@ -90,10 +90,9 @@ y <- thin(y)
 plot(y)
 }
 }
-\author{
-Thibaut Jombart (\email{thibautjombart@gmail.com})
-}
 \seealso{
 \code{\link{thin}} to retain matching cases in linelist or contacts.
 }
-
+\author{
+Thibaut Jombart (\email{thibautjombart@gmail.com})
+}

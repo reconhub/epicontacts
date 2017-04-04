@@ -57,9 +57,6 @@ x_subset <- subset_clusters_by_size(x, 10, 12)
 g <- graph3D(x_subset)
 }
 }
-\author{
-Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
-}
 \references{
 Original three.js code by David Piegza:
     \url{https://github.com/davidpiegza/Graph-Visualization}.
@@ -67,4 +64,6 @@ Original three.js code by David Piegza:
 Original rthreejs code by B. W. Lewis:
 \url{https://github.com/bwlewis/rthreejs}.
 }
-
+\author{
+Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
+}
