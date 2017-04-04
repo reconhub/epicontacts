@@ -47,17 +47,13 @@ Double-click or tap on the plot to reset the view.
 }
 \examples{
 if (require(outbreaks)) {
-x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                       id="case.id", to="case.id", from="infector",
-                       directed=TRUE)
-
-## subset based on single cluster size
-x_subset <- subset_clusters_by_size(x, 10, 12)
+x <- make_epicontacts(linelist = mers_korea_2015$linelist,
+                      contacts = mers_korea_2015$contacts,
+                      directed = FALSE)
 
 \dontrun{
-graph3D(x_subset)
-graph3D(x_subset, group = "gender")
-graph3D(x_subset, group = "hospital")
+graph3D(x)
+graph3D(x, group = "sex", g_title = "MERS Korea 2014")
 }
 }
 }
