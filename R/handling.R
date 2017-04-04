@@ -17,7 +17,7 @@
 #'     rows of the \code{$linelist} component.
 #'
 #' @param j A character vector containing case ID to be retained in the
-#'     contacts; ; alternatively, an integer or logical vector used to subset
+#'     contacts; alternatively, an integer or logical vector used to subset
 #'     the rows of the \code{$contacts} component.
 #'
 #' @param contacts A character string indicating the rules for retaining
@@ -35,10 +35,17 @@
 #'
 #' @details
 #' Details on the 'contacts' argument; possible values are:
+#' 
 #' \itemize{
+#' 
 #' \item 'both': contacts are retained only if both cases are in \code{j}
-#' \item 'either': contacts are retained if at least one of the cases is in \code{j}
-#' \item 'from': contacts are retained only if the source ('from') is in \code{j}
+#' 
+#' \item 'either': contacts are retained if at least one of the cases is in
+#' \code{j}
+#' 
+#' \item 'from': contacts are retained only if the source ('from') is in
+#' \code{j}
+#' 
 #' \item 'to': contacts are retained only if the recipient ('to') is in \code{j}
 #' }
 #'
