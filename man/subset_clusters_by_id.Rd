@@ -39,4 +39,3 @@ x_subset <- subset_clusters_by_id(x, id)
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
 }
-

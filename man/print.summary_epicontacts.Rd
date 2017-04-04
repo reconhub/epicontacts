@@ -18,4 +18,3 @@ This method outputs a printed summary of the content of
 \author{
 VP Nagraj (\email{vpnagraj@virginia.edu})
 }
-

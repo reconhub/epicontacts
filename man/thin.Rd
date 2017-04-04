@@ -38,4 +38,3 @@ x <- x[j = "916d0a", contacts = "from"]
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
-

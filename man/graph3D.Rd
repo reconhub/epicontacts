@@ -4,30 +4,32 @@
 \alias{graph3D}
 \title{Interactive 3D Force-directed graph from epi_contact object}
 \usage{
-graph3D(epicontacts, label_column = "id", v_col_by = "NA",
-  v_col = "darkturquoise", g_title = "", g_bg = "white",
-  g_fg = "darkturquoise", v_size = 1, e_size = 0.5)
+graph3D(x, group = "id", annot = TRUE, col_pal = cases_pal,
+  NA_col = "lightgrey", g_title = "", bg_col = "white",
+  label_col = "darkgrey", node_size = 1, edge_size = 0.5)
 }
 \arguments{
-\item{epicontacts}{an \code{\link{epicontacts}} object}
+\item{x}{An \code{\link{epicontacts}} object}
 
-\item{label_column}{the column name in \code{linelist} to be used for node
-labels. Default is \code{id}}
+\item{group}{An index or character string indicating which field of the
+linelist should be used to color the nodes. Default is \code{id}}
 
-\item{v_col_by}{the column name in \code{linelist} to be used for node colors}
+\item{annot}{An index or character string indicating which fields of the
+linelist should be used for annotating the nodes.}
 
-\item{v_col}{the color of all nodes in graph, unless \code{v_col_by} is
-defined. Default is 'darkturquoise'}
+\item{col_pal}{A color palette for the groups.}
 
-\item{g_title}{the title of the graph, if needed}
+\item{NA_col}{The color used for unknown group.}
 
-\item{g_bg}{background color of graph. Default is 'black'}
+\item{g_title}{The title of the graph.}
 
-\item{g_fg}{foreground color of graph. Default is 'darkturquoise'}
+\item{bg_col}{The background color of graph.}
 
-\item{v_size}{size of nodes in graph. Default is 1}
+\item{label_col}{The color of the graph title and labels of groups.}
 
-\item{e_size}{width of edges in graph. Default is 0.5}
+\item{node_size}{The sizes of graph nodes.}
+
+\item{edge_size}{The width of graph edges.}
 }
 \value{
 An htmlwidget object that is displayed using the object's show or print method.
@@ -45,7 +47,6 @@ Double-click or tap on the plot to reset the view.
 }
 \examples{
 if (require(outbreaks)) {
-## build data
 x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                        id="case.id", to="case.id", from="infector",
                        directed=TRUE)
@@ -53,12 +54,12 @@ x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
 ## subset based on single cluster size
 x_subset <- subset_clusters_by_size(x, 10, 12)
 
-## 3D graph
-g <- graph3D(x_subset)
+\dontrun{
+graph3D(x_subset)
+graph3D(x_subset, group = "gender")
+graph3D(x_subset, group = "hospital")
 }
 }
-\author{
-Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
 }
 \references{
 Original three.js code by David Piegza:
@@ -67,4 +68,6 @@ Original three.js code by David Piegza:
 Original rthreejs code by B. W. Lewis:
 \url{https://github.com/bwlewis/rthreejs}.
 }
-
+\author{
+Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
+}

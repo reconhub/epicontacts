@@ -64,11 +64,10 @@ plot(x, group = "loc_hosp", legend_max=20, annot=TRUE)
 }
 }
 }
+\seealso{
+\code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+}
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 VP Nagraj (\email{vpnagraj@virginia.edu})
 }
-\seealso{
-\code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
-}
-
