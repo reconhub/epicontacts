@@ -1,39 +1,44 @@
-context("Plotting epicontacts Objects")
+context("vis_epicontacts objects")
 
-test_that("Returns properly grouped plot", {
+test_that("Plotting groups as color", {
   
   skip_on_cran()
   
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id="case.id", to="case.id", from="infector",
-    directed=FALSE)
+    id = "case.id", to = "case.id", from = "infector",
+    directed = FALSE)
+  x <- thin(x[1:100], 2)
   
-  netplot <- vis_epicontacts(x, group = "gender")
-  
-  expect_equal(netplot$x$byselection$variable, "gender")
+  plot1 <- vis_epicontacts(x, group = "gender")
+  plot2 <- vis_epicontacts(x, group = "gender",
+                           selector = FALSE, editor = TRUE)
+ 
+  expect_equal(plot1$x$byselection$variable, "gender")
+  expect_equal_to_reference(plot1, file = "rds/plot1.rds")
+  expect_equal_to_reference(plot2, file = "rds/plot2.rds")
   
 })
 
-test_that("Returns error when grouping specification is not in line list", {
+
+
+
+
+
+test_that("Returns errors as planned", {
   
   skip_on_cran()
   
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id="case.id", to="case.id", from="infector",
-    directed=FALSE)
-  
-  expect_error(vis_epicontacts(x, group = "sex"))
-  
+    id = "case.id", to = "case.id", from = "infector",
+    directed = FALSE)
+
+  msg <- "Group 'sex' is not in the linelist"
+  expect_error(vis_epicontacts(x, group = "sex"), msg)
+
+  msg <- "Annot 'toto, caca' is not in the linelist"
+  expect_error(vis_epicontacts(x, annot = c("id", "toto", "caca")),
+               msg)
+
 })
 
-test_that("Returns error when annotation specification is not in line list", {
-  
-  skip_on_cran()
-  
-  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id="case.id", to="case.id", from="infector",
-    directed=FALSE)
-  
-  expect_error(vis_epicontacts(x, annot = "sex"))
-  
-})
+

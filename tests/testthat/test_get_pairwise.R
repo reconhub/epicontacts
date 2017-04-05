@@ -16,7 +16,6 @@ test_that("pairwise analysis: gender", {
     
     expect_identical(pair, pair2)
 
-    
 })
 
 
