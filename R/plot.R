@@ -31,6 +31,8 @@
 #'
 #' }
 #'
+#' @importFrom graphics plot
+#'
 #' @seealso \code{\link{vis_epicontacts}}, which uses the package \code{visNetwork}.
 #'
 #' @examples
