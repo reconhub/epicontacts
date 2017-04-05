@@ -37,7 +37,6 @@ x <- x[ids, ids]
 
 net <- as.igraph(x)
 net
-plot(net)
 plot(net, vertex.label = "", vertex.size = 10,
      vertex.color = cases_pal(50))
 }
