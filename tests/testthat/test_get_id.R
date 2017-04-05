@@ -26,6 +26,10 @@ test_that("IDs are extracted fine", {
     expect_equal(union(id1,id2), id3)
     expect_equal(intersect(id1,id2), id4)
     expect_equal(unique(c(id5,id6)), id2)
+
+    msg <- "x is not an 'epicontacts' object"
+    expect_error(get_id("toto"), msg)
+
 })
 
 
