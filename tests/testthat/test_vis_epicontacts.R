@@ -11,15 +11,19 @@ test_that("Plotting groups as color", {
   y <- x
   y$directed <- TRUE
   
-  plot1 <- vis_epicontacts(x, group = "gender")
-  plot2 <- vis_epicontacts(x, group = "gender",
+  vis1 <- vis_epicontacts(x, group = "gender")
+  vis2 <- vis_epicontacts(x, group = "gender",
                            selector = FALSE, editor = TRUE)
-  plot3 <- vis_epicontacts(y)
+  vis3 <- vis_epicontacts(y)
+  vis4 <- vis_epicontacts(y, group = "gender", selector = FALSE, editor = FALSE)
+  vis5 <- vis_epicontacts(y, group = "gender", selector = TRUE, editor = TRUE)
  
-  expect_equal(plot1$x$byselection$variable, "gender")
-  expect_equal_to_reference(plot1, file = "rds/plot1.rds")
-  expect_equal_to_reference(plot2, file = "rds/plot2.rds")
-  expect_equal_to_reference(plot3, file = "rds/plot3.rds")
+  expect_equal(vis1$x$byselection$variable, "gender")
+  expect_equal_to_reference(vis1, file = "rds/vis1.rds")
+  expect_equal_to_reference(vis2, file = "rds/vis2.rds")
+  expect_equal_to_reference(vis3, file = "rds/vis3.rds")
+  expect_equal_to_reference(vis4, file = "rds/vis4.rds")
+  expect_equal_to_reference(vis5, file = "rds/vis5.rds")
 
 })
 
@@ -35,6 +39,8 @@ test_that("Returns errors as planned", {
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
     id = "case.id", to = "case.id", from = "infector",
     directed = FALSE)
+  x <- thin(x[1:100], 2)
+  x <- thin(x)
 
   msg <- "Group 'sex' is not in the linelist"
   expect_error(vis_epicontacts(x, group = "sex"), msg)

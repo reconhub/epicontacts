@@ -17,22 +17,37 @@ library(knitr)
 opts_chunk$set(message=FALSE, warning=FALSE, eval=TRUE, echo=TRUE)
 ```
 
-The `epicontacts` data structure is useful for epidemiological network analysis of cases and contacts. Data partitioned as *line list* and *contact list* formats can be coerced to the `epicontacts` class in order to facilitate manipulation, visualization and analysis. 
+The `epicontacts` data structure is useful for epidemiological network analysis
+of cases and contacts. Data partitioned as *line list* and *contact list*
+formats can be coerced to the `epicontacts` class in order to facilitate
+manipulation, visualization and analysis.
 
-Using a simulated ebola outbreak dataset from the **outbreaks** package, this vignette will explore how to create an `epicontacts` object and use several generic methods to work with the data.
+Using a simulated ebola outbreak dataset from the **outbreaks** package, this
+vignette will explore how to create an `epicontacts` object and use several
+generic methods to work with the data.
 
 ## `make_epicontacts()`
 
-`make_epicontacts()` creates the `epicontacts` data structure. The function accepts arguments for:
+`make_epicontacts()` creates the `epicontacts` data structure. The function
+accepts arguments for:
 
-- **linelist**: a data frame with at least one column providing unique case identifiers
-- **contacts**: a data frame with at least two columns indicating individuals that were in contact with one another (*nb* these may or may not be referenced in the line list)
-- **id**: the name or index for the column in the linelist that contains unique identifiers for individual cases; defaults to the first column
-- **from**: the name or index for the column in the contacts that contains the originating case; defaults to first column; can still be used in non-directed networks but should not be interpreted as direction (see **directed** argument)
-- **to**: the name or index for the column in the contacts that contains secondary case; defaults to second column; can still be used in non-directed networks but should not be interpreted as direction (see **directed** argument)
-- **directed**: indicator as to whether or not the contact moved in a direction (i.e. "from" one individual "to" another)
+- **linelist**: a data frame with at least one column providing unique case
+- **identifiers contacts**: a data frame with at least two columns indicating
+- **individuals that were in contact with one another (*nb* these may or may not
+- **be referenced in the line list) id**: the name or index for the column in
+- **the linelist that contains unique identifiers for individual cases; defaults
+- **to the first column from**: the name or index for the column in the contacts
+- **that contains the originating case; defaults to first column; can still be
+- **used in non-directed networks but should not be interpreted as direction
+- **(see **directed** argument) to**: the name or index for the column in the
+- **contacts that contains secondary case; defaults to second column; can still
+- **be used in non-directed networks but should not be interpreted as direction
+- **(see **directed** argument) directed**: indicator as to whether or not the
+- **contact moved in a direction (i.e. "from" one individual "to" another)
 
-Before creating an `epicontacts` object, it may be helpful to examine the structure of the line list and contact data. The example that follows uses the `ebola_sim` data loaded from the **outbreaks** package.
+Before creating an `epicontacts` object, it may be helpful to examine the
+structure of the line list and contact data. The example that follows uses the
+`ebola_sim` data loaded from the **outbreaks** package.
 
 ```{r}
 library(outbreaks)
@@ -42,9 +57,15 @@ str(ebola_sim)
 
 ```
 
-`ebola_sim` is a list with two data frames, which contain the line list and contacts respectively. The line list data frame already has a unique identifier for cases in the first column, and the contacts data has the individual contacts represented in the first and second columns. Note that if the input data were not formatted as such, the *id*, *from* and *to* arguments allow for explicit definition of the columns that contain these attributes.
+`ebola_sim` is a list with two data frames, which contain the line list and
+contacts respectively. The line list data frame already has a unique identifier
+for cases in the first column, and the contacts data has the individual contacts
+represented in the first and second columns. Note that if the input data were
+not formatted as such, the *id*, *from* and *to* arguments allow for explicit
+definition of the columns that contain these attributes.
 
-Assuming this network of contacts is directed, the following call to `make_epicontacts` will generate an `epicontacts` object:
+Assuming this network of contacts is directed, the following call to
+`make_epicontacts` will generate an `epicontacts` object:
 
 ```{r}
 x <- make_epicontacts(linelist = ebola_sim$linelist, contacts = ebola_sim$contacts, directed = TRUE)
@@ -62,7 +83,8 @@ class(x)
 is.list(x)
 ```
 
-As with other lists, the named elements of the `epicontacts` data structure can be easily accessed with the `$` operator.
+As with other lists, the named elements of the `epicontacts` data structure can
+be easily accessed with the `$` operator.
 
 ## `$linelist`
 
@@ -78,11 +100,17 @@ head(x$contacts)
 
 ## Generics
 
-The `epicontacts` data structure enables some convenient implementations of "generic" functions in R. These functions (`plot()`, `print()`, `summary()`, etc.) behave differently depending on the class of the input.
+The `epicontacts` data structure enables some convenient implementations of
+"generic" functions in R. These functions (`plot()`, `print()`, `summary()`,
+etc.) behave differently depending on the class of the input.
 
 ### `print.epicontacts()`
 
-Using the name of an object (or the `print()` function explicitly) will invoke the print method in R. For the `epicontacts` data structure, printing is conveniently trimmed to show how many cases (rows in the line list) and how many contacts (rows in the contact list), as well as a glimpse of the first 10 rows of each data frame.
+Using the name of an object (or the `print()` function explicitly) will invoke
+the print method in R. For the `epicontacts` data structure, printing is
+conveniently trimmed to show how many cases (rows in the line list) and how many
+contacts (rows in the contact list), as well as a glimpse of the first 10 rows
+of each data frame.
 
 ```{r}
 x
@@ -90,7 +118,9 @@ x
 
 ### `summary.epicontacts()`
 
-The summary method provides descriptive information regarding the dimensions and relationship between the line list and contact list (i.e. how many ids they share).
+The summary method provides descriptive information regarding the dimensions and
+relationship between the line list and contact list (i.e. how many ids they
+share).
 
 ```{r}
 summary(x)
@@ -98,12 +128,18 @@ summary(x)
 
 ### `subset.epicontacts()`
 
-With this method, one can reduce the size of the `epicontacts` object by filtering rows based on explicit values in the line list (node) and contact list (edge) components. For more on how to parameterize the subset, see `?subset.epicontacts`.
+With this method, one can reduce the size of the `epicontacts` object by
+filtering rows based on explicit values in the line list (node) and contact list
+(edge) components. For more on how to parameterize the subset, see
+`?subset.epicontacts`.
 
-**nb** this function returns an `epicontacts` object, which can in turn be passed to another generic method.
+**nb** this function returns an `epicontacts` object, which can in turn be
+  passed to another generic method.
 
 ```{r}
-rokupafuneral <- subset(x, node.attribute = list("hospital" = "Rokupa Hospital"), edge.attribute = list("source" = "funeral"))
+rokupafuneral <- subset(x, 
+                        node.attribute = list("hospital" = "Rokupa Hospital"), 
+                        edge.attribute = list("source" = "funeral"))
 ```
 
 ```{r}
@@ -112,8 +148,12 @@ summary(rokupafuneral)
 
 ### `plot.epicontacts()`
 
-By default, passing an `epicontacts` object into the plot function is effectively the same as using `vis_epicontacts()`, and will generate an interactive visualiztion of the network of cases and contacts. Note that this method includes a number of options to customize the plot. For more see `?vis_epicontacts`.
+By default, passing an `epicontacts` object into the plot function is
+effectively the same as using `vis_epicontacts()`, and will generate an
+interactive visualiztion of the network of cases and contacts. Note that this
+method includes a number of options to customize the plot. For more see
+`?vis_epicontacts`.
 
 ```{r}
-plot(rokupafuneral, group = "outcome")
+plot(rokupafuneral, y = "outcome")
 ```

@@ -4,21 +4,38 @@
 \alias{plot.epicontacts}
 \title{Plot epicontacts objects}
 \usage{
-\method{plot}{epicontacts}(x, y = c("visNetwork"), thin = TRUE, ...)
+\method{plot}{epicontacts}(x, y = "id", method = c("visNetwork", "graph3D"),
+  thin = TRUE, ...)
 }
 \arguments{
-\item{x}{an \code{\link{epicontacts}} object}
+\item{x}{An \code{\link{epicontacts}} object}
 
-\item{y}{a character string indicating the plotting method to be used}
+\item{y}{An integer or a character string indicating which attribute column
+in the linelist should be used to color the nodes.}
+
+\item{method}{A character string indicating the plotting method to be used;
+available values are "visNetwork" and "graph3D"; see details.}
 
 \item{thin}{A logical indicating if the data should be thinned so that only
 cases with contacts should be plotted.}
 
-\item{...}{further arguments passed to the plotting method}
+\item{...}{Further arguments passed to the plotting methods.}
 }
 \description{
 This function plots \code{\link{epicontacts}} objects using various
 approaches. The default method uses \code{\link{vis_epicontacts}}.
+}
+\details{
+This function is merely a wrapper for other plotting functions in
+the package, depending on the value of \code{method}:
+
+\itemize{
+
+\item \code{visNetwork}: calls the function \code{\link{vis_epicontacts}}
+
+\item \code{graph3D}: calls the function \code{\link{graph3D}}
+
+}
 }
 \examples{
 if (require(outbreaks)) {
@@ -31,8 +48,10 @@ x <- make_epicontacts(linelist = mers_korea_2015[[1]],
 
 \dontrun{
 plot(x)
-plot(x, group = "place_infect")
-plot(x, group = "loc_hosp", legend_max = 20, annot = TRUE)
+plot(x, "place_infect")
+plot(x, "loc_hosp", legend_max = 20, annot = TRUE)
+plot(x, 4)
+plot(x, 4, method = "graph3D")
 }
 }
 }

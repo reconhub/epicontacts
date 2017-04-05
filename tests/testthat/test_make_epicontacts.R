@@ -18,7 +18,8 @@ test_that("Class and content are fine", {
 
 test_that("Errors happen when they should", {
     
- 
+    ## linelist tests
+    
     msg <- "linelist is NULL"
     expect_error(make_epicontacts(linelist = NULL,
                                   contacts = ebola_sim$contacts),
@@ -40,6 +41,9 @@ test_that("Errors happen when they should", {
                  msg)
 
 
+
+    
+    ## contacts tests
     
     msg <- "contacts is NULL"
     expect_error(make_epicontacts(linelist = ebola_sim$linelist,
@@ -61,7 +65,6 @@ test_that("Errors happen when they should", {
                                   contacts = data.frame(from = 1:100)),
                  msg)
     
-    
 })
 
 
@@ -71,12 +74,17 @@ test_that("Errors happen when they should", {
 
 test_that("Reordering of columns works", {
     ## reverse data order
-    linelist <- ebola_sim$linelist[,rev(seq_len(ncol(ebola_sim$linelist)))]
-    contacts <- ebola_sim$contacts[,rev(seq_len(ncol(ebola_sim$contacts)))]
+    
+    linelist <- ebola_sim$linelist[, rev(seq_len(ncol(ebola_sim$linelist)))]
+    contacts <- ebola_sim$contacts[, rev(seq_len(ncol(ebola_sim$contacts)))]
 
+    
     ## make object
+    
     x <- make_epicontacts(linelist, contacts,
-                           id="case.id", to="case.id", from="infector")
+                           id = "case.id",
+                          to = "case.id",
+                          from = "infector")
 
     ## tests
     expect_equal(names(x$linelist)[1], "id")

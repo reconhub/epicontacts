@@ -152,7 +152,9 @@ plot(merskor15)
 
 The above is a generic method based on the `vis_epicontacts()` and accepts a
 number of arguments to customize the plot appearance and functionality. For a
-full list of options use `?vis_epicontacts()`
+full list of options use `?vis_epicontacts()`. Alternatively, the `method` used
+for plotting can be `graph3D`, in which case a 3-dimensional graph will be used
+(see below).
 
 
 ### 3D plots

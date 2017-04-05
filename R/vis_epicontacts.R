@@ -162,14 +162,12 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
   enabled <- list(enabled = TRUE)
 
-  if (selector) {
-    out <- out %>% visNetwork::visOptions(selectedBy = group,
-                                          manipulation = editor,
-                                          highlightNearest = enabled)
-  } else if (editor) {
-    out <- out %>% visNetwork::visOptions(manipulation = TRUE,
-                                          highlightNearest = enabled)
-  }
+  
+  arg_selec <- if (selector) group else NULL
+
+  out <- out %>% visNetwork::visOptions(selectedBy = arg_selec,
+                                        manipulation = editor,
+                                        highlightNearest = enabled)
 
   return(out)
 }

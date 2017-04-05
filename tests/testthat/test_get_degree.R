@@ -16,7 +16,7 @@ test_that("the both argument is working as expected", {
 
   
   msg <- "x is not an 'epicontacts' object"
-  expect_error(get_id("toto"), msg)
+  expect_error(get_degree("toto"), msg)
 
 })
 
