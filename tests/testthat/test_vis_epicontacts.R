@@ -8,15 +8,19 @@ test_that("Plotting groups as color", {
     id = "case.id", to = "case.id", from = "infector",
     directed = FALSE)
   x <- thin(x[1:100], 2)
+  y <- x
+  y$directed <- TRUE
   
   plot1 <- vis_epicontacts(x, group = "gender")
   plot2 <- vis_epicontacts(x, group = "gender",
                            selector = FALSE, editor = TRUE)
+  plot3 <- vis_epicontacts(y)
  
   expect_equal(plot1$x$byselection$variable, "gender")
   expect_equal_to_reference(plot1, file = "rds/plot1.rds")
   expect_equal_to_reference(plot2, file = "rds/plot2.rds")
-  
+  expect_equal_to_reference(plot3, file = "rds/plot3.rds")
+
 })
 
 
