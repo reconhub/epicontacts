@@ -210,14 +210,41 @@ fisher.test(get_pairwise(merskor15, "sex", f=table))
 
 ### Identify Clusters
 
-The `get_clusters()` function returns an augmented `epicontacts` object that
-includes two extra features in the line list: *cluster_member* and
-*cluster_size*. In this context, a 'cluster' corresponds to groups of connected
-individuals or components.
+The `get_clusters()` function can be used for to identify connected components
+in an `epicontacts` object. Here, we illustrate its use to study contact
+patterns in a simulated Ebola outbreak. First, we use it to retrieve
+`data.frame` containing the cluster information:
 
-```{r}
-names(get_clusters(merskor15)$linelist)
+```{r, get_clusters}
+x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
+                      id = "case.id", to = "case.id", from = "infector",
+                      directed = TRUE)
+x
+
+clust <- get_clusters(x, output = "data.frame")
+class(clust)
+dim(clust)
+table(clust$cluster_size)
+barplot(table(clust$cluster_size),
+        main = "Cluster size distribution",
+	xlab = "Cluster size",
+	ylab = "Frequency")
+
 ```
+
+Let us look at the largest clusters. For this, we add cluster information to the
+`epicontacts` object, and then subset it:
+
+```{r, get_clusters2}
+
+x <- get_clusters(x)
+x_14 <- subset(x, cs = 14)
+plot(x_14, "cluster_member")
+
+```
+
+
+
 
 ### Calculate Degree
 

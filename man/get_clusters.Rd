@@ -4,31 +4,48 @@
 \alias{get_clusters}
 \title{Assign cluster IDs to epicontacts data}
 \usage{
-get_clusters(epicontacts, output = c("epicontacts", "factor"))
+get_clusters(x, output = c("epicontacts", "data.frame"))
 }
 \arguments{
-\item{epicontacts}{an \code{\link{epicontacts}} object.}
+\item{x}{An \code{\link{epicontacts}} object.}
 
-\item{output}{either an \code{\link{epicontacts}} object or a \link{factor} containing cluster memberships to which members of \code{\link{epicontacts}} linelist belong to.}
+\item{output}{A character string indicating the type of output: either an
+\code{\link{epicontacts}} object or a \link{data.frame} containing cluster
+memberships to which members of \code{\link{epicontacts}} linelist belong
+to.}
 }
 \value{
-An \code{\link{epicontacts}} object whose 'linelist' dataframe contains new columns corresponding to cluster membership and size, or a \link{data.frame} containing member ids, cluster memberships as factors, and associated cluster sizes.
+An \code{\link{epicontacts}} object whose 'linelist' dataframe
+  contains new columns corresponding to cluster membership and size, or a
+  \link{data.frame} containing member ids, cluster memberships as factors,
+  and associated cluster sizes.
 }
 \description{
-This function identifies transitive clusters (i.e. connected components) and adds this information to the linelist data.
+This function identifies transitive clusters (i.e. connected components) and
+adds this information to the linelist data.
 }
 \examples{
 if (require(outbreaks)) {
 ## build data
+
 x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                       id="case.id", to="case.id", from="infector",
-                       directed=TRUE)
+                       id = "case.id",
+                       to = "case.id",
+                       from = "infector",
+                       directed = TRUE)
+
 
 ## add cluster membership and sizes to epicontacts 'linelist'
-y <- get_clusters(x, output = "epicontacts")
 
-## return a data.frame with linelist member ids and cluster memberships as factors
-z <- get_clusters(x, output = "factor")
+y <- get_clusters(x, output = "epicontacts")
+y
+
+## return a data.frame with linelist member ids and cluster memberships as
+## factors
+
+z <- get_clusters(x, output = "data.frame")
+head(z)
+
 }
 }
 \author{

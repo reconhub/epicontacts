@@ -24,19 +24,22 @@
 #' ## build data
 #'
 #' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-#'                        id="case.id", to="case.id", from="infector",
-#'                        directed=TRUE)
+#'                        id = "case.id",
+#'                        to = "case.id",
+#'                        from = "infector",
+#'                        directed = TRUE)
 #'
 #'
 #' ## add cluster membership and sizes to epicontacts 'linelist'
 #'
 #' y <- get_clusters(x, output = "epicontacts")
-#'
+#' y
 #'
 #' ## return a data.frame with linelist member ids and cluster memberships as
 #' ## factors
 #'
-#' z <- get_clusters(x, output = "factor")
+#' z <- get_clusters(x, output = "data.frame")
+#' head(z)
 #'
 #' }
 
