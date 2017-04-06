@@ -55,10 +55,11 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame")){
 
   net_nodes <- dplyr::left_join(net_nodes, cs_size, by = "cluster_member")
   if(output == "epicontacts") {
-    x$linelist <- dplyr::full_join(x$linelist, net_nodes, by = "id")
+      x$linelist <- dplyr::full_join(x$linelist, net_nodes, by = "id")
+      x$linelist$cluster_member <- as.factor(x$linelist$cluster_member)
     return(x)
   } else {
-    net_nodes$cluster_member <- as.factor(net_nodes$cluster_member)
+      net_nodes$cluster_member <- as.factor(net_nodes$cluster_member)
     return(net_nodes)
   }
 }
