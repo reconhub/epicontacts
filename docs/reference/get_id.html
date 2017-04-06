@@ -109,14 +109,17 @@ specify if IDs should include: linelist only (&#39;linelist&#39;), contacts only
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
 <span class='co'>## get identifiers</span>
-<span class='no'>id1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>)
+<span class='no'>id1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='st'>"linelist"</span>)
 <span class='no'>id2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='st'>"contacts"</span>)
 <span class='no'>id3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='st'>"all"</span>)
 <span class='no'>id4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_id</span>(<span class='no'>x</span>, <span class='st'>"common"</span>)
 
-}
+<span class='co'>## check intersections and unions</span>
+<span class='fu'>all.equal</span>(<span class='fu'>union</span>(<span class='no'>id1</span>, <span class='no'>id2</span>), <span class='no'>id3</span>)
+<span class='fu'>all.equal</span>(<span class='fu'>intersect</span>(<span class='no'>id1</span>, <span class='no'>id2</span>), <span class='no'>id4</span>)
 
-<span class='co'>## check intersections and unions</span></div></pre>
+}</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

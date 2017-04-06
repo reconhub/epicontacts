@@ -71,6 +71,28 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
                             selector = TRUE, editor = FALSE,
                             ...){
 
+  ## check group
+    
+  if (!is.null(group)) {
+    if (!group %in% names(x$linelist)) {
+      msg <- sprintf("Group '%s' is not in the linelist", group)
+      stop(msg)
+    }
+  }
+
+  
+  ## check annot
+    
+  if (!is.null(annot) && is.character(annot)) {
+    if (!all(annot %in% names(x$linelist))) {
+      culprits <- annot[!annot %in% names(x$linelist)]
+      culprits <- paste(culprits, collapse = ", ")
+      msg <- sprintf("Annot '%s' is not in the linelist", culprits)
+      stop(msg)
+    }
+  }
+
+  
   ## make visNetwork inputs: nodes
 
   nodes <- data.frame(id = unique(c(x$linelist$id,
@@ -140,14 +162,12 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
   enabled <- list(enabled = TRUE)
 
-  if (selector) {
-    out <- out %>% visNetwork::visOptions(selectedBy = group,
-                                          manipulation = editor,
-                                          highlightNearest = enabled)
-  } else if (editor) {
-    out <- out %>% visNetwork::visOptions(manipulation = TRUE,
-                                          highlightNearest = enabled)
-  }
+  
+  arg_selec <- if (selector) group else NULL
+
+  out <- out %>% visNetwork::visOptions(selectedBy = arg_selec,
+                                        manipulation = editor,
+                                        highlightNearest = enabled)
 
   return(out)
 }

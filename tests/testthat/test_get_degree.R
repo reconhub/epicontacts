@@ -13,7 +13,11 @@ test_that("the both argument is working as expected", {
   deg_out <- get_degree(x, "out")
   
   expect_equal((deg_in+deg_out),deg_both)
+
   
+  msg <- "x is not an 'epicontacts' object"
+  expect_error(get_degree("toto"), msg)
+
 })
 
 test_that("get_degree is producing a named vector that is not null", {

@@ -1,39 +1,54 @@
-context("Plotting epicontacts Objects")
+context("vis_epicontacts objects")
 
-test_that("Returns properly grouped plot", {
+test_that("Plotting groups as color", {
   
   skip_on_cran()
   
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id="case.id", to="case.id", from="infector",
-    directed=FALSE)
+    id = "case.id", to = "case.id", from = "infector",
+    directed = FALSE)
+  x <- thin(x[1:100], 2)
+  y <- x
+  y$directed <- TRUE
   
-  netplot <- vis_epicontacts(x, group = "gender")
-  
-  expect_equal(netplot$x$byselection$variable, "gender")
-  
+  vis1 <- vis_epicontacts(x, group = "gender")
+  vis2 <- vis_epicontacts(x, group = "gender",
+                           selector = FALSE, editor = TRUE)
+  vis3 <- vis_epicontacts(y)
+  vis4 <- vis_epicontacts(y, group = "gender", selector = FALSE, editor = FALSE)
+  vis5 <- vis_epicontacts(y, group = "gender", selector = TRUE, editor = TRUE)
+ 
+  expect_equal(vis1$x$byselection$variable, "gender")
+  expect_equal_to_reference(vis1, file = "rds/vis1.rds")
+  expect_equal_to_reference(vis2, file = "rds/vis2.rds")
+  expect_equal_to_reference(vis3, file = "rds/vis3.rds")
+  expect_equal_to_reference(vis4, file = "rds/vis4.rds")
+  expect_equal_to_reference(vis5, file = "rds/vis5.rds")
+
 })
 
-test_that("Returns error when grouping specification is not in line list", {
+
+
+
+
+
+test_that("Returns errors as planned", {
   
   skip_on_cran()
   
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id="case.id", to="case.id", from="infector",
-    directed=FALSE)
-  
-  expect_error(vis_epicontacts(x, group = "sex"))
-  
+    id = "case.id", to = "case.id", from = "infector",
+    directed = FALSE)
+  x <- thin(x[1:100], 2)
+  x <- thin(x)
+
+  msg <- "Group 'sex' is not in the linelist"
+  expect_error(vis_epicontacts(x, group = "sex"), msg)
+
+  msg <- "Annot 'toto, caca' is not in the linelist"
+  expect_error(vis_epicontacts(x, annot = c("id", "toto", "caca")),
+               msg)
+
 })
 
-test_that("Returns error when annotation specification is not in line list", {
-  
-  skip_on_cran()
-  
-  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id="case.id", to="case.id", from="infector",
-    directed=FALSE)
-  
-  expect_error(vis_epicontacts(x, annot = "sex"))
-  
-})
+

@@ -18,11 +18,22 @@ summary.epicontacts <- function(object, ...){
 
     res <- list()
 
-    res$n_unique_contacts <- length(get_id(x,"contacts"))
-    res$n_common <- length(get_id(x, "common"))
-    res$n_linelist <- length(get_id(x, "linelist"))
-    res$contacts.attributes <- names(x$contacts[,-c(1,2)])
+    res$n_id_linelist <- length(get_id(x, "linelist"))
+    res$n_id_contacts <- length(get_id(x,"contacts"))
+    res$n_id_common <- length(get_id(x, "common"))
+  
+    res$n_contacts <- nrow(x$contacts)
+
+    from_in_linelist <- x$contacts$from %in% get_id(x, "linelist")
+    to_in_linelist <- x$contacts$to %in% get_id(x, "linelist")
+    res$prop_contacts_in_linelist <- mean(from_in_linelist & to_in_linelist)
+
+    res$deg_in <- summary(get_degree(x, "in"))
+    res$deg_out <- summary(get_degree(x, "out"))
+    res$deg_both <- summary(get_degree(x, "both"))
+
     res$linelist_attributes <- names(x$linelist[,-1])
+    res$contacts_attributes <- names(x$contacts[,-c(1,2)])
 
     class(res) <- "summary_epicontacts"
     return(res)

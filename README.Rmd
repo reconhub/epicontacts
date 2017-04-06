@@ -31,12 +31,12 @@ Welcome to the *epicontacts* package!
 # Installing the package
 
 To install the current stable, CRAN version of the package, type:
-```{r install, eval=FALSE}
+```{r install, eval = FALSE}
 install.packages("epicontacts")
 ```
 
 To benefit from the latest features and bug fixes, install the development, *github* version of the package using:
-```{r install2, eval=FALSE}
+```{r install2, eval = FALSE}
 devtools::install_github("reconhub/epicontacts")
 ```
 
@@ -55,27 +55,33 @@ The main features of the package include:
 
 * **`get_id`:** access unique IDs in an `epicontacts` with various options
 
-* **`get_pairwise`**:  extract attributes of record(s) in contacts database using information provided in the linelist data of an `epicontacts` object.
+* **`get_pairwise`**: extract attributes of record(s) in contacts database using
+    information provided in the linelist data of an `epicontacts` object.
 
 * **`get_degree`:** access degree of cases in `epicontacts` with various options
 
-* **`x[i,j,contacts]`:** subset an `epicontacts` object by retaining specified cases
+* **`x[i,j,contacts]`:** subset an `epicontacts` object by retaining specified
+    cases
 
 * **`thin`:** retains matching cases in linelist / contacts
 
-* **`summary`:** summary for  `epicontacts` objects
+* **`summary`:** summary for `epicontacts` objects
 
-* **`plot`:** plot for  `epicontacts` objects; various types of plot are available; default to `vis_epicontacts`
+* **`plot`:** plot for `epicontacts` objects; various types of plot are
+    available; default to `vis_epicontacts`
 
-* **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork
-`
-* **`as.igraph.epicontacts`:** create an `igraph` object from a epicontacts object
+* **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork ` *
+**`as.igraph.epicontacts`:** create an `igraph` object from a epicontacts object
 
-* **`clusters_epicontacts`:** assign clusters and corresponding cluster sizes to linelist of an epicontacts object (clusters being groups of connected individuals/nodes).
+* **`clusters_epicontacts`:** assign clusters and corresponding cluster sizes to
+    linelist of an epicontacts object (clusters being groups of connected
+    individuals/nodes).
 
-* **`subset_clusters_by_id`**: subset an `epicontacts` object based on a IDs of cases of interest.
+* **`subset_clusters_by_id`**: subset an `epicontacts` object based on a IDs of
+    cases of interest.
 
-* **`subset_clusters_by_size`**:  subset an `epicontacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes).
+* **`subset_clusters_by_size`**: subset an `epicontacts` object based on size(s)
+    of clusters (clusters being groups of connected individuals/nodes).
 
 * **`graph3D`**: 3D graph from an `epicontacts` object.
 
@@ -88,11 +94,13 @@ The main features of the package include:
 
 An overview of *epicontacts* is provided below in the worked example below.
 More detailed tutorials are distributed as vignettes with the package:
+
 ```{r, vignettes, eval = TRUE, echo = TRUE}
 vignette(package="epicontacts")
 ```
 
 To open these, type:
+
 ```{r, vignettes2, eval = FALSE}
 vignette("overview", package="epicontacts")
 vignette("customize_plot", package="epicontacts")
@@ -128,12 +136,105 @@ Bug reports and feature requests should be posted on *github* using the [*issue*
 # A quick overview
 
 The following worked example provides a brief overview of the package's
-functionalities. See the [*vignettes section*](#vignettes) for more detailed tutorials.
+functionalities. See the [*vignettes section*](#vignettes) for more detailed
+tutorials.
 
-## Loading the data
 
-... to be continued!
+## Obtaining an *epicontacts* object
 
+*epicontacts* need two types of data: 
+
+- a **linelist**, i.e. a spreadsheet documenting cases where columns are
+  variables and rows correspond to unique cases
+
+- a **list of edges**, defining connections between cases, identified by their
+  unique identifier
+
+There does not need to be an one-to-one correspondance between cases documented
+in the linelist and those appearing in the contacts. However, links will be made
+between the two sources of data whenever unique identifiers match. This will be
+especially handy when subsetting data, or when characterising contacts in terms
+of 'node' (case) properties.
+
+We illustrate the construction of an *epicontacts* using contact data from a
+Middle East Respiratory Syndrom coronavirus (MERS CoV) from South Korea in 2015,
+available as the dataset `mers_korea_2015` in the package *outbreaks*.
+
+```{r}
+
+library(outbreaks)
+library(epicontacts)
+
+names(mers_korea_2015)
+dim(mers_korea_2015$linelist) 
+dim(mers_korea_2015$contacts) 
+
+x <- make_epicontacts(linelist = mers_korea_2015$linelist,
+                      contacts = mers_korea_2015$contacts, 
+                      directed = TRUE)
+x
+class(x)
+summary(x)
+
+```
+
+In practice, the linelist and contacts will usually be imported from a text file
+(e.g. .txt, .csv) or a spreadsheet (e.g. .ods, .xls) using usual import
+functions (e.g. `read.table`, `read.csv`, `gdata::read.xls`).
+
+
+
+## Simple analyses
+
+First, we plot the *epicontacts* object:
+```{r, plot}
+
+plot(x, selector = FALSE)
+
+```
+
+We can look for patters of contacts between genders:
+```{r, plot_gender}
+
+plot(x, group = "sex", col_pal = spectral)
+
+```
+
+There is no obvious signs of non-random mixing patterns, but this is worth
+testing. The function `get_pairwise` is particularly useful for this. In its
+basic form, it reports nodes of attributes for all contacts. For instance:
+
+```{r, check_gender}
+
+get_pairwise(x, attribute = "sex")
+
+```
+
+However, one can specify the function to be used to compare the attributes of
+connected nodes; for instance:
+
+```{r, test_gender}
+
+sex_tab <- get_pairwise(x, attribute = "sex", f = table)
+sex_tab
+fisher.test(sex_tab)
+
+```
+
+Indeed, there are no patterns of association between genders.  We can also use
+this function to compute delays between dates. For instance, to get the
+distribution of the serial interval (delay between primary and secondary onset):
+
+```{r, si}
+
+si <- get_pairwise(x, attribute = "dt_onset")
+si
+summary(si)
+hist(si, col = "grey", border = "white", nclass = 30, 
+     xlab = "Time to secondary onset (days)", 
+     main = "Distribution of the serial interval")
+
+```
 
 
 
