@@ -36,10 +36,9 @@ plot(x, group = "loc_hosp", legend_max = 20, annot = TRUE)
 }
 }
 }
-\author{
-Thibaut Jombart (\email{thibautjombart@gmail.com})
-}
 \seealso{
 \code{\link{vis_epicontacts}}, which uses the package \code{visNetwork}.
 }
-
+\author{
+Thibaut Jombart (\email{thibautjombart@gmail.com})
+}

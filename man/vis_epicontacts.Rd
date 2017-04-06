@@ -44,7 +44,8 @@ The same output as \code{visNetwork}.
 }
 \description{
 This function plots \code{\link{epicontacts}} objects using the
-\code{visNetwork} package.
+\code{visNetwork} package. The produced object is an \code{htmlwidget} which
+will need rendering within a web browser.
 }
 \examples{
 if (require(outbreaks)) {
@@ -64,11 +65,10 @@ plot(x, group = "loc_hosp", legend_max=20, annot=TRUE)
 }
 }
 }
+\seealso{
+\code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+}
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 VP Nagraj (\email{vpnagraj@virginia.edu})
 }
-\seealso{
-\code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
-}
-

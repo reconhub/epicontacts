@@ -34,4 +34,3 @@ z <- get_clusters(x, output = "factor")
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
 }
-

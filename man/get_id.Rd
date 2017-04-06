@@ -47,4 +47,3 @@ all.equal(intersect(id1, id2), id4)
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
-

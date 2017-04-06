@@ -53,4 +53,3 @@ x_subset <- subset_clusters_by_size(x, cs_max = 9)
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
 }
-

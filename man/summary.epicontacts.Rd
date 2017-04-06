@@ -18,4 +18,3 @@ This method outputs a summary of the content of \code{epicontacts} objects.
 \author{
 VP Nagraj (\email{vpnagraj@virginia.edu})
 }
-

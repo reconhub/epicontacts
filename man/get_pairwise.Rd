@@ -50,4 +50,3 @@ fisher.test(get_pairwise(x, "sex", f=table)) # test association
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 Tom Crellen (\email{tomcrellen@gmail.com})
 }
-
