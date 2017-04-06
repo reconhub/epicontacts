@@ -49,19 +49,17 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame")){
   cs <- igraph::clusters(net)
   cs_size <- data.frame(cluster_member = seq_along(cs$csize),
                         cluster_size = cs$csize)
-
   net_nodes <- data.frame(id =igraph::V(net)$id,
                           cluster_member = cs$membership,
                           stringsAsFactors = FALSE)
 
   net_nodes <- dplyr::left_join(net_nodes, cs_size, by = "cluster_member")
   if(output == "epicontacts") {
-    x$linelist <- dplyr::left_join(x$linelist, net_nodes, by = "id")
+    x$linelist <- dplyr::full_join(x$linelist, net_nodes, by = "id")
     return(x)
   } else {
-    f <- net_nodes[ net_nodes$id %in% x$linelist$id, ]
-    f$cluster_member <- as.factor(f$cluster_member)
-    return(f)
+    net_nodes$cluster_member <- as.factor(net_nodes$cluster_member)
+    return(net_nodes)
   }
 }
 
