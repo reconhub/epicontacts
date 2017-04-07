@@ -196,7 +196,7 @@ plot(x, selector = FALSE)
 We can look for patters of contacts between genders:
 ```{r, plot_gender}
 
-plot(x, group = "sex", col_pal = spectral)
+plot(x, "sex", col_pal = spectral)
 
 ```
 

@@ -81,20 +81,36 @@ approaches. The default method uses <code><a href='vis_epicontacts.html'>vis_epi
     
 
     <pre><span class='co'># S3 method for epicontacts</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"visNetwork"</span>), <span class='kw'>thin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"visNetwork"</span>, <span class='st'>"graph3D"</span>),
+  <span class='kw'>thin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>an <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
+      <dd>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
       <dt>y</dt>
-      <dd>a character string indicating the plotting method to be used</dd>
+      <dd>An integer or a character string indicating which attribute column
+in the linelist should be used to color the nodes.</dd>
+      <dt>method</dt>
+      <dd>A character string indicating the plotting method to be used;
+available values are &quot;visNetwork&quot; and &quot;graph3D&quot;; see details.</dd>
       <dt>thin</dt>
       <dd>A logical indicating if the data should be thinned so that only
 cases with contacts should be plotted.</dd>
       <dt>...</dt>
-      <dd>further arguments passed to the plotting method</dd>
+      <dd>Further arguments passed to the plotting methods.</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function is merely a wrapper for other plotting functions in
+the package, depending on the value of <code>method</code>:</p>
+    <p><ul>
+<li> <code>visNetwork</code>: calls the function <code><a href='vis_epicontacts.html'>vis_epicontacts</a></code></p>
+    <p></li>
+<li> <code>graph3D</code>: calls the function <code><a href='graph3D.html'>graph3D</a></code></p>
+    <p></li>
+</ul></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -112,8 +128,10 @@ cases with contacts should be plotted.</dd>
 
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># plot(x)</span>
-<span class='co'># plot(x, group = "place_infect")</span>
-<span class='co'># plot(x, group = "loc_hosp", legend_max = 20, annot = TRUE)</span>
+<span class='co'># plot(x, "place_infect")</span>
+<span class='co'># plot(x, "loc_hosp", legend_max = 20, annot = TRUE)</span>
+<span class='co'># plot(x, 4)</span>
+<span class='co'># plot(x, 4, method = "graph3D")</span>
 <span class='co'>## ---------------------------------------------</span>
 }</div></pre>
   </div>
@@ -122,6 +140,8 @@ cases with contacts should be plotted.</dd>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
