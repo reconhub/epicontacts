@@ -259,7 +259,7 @@ plot(x, selector = FALSE)
 #> Error in file(con, "rb"): cannot open the connection
 ```
 
-We can look for patters of contacts between genders:
+We can look for patterns of contacts between genders:
 
 ```r
 
