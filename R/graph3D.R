@@ -11,8 +11,8 @@
 #' @param group An index or character string indicating which field of the
 #'     linelist should be used to color the nodes. Default is \code{id}
 #'
-#' @param annot An index or character string indicating which fields of the
-#'     linelist should be used for annotating the nodes.
+#' @param annot A logical indicating whether nodes should be annoted upon
+#'     mouseover. Default is \code{TRUE}.
 #'
 #' @param col_pal A color palette for the groups.
 #'
@@ -87,7 +87,7 @@ graph3D <- function(x,
 
     # changing original "id" column to one required by threejs::graphjs()
     #   & backing up old id
-    nodes$orig_id <- nodes$id 
+    nodes$orig_id <- nodes$id
     nodes$id <- 1:nrow(nodes) # has to be integer
 
 
@@ -97,7 +97,7 @@ graph3D <- function(x,
     K <- length(unique(nodes$group))
     grp.col <- col_pal(K)
     grp.col[levels(nodes$group)=="NA"] <- NA_col
-    
+
     nodes$color <- grp.col[factor(nodes$group)]
 
     if(annot) {
@@ -110,7 +110,7 @@ graph3D <- function(x,
     } else {
         nodes$label = ""
     }
-    
+
 
     ## Get edge list and format prepare as input for graph
     edges <- igraph::get.edgelist(x, names=FALSE)
