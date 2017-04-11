@@ -14,8 +14,10 @@ graph3D(x, group = "id", annot = TRUE, col_pal = cases_pal,
 \item{group}{An index or character string indicating which field of the
 linelist should be used to color the nodes. Default is \code{id}}
 
-\item{annot}{A logical indicating whether nodes should be annoted upon
-mouseover. Default is \code{TRUE}.}
+\item{annot}{An index, logical, or character string indicating which fields
+of the linelist should be used for annotating the nodes. Logical will be
+recycled if necessary, so that the default \code{TRUE} effectively uses all
+columns of the linelist.}
 
 \item{col_pal}{A color palette for the groups.}
 

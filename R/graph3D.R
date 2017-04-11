@@ -11,8 +11,10 @@
 #' @param group An index or character string indicating which field of the
 #'     linelist should be used to color the nodes. Default is \code{id}
 #'
-#' @param annot A logical indicating whether nodes should be annoted upon
-#'     mouseover. Default is \code{TRUE}.
+#' @param annot An index, logical, or character string indicating which fields
+#' of the linelist should be used for annotating the nodes. Logical will be
+#' recycled if necessary, so that the default \code{TRUE} effectively uses all
+#' columns of the linelist.
 #'
 #' @param col_pal A color palette for the groups.
 #'
@@ -68,7 +70,16 @@ graph3D <- function(x,
                     label_col = "darkgrey",
                     node_size = 1,
                     edge_size = .5) {
-
+    
+    ## check annot
+    if (!is.null(annot) && is.character(annot)) {
+      if (!all(annot %in% names(x$linelist))) {
+        culprits <- annot[!annot %in% names(x$linelist)]
+        culprits <- paste(culprits, collapse = ", ")
+        msg <- sprintf("Annot '%s' is not in the linelist", culprits)
+        stop(msg)
+      }
+    }
     ## Create igraph object to pass on as data for 3D graph (because original
     ## epicontacts object may contain NA's, which will hinder creation of 3D
     ## graph with threejs::graphjs()
@@ -90,28 +101,29 @@ graph3D <- function(x,
     nodes$orig_id <- nodes$id
     nodes$id <- 1:nrow(nodes) # has to be integer
 
-
-
     # Set node attributes
-    # node color
+    
+    ## get annotations
+    ## Put the id column back as the first column
+    temp <- nodes[ , c(ncol(nodes), 1:(ncol(nodes) - 1))]
+    
+    ## Drop the "names" and columns created when epicontacts object is converted
+    ##    to an igraph object
+    
+    drop_name <- which(names(temp) %in% "name")
+    temp <- temp[ , -drop_name]
+    temp <- temp[, annot, drop = FALSE]
+    temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
+    nodes$label <- paste("<p>",
+                         apply(temp, 1, paste0, collapse = "<br>"), "</p>")
+    
+    ## node color
     K <- length(unique(nodes$group))
     grp.col <- col_pal(K)
     grp.col[levels(nodes$group)=="NA"] <- NA_col
-
+    
     nodes$color <- grp.col[factor(nodes$group)]
-
-    if(annot) {
-        if(group == "id") {
-            nodes$label <- nodes$label <- sprintf( "id: %s", nodes$orig_id)
-        } else {
-            nodes$label <- sprintf( "id: %s, %s: %s",
-                                   nodes$orig_id,group, nodes$group)
-        }
-    } else {
-        nodes$label = ""
-    }
-
-
+    
     ## Get edge list and format prepare as input for graph
     edges <- igraph::get.edgelist(x, names=FALSE)
     edges <- as.data.frame(edges, stringsAsFactors = FALSE)
