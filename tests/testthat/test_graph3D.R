@@ -12,8 +12,8 @@ test_that("graph3D produces json that is not null", {
   expect_is(g$x, "json")
   expect_gt(length(g$x), 0)
 
-  g <- graph3D(x, annot = FALSE)
+  g <- graph3D(x, annot = c("date.of.infection", "outcome"))
   expect_is(g$x, "json")
-  expect_gt(length(g$x), 0)
+  expect_true(grepl("date.of.infection", g$x))
 
 })
