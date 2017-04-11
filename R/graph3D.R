@@ -12,7 +12,11 @@
 #'     linelist should be used to color the nodes. Default is \code{id}
 #'
 #' @param annot An index or character string indicating which fields of the
-#'     linelist should be used for annotating the nodes.
+#' linelist should be used for annotating the nodes.An index, logical, or
+#' character string indicating which fields linelist should be used for annotating
+#' the nodes of the linelist should be used for annotating the nodes. Logical will be
+#' recycled if necessary, so that the default \code{TRUE} effectively uses all
+#' columns of the linelist
 #'
 #' @param col_pal A color palette for the groups.
 #'
@@ -80,18 +84,56 @@ graph3D <- function(x,
     nodes <- igraph::get.vertex.attribute(x)
     nodes <- as.data.frame(nodes, stringsAsFactors = FALSE)
 
+
+    ## check annot
+    if (!is.null(annot) && is.character(annot)) {
+        if (!all(annot %in% names(x$linelist))) {
+            culprits <- annot[!annot %in% names(x$linelist)]
+            culprits <- paste(culprits, collapse = ", ")
+            msg <- sprintf("Annot '%s' is not in the linelist", culprits)
+            stop(msg)
+        }
+    }
+
+
+    ## get annotations
+    # Put the id column back as the first column
+    temp <- nodes[ , c(ncol(nodes), 1:(ncol(nodes) - 1))]
+    # Drop the "names" column created when epicontacts object is converted
+    #    to an igraph object
+    drop_name = which(names(temp) %in% "name")
+    temp <- temp[ , -drop_name]
+    temp <- temp[, annot, drop = FALSE]
+    temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
+    nodes$label <- paste("<p>",
+                         apply(temp, 1, paste0, collapse = "<br>"), "</p>")
+
+
+
+
+    # if(annot) {
+    #     if(group == "id") {
+    #         nodes$label <- nodes$label <- sprintf( "id: %s", nodes$orig_id)
+    #     } else {
+    #         nodes$label <- sprintf( "id: %s, %s: %s",
+    #                                nodes$orig_id,group, nodes$group)
+    #     }
+    # } else {
+    #     nodes$label = ""
+    # }
+
+
     # attribute for grouping
     nodes$group <- as.character(nodes[,group])
     nodes$group[is.na(nodes$group)] <- "NA"
     nodes$group <- factor(nodes$group)
 
+    
     # changing original "id" column to one required by threejs::graphjs()
     #   & backing up old id
     nodes$orig_id <- nodes$id 
     nodes$id <- 1:nrow(nodes) # has to be integer
-
-
-
+    
     # Set node attributes
     # node color
     K <- length(unique(nodes$group))
@@ -100,17 +142,6 @@ graph3D <- function(x,
     
     nodes$color <- grp.col[factor(nodes$group)]
 
-    if(annot) {
-        if(group == "id") {
-            nodes$label <- nodes$label <- sprintf( "id: %s", nodes$orig_id)
-        } else {
-            nodes$label <- sprintf( "id: %s, %s: %s",
-                                   nodes$orig_id,group, nodes$group)
-        }
-    } else {
-        nodes$label = ""
-    }
-    
 
     ## Get edge list and format prepare as input for graph
     edges <- igraph::get.edgelist(x, names=FALSE)
@@ -124,10 +155,10 @@ graph3D <- function(x,
     ## Set vertex attributes
     nodes$size = node_size
 
-    ## Subset vertex dataframe for graphjs
+    # Subset vertex dataframe for graphjs
     nodes <- nodes[ , c("group", "id", "orig_id", "size", "color", "label")]
 
-    ## Create 3D graph
+    # Create 3D graph
     g <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
                           showLabels=FALSE, fg = label_col, bg = bg_col)
     return(g)
