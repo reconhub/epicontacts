@@ -15,9 +15,8 @@ graph3D(x, group = "id", annot = TRUE, col_pal = cases_pal,
 linelist should be used to color the nodes. Default is \code{id}}
 
 \item{annot}{An index, logical, or character string indicating which fields
-of the linelist should be used for annotating the nodes upon mouseover. Logical
-will be recycled if necessary, so that the default \code{TRUE} effectively uses all
-columns of the linelist.}
+of the linelist should be used for annotating the nodes upon mouseover. The default
+\code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').}
 
 \item{col_pal}{A color palette for the groups.}
 
@@ -61,7 +60,7 @@ x <- make_epicontacts(linelist = mers_korea_2015$linelist,
 \dontrun{
 graph3D(x)
 graph3D(x, group = "sex", g_title = "MERS Korea 2014")
-graph3D(x, group = "sex", annot = c("id", "sex", "age"),
+graph3D(x, group = "sex", annot = c("sex", "age"),
         g_title = "MERS Korea 2014")
 }
 }

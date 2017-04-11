@@ -15,10 +15,9 @@
 #'     linelist should be used to color the nodes. Default is \code{id}
 #'
 #' @param annot An index, logical, or character string indicating which fields
-#' of the linelist should be used for annotating the nodes upon mouseover. Logical
-#' will be recycled if necessary, so that the default \code{TRUE} effectively uses all
-#' columns of the linelist.
-#'
+#' of the linelist should be used for annotating the nodes upon mouseover. The default
+#' \code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').
+#' 
 #' @param col_pal A color palette for the groups.
 #'
 #' @param NA_col The color used for unknown group.
@@ -65,7 +64,7 @@
 #' \dontrun{
 #' graph3D(x)
 #' graph3D(x, group = "sex", g_title = "MERS Korea 2014")
-#' graph3D(x, group = "sex", annot = c("id", "sex", "age"),
+#' graph3D(x, group = "sex", annot = c("sex", "age"),
 #'         g_title = "MERS Korea 2014")
 #' }
 #' }
@@ -120,6 +119,15 @@ graph3D <- function(x,
 
 
     ## getting annotations
+    if(annot[1] == TRUE) {
+        if (group == "id") {
+            annot = group
+        } else {
+            annot = c("id", group)
+        }
+    }
+    
+            
     temp <- nodes[, annot, drop = FALSE]
     temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
     nodes$label <- paste("<p>",
