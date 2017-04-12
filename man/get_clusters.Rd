@@ -16,9 +16,10 @@ to.}
 }
 \value{
 An \code{\link{epicontacts}} object whose 'linelist' dataframe
-  contains new columns corresponding to cluster membership and size, or a
-  \link{data.frame} containing member ids, cluster memberships as factors,
-  and associated cluster sizes.
+contains new columns corresponding to cluster membership and size, or a
+\link{data.frame} containing member ids, cluster memberships as factors,
+and associated cluster sizes. All ids that were originally in the 'contacts'
+dataframe but not in the linelist will also be added to the linelist.
 }
 \description{
 This function identifies transitive clusters (i.e. connected components) and
