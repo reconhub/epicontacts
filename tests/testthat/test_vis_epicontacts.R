@@ -9,6 +9,7 @@ test_that("Plotting groups as color", {
     directed = FALSE)
   x <- thin(x[1:100], 2)
   y <- x
+  y$linelist$group <- sample(letters[1:5], nrow(x$linelist), replace = TRUE)
   y$directed <- TRUE
 
   vis1 <- vis_epicontacts(x, group = "gender")
