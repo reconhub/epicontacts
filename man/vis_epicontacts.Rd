@@ -7,7 +7,7 @@
 vis_epicontacts(x, group = "id", annot = TRUE, legend = TRUE,
   legend_max = 10, col_pal = cases_pal, NA_col = "lightgrey",
   width = "90\%", height = "700px", selector = TRUE, editor = FALSE,
-  ...)
+  edge_width = 3, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -20,7 +20,8 @@ of the linelist should be used for annotating the nodes. Logical will be
 recycled if necessary, so that the default \code{TRUE} effectively uses all
 columns of the linelist.}
 
-\item{legend}{A logical indicating whether a legend should be added to the plot.}
+\item{legend}{A logical indicating whether a legend should be added to the
+plot.}
 
 \item{legend_max}{The maximum number of groups for a legend to be displayed.}
 
@@ -31,13 +32,17 @@ columns of the linelist.}
 \item{width}{The width of the output, in html compatible format (e.g. '90\%'
 or '800px').}
 
-\item{height}{The height of the output, in html compatible format (e.g. '800px').}
+\item{height}{The height of the output, in html compatible format
+(e.g. '800px').}
 
 \item{selector}{A logical indicating if the selector tool should be used;
 defaults to TRUE.}
 
 \item{editor}{A logical indicating if the editor tool should be used;
 defaults to FALSE.}
+
+\item{edge_width}{An integer indicating the width of the edges. Defaults to
+3.}
 
 \item{...}{Further arguments to be passed to \code{visNetwork}.}
 }
