@@ -10,6 +10,10 @@
 #' @param x An \code{\link{epicontacts}} object.
 #'
 #' @return An \code{igraph} object (from the \code{igraph} package).
+#' Note: any column called "name" in the original linelist will be stored as a
+#' new vertex attribute in the \code{igraph} object named 'epicontacts_name'.
+#' This is due to the inherent behaviour of igraph creating its own 'name' vertex
+#' attribute.
 #'
 #' @importFrom igraph as.igraph
 #' 
@@ -42,6 +46,12 @@ as.igraph.epicontacts <- function(x){
     ## Create vertex dataframe using combination of linelist and contacts
     all_ids <- data.frame(id = get_id(x, "all"), stringsAsFactors = FALSE)
     verts <- dplyr::full_join(x$linelist, all_ids, by = "id")
+
+    ## Checking if a "name" column exists
+    if( "name" %in% colnames(verts)) {
+        verts$epicontacts_name = verts$name
+        verts$name = NULL
+    }
 
     ## Creating igraph object
     net <- igraph::graph_from_data_frame(x$contacts, vertices = verts,

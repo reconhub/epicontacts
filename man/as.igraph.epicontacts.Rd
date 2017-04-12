@@ -11,6 +11,10 @@
 }
 \value{
 An \code{igraph} object (from the \code{igraph} package).
+Note: any column called "name" in the original linelist will be stored as a
+new vertex attribute in the \code{igraph} object named 'epicontacts_name'.
+This is due to the inherent behaviour of igraph creating its own 'name' vertex
+attribute.
 }
 \description{
 This function creates an igraph object from a given \code{\link{epicontacts}}
