@@ -95,12 +95,6 @@ The main features of the package include:
 An overview of *epicontacts* is provided below in the worked example below.
 More detailed tutorials are distributed as vignettes with the package:
 
-```{r, vignettes, eval = TRUE, echo = TRUE}
-vignette(package="epicontacts")
-```
-
-To open these, type:
-
 ```{r, vignettes2, eval = FALSE}
 vignette("overview", package="epicontacts")
 vignette("customize_plot", package="epicontacts")
@@ -193,10 +187,10 @@ plot(x, selector = FALSE)
 
 ```
 
-We can look for patters of contacts between genders:
+We can look for patterns of contacts between genders:
 ```{r, plot_gender}
 
-plot(x, group = "sex", col_pal = spectral)
+plot(x, "sex", col_pal = spectral)
 
 ```
 

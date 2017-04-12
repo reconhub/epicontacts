@@ -18,6 +18,7 @@ linelist should be used to color the nodes. Default is \code{id}}
 of the linelist should be used for annotating the nodes upon mouseover. The default
 \code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').}
 
+
 \item{col_pal}{A color palette for the groups.}
 
 \item{NA_col}{The color used for unknown group.}

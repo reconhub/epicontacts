@@ -18,6 +18,7 @@
 #' of the linelist should be used for annotating the nodes upon mouseover. The default
 #' \code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').
 #' 
+
 #' @param col_pal A color palette for the groups.
 #'
 #' @param NA_col The color used for unknown group.
@@ -80,7 +81,6 @@ graph3D <- function(x,
                     node_size = 1,
                     edge_size = .5) {
 
-
     ## check group
     if (!is.null(group)) {
         if (!group %in% names(x$linelist)) {
@@ -139,14 +139,28 @@ graph3D <- function(x,
     nodes$group <- as.character(nodes[,group])
     nodes$group[is.na(nodes$group)] <- "NA"
     nodes$group <- factor(nodes$group)
-    
+
     # Set node attributes
-    # node color
+    
+    ## get annotations
+    ## Put the id column back as the first column
+    temp <- nodes[ , c(ncol(nodes), 1:(ncol(nodes) - 1))]
+    
+    ## Drop the "names" and columns created when epicontacts object is converted
+    ##    to an igraph object
+    
+    drop_name <- which(names(temp) %in% "name")
+    temp <- temp[ , -drop_name]
+    temp <- temp[, annot, drop = FALSE]
+    temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
+    nodes$label <- paste("<p>",
+                         apply(temp, 1, paste0, collapse = "<br>"), "</p>")
+    
+    ## node color
     K <- length(unique(nodes$group))
     grp.col <- col_pal(K)
     grp.col[levels(nodes$group)=="NA"] <- NA_col
     nodes$color <- grp.col[factor(nodes$group)]
-
 
         
     # changing original "id" column to one required by threejs::graphjs()
@@ -154,16 +168,17 @@ graph3D <- function(x,
     nodes$orig_id <- nodes$id 
     nodes$id <- 1:nrow(nodes) # has to be integer
 
+
     
     ## make visNetwork inputs: edges
     edges <- x$contacts
-    edges_from = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
+    edges_from <- dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
                                   by = c("from" = "orig_id"))["id"]
     
-    edges_to = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
+    edges_to <- dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
                                   by = c("to" = "orig_id"))["id"]
-    edges$from = edges_from$id
-    edges$to = edges_to$id
+    edges$from <- edges_from$id
+    edges$to <- edges_to$id
 
     
     ## Set edge attributes

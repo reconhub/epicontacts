@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Subset an epi_contact object by factors — subset.epicontacts • epicontacts</title>
+<title>Subset an epicontact object by factors — subset.epicontacts • epicontacts</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,7 +72,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Subset an epi_contact object by factors</h1>
+    <h1>Subset an epicontact object by factors</h1>
     </div>
 
     
@@ -87,21 +87,21 @@ cluster of a specific, minimum or maximum size).</p>
     
 
     <pre><span class='co'># S3 method for epicontacts</span>
-<span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>node.attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>edge.attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cluster_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+<span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>node_attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>edge_attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cluster_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>cs_max</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>an epi_contact object to be subsetted</dd>
-      <dt>node.attribute</dt>
+      <dt>node_attribute</dt>
       <dd>a named list defining the node attribute name and node
 attribute value (as a single value or vector of values).  Dates must be
 provided as a vector of date objects, defining the range of dates
 included in the subset. If only one date is provided, only node
 attributes with that date will be returned.</dd>
-      <dt>edge.attribute</dt>
+      <dt>edge_attribute</dt>
       <dd>a named list defining the edge attribute name and edge
 attribute value (as a single value or vector of values).  Dates must be
 provided as a vector of date objects, defining the range of dates
@@ -124,29 +124,46 @@ components attached to these cases will be retained in the output object.</dd>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
+
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>,
-<span class='kw'>id</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>"case.id"</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>"infector"</span>, <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+                      <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>,
+                      <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>, <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'>## subset based on node and edge attributes</span>
-<span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>node.attribute</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='st'>"gender"</span><span class='kw'>=</span><span class='st'>"f"</span>),
-                   <span class='kw'>edge.attribute</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='st'>"source"</span><span class='kw'>=</span><span class='st'>"funeral"</span>))
+<span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>node_attribute</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"gender"</span> <span class='kw'>=</span> <span class='st'>"f"</span>),
+                   <span class='kw'>edge_attribute</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"source"</span> <span class='kw'>=</span> <span class='st'>"funeral"</span>))
+
 
 <span class='co'>## subset a cluster connected to a given id</span>
 <span class='co'>## (can be a vector of ids as well)</span>
-<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='st'>"cac51e"</span>
-<span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>cluster_id</span><span class='kw'>=</span><span class='no'>id</span>)
+<span class='co'>## here picking node with highest out-degree</span>
+
+<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'>names</span>(<span class='fu'>which.max</span>(<span class='fu'><a href='get_degree.html'>get_degree</a></span>(<span class='no'>x</span>, <span class='st'>"out"</span>)))
+<span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='thin.html'>thin</a></span>(<span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>cluster_id</span> <span class='kw'>=</span> <span class='no'>id</span>), <span class='fl'>2</span>)
+<span class='no'>x_subset</span>
+<span class='fu'>plot</span>(<span class='no'>x_subset</span>)
+
 
 <span class='co'>## subset based on cluster size range</span>
+
 <span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>cs_min</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>cs_max</span> <span class='kw'>=</span> <span class='fl'>15</span>)
 
+
 <span class='co'>## subset based on single cluster size</span>
+
 <span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>cs</span> <span class='kw'>=</span> <span class='fl'>12</span>)
 
+
 <span class='co'>## subset based on minimum cluster size</span>
+
 <span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>cs_min</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
+
 <span class='co'>## subset based on maximum cluster size</span>
+
 <span class='no'>x_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>cs_max</span> <span class='kw'>=</span> <span class='fl'>9</span>)
+
+
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

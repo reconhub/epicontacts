@@ -4,5 +4,7 @@
 ^data-raw$
 docs/
 README.Rmd
+README.md
 ^appveyor\.yml$
 figs/
+^cran-comments.md$

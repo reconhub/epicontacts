@@ -2,22 +2,22 @@
 % Please edit documentation in R/subset.epicontacts.R
 \name{subset.epicontacts}
 \alias{subset.epicontacts}
-\title{Subset an epi_contact object by factors}
+\title{Subset an epicontact object by factors}
 \usage{
-\method{subset}{epicontacts}(x, node.attribute = NULL,
-  edge.attribute = NULL, cluster_id = NULL, cs = NULL, cs_min = NULL,
+\method{subset}{epicontacts}(x, node_attribute = NULL,
+  edge_attribute = NULL, cluster_id = NULL, cs = NULL, cs_min = NULL,
   cs_max = NULL, ...)
 }
 \arguments{
 \item{x}{an epi_contact object to be subsetted}
 
-\item{node.attribute}{a named list defining the node attribute name and node
+\item{node_attribute}{a named list defining the node attribute name and node
 attribute value (as a single value or vector of values).  Dates must be
 provided as a vector of date objects, defining the range of dates
 included in the subset. If only one date is provided, only node
 attributes with that date will be returned.}
 
-\item{edge.attribute}{a named list defining the edge attribute name and edge
+\item{edge_attribute}{a named list defining the edge attribute name and edge
 attribute value (as a single value or vector of values).  Dates must be
 provided as a vector of date objects, defining the range of dates
 included in the subset. If only one date is provided, only edge
@@ -47,29 +47,46 @@ cluster of a specific, minimum or maximum size).
 \examples{
 if (require(outbreaks)) {
 ## build data
+
 x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-id="case.id", to="case.id", from="infector", directed=FALSE)
+                      id = "case.id", to = "case.id",
+                      from = "infector", directed = FALSE)
 
 ## subset based on node and edge attributes
-x_subset <- subset(x, node.attribute=list("gender"="f"),
-                   edge.attribute=list("source"="funeral"))
+x_subset <- subset(x, node_attribute = list("gender" = "f"),
+                   edge_attribute = list("source" = "funeral"))
+
 
 ## subset a cluster connected to a given id
 ## (can be a vector of ids as well)
-id <- "cac51e"
-x_subset <- subset(x, cluster_id=id)
+## here picking node with highest out-degree
+
+id <- names(which.max(get_degree(x, "out")))
+x_subset <- thin(subset(x, cluster_id = id), 2)
+x_subset
+plot(x_subset)
+
 
 ## subset based on cluster size range
+
 x_subset <- subset(x, cs_min = 12, cs_max = 15)
 
+
 ## subset based on single cluster size
+
 x_subset <- subset(x, cs = 12)
 
+
 ## subset based on minimum cluster size
+
 x_subset <- subset(x, cs_min = 10)
 
+
 ## subset based on maximum cluster size
+
 x_subset <- subset(x, cs_max = 9)
+
+
 }
 }
 \author{

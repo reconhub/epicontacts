@@ -47,27 +47,33 @@ The main features of the package include:
 
 * **`get_id`:** access unique IDs in an `epicontacts` with various options
 
-* **`get_pairwise`**:  extract attributes of record(s) in contacts database using information provided in the linelist data of an `epicontacts` object.
+* **`get_pairwise`**: extract attributes of record(s) in contacts database using
+    information provided in the linelist data of an `epicontacts` object.
 
 * **`get_degree`:** access degree of cases in `epicontacts` with various options
 
-* **`x[i,j,contacts]`:** subset an `epicontacts` object by retaining specified cases
+* **`x[i,j,contacts]`:** subset an `epicontacts` object by retaining specified
+    cases
 
 * **`thin`:** retains matching cases in linelist / contacts
 
-* **`summary`:** summary for  `epicontacts` objects
+* **`summary`:** summary for `epicontacts` objects
 
-* **`plot`:** plot for  `epicontacts` objects; various types of plot are available; default to `vis_epicontacts`
+* **`plot`:** plot for `epicontacts` objects; various types of plot are
+    available; default to `vis_epicontacts`
 
-* **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork
-`
-* **`as.igraph.epicontacts`:** create an `igraph` object from a epicontacts object
+* **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork ` *
+**`as.igraph.epicontacts`:** create an `igraph` object from a epicontacts object
 
-* **`clusters_epicontacts`:** assign clusters and corresponding cluster sizes to linelist of an epicontacts object (clusters being groups of connected individuals/nodes).
+* **`clusters_epicontacts`:** assign clusters and corresponding cluster sizes to
+    linelist of an epicontacts object (clusters being groups of connected
+    individuals/nodes).
 
-* **`subset_clusters_by_id`**: subset an `epicontacts` object based on a IDs of cases of interest.
+* **`subset_clusters_by_id`**: subset an `epicontacts` object based on a IDs of
+    cases of interest.
 
-* **`subset_clusters_by_size`**:  subset an `epicontacts` object based on size(s) of clusters (clusters being groups of connected individuals/nodes).
+* **`subset_clusters_by_size`**: subset an `epicontacts` object based on size(s)
+    of clusters (clusters being groups of connected individuals/nodes).
 
 * **`graph3D`**: 3D graph from an `epicontacts` object.
 
@@ -81,12 +87,6 @@ The main features of the package include:
 An overview of *epicontacts* is provided below in the worked example below.
 More detailed tutorials are distributed as vignettes with the package:
 
-```r
-vignette(package="epicontacts")
-#> no vignettes found
-```
-
-To open these, type:
 
 ```r
 vignette("overview", package="epicontacts")
@@ -123,7 +123,8 @@ Bug reports and feature requests should be posted on *github* using the [*issue*
 # A quick overview
 
 The following worked example provides a brief overview of the package's
-functionalities. See the [*vignettes section*](#vignettes) for more detailed tutorials.
+functionalities. See the [*vignettes section*](#vignettes) for more detailed
+tutorials.
 
 
 ## Obtaining an *epicontacts* object
@@ -143,7 +144,8 @@ especially handy when subsetting data, or when characterising contacts in terms
 of 'node' (case) properties.
 
 We illustrate the construction of an *epicontacts* using contact data from a
-Middle East Respiratory Syndrom coronavirus (MERS CoV) from South Korea in 2015, available as the dataset `mers_korea_2015` in the package *outbreaks*.
+Middle East Respiratory Syndrom coronavirus (MERS CoV) from South Korea in 2015,
+available as the dataset `mers_korea_2015` in the package *outbreaks*.
 
 
 ```r
@@ -249,15 +251,25 @@ First, we plot the *epicontacts* object:
 ```r
 
 plot(x, selector = FALSE)
-#> Error in loadNamespace(name): there is no package called 'webshot'
+#> PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+#> Warning in normalizePath(f2): path[1]="./webshotcc83fd083f.png": No such
+#> file or directory
+#> Warning in file(con, "rb"): cannot open file './webshotcc83fd083f.png': No
+#> such file or directory
+#> Error in file(con, "rb"): cannot open the connection
 ```
 
-We can look for patters of contacts between genders:
+We can look for patterns of contacts between genders:
 
 ```r
 
-plot(x, group = "sex", col_pal = spectral)
-#> Error in loadNamespace(name): there is no package called 'webshot'
+plot(x, "sex", col_pal = spectral)
+#> PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+#> Warning in normalizePath(f2): path[1]="./webshotcc8619f8c9c.png": No such
+#> file or directory
+#> Warning in file(con, "rb"): cannot open file './webshotcc8619f8c9c.png': No
+#> such file or directory
+#> Error in file(con, "rb"): cannot open the connection
 ```
 
 There is no obvious signs of non-random mixing patterns, but this is worth
