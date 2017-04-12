@@ -26,6 +26,10 @@ test_that("graph3D errors as expected on bad annotation", {
   msg <- "Annot 'toto, caca' is not in the linelist"
   expect_error(graph3D(x, annot = c("id", "toto", "caca")),
                msg)
+  
+  msg <- "Group 'foobar' is not in the linelist"
+  expect_error(graph3D(x, group = "foobar"),
+               msg)
 })
 
 test_that("graph3D object includes annotation", {
