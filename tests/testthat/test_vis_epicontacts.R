@@ -9,7 +9,6 @@ test_that("Plotting groups as color", {
     directed = FALSE)
   x <- thin(x[1:100], 2)
   y <- x
-  y$linelist$group <- sample(letters[1:5], nrow(x$linelist), replace = TRUE)
   y$directed <- TRUE
 
   vis1 <- vis_epicontacts(x, group = "gender")
@@ -27,8 +26,8 @@ test_that("Plotting groups as color", {
   expect_equal_to_reference(vis3, file = "rds/vis3.rds")
   expect_equal_to_reference(vis4, file = "rds/vis4.rds")
   expect_equal_to_reference(vis5, file = "rds/vis5.rds")
-  expect_equal_to_reference(vis5, file = "rds/vis6.rds")
-  expect_equal_to_reference(vis5, file = "rds/vis7.rds")
+  expect_equal_to_reference(vis6, file = "rds/vis6.rds")
+  expect_equal_to_reference(vis7, file = "rds/vis7.rds")
 
 })
 
