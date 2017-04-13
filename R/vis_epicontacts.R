@@ -87,14 +87,17 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
 
   ## check group (node attribute used for color)
-
+  if (length(group) > 1L) {
+    stop("'group' must indicate a single node attribute")
+  }
+  if (is.logical(group) && !group) {
+    group <- NULL
+  }
   if (!is.null(group)) {
-    if (is.numeric(group) || is.logical(group)) {
+    if (is.numeric(group)) {
       group <- names(x$linelist)[group]
     }
-    if (length(group) > 1L) {
-      stop("'group' must indicate a single node attribute")
-    }
+
     if (!group %in% names(x$linelist)) {
       msg <- sprintf("Group '%s' is not in the linelist", group)
       stop(msg)
@@ -103,7 +106,9 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
 
   ## check annot (txt displayed when clicking on node)
-
+  if (is.logical(annot) && sum(annot) == 0L) {
+    annot <- NULL
+  }
   if (!is.null(annot)) {
     if (is.numeric(annot) || is.logical(annot)) {
       annot <- names(x$linelist)[annot]
