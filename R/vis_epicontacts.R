@@ -131,7 +131,9 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
   if (!is.null(annot)) {
     temp <- nodes[, annot, drop = FALSE]
-    temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
+    temp <- vapply(names(temp),
+                   function(e) paste(e, temp[, e], sep = ": "),
+                   character(nrow(nodes)))
     nodes$title <- paste("<p>",
                          apply(temp, 1, paste0, collapse = "<br>"), "</p>")
   }

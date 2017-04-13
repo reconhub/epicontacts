@@ -1,4 +1,4 @@
-context("vis_epicontacts objects")
+context("Plotting using vis_epicontacts")
 
 test_that("Plotting groups as color", {
 
