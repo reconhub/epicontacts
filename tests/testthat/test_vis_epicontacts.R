@@ -29,6 +29,11 @@ test_that("Plotting groups as color", {
   expect_equal_to_reference(vis6, file = "rds/vis6.rds")
   expect_equal_to_reference(vis7, file = "rds/vis7.rds")
 
+  expect_equal(vis_epicontacts(x, group = NULL),
+               vis_epicontacts(x, group = FALSE))
+  expect_equal(vis_epicontacts(x, annot = NULL),
+               vis_epicontacts(x, annot = FALSE))
+
 })
 
 
