@@ -34,7 +34,10 @@ test_that("graph3D errors as expected on bad annotation and group specification"
   msg <- "'group' must indicate a single node attribute"
   expect_error(graph3D(x, group = c(1:3)), msg)
   
-
+  
+  expect_equal(graph3D(x, group = NULL),
+               graph3D(x, group = FALSE))
+  
   expect_equal(graph3D(x, group = 1),
                graph3D(x, group = "id"))
 
