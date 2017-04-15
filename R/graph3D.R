@@ -170,6 +170,9 @@ graph3D <- function(x,
         grp.col <- col_pal(K)
         grp.col[levels(nodes$group)=="NA"] <- NA_col
         nodes$color <- grp.col[factor(nodes$group)]
+    } else {
+      # setting to match default visNetwork color
+      nodes$color <- "#97C2FC"
     }
 
         
