@@ -15,7 +15,7 @@ test_that("graph3D produces json that is not null", {
 
 })
 
-test_that("graph3D errors as expected on bad annotation", {
+test_that("graph3D errors as expected on bad annotation and group specification", {
   
   skip_on_cran()
   
@@ -30,6 +30,20 @@ test_that("graph3D errors as expected on bad annotation", {
   msg <- "Group 'foobar' is not in the linelist"
   expect_error(graph3D(x, group = "foobar"),
                msg)
+  
+  msg <- "'group' must indicate a single node attribute"
+  expect_error(graph3D(x, group = c(1:3)), msg)
+  
+
+  expect_equal(graph3D(x, group = 1),
+               graph3D(x, group = "id"))
+
+  expect_equal(graph3D(x, annot = NULL),
+               graph3D(x, annot = FALSE))
+
+  expect_equal(graph3D(x, annot = 1:2),
+               graph3D(x, annot = c("id","generation")))
+  
 })
 
 test_that("graph3D object includes annotation", {
