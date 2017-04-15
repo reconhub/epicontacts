@@ -63,6 +63,7 @@
 #'
 #' \dontrun{
 #' graph3D(x)
+#' graph3D(x, annot = FALSE)
 #' graph3D(x, group = "sex", g_title = "MERS Korea 2014")
 #' graph3D(x, group = "sex", annot = c("sex", "age"),
 #'         g_title = "MERS Korea 2014")
@@ -81,8 +82,19 @@ graph3D <- function(x,
                     edge_size = .5) {
 
 
-    ## check group
+    
+    ## check group (node attribute used for color)
+    if (length(group) > 1L) {
+        stop("'group' must indicate a single node attribute")
+    }
+    if (is.logical(group) && !group) {
+        group <- NULL
+    }
     if (!is.null(group)) {
+        if (is.numeric(group)) {
+            group <- names(x$linelist)[group]
+        }
+
         if (!group %in% names(x$linelist)) {
             msg <- sprintf("Group '%s' is not in the linelist", group)
             stop(msg)
@@ -90,8 +102,19 @@ graph3D <- function(x,
     }
 
 
-    ## check annot
-    if (!is.null(annot) && is.character(annot)) {
+    ## check annot (txt displayed when clicking on node)
+    if (is.logical(annot) && sum(annot) == 0L) {
+        annot <- NULL
+    }
+    if (!is.null(annot)) {
+        if (is.numeric(annot)) {
+            annot <- names(x$linelist)[annot]
+        } else {
+            if (is.logical(annot)) {
+                annot = unique(c("id", group))
+            }
+        }
+        
         if (!all(annot %in% names(x$linelist))) {
             culprits <- annot[!annot %in% names(x$linelist)]
             culprits <- paste(culprits, collapse = ", ")
@@ -99,12 +122,14 @@ graph3D <- function(x,
             stop(msg)
         }
     }
+    
 
 
     ## Subset those ids which have at least one edge with another id
     ##    (to mimic visNetwork plot, else loner nodes are also printed)
     x <- subset_clusters_by_size(x, cs_min = 2)
     # x <- as.igraph.epicontacts(x)
+
 
     ## Get vertex attributes and prepare as input for graph
     nodes <- data.frame(id = unique(c(x$linelist$id,
@@ -113,49 +138,48 @@ graph3D <- function(x,
 
 
     ## join back to linelist to retrieve attributes for grouping
-
     nodes <- suppressMessages(
         suppressWarnings(dplyr::left_join(nodes, x$linelist)))
 
 
-    ## getting annotations
-    if(annot[1] == TRUE) {
-        if (group == "id") {
-            annot = group
-        } else {
-            annot = c("id", group)
-        }
+    
+    ## generate annotations ('label' in threejs terms)
+    if (!is.null(annot)) {
+        temp <- nodes[, annot, drop = FALSE]
+        temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
+        nodes$label <- paste("<p>",
+                             apply(temp, 1, paste0, collapse = "<br>"), "</p>")
+    } else {
+        nodes$label <- ""
     }
     
-            
-    temp <- nodes[, annot, drop = FALSE]
-    temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
-    nodes$label <- paste("<p>",
-                         apply(temp, 1, paste0, collapse = "<br>"), "</p>")
-
-
+    
 
     # attribute for grouping
-    nodes$group <- as.character(nodes[,group])
-    nodes$group[is.na(nodes$group)] <- "NA"
-    nodes$group <- factor(nodes$group)
-    
-    # Set node attributes
-    # node color
-    K <- length(unique(nodes$group))
-    grp.col <- col_pal(K)
-    grp.col[levels(nodes$group)=="NA"] <- NA_col
-    nodes$color <- grp.col[factor(nodes$group)]
+    if (!is.null(group)) {
+        nodes$group <- as.character(nodes[,group])
+        nodes$group[is.na(nodes$group)] <- "NA"
+        nodes$group <- factor(nodes$group)
+    }
 
+    
+    ## Set node attributes
+    ## node color
+    if (!is.null(group)) {
+        K <- length(unique(nodes$group))
+        grp.col <- col_pal(K)
+        grp.col[levels(nodes$group)=="NA"] <- NA_col
+        nodes$color <- grp.col[factor(nodes$group)]
+    }
 
         
-    # changing original "id" column to one required by threejs::graphjs()
-    #   & backing up old id
+    ## changing original "id" column to one required by threejs::graphjs()
+    ##   & backing up old id
     nodes$orig_id <- nodes$id 
     nodes$id <- 1:nrow(nodes) # has to be integer
 
     
-    ## make visNetwork inputs: edges
+    ## make edges
     edges <- x$contacts
     edges_from = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
                                   by = c("from" = "orig_id"))["id"]
@@ -174,13 +198,13 @@ graph3D <- function(x,
     nodes$size = node_size
 
     # Subset vertex dataframe for graphjs
-    nodes <- nodes[ , c("group", "id", "size", "color", "label")]
+    nodes <- nodes[ , c("id", "size", "color", "label")]
 
     # Create 3D graph
-    g <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
+    out <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
                           showLabels=FALSE, fg = label_col, bg = bg_col)
 
-    return(g)
+    return(out)
 }
 
 

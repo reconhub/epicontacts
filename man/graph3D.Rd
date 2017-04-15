@@ -59,6 +59,7 @@ x <- make_epicontacts(linelist = mers_korea_2015$linelist,
 
 \dontrun{
 graph3D(x)
+graph3D(x, annot = FALSE)
 graph3D(x, group = "sex", g_title = "MERS Korea 2014")
 graph3D(x, group = "sex", annot = c("sex", "age"),
         g_title = "MERS Korea 2014")
