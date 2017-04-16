@@ -119,3 +119,25 @@ test_that("get_clusters errors as expected", {
   
 })
 
+test_that("get_clusters override behavior works", {
+  
+  skip_on_cran()
+  
+  x <- make_epicontacts(ebola_sim$linelist,
+                        ebola_sim$contacts,
+                        id = "case.id",
+                        to = "case.id",
+                        from = "infector",
+                        directed = TRUE)
+  
+  foo <- get_clusters(x)
+  
+  x$linelist$cluster_member <- sample(LETTERS, nrow(x$linelist), replace = TRUE)
+  x$linelist$cluster_size <- 1:nrow(x$linelist)
+  
+  bar <- get_clusters(x, override = T)
+  
+  all.equal(foo,bar)
+  
+})
+
