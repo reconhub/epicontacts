@@ -4,15 +4,26 @@
 \alias{get_clusters}
 \title{Assign cluster IDs to epicontacts data}
 \usage{
-get_clusters(x, output = c("epicontacts", "data.frame"))
+get_clusters(x, output = c("epicontacts", "data.frame"),
+  member_col = "cluster_member", size_col = "cluster_size",
+  override = FALSE)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
 
 \item{output}{A character string indicating the type of output: either an
-\code{\link{epicontacts}} object or a \link{data.frame} containing cluster
-memberships to which members of \code{\link{epicontacts}} linelist belong
-to.}
+  \code{\link{epicontacts}} object (default) or a \link{data.frame} containing
+cluster memberships to which members of \code{\link{epicontacts}} linelist belong
+  to.}
+
+\item{member_col}{Name of column to which cluster membership is assigned to in the
+linelist. Default name is 'cluster_member'.}
+
+\item{size_col}{Name of column to which cluster sizes are assigned to in the
+linelist. Default name is 'cluster_size'.}
+
+\item{override}{Logical value indicating whether cluster member and size columns
+should be overwritten if they already exist in the linelist. Default is 'FALSE'.}
 }
 \value{
 An \code{\link{epicontacts}} object whose 'linelist' dataframe
@@ -22,13 +33,13 @@ and associated cluster sizes. All ids that were originally in the 'contacts'
 dataframe but not in the linelist will also be added to the linelist.
 }
 \description{
-This function identifies transitive clusters (i.e. connected components) and
-adds this information to the linelist data.
+This function identifies transitive clusters (i.e. connected components) as well
+as the number of members in each cluster, and adds this information to the
+linelist data.
 }
 \examples{
 if (require(outbreaks)) {
 ## build data
-
 x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                        id = "case.id",
                        to = "case.id",
@@ -37,13 +48,11 @@ x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
 
 
 ## add cluster membership and sizes to epicontacts 'linelist'
-
 y <- get_clusters(x, output = "epicontacts")
 y
 
 ## return a data.frame with linelist member ids and cluster memberships as
 ## factors
-
 z <- get_clusters(x, output = "data.frame")
 head(z)
 
