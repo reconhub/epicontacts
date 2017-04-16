@@ -65,7 +65,7 @@ The main features of the package include:
 * **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork ` *
 **`as.igraph.epicontacts`:** create an `igraph` object from a epicontacts object
 
-* **`clusters_epicontacts`:** assign clusters and corresponding cluster sizes to
+* **`get_clusters`:** assign clusters and corresponding cluster sizes to
     linelist of an epicontacts object (clusters being groups of connected
     individuals/nodes).
 
