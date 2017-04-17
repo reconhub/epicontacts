@@ -138,8 +138,8 @@ filtering rows based on explicit values in the line list (node) and contact list
 
 ```{r}
 rokupafuneral <- subset(x, 
-                        node.attribute = list("hospital" = "Rokupa Hospital"), 
-                        edge.attribute = list("source" = "funeral"))
+                        node_attribute = list("hospital" = "Rokupa Hospital"), 
+                        edge_attribute = list("source" = "funeral"))
 ```
 
 ```{r}

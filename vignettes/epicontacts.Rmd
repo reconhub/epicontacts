@@ -115,8 +115,8 @@ pruning of networks based on values of node and edge attributes. These values
 must be passed as named lists to the respective argument.
 
 ```{r}
-subset(merskor15, node.attribute = list("outcome" = "Dead", "sex" = "M"), 
-       edge.attribute = list("exposure" = "Emergency room"))
+subset(merskor15, node_attribute = list("outcome" = "Dead", "sex" = "M"), 
+       edge_attribute = list("exposure" = "Emergency room"))
 ```
 
 In addition to subsetting by node and edge attributes, networks can be pruned to
