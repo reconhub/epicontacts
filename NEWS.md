@@ -1,5 +1,5 @@
-epicontacts 1.0.0 (2017-04-17)
+epicontacts 1.0.0
 ==================
-First release of the *epicontacts* package on CRAN!
 
+- *epicontacts* now available on CRAN!
 
