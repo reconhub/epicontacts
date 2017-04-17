@@ -62,8 +62,9 @@ The main features of the package include:
 * **`plot`:** plot for `epicontacts` objects; various types of plot are
     available; default to `vis_epicontacts`
 
-* **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork ` *
-**`as.igraph.epicontacts`:** create an `igraph` object from a epicontacts object
+* **`vis_epicontacts`:** plot an `epicontacts` object using `visNetwork ` 
+
+* **`as.igraph.epicontacts`:** create an `igraph` object from an epicontacts object
 
 * **`get_clusters`:** assign clusters and corresponding cluster sizes to
     linelist of an epicontacts object (clusters being groups of connected
