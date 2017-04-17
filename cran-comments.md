@@ -8,15 +8,10 @@
 
 There were no ERRORs or WARNINGs.
 
-There were 2 notes:
+There was 1 note:
 
 * checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Nagraj VP <vpnagraj@virginia.edu>'
-
-* checking installed package size ... NOTE
-  installed size is  5.4Mb
-  sub-directories of 1Mb or more:
-    doc   5.3Mb
+Maintainer: 'VP Nagraj <vpnagraj@virginia.edu>'
 
 ## Downstream dependencies
 

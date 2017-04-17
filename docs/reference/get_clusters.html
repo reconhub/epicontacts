@@ -76,11 +76,14 @@
     </div>
 
     
-    <p>This function identifies transitive clusters (i.e. connected components) and
-adds this information to the linelist data.</p>
+    <p>This function identifies transitive clusters (i.e. connected components) as well
+as the number of members in each cluster, and adds this information to the
+linelist data.</p>
     
 
-    <pre><span class='fu'>get_clusters</span>(<span class='no'>x</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"epicontacts"</span>, <span class='st'>"data.frame"</span>))</pre>
+    <pre><span class='fu'>get_clusters</span>(<span class='no'>x</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"epicontacts"</span>, <span class='st'>"data.frame"</span>),
+  <span class='kw'>member_col</span> <span class='kw'>=</span> <span class='st'>"cluster_member"</span>, <span class='kw'>size_col</span> <span class='kw'>=</span> <span class='st'>"cluster_size"</span>,
+  <span class='kw'>override</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -88,23 +91,32 @@ adds this information to the linelist data.</p>
       <dd>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object.</dd>
       <dt>output</dt>
       <dd>A character string indicating the type of output: either an
-<code><a href='make_epicontacts.html'>epicontacts</a></code> object or a data.frame containing cluster
-memberships to which members of <code><a href='make_epicontacts.html'>epicontacts</a></code> linelist belong
-to.</dd>
+  <code><a href='make_epicontacts.html'>epicontacts</a></code> object (default) or a data.frame containing
+cluster memberships to which members of <code><a href='make_epicontacts.html'>epicontacts</a></code> linelist belong
+  to.</dd>
+      <dt>member_col</dt>
+      <dd>Name of column to which cluster membership is assigned to in the
+linelist. Default name is &#39;cluster_member&#39;.</dd>
+      <dt>size_col</dt>
+      <dd>Name of column to which cluster sizes are assigned to in the
+linelist. Default name is &#39;cluster_size&#39;.</dd>
+      <dt>override</dt>
+      <dd>Logical value indicating whether cluster member and size columns
+should be overwritten if they already exist in the linelist. Default is &#39;FALSE&#39;.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object whose &#39;linelist&#39; dataframe
-  contains new columns corresponding to cluster membership and size, or a
-  data.frame containing member ids, cluster memberships as factors,
-  and associated cluster sizes.</p>
+contains new columns corresponding to cluster membership and size, or a
+data.frame containing member ids, cluster memberships as factors,
+and associated cluster sizes. All ids that were originally in the &#39;contacts&#39;
+dataframe but not in the linelist will also be added to the linelist.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
-
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>,
                        <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>,
                        <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>,
@@ -113,13 +125,11 @@ to.</dd>
 
 
 <span class='co'>## add cluster membership and sizes to epicontacts 'linelist'</span>
-
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>get_clusters</span>(<span class='no'>x</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"epicontacts"</span>)
 <span class='no'>y</span>
 
 <span class='co'>## return a data.frame with linelist member ids and cluster memberships as</span>
 <span class='co'>## factors</span>
-
 <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>get_clusters</span>(<span class='no'>x</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"data.frame"</span>)
 <span class='fu'>head</span>(<span class='no'>z</span>)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph3D.R
 \name{graph3D}
 \alias{graph3D}
-\title{Interactive 3D Force-directed graph from epi_contact object}
+\title{Interactive 3D Force-directed graph from epicontacts object}
 \usage{
 graph3D(x, group = "id", annot = TRUE, col_pal = cases_pal,
   NA_col = "lightgrey", g_title = "", bg_col = "white",
@@ -37,7 +37,7 @@ An htmlwidget object that is displayed using the object's show or print method.
 (If you don't see your widget plot, try printing it with the \code{print} function.)
 }
 \description{
-This function creates a 3D graph from an epi_contact object
+This function creates a 3D graph from an epicontacts object
 }
 \note{
 All colors must be specified as color names like "red", "blue", etc. or
