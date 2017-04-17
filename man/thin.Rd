@@ -19,7 +19,7 @@ indicates that only cases appearing in \code{$linelist} are kept in
 This function can be used to remove ('thin') data from
 \code{\link{epicontacts}} objects to ensure stricter matching of linelists
 and contacts. It has two behaviours, triggered by the argument \code{what}:
-either dit thins data from \code{$linelist}, keeping only cases that are in
+either it thins data from \code{$linelist}, keeping only cases that are in
 \code{$contacts} (\code{thin = "linelist"}, default), or the converse,
 i.e. removing contacts which are not fully documented in the linelist.
 }
