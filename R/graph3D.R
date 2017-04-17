@@ -1,6 +1,6 @@
-#' Interactive 3D Force-directed graph from epi_contact object
+#' Interactive 3D Force-directed graph from epicontacts object
 #'
-#' This function creates a 3D graph from an epi_contact object
+#' This function creates a 3D graph from an epicontacts object
 #'
 #' @export
 #'
