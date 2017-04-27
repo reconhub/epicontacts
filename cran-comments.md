@@ -1,3 +1,9 @@
+Attempted to submit with `devtools::release()` now submitting again with CRAN web upload form. 
+
+Also fixed missing vignette index. 
+
+Adjusted url to package to canonical CRAN link format.
+
 ## Test environments
 
 * local OS X install, R 3.3.2

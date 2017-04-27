@@ -274,5 +274,5 @@ mean(deg_both)
 ## References
 
 [^1]: https://github.com/reconhub/epicontacts
-[^2]: https://cran.r-project.org/web/packages/visNetwork/vignettes/Introduction-to-visNetwork.html
+[^2]: https://cran.r-project.org/package=visNetwork
 [^3]: http://bwlewis.github.io/rthreejs/graphjs.html
