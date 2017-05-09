@@ -15,8 +15,10 @@ vis_epicontacts(x, group = "id", annot = TRUE, legend = TRUE,
 \item{group}{An index or character string indicating which field of the
 linelist should be used to color the nodes.}
 
-\item{annot}{An index or character string indicating which fields of the
-linelist should be used for annotating the nodes.}
+\item{annot}{An index, logical, or character string indicating which fields
+of the linelist should be used for annotating the nodes. Logical will be
+recycled if necessary, so that the default \code{TRUE} effectively uses all
+columns of the linelist.}
 
 \item{legend}{A logical indicating whether a legend should be added to the plot.}
 
