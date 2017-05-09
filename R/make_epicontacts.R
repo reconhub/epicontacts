@@ -153,7 +153,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     if (is.character(to)) {
         to <- match(to, names(contacts))
     }
-    names(contacts)[c(from,to)] <- c("from","to")
+    names(contacts)[c(from,to)] <- c("from", "to")
     contacts <- contacts[, c(from, to, setdiff(seq_len(ncol(contacts)), c(from,to)))]
 
     ## ensure that from and to are not stored as factor
