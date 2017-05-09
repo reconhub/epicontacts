@@ -93,3 +93,51 @@ test_that("get_clusters returns data.frame", {
 
 })
 
+
+test_that("get_clusters errors as expected", {
+  
+  skip_on_cran()
+  
+  x <- make_epicontacts(ebola_sim$linelist,
+                        ebola_sim$contacts,
+                        id = "case.id",
+                        to = "case.id",
+                        from = "infector",
+                        directed = TRUE)
+  
+  # add bogus cluster info
+  x$linelist$cluster_member <- sample(LETTERS, nrow(x$linelist), replace = TRUE)
+  
+  msg <- "'cluster_member' is already in the linelist. Set 'override = TRUE' to write over it, else assign a different member_col name."
+  expect_error(get_clusters(x), msg)
+  
+  # more bogus cluster info           
+  x$linelist$cluster_size <- 1:nrow(x$linelist)
+  
+  msg <- "'cluster_member' and 'cluster_size' are already in the linelist. Set 'override = TRUE' to write over them, else assign different cluster column names."
+  expect_error(get_clusters(x), msg)
+  
+})
+
+test_that("get_clusters override behavior works", {
+  
+  skip_on_cran()
+  
+  x <- make_epicontacts(ebola_sim$linelist,
+                        ebola_sim$contacts,
+                        id = "case.id",
+                        to = "case.id",
+                        from = "infector",
+                        directed = TRUE)
+  
+  foo <- get_clusters(x)
+  
+  x$linelist$cluster_member <- sample(LETTERS, nrow(x$linelist), replace = TRUE)
+  x$linelist$cluster_size <- 1:nrow(x$linelist)
+  
+  bar <- get_clusters(x, override = T)
+  
+  all.equal(foo,bar)
+  
+})
+

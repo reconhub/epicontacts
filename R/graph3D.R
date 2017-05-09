@@ -1,19 +1,23 @@
-#' Interactive 3D Force-directed graph from epi_contact object
+#' Interactive 3D Force-directed graph from epicontacts object
 #'
-#' This function creates a 3D graph from an epi_contact object
+#' This function creates a 3D graph from an epicontacts object
 #'
 #' @export
 #'
-#' @author Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
+#' @author
+#' Nistara Randhawa (\email{nrandhawa@@ucdavis.edu})
+#' Thibaut Jombart (\email{thibautjombart@@gmail.com})
+#' VP Nagraj (\email{vpnagraj@@virginia.edu})
 #'
 #' @param x An \code{\link{epicontacts}} object
 #'
 #' @param group An index or character string indicating which field of the
 #'     linelist should be used to color the nodes. Default is \code{id}
 #'
-#' @param annot An index or character string indicating which fields of the
-#'     linelist should be used for annotating the nodes.
-#'
+#' @param annot An index, logical, or character string indicating which fields
+#' of the linelist should be used for annotating the nodes upon mouseover. The default
+#' \code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').
+#' 
 #' @param col_pal A color palette for the groups.
 #'
 #' @param NA_col The color used for unknown group.
@@ -48,13 +52,21 @@
 #'
 #' @examples
 #' if (require(outbreaks)) {
+#'
+#' ## example using MERS outbreak in Korea, 2014
+#' head(mers_korea_2015[[1]])
+#' head(mers_korea_2015[[2]])
+#' 
 #' x <- make_epicontacts(linelist = mers_korea_2015$linelist,
 #'                       contacts = mers_korea_2015$contacts,
 #'                       directed = FALSE)
 #'
 #' \dontrun{
 #' graph3D(x)
+#' graph3D(x, annot = FALSE)
 #' graph3D(x, group = "sex", g_title = "MERS Korea 2014")
+#' graph3D(x, group = "sex", annot = c("sex", "age"),
+#'         g_title = "MERS Korea 2014")
 #' }
 #' }
 
@@ -69,54 +81,118 @@ graph3D <- function(x,
                     node_size = 1,
                     edge_size = .5) {
 
-    ## Create igraph object to pass on as data for 3D graph (because original
-    ## epicontacts object may contain NA's, which will hinder creation of 3D
-    ## graph with threejs::graphjs()
 
-    x <- subset_clusters_by_size(x, cs_min = 2)
-    x <- as.igraph.epicontacts(x)
-
-    ## Get vertex attributes and prepare as input for graph
-    nodes <- igraph::get.vertex.attribute(x)
-    nodes <- as.data.frame(nodes, stringsAsFactors = FALSE)
-
-    # attribute for grouping
-    nodes$group <- as.character(nodes[,group])
-    nodes$group[is.na(nodes$group)] <- "NA"
-    nodes$group <- factor(nodes$group)
-
-    # changing original "id" column to one required by threejs::graphjs()
-    #   & backing up old id
-    nodes$orig_id <- nodes$id 
-    nodes$id <- 1:nrow(nodes) # has to be integer
-
-
-
-    # Set node attributes
-    # node color
-    K <- length(unique(nodes$group))
-    grp.col <- col_pal(K)
-    grp.col[levels(nodes$group)=="NA"] <- NA_col
     
-    nodes$color <- grp.col[factor(nodes$group)]
-
-    if(annot) {
-        if(group == "id") {
-            nodes$label <- nodes$label <- sprintf( "id: %s", nodes$orig_id)
-        } else {
-            nodes$label <- sprintf( "id: %s, %s: %s",
-                                   nodes$orig_id,group, nodes$group)
+    ## check group (node attribute used for color)
+    if (length(group) > 1L) {
+        stop("'group' must indicate a single node attribute")
+    }
+    if (is.logical(group) && !group) {
+        group <- NULL
+    }
+    if (!is.null(group)) {
+        if (is.numeric(group)) {
+            group <- names(x$linelist)[group]
         }
-    } else {
-        nodes$label = ""
+
+        if (!group %in% names(x$linelist)) {
+            msg <- sprintf("Group '%s' is not in the linelist", group)
+            stop(msg)
+        }
+    }
+
+
+    ## check annot (txt displayed when clicking on node)
+    if (is.logical(annot) && sum(annot) == 0L) {
+        annot <- NULL
+    }
+    if (!is.null(annot)) {
+        if (is.numeric(annot)) {
+            annot <- names(x$linelist)[annot]
+        } else {
+            if (is.logical(annot)) {
+                annot = unique(c("id", group))
+            }
+        }
+        
+        if (!all(annot %in% names(x$linelist))) {
+            culprits <- annot[!annot %in% names(x$linelist)]
+            culprits <- paste(culprits, collapse = ", ")
+            msg <- sprintf("Annot '%s' is not in the linelist", culprits)
+            stop(msg)
+        }
     }
     
 
-    ## Get edge list and format prepare as input for graph
-    edges <- igraph::get.edgelist(x, names=FALSE)
-    edges <- as.data.frame(edges, stringsAsFactors = FALSE)
-    colnames(edges) = c("from", "to")
 
+    ## Subset those ids which have at least one edge with another id
+    ##    (to mimic visNetwork plot, else loner nodes are also printed)
+    x <- subset_clusters_by_size(x, cs_min = 2)
+    # x <- as.igraph.epicontacts(x)
+
+
+    ## Get vertex attributes and prepare as input for graph
+    nodes <- data.frame(id = unique(c(x$linelist$id,
+                                      x$contacts$from,
+                                      x$contacts$to)))
+
+
+    ## join back to linelist to retrieve attributes for grouping
+    nodes <- suppressMessages(
+        suppressWarnings(dplyr::left_join(nodes, x$linelist)))
+
+
+    
+    ## generate annotations ('label' in threejs terms)
+    if (!is.null(annot)) {
+        temp <- nodes[, annot, drop = FALSE]
+        temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
+        nodes$label <- paste("<p>",
+                             apply(temp, 1, paste0, collapse = "<br>"), "</p>")
+    } else {
+        nodes$label <- ""
+    }
+    
+    
+
+    # attribute for grouping
+    if (!is.null(group)) {
+        nodes$group <- as.character(nodes[,group])
+        nodes$group[is.na(nodes$group)] <- "NA"
+        nodes$group <- factor(nodes$group)
+    }
+
+    
+    ## Set node attributes
+    ## node color
+    if (!is.null(group)) {
+        K <- length(unique(nodes$group))
+        grp.col <- col_pal(K)
+        grp.col[levels(nodes$group)=="NA"] <- NA_col
+        nodes$color <- grp.col[factor(nodes$group)]
+    } else {
+      # setting to match default visNetwork color
+      nodes$color <- "#97C2FC"
+    }
+
+        
+    ## changing original "id" column to one required by threejs::graphjs()
+    ##   & backing up old id
+    nodes$orig_id <- nodes$id 
+    nodes$id <- 1:nrow(nodes) # has to be integer
+
+    
+    ## make edges
+    edges <- x$contacts
+    edges_from = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
+                                  by = c("from" = "orig_id"))["id"]
+    
+    edges_to = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
+                                  by = c("to" = "orig_id"))["id"]
+    edges$from = edges_from$id
+    edges$to = edges_to$id
+
+    
     ## Set edge attributes
     edges$size = edge_size
     edges$color = "lightgrey"
@@ -124,13 +200,14 @@ graph3D <- function(x,
     ## Set vertex attributes
     nodes$size = node_size
 
-    ## Subset vertex dataframe for graphjs
-    nodes <- nodes[ , c("group", "id", "orig_id", "size", "color", "label")]
+    # Subset vertex dataframe for graphjs
+    nodes <- nodes[ , c("id", "size", "color", "label")]
 
-    ## Create 3D graph
-    g <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
+    # Create 3D graph
+    out <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
                           showLabels=FALSE, fg = label_col, bg = bg_col)
-    return(g)
+
+    return(out)
 }
 
 

@@ -91,8 +91,9 @@
       <dd>An index or character string indicating which field of the
 linelist should be used to color the nodes. Default is <code>id</code></dd>
       <dt>annot</dt>
-      <dd>An index or character string indicating which fields of the
-linelist should be used for annotating the nodes.</dd>
+      <dd>An index, logical, or character string indicating which fields
+of the linelist should be used for annotating the nodes upon mouseover. The default
+<code>TRUE</code> shows the &#39;id&#39; and &#39;group&#39; (if the grouping column is different from &#39;id&#39;).</dd>
       <dt>col_pal</dt>
       <dd>A color palette for the groups.</dd>
       <dt>NA_col</dt>
@@ -131,13 +132,21 @@ as hexadecimal color values without opacity channel, for example &quot;#FF0000&q
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
+
+<span class='co'>## example using MERS outbreak in Korea, 2014</span>
+<span class='fu'>head</span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
+<span class='fu'>head</span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span>$<span class='no'>linelist</span>,
                       <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span>$<span class='no'>contacts</span>,
                       <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># graph3D(x)</span>
+<span class='co'># graph3D(x, annot = FALSE)</span>
 <span class='co'># graph3D(x, group = "sex", g_title = "MERS Korea 2014")</span>
+<span class='co'># graph3D(x, group = "sex", annot = c("sex", "age"),</span>
+<span class='co'>#         g_title = "MERS Korea 2014")</span>
 <span class='co'>## ---------------------------------------------</span>
 }</div></pre>
   </div>
@@ -158,6 +167,8 @@ as hexadecimal color values without opacity channel, for example &quot;#FF0000&q
     <h2>Author</h2>
     
 Nistara Randhawa (<a href='mailto:nrandhawa@ucdavis.edu'>nrandhawa@ucdavis.edu</a>)
+Thibaut Jombart (<a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a>)
+VP Nagraj (<a href='mailto:vpnagraj@virginia.edu'>vpnagraj@virginia.edu</a>)
 
   </div>
 </div>

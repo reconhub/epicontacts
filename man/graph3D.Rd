@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph3D.R
 \name{graph3D}
 \alias{graph3D}
-\title{Interactive 3D Force-directed graph from epi_contact object}
+\title{Interactive 3D Force-directed graph from epicontacts object}
 \usage{
 graph3D(x, group = "id", annot = TRUE, col_pal = cases_pal,
   NA_col = "lightgrey", g_title = "", bg_col = "white",
@@ -14,8 +14,9 @@ graph3D(x, group = "id", annot = TRUE, col_pal = cases_pal,
 \item{group}{An index or character string indicating which field of the
 linelist should be used to color the nodes. Default is \code{id}}
 
-\item{annot}{An index or character string indicating which fields of the
-linelist should be used for annotating the nodes.}
+\item{annot}{An index, logical, or character string indicating which fields
+of the linelist should be used for annotating the nodes upon mouseover. The default
+\code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').}
 
 \item{col_pal}{A color palette for the groups.}
 
@@ -36,7 +37,7 @@ An htmlwidget object that is displayed using the object's show or print method.
 (If you don't see your widget plot, try printing it with the \code{print} function.)
 }
 \description{
-This function creates a 3D graph from an epi_contact object
+This function creates a 3D graph from an epicontacts object
 }
 \note{
 All colors must be specified as color names like "red", "blue", etc. or
@@ -47,13 +48,21 @@ Double-click or tap on the plot to reset the view.
 }
 \examples{
 if (require(outbreaks)) {
+
+## example using MERS outbreak in Korea, 2014
+head(mers_korea_2015[[1]])
+head(mers_korea_2015[[2]])
+
 x <- make_epicontacts(linelist = mers_korea_2015$linelist,
                       contacts = mers_korea_2015$contacts,
                       directed = FALSE)
 
 \dontrun{
 graph3D(x)
+graph3D(x, annot = FALSE)
 graph3D(x, group = "sex", g_title = "MERS Korea 2014")
+graph3D(x, group = "sex", annot = c("sex", "age"),
+        g_title = "MERS Korea 2014")
 }
 }
 }
@@ -66,4 +75,6 @@ Original rthreejs code by B. W. Lewis:
 }
 \author{
 Nistara Randhawa (\email{nrandhawa@ucdavis.edu})
+Thibaut Jombart (\email{thibautjombart@gmail.com})
+VP Nagraj (\email{vpnagraj@virginia.edu})
 }

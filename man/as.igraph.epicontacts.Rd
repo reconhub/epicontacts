@@ -10,7 +10,11 @@
 \item{x}{An \code{\link{epicontacts}} object.}
 }
 \value{
-An \code{igraph} object (from the \code{igraph} package).
+An \code{igraph} object (from the \code{igraph} package).  Note: any
+  column called "name" in the original linelist will be stored as a new
+  vertex attribute in the \code{igraph} object named 'epicontacts_name'.
+  This is due to the inherent behaviour of igraph creating its own 'name'
+  vertex attribute.
 }
 \description{
 This function creates an igraph object from a given \code{\link{epicontacts}}
@@ -22,8 +26,8 @@ if (require(outbreaks) && require(igraph)) {
 ## build data
 
 x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                       id="case.id", to="case.id", from="infector",
-                       directed=TRUE)
+                      id = "case.id", to = "case.id", from ="infector",
+                      directed = TRUE)
 
 
 ## subset data - keep 50 cases from linelist with contacts
