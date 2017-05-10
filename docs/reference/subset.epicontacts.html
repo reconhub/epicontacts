@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -86,39 +88,56 @@ clusters of cases connected to specified cases) or cluster sizes (returning
 cluster of a specific, minimum or maximum size).</p>
     
 
-    <pre><span class='co'># S3 method for epicontacts</span>
+    <pre class="usage"><span class='co'># S3 method for epicontacts</span>
 <span class='fu'>subset</span>(<span class='no'>x</span>, <span class='kw'>node_attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>edge_attribute</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cluster_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cs_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>cs_max</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>an epi_contact object to be subsetted</dd>
-      <dt>node_attribute</dt>
-      <dd>a named list defining the node attribute name and node
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>an epi_contact object to be subsetted</p></td>
+    </tr>
+    <tr>
+      <th>node_attribute</th>
+      <td><p>a named list defining the node attribute name and node
 attribute value (as a single value or vector of values).  Dates must be
 provided as a vector of date objects, defining the range of dates
 included in the subset. If only one date is provided, only node
-attributes with that date will be returned.</dd>
-      <dt>edge_attribute</dt>
-      <dd>a named list defining the edge attribute name and edge
+attributes with that date will be returned.</p></td>
+    </tr>
+    <tr>
+      <th>edge_attribute</th>
+      <td><p>a named list defining the edge attribute name and edge
 attribute value (as a single value or vector of values).  Dates must be
 provided as a vector of date objects, defining the range of dates
 included in the subset. If only one date is provided, only edge
-attributes with that date will be returned.</dd>
-      <dt>cluster_id</dt>
-      <dd>a character vector of case identifiers; the connected
-components attached to these cases will be retained in the output object.</dd>
-      <dt>cs</dt>
-      <dd>cluster size to be used for subsetting</dd>
-      <dt>cs_min</dt>
-      <dd>minimum cluster size for subsetting</dd>
-      <dt>cs_max</dt>
-      <dd>maximum cluster size for subsetting</dd>
-      <dt>...</dt>
-      <dd>further arguments passed on to other methods</dd>
-    </dl>
+attributes with that date will be returned.</p></td>
+    </tr>
+    <tr>
+      <th>cluster_id</th>
+      <td><p>a character vector of case identifiers; the connected
+components attached to these cases will be retained in the output object.</p></td>
+    </tr>
+    <tr>
+      <th>cs</th>
+      <td><p>cluster size to be used for subsetting</p></td>
+    </tr>
+    <tr>
+      <th>cs_min</th>
+      <td><p>minimum cluster size for subsetting</p></td>
+    </tr>
+    <tr>
+      <th>cs_max</th>
+      <td><p>maximum cluster size for subsetting</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments passed on to other methods</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -184,7 +203,7 @@ Finlay Campbell (<a href='mailto:f.campbell15@imperial.ac.uk'>f.campbell15@imper
 
       <footer>
       <div class="copyright">
-  <p>Developed by Nagraj VP, Thibaut Jombart, Randhawa Nistara, Bertrand Sudre, Finlay Campbell, Thomas Crellen.</p>
+  <p>Developed by VP Nagraj, Thibaut Jombart, Nistara Randhawa, Bertrand Sudre, Finlay Campbell, Thomas Crellen.</p>
 </div>
 
 <div class="pkgdown">

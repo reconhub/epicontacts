@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -81,50 +83,77 @@
 will need rendering within a web browser.</p>
     
 
-    <pre><span class='fu'>vis_epicontacts</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre class="usage"><span class='fu'>vis_epicontacts</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>legend_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>col_pal</span> <span class='kw'>=</span> <span class='no'>cases_pal</span>, <span class='kw'>NA_col</span> <span class='kw'>=</span> <span class='st'>"lightgrey"</span>,
   <span class='kw'>width</span> <span class='kw'>=</span> <span class='st'>"90%"</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='st'>"700px"</span>, <span class='kw'>selector</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>editor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object.</dd>
-      <dt>group</dt>
-      <dd>An index or character string indicating which field of the
-linelist should be used to color the nodes.</dd>
-      <dt>annot</dt>
-      <dd>An index, logical, or character string indicating which fields
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object.</p></td>
+    </tr>
+    <tr>
+      <th>group</th>
+      <td><p>An index or character string indicating which field of the
+linelist should be used to color the nodes.</p></td>
+    </tr>
+    <tr>
+      <th>annot</th>
+      <td><p>An index, logical, or character string indicating which fields
 of the linelist should be used for annotating the nodes. Logical will be
 recycled if necessary, so that the default <code>TRUE</code> effectively uses all
-columns of the linelist.</dd>
-      <dt>legend</dt>
-      <dd>A logical indicating whether a legend should be added to the
-plot.</dd>
-      <dt>legend_max</dt>
-      <dd>The maximum number of groups for a legend to be displayed.</dd>
-      <dt>col_pal</dt>
-      <dd>A color palette for the groups.</dd>
-      <dt>NA_col</dt>
-      <dd>The color used for unknown group.</dd>
-      <dt>width</dt>
-      <dd>The width of the output, in html compatible format (e.g. &#39;90%&#39;
-or &#39;800px&#39;).</dd>
-      <dt>height</dt>
-      <dd>The height of the output, in html compatible format
-(e.g. &#39;800px&#39;).</dd>
-      <dt>selector</dt>
-      <dd>A logical indicating if the selector tool should be used;
-defaults to TRUE.</dd>
-      <dt>editor</dt>
-      <dd>A logical indicating if the editor tool should be used;
-defaults to FALSE.</dd>
-      <dt>edge_width</dt>
-      <dd>An integer indicating the width of the edges. Defaults to
-3.</dd>
-      <dt>...</dt>
-      <dd>Further arguments to be passed to <code>visNetwork</code>.</dd>
-    </dl>
+columns of the linelist.</p></td>
+    </tr>
+    <tr>
+      <th>legend</th>
+      <td><p>A logical indicating whether a legend should be added to the
+plot.</p></td>
+    </tr>
+    <tr>
+      <th>legend_max</th>
+      <td><p>The maximum number of groups for a legend to be displayed.</p></td>
+    </tr>
+    <tr>
+      <th>col_pal</th>
+      <td><p>A color palette for the groups.</p></td>
+    </tr>
+    <tr>
+      <th>NA_col</th>
+      <td><p>The color used for unknown group.</p></td>
+    </tr>
+    <tr>
+      <th>width</th>
+      <td><p>The width of the output, in html compatible format (e.g. '90%'
+or '800px').</p></td>
+    </tr>
+    <tr>
+      <th>height</th>
+      <td><p>The height of the output, in html compatible format
+(e.g. '800px').</p></td>
+    </tr>
+    <tr>
+      <th>selector</th>
+      <td><p>A logical indicating if the selector tool should be used;
+defaults to TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>editor</th>
+      <td><p>A logical indicating if the editor tool should be used;
+defaults to FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>edge_width</th>
+      <td><p>An integer indicating the width of the edges. Defaults to
+3.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Further arguments to be passed to <code>visNetwork</code>.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -146,11 +175,11 @@ defaults to FALSE.</dd>
                        <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]],
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
-<span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># plot(x)</span>
-<span class='co'># plot(x, group = "place_infect")</span>
-<span class='co'># plot(x, group = "loc_hosp", legend_max=20, annot=TRUE)</span>
-<span class='co'>## ---------------------------------------------</span>
+<span class='fu'>not_run</span>({
+  <span class='fu'>plot</span>(<span class='no'>x</span>)
+  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"place_infect"</span>)
+  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"loc_hosp"</span>, <span class='kw'>legend_max</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>annot</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+})
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -175,7 +204,7 @@ VP Nagraj (<a href='mailto:vpnagraj@virginia.edu'>vpnagraj@virginia.edu</a>)
 
       <footer>
       <div class="copyright">
-  <p>Developed by Nagraj VP, Thibaut Jombart, Randhawa Nistara, Bertrand Sudre, Finlay Campbell, Thomas Crellen.</p>
+  <p>Developed by VP Nagraj, Thibaut Jombart, Nistara Randhawa, Bertrand Sudre, Finlay Campbell, Thomas Crellen.</p>
 </div>
 
 <div class="pkgdown">

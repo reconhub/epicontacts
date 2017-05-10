@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -76,59 +78,69 @@
     </div>
 
     
-    <p>The &quot;[&quot; operator can be used to subset <code><a href='make_epicontacts.html'>epicontacts</a></code> objects,
+    <p>The "[" operator can be used to subset <code><a href='make_epicontacts.html'>epicontacts</a></code> objects,
 retaining a specified set of case identifiers (<code>i</code> for the linelist,
 <code>j</code> for contacts). Note that unlike most classical R objects, there is
 no replacement method for <code><a href='make_epicontacts.html'>epicontacts</a></code> objects, i.e. no
 operations such as <code>foo[i] &lt;- bar</code>.</p>
     
 
-    <pre># S3 method for epicontacts
+    <pre class="usage"># S3 method for epicontacts
 [(x, i, j, k = TRUE, l = TRUE, contacts = c("both",
   "either", "from", "to"), ...)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object</dd>
-      <dt>i</dt>
-      <dd>A character vector containing case ID to be retained in the
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>An <code><a href='make_epicontacts.html'>epicontacts</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>i</th>
+      <td><p>A character vector containing case ID to be retained in the
 linelist; alternatively, an integer or logical vector used to subset the
-rows of the <code>$linelist</code> component.</dd>
-      <dt>j</dt>
-      <dd>A character vector containing case ID to be retained in the
+rows of the <code>$linelist</code> component.</p></td>
+    </tr>
+    <tr>
+      <th>j</th>
+      <td><p>A character vector containing case ID to be retained in the
 contacts; alternatively, an integer or logical vector used to subset
-the rows of the <code>$contacts</code> component.</dd>
-      <dt>k</dt>
-      <dd>An integer, logical, or character vector subsetting the
-supplementary columns of <code>x$linelist</code>, i.e. the columns after &#39;id&#39;;
-i.e. <code>k=1</code> refers to the column immediately after &#39;id&#39;.</dd>
-      <dt>l</dt>
-      <dd>An integer, logical, or character vector subsetting the
-supplementary columns of <code>x$contacts</code>, i.e. the columns after &#39;from&#39;
-and &#39;to&#39;; i.e. <code>l=1</code> refers to the column immediately after &#39;to&#39;.</dd>
-      <dt>contacts</dt>
-      <dd>A character string indicating the rules for retaining
-contacts when <code>j</code> indicates case IDs (see details).</dd>
-      <dt>...</dt>
-      <dd>Not used (there for compatibility with generic).</dd>
-    </dl>
+the rows of the <code>$contacts</code> component.</p></td>
+    </tr>
+    <tr>
+      <th>k</th>
+      <td><p>An integer, logical, or character vector subsetting the
+supplementary columns of <code>x$linelist</code>, i.e. the columns after 'id';
+i.e. <code>k=1</code> refers to the column immediately after 'id'.</p></td>
+    </tr>
+    <tr>
+      <th>l</th>
+      <td><p>An integer, logical, or character vector subsetting the
+supplementary columns of <code>x$contacts</code>, i.e. the columns after 'from'
+and 'to'; i.e. <code>l=1</code> refers to the column immediately after 'to'.</p></td>
+    </tr>
+    <tr>
+      <th>contacts</th>
+      <td><p>A character string indicating the rules for retaining
+contacts when <code>j</code> indicates case IDs (see details).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Not used (there for compatibility with generic).</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Details on the &#39;contacts&#39; argument; possible values are:</p>
-    <p><ul>
-<li> &#39;both&#39;: contacts are retained only if both cases are in <code>j</code></p>
-    <p></li>
-<li> &#39;either&#39;: contacts are retained if at least one of the cases is in
-<code>j</code></p>
-    <p></li>
-<li> &#39;from&#39;: contacts are retained only if the source (&#39;from&#39;) is in
-<code>j</code></p>
-    <p></li>
-<li> &#39;to&#39;: contacts are retained only if the recipient (&#39;to&#39;) is in <code>j</code>
-</li>
-</ul></p>
+    <p>Details on the 'contacts' argument; possible values are:</p><ul>
+<li><p>'both': contacts are retained only if both cases are in <code>j</code></p></li>
+<li><p>'either': contacts are retained if at least one of the cases is in
+<code>j</code></p></li>
+<li><p>'from': contacts are retained only if the source ('from') is in
+<code>j</code></p></li>
+<li><p>'to': contacts are retained only if the recipient ('to') is in <code>j</code></p></li>
+</ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -199,7 +211,7 @@ Thibaut Jombart (<a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.
 
       <footer>
       <div class="copyright">
-  <p>Developed by Nagraj VP, Thibaut Jombart, Randhawa Nistara, Bertrand Sudre, Finlay Campbell, Thomas Crellen.</p>
+  <p>Developed by VP Nagraj, Thibaut Jombart, Nistara Randhawa, Bertrand Sudre, Finlay Campbell, Thomas Crellen.</p>
 </div>
 
 <div class="pkgdown">

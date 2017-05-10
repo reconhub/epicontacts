@@ -236,8 +236,8 @@ hist(si, col = "grey", border = "white", nclass = 30,
 
 
 # Contributors (by alphabetic order):
-- [Thomas Crellen](https://github.com/tc13)
 - [Finlay Campbell](https://github.com/finlaycampbell)
+- [Thomas Crellen](https://github.com/tc13)
 - [Thibaut Jombart](https://github.com/thibautjombart)
 - [Nistara Randhawa](https://github.com/nistara)
 - Bertrand Sudre
