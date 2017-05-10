@@ -33,7 +33,7 @@
 #'     'to' even in non-directed contacts
 #'
 #' @return An \code{epicontacts} object in list format with three elements:
-#' 
+#'
 #' \itemize{
 #' \item \code{linelist}: data.frame of cases with first column 'id'
 #' containing character vector of unique identifiers
@@ -44,7 +44,7 @@
 #' \item \code{directed}: indicator as to whether or not the contacts are to be
 #' considered directed or not
 #' }
-#' 
+#'
 #' @details
 #'
 #' An \code{epicontacts} object can be created from two components:
@@ -52,7 +52,7 @@
 #' \item a linelist provided as a \code{data.frame} where columns are
 #' different variables describing cases, and where each row is a different case.
 #' and a contact list.
-#' 
+#'
 #' \item a contact list provided as a \code{data.frame} where each row contains
 #' unique pairs of contacts with unique features of contact in columns. The line
 #' list and contact list should share an identification scheme for individuals.
@@ -80,7 +80,6 @@
 #' }
 make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
                              directed = FALSE){
-    
     ## We read data from linelist, which needs to contain at least one case, and
     ## contacts. Sanity checks will include standard class
     ## and dimensionality checks, as well as uniqueness of IDs in the line list,
@@ -90,7 +89,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
 
     ## process linelist ##
     ## checks
-    
+
     if (is.null(linelist)) {
         stop("linelist is NULL")
     }
@@ -112,25 +111,25 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
         msg <- paste(linelist[temp,id], collapse=" ")
         stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
     }
-    
+
 
     ## reordering
-    
+
     if (is.character(id)) {
         id <- match(id, names(linelist))
     }
     names(linelist)[id] <- "id"
-    linelist <- linelist[, c(id, setdiff(seq_len(ncol(linelist)), id))]
+    linelist <- subset(linelist, select = c(id, setdiff(seq_len(ncol(linelist)), id)))
 
 
-    
+
     ## process contacts ##
     ## checks
-    
+
     if (is.null(contacts)) {
         stop("contacts is NULL")
     }
-    
+
     if (is.vector(contacts) &&
         length(contacts) == 1L &&
         is.na(contacts)) {
@@ -138,7 +137,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     }
 
     contacts <- as.data.frame(contacts)
-    
+
     if(nrow(contacts) < 1L) {
         stop("contacts should have at least one row")
     }
