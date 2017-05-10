@@ -73,8 +73,8 @@
 #' head(contacts)
 #'
 #' ## make object
-#' x <- make_epicontacts(linelist, contacts, id="case.id",
-#'                        to="case.id", from="infector")
+#' x <- make_epicontacts(linelist, contacts, id = "case.id",
+#'                        to = "case.id", from = "infector")
 #' head(x$linelist)
 #' head(x$contacts)
 #' }
@@ -153,12 +153,19 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     if (is.character(to)) {
         to <- match(to, names(contacts))
     }
-    names(contacts)[c(from,to)] <- c("from","to")
+    names(contacts)[c(from,to)] <- c("from", "to")
     contacts <- contacts[, c(from, to, setdiff(seq_len(ncol(contacts)), c(from,to)))]
-    
+
+    ## ensure that from and to are not stored as factor
+    if (is.factor(contacts$from)) {
+        contacts$from <- as.character(contacts$from)
+    }
+    if (is.factor(contacts$to)) {
+        contacts$to <- as.character(contacts$to)
+    }
 
     ## Build final output
-    out <- list(linelist=linelist, contacts=contacts, directed=directed)
+    out <- list(linelist = linelist, contacts = contacts, directed = directed)
 
     class(out) <- c("epicontacts")
     return(out)

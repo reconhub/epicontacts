@@ -74,8 +74,8 @@ head(linelist)
 head(contacts)
 
 ## make object
-x <- make_epicontacts(linelist, contacts, id="case.id",
-                       to="case.id", from="infector")
+x <- make_epicontacts(linelist, contacts, id = "case.id",
+                       to = "case.id", from = "infector")
 head(x$linelist)
 head(x$contacts)
 }
