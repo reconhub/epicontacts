@@ -254,7 +254,7 @@ First, we plot the *epicontacts* object:
 plot(x, selector = FALSE)
 
 ```
-<img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x.png" width="500px">
+<img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x.png" width="600px">
 
 This is a screenshot of the actual plot. For interactive graphs, see the [introductory vignette](http://www.repidemicsconsortium.org/epicontacts/articles/epicontacts.html).
 
@@ -266,7 +266,7 @@ We can look for patterns of contacts between genders:
 plot(x, "sex", col_pal = spectral)
 
 ```
-<img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x_gender.png" width="500px">
+<img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x_gender.png" width="600px">
 
 There is no obvious signs of non-random mixing patterns, but this is worth
 testing. The function `get_pairwise` is particularly useful for this. In its

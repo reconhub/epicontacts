@@ -17,3 +17,5 @@ Imports: grDevices, dplyr, igraph, magrittr, visNetwork, threejs,
     colorspace
 Suggests: outbreaks, testthat, covr, shiny, readr, knitr, rmarkdown
 VignetteBuilder: knitr
+URL: http://www.repidemicsconsortium.org/epicontacts/
+BugReports: http://github.com/reconhub/epicontacts/issues
