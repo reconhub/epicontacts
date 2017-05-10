@@ -252,26 +252,18 @@ First, we plot the *epicontacts* object:
 ```r
 
 plot(x, selector = FALSE)
-#> PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-#> Warning in normalizePath(f2): path[1]="./webshotcc83fd083f.png": No such
-#> file or directory
-#> Warning in file(con, "rb"): cannot open file './webshotcc83fd083f.png': No
-#> such file or directory
-#> Error in file(con, "rb"): cannot open the connection
 ```
+
+![plot of chunk plot](figs/plot-1.png)
 
 We can look for patterns of contacts between genders:
 
 ```r
 
 plot(x, "sex", col_pal = spectral)
-#> PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-#> Warning in normalizePath(f2): path[1]="./webshotcc8619f8c9c.png": No such
-#> file or directory
-#> Warning in file(con, "rb"): cannot open file './webshotcc8619f8c9c.png': No
-#> such file or directory
-#> Error in file(con, "rb"): cannot open the connection
 ```
+
+![plot of chunk plot_gender](figs/plot_gender-1.png)
 
 There is no obvious signs of non-random mixing patterns, but this is worth
 testing. The function `get_pairwise` is particularly useful for this. In its
@@ -352,8 +344,8 @@ hist(si, col = "grey", border = "white", nclass = 30,
 
 
 # Contributors (by alphabetic order):
-- [Thomas Crellen](https://github.com/tc13)
 - [Finlay Campbell](https://github.com/finlaycampbell)
+- [Thomas Crellen](https://github.com/tc13)
 - [Thibaut Jombart](https://github.com/thibautjombart)
 - [Nistara Randhawa](https://github.com/nistara)
 - Bertrand Sudre
