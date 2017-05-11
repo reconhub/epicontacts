@@ -5,7 +5,7 @@ test_that("Plotting groups as color", {
   skip_on_cran()
 
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id = "case.id", to = "case.id", from = "infector",
+    id = "case_id", to = "case_id", from = "infector",
     directed = FALSE)
   x <- thin(x[1:100], 2)
   y <- x
@@ -46,7 +46,7 @@ test_that("Returns errors as planned", {
   skip_on_cran()
 
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id = "case.id", to = "case.id", from = "infector",
+    id = "case_id", to = "case_id", from = "infector",
     directed = FALSE)
   x <- thin(x[1:100], 2)
   x <- thin(x)

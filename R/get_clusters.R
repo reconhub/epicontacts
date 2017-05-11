@@ -31,14 +31,14 @@
 #' dataframe but not in the linelist will also be added to the linelist.
 #'
 #' @importFrom stats setNames
-#'  
+#'
 #'
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-#'                        id = "case.id",
-#'                        to = "case.id",
+#'                        id = "case_id",
+#'                        to = "case_id",
 #'                        from = "infector",
 #'                        directed = TRUE)
 #'
@@ -73,8 +73,8 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
       stop(msg)
     }
   }
-  
-  
+
+
   output <- match.arg(output)
   net <- as.igraph.epicontacts(x)
   cs <- igraph::clusters(net)

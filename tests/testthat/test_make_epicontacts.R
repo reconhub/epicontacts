@@ -83,16 +83,16 @@ test_that("Reordering of columns works", {
   ## make object
 
   x <- make_epicontacts(linelist, contacts,
-                        id = "case.id",
-                        to = "case.id",
+                        id = "case_id",
+                        to = "case_id",
                         from = "infector")
 
   ## tests
   expect_equal(names(x$linelist)[1], "id")
-  expect_equal(x$linelist$id, ebola_sim$linelist$case.id)
+  expect_equal(x$linelist$id, ebola_sim$linelist$case_id)
   expect_equal(names(x$contacts)[c(1,2)], c("from","to"))
   expect_equal(x$contacts$from, ebola_sim$contacts$infector)
-  expect_equal(x$contacts$to, ebola_sim$contacts$case.id)
+  expect_equal(x$contacts$to, ebola_sim$contacts$case_id)
 
 })
 
@@ -108,7 +108,7 @@ test_that("Constructor works with factors", {
   ## make data
   contacts <- ebola_sim$contacts
   contacts$infector <- factor(contacts$infector)
-  contacts$case.id <- factor(contacts$case.id)
+  contacts$case_id <- factor(contacts$case_id)
 
 
   ## run tests

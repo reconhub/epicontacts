@@ -6,7 +6,7 @@
 #' either it thins data from \code{$linelist}, keeping only cases that are in
 #' \code{$contacts} (\code{thin = "linelist"}, default), or the converse,
 #' i.e. removing contacts which are not fully documented in the linelist.
-#' 
+#'
 #' @export
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
@@ -19,17 +19,17 @@
 #'     indicates that only cases appearing in \code{$linelist} are kept in
 #'     \code{$contacts}.
 #'
-#' 
+#'
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-#'                        id = "case.id", to = "case.id", from = "infector",
+#'                        id = "case_id", to = "case_id", from = "infector",
 #'                        directed = TRUE)
 #'
 #' ## keep contacts from a specific case '916d0a'
 #' x <- x[j = "916d0a", contacts = "from"]
-#' 
+#'
 #' }
 thin <- function(x, what = "linelist") {
     if (!inherits(x, "epicontacts")) {

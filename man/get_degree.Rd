@@ -25,7 +25,7 @@ considered: 'in' (towards the case), 'out' (from the case), or 'both'.
 ## make epicontacts object
 if (require(outbreaks)) {
 x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                       id="case.id", to="case.id", from="infector",
+                       id="case_id", to="case_id", from="infector",
                        directed=TRUE)
 x
 

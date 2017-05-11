@@ -21,7 +21,7 @@
 #' ## make epicontacts object
 #' if (require(outbreaks)) {
 #' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-#'                        id="case.id", to="case.id", from="infector",
+#'                        id="case_id", to="case_id", from="infector",
 #'                        directed=TRUE)
 #' x
 #'
@@ -33,9 +33,9 @@
 #' deg_out <- get_degree(x, "out")
 #' barplot(table(deg_out), main = "Reproduction number distribution")
 #' mtext(side = 3, "(based on case out-degree)")
-#' 
+#'
 #' }
-#' 
+#'
 get_degree <- function(x, type = c("in", "out", "both"),
                        only_linelist = FALSE) {
     ## checks

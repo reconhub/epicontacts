@@ -418,7 +418,7 @@
 <a href="#identify-clusters" class="anchor"></a>Identify Clusters</h3>
 <p>The <code><a href="../reference/get_clusters.html">get_clusters()</a></code> function can be used for to identify connected components in an <code>epicontacts</code> object. Here, we illustrate its use to study contact patterns in a simulated Ebola outbreak. First, we use it to retrieve <code>data.frame</code> containing the cluster information:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw"><a href="../reference/make_epicontacts.html">make_epicontacts</a></span>(ebola_sim$linelist, ebola_sim$contacts,
-                      <span class="dt">id =</span> <span class="st">"case.id"</span>, <span class="dt">to =</span> <span class="st">"case.id"</span>, <span class="dt">from =</span> <span class="st">"infector"</span>,
+                      <span class="dt">id =</span> <span class="st">"case_id"</span>, <span class="dt">to =</span> <span class="st">"case_id"</span>, <span class="dt">from =</span> <span class="st">"infector"</span>,
                       <span class="dt">directed =</span> <span class="ot">TRUE</span>)
 x</code></pre></div>
 <pre><code>## 

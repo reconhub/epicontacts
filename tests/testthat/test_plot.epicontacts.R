@@ -1,12 +1,12 @@
 context("Plotting epicontacts")
 
 test_that("Plots as expected", {
-  
+
   skip_on_cran()
-  
+
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                        id = "case.id",
-                        to = "case.id",
+                        id = "case_id",
+                        to = "case_id",
                         from = "infector",
                         directed=FALSE)
   x <- thin(x[1:100], 2)
@@ -36,15 +36,15 @@ test_that("Plots as expected", {
 
 
 test_that("Errors as expected", {
-  
+
   skip_on_cran()
-  
+
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                        id = "case.id",
-                        to = "case.id",
+                        id = "case_id",
+                        to = "case_id",
                         from = "infector",
                         directed=FALSE)
 
   expect_error(plot(x, y = "foobar"))
-  
+
 })

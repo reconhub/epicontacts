@@ -73,8 +73,8 @@
 #' head(contacts)
 #'
 #' ## make object
-#' x <- make_epicontacts(linelist, contacts, id = "case.id",
-#'                        to = "case.id", from = "infector")
+#' x <- make_epicontacts(linelist, contacts, id = "case_id",
+#'                        to = "case_id", from = "infector")
 #' head(x$linelist)
 #' head(x$contacts)
 #' }

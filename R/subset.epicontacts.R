@@ -44,24 +44,24 @@
 #' ## build data
 #'
 #' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-#'                       id = "case.id", to = "case.id",
+#'                       id = "case_id", to = "case_id",
 #'                       from = "infector", directed = FALSE)
 #'
 #' ## subset based on node and edge attributes
 #' x_subset <- subset(x, node_attribute = list("gender" = "f"),
 #'                    edge_attribute = list("source" = "funeral"))
 #'
-#' 
+#'
 #' ## subset a cluster connected to a given id
 #' ## (can be a vector of ids as well)
 #' ## here picking node with highest out-degree
-#' 
+#'
 #' id <- names(which.max(get_degree(x, "out")))
 #' x_subset <- thin(subset(x, cluster_id = id), 2)
 #' x_subset
 #' plot(x_subset)
-#' 
-#' 
+#'
+#'
 #' ## subset based on cluster size range
 #'
 #' x_subset <- subset(x, cs_min = 12, cs_max = 15)
@@ -81,7 +81,7 @@
 #'
 #' x_subset <- subset(x, cs_max = 9)
 #'
-#' 
+#'
 #' }
 
 subset.epicontacts <- function(x, node_attribute = NULL, edge_attribute = NULL,
@@ -124,7 +124,7 @@ subset.epicontacts <- function(x, node_attribute = NULL, edge_attribute = NULL,
             }
 
             ## make sure dates are ordered, first = most ancient
-            
+
             attribute <- sort(attribute)
 
             if (min(attribute) > max(data, na.rm=TRUE) ||
@@ -139,11 +139,11 @@ subset.epicontacts <- function(x, node_attribute = NULL, edge_attribute = NULL,
         return(attribute)
 
     }
-    
+
 
     ## A function to subset a dataset (x$linelist or x$contacts) by a node or
     ## edge attribute
-    
+
     find_id_to_keep <- function(name_attribute,list_attributes,dataset) {
 
         attribute <- list_attributes[[name_attribute]]
@@ -161,10 +161,10 @@ subset.epicontacts <- function(x, node_attribute = NULL, edge_attribute = NULL,
         return(out)
     }
 
-    
+
     ## Check if epicontacts object, node_attribute and edge_attribute are
     ## provided correctly
-    
+
     if (!inherits(x, "epicontacts")) {
         stop("x is not an 'epicontacts' object")
     }

@@ -5,8 +5,8 @@ test_that("Return errors / warnings when expected", {
     skip_on_cran()
 
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                          id = "case.id",
-                          to = "case.id", from = "infector",
+                          id = "case_id",
+                          to = "case_id", from = "infector",
                           directed=FALSE)
 
     not_epicontacts <- list("linelist" = ebola_sim$linelist,
@@ -62,12 +62,12 @@ test_that("Return errors / warnings when expected", {
                  "date.of.infection" = c("2014-04-08", "2015-03-28")),
             edge_attribute = list("source" = "funeral")),
         "date.of.infection must be provided as a date object")
-    
+
     expect_warning(
         subset.epicontacts(
             x,
             node_attribute = list("gender" = "f",
-                "date.of.infection" = 
+                "date.of.infection" =
                 as.Date(c("2014-04-08","2015-03-28","2014-04-08"))),
             edge_attribute = list("source" = "funeral")),
         "More than two date values provided for date.of.infection, using first two")
@@ -89,8 +89,8 @@ test_that("Returns epicontacts object subsetted correctly", {
 
     x <- make_epicontacts(ebola_sim$linelist,
                           ebola_sim$contacts,
-                          id = "case.id",
-                          to = "case.id", from = "infector",
+                          id = "case_id",
+                          to = "case_id", from = "infector",
                           directed = FALSE)
 
     dates <- as.Date(c("2014-04-08","2015-03-28"))
@@ -113,10 +113,10 @@ test_that("Returns epicontacts object subsetted correctly", {
     z <- thin(subset(x, cluster_id = id), 2)
     expect_equal_to_reference(z, file = "rds/z.rds")
 
-    
+
     zz <- subset(x, cs = 10)
     expect_equal_to_reference(zz, file = "rds/zz.rds")
     expect_true(all(get_clusters(zz, "data.frame")$cluster_size == 10L))
-   
+
 
 })

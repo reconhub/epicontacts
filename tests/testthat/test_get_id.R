@@ -4,7 +4,7 @@ test_that("IDs are extracted fine", {
     skip_on_cran()
 
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                           id="case.id", to="case.id", from="infector",
+                           id="case_id", to="case_id", from="infector",
                            directed=TRUE)
 
     ## get identifiers
@@ -40,7 +40,7 @@ test_that("Errors / warnings happen when they should", {
     skip_on_cran()
 
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                           id="case.id", to="case.id", from="infector",
+                           id="case_id", to="case_id", from="infector",
                            directed=FALSE)
 
     expect_error(get_id(x, "tamere"),

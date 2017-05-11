@@ -35,27 +35,27 @@
 #'
 #' @details
 #' Details on the 'contacts' argument; possible values are:
-#' 
+#'
 #' \itemize{
-#' 
+#'
 #' \item 'both': contacts are retained only if both cases are in \code{j}
-#' 
+#'
 #' \item 'either': contacts are retained if at least one of the cases is in
 #' \code{j}
-#' 
+#'
 #' \item 'from': contacts are retained only if the source ('from') is in
 #' \code{j}
-#' 
+#'
 #' \item 'to': contacts are retained only if the recipient ('to') is in \code{j}
 #' }
 #'
 #' @seealso \code{\link{thin}} to retain matching cases in linelist or contacts.
-#' 
+#'
 #' @examples
 #' if (require(outbreaks)) {
 #' ## build data
 #' x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-#'                        id = "case.id", to = "case.id", from = "infector",
+#'                        id = "case_id", to = "case_id", from = "infector",
 #'                        directed = TRUE)
 #'
 #' ## subset first 10 linelist cases
@@ -113,7 +113,7 @@
     ## discarded from the subsetting. That is:
 
     ## - in x$linelist: k=1 will refer to the 2nd column (i.e. after 'id')
-    
+
     ## - in x$contacts: l=1 will refer to the 3nd column (i.e. after 'from' and
     ## 'to')
 
@@ -134,7 +134,7 @@
                                  stringsAsFactors = FALSE)
     }
 
-    
+
     ## subset $contacts
     if (missing(j)) {
         j <- TRUE
@@ -156,7 +156,7 @@
             j <- x$contacts$to %in% j
         }
     }
-    
+
     x$contacts <- x$contacts[j, , drop=FALSE]
 
     ## make sure from/to are the first 2 columns, keep columns 'l'
