@@ -25,7 +25,7 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -82,7 +82,7 @@
 approaches. The default method uses <code><a href='vis_epicontacts.html'>vis_epicontacts</a></code>.</p>
     
 
-    <pre class="usage"><span class='co'># S3 method for epicontacts</span>
+    <pre><span class='co'># S3 method for epicontacts</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"visNetwork"</span>, <span class='st'>"graph3D"</span>),
   <span class='kw'>thin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
@@ -136,13 +136,13 @@ the package, depending on the value of <code>method</code>:</p><ul>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
                        <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
-<span class='fu'>not_run</span>({
-  <span class='fu'>plot</span>(<span class='no'>x</span>)
-  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='st'>"place_infect"</span>)
-  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='st'>"loc_hosp"</span>, <span class='kw'>legend_max</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='fl'>4</span>)
-  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='fl'>4</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"graph3D"</span>)
-})
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># plot(x)</span>
+<span class='co'># plot(x, "place_infect")</span>
+<span class='co'># plot(x, "loc_hosp", legend_max = 20, annot = TRUE)</span>
+<span class='co'># plot(x, 4)</span>
+<span class='co'># plot(x, 4, method = "graph3D")</span>
+<span class='co'>## ---------------------------------------------</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

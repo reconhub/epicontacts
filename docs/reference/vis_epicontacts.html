@@ -25,7 +25,7 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -83,7 +83,7 @@
 will need rendering within a web browser.</p>
     
 
-    <pre class="usage"><span class='fu'>vis_epicontacts</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre><span class='fu'>vis_epicontacts</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>legend_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>col_pal</span> <span class='kw'>=</span> <span class='no'>cases_pal</span>, <span class='kw'>NA_col</span> <span class='kw'>=</span> <span class='st'>"lightgrey"</span>,
   <span class='kw'>width</span> <span class='kw'>=</span> <span class='st'>"90%"</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='st'>"700px"</span>, <span class='kw'>selector</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>editor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
@@ -175,11 +175,11 @@ defaults to FALSE.</p></td>
                        <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]],
                        <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
-<span class='fu'>not_run</span>({
-  <span class='fu'>plot</span>(<span class='no'>x</span>)
-  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"place_infect"</span>)
-  <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"loc_hosp"</span>, <span class='kw'>legend_max</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>annot</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-})
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># plot(x)</span>
+<span class='co'># plot(x, group = "place_infect")</span>
+<span class='co'># plot(x, group = "loc_hosp", legend_max=20, annot=TRUE)</span>
+<span class='co'>## ---------------------------------------------</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
