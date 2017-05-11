@@ -25,7 +25,7 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -84,7 +84,7 @@ between patients. Common identifiers should be used in the two data sources
 for matching to be achieved.</p>
     
 
-    <pre class="usage"><span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
+    <pre><span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
   <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -165,8 +165,8 @@ list and contact list should share an identification scheme for individuals.</p>
 <span class='fu'>head</span>(<span class='no'>contacts</span>)
 
 <span class='co'>## make object</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>,
-                       <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>,
+                       <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>)
 <span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>linelist</span>)
 <span class='fu'>head</span>(<span class='no'>x</span>$<span class='no'>contacts</span>)
 }</div><div class='output co'>#&gt;      from     to  source

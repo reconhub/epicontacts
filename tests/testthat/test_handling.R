@@ -2,7 +2,7 @@ context("Handling: [ operator")
 
 test_that("Various subsetting using [", {
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                           id = "case.id", to = "case.id", from = "infector",
+                           id = "case_id", to = "case_id", from = "infector",
                            directed = TRUE)
 
     ## make subsets
@@ -26,7 +26,7 @@ test_that("Various subsetting using [", {
 
     expect_equal(nrow(x0$linelist), 0)
     expect_equal(nrow(x0$contacts), 0)
-    
+
     expect_equal(nrow(x2$linelist), nrow(x$linelist))
     expect_equal(nrow(x2$contacts), 16)
 
@@ -53,7 +53,7 @@ test_that("Various subsetting using [", {
 
 test_that("Errors / warnings happen when they should", {
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                           id = "case.id", to = "case.id", from = "infector",
+                           id = "case_id", to = "case_id", from = "infector",
                            directed = FALSE)
 
     expect_error(x[j = get_id(x)[1:100], contacts="tamere"],

@@ -25,7 +25,7 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -86,7 +86,7 @@ either it thins data from <code>$linelist</code>, keeping only cases that are in
 i.e. removing contacts which are not fully documented in the linelist.</p>
     
 
-    <pre class="usage"><span class='fu'>thin</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"linelist"</span>)</pre>
+    <pre><span class='fu'>thin</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"linelist"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -110,7 +110,7 @@ indicates that only cases appearing in <code>$linelist</code> are kept in
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>,
-                       <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>,
+                       <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>,
                        <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>## keep contacts from a specific case '916d0a'</span>

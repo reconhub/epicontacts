@@ -25,7 +25,7 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -85,7 +85,7 @@ no replacement method for <code><a href='make_epicontacts.html'>epicontacts</a><
 operations such as <code>foo[i] &lt;- bar</code>.</p>
     
 
-    <pre class="usage"># S3 method for epicontacts
+    <pre># S3 method for epicontacts
 [(x, i, j, k = TRUE, l = TRUE, contacts = c("both",
   "either", "from", "to"), ...)</pre>
     
@@ -151,7 +151,7 @@ contacts when <code>j</code> indicates case IDs (see details).</p></td>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>outbreaks</span>)) {
 <span class='co'>## build data</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>,
-                       <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case.id"</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>,
+                       <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>,
                        <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'>## subset first 10 linelist cases</span>

@@ -27,7 +27,7 @@ i.e. removing contacts which are not fully documented in the linelist.
 if (require(outbreaks)) {
 ## build data
 x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                       id = "case.id", to = "case.id", from = "infector",
+                       id = "case_id", to = "case_id", from = "infector",
                        directed = TRUE)
 
 ## keep contacts from a specific case '916d0a'
