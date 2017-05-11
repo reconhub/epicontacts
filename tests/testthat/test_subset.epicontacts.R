@@ -59,18 +59,18 @@ test_that("Return errors / warnings when expected", {
             x,
             node_attribute =
             list("gender" = "f",
-                 "date.of.infection" = c("2014-04-08", "2015-03-28")),
+                 "date_of_infection" = c("2014-04-08", "2015-03-28")),
             edge_attribute = list("source" = "funeral")),
-        "date.of.infection must be provided as a date object")
+        "date_of_infection must be provided as a date object")
 
     expect_warning(
         subset.epicontacts(
             x,
             node_attribute = list("gender" = "f",
-                "date.of.infection" =
+                "date_of_infection" =
                 as.Date(c("2014-04-08","2015-03-28","2014-04-08"))),
             edge_attribute = list("source" = "funeral")),
-        "More than two date values provided for date.of.infection, using first two")
+        "More than two date values provided for date_of_infection, using first two")
 
     expect_warning(
         subset.epicontacts(x),
@@ -98,14 +98,14 @@ test_that("Returns epicontacts object subsetted correctly", {
     y <- subset.epicontacts(
         x,
         node_attribute = list("gender" = "f",
-            "date.of.infection" = dates),
+            "date_of_infection" = dates),
         edge_attribute = list("source" = "funeral"))
 
     expect_is(y, "epicontacts")
     expect_true(
         all(y$linelist$gender == "f") &&
-        min(y$linelist$date.of.infection) >=  dates[1] &&
-        max(y$linelist$date.of.infection) <= dates[2] &&
+        min(y$linelist$date_of_infection) >=  dates[1] &&
+        max(y$linelist$date_of_infection) <= dates[2] &&
         all(y$contacts$source == "funeral"))
 
 

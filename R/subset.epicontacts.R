@@ -91,7 +91,7 @@ subset.epicontacts <- function(x, node_attribute = NULL, edge_attribute = NULL,
     ## arguments are:
 
     ## - name_attribute is the name of the attribute being checked
-    ## (e.g. "date.of.infection")
+    ## (e.g. "date_of_infection")
 
     ## - list_attributes is the named list of attributes (either node_attribute
     ## or edge_attribute)

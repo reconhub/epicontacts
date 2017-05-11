@@ -57,7 +57,7 @@ test_that("graph3D object includes annotation", {
                         id="case_id", to="case_id", from="infector",
                         directed=TRUE)
 
-  g <- graph3D(x, annot = c("date.of.infection", "outcome"))
-  expect_true(grepl("date.of.infection", g$x))
+  g <- graph3D(x, annot = c("date_of_infection", "outcome"))
+  expect_true(grepl("date_of_infection", g$x))
 
 })
