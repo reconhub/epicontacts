@@ -35,11 +35,36 @@
 #' barplot(1:50, col = cases_pal(50))
 #'
 
+
+
+
+
+
+#' @param col A color vector to which transparency should be added.
+#'
+#' @param alpha The threshold to be used for transparency: 0 for full
+#' transparency, and 1 for full opacity.
+
+transp <- function(col, alpha = .5){
+    res <- apply(grDevices::col2rgb(col), 2,
+                 function(c)
+                 grDevices::rgb(c[1]/255, c[2]/255, c[3]/255, alpha))
+    return(res)
+}
+
+
+
+
+
+
+#' @export
+#' @rdname colors
+
 cases_pal <- function(n){
   if(!is.numeric(n)) stop("n is not a number")
   colors <- c("#cc6666", "#ff8566", "#ffb366","#33cccc",
               "#85e0e0", "#adc2eb", "#9f9fdf","#666699")
-  return(colorRampPalette(colors)(n))
+  return(transp(colorRampPalette(colors)(n), .7))
 }
 
 
@@ -100,24 +125,5 @@ char2col <- function (x, pal = cases_pal, NA_col = "lightgrey"){
   res <- rep(NA_col, length(x))
   res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
   return(res)
-}
-
-
-
-
-
-#' @export
-#' @rdname colors
-#'
-#' @param col A color vector to which transparency should be added.
-#'
-#' @param alpha The threshold to be used for transparency: 0 for full
-#' transparency, and 1 for full opacity.
-
-transp <- function(col, alpha = .5){
-    res <- apply(grDevices::col2rgb(col), 2,
-                 function(c)
-                 grDevices::rgb(c[1]/255, c[2]/255, c[3]/255, alpha))
-    return(res)
 }
 

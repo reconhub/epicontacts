@@ -204,29 +204,34 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
 
   if (!is.null(group)) {
-    K <- length(unique(nodes$group))
+    nodes$group <- factor(nodes$group)
+    lev <- levels(nodes$group)
+    K <- length(lev)
     grp_col <- col_pal(K)
     names(grp_col) <- levels(nodes$group)
     grp_col["NA"] <- NA_col
-    nodes$color <- nodes$icon.color <- grp_col[paste(nodes$group)]
+    nodes$group.color <- nodes$icon.color <- grp_col[paste(nodes$group)]
   }
 
 
   ## build visNetwork output
 
   out <- visNetwork::visNetwork(nodes, edges,
-                                width = width, height = height, ...)
+                                width = width,
+                                height = height, ...)
 
   ## specify group colors, add legend
 
   if (!is.null(group)) {
-    for (i in seq_len(K)) {
-      out <- out %>% visNetwork::visGroups(groupname = levels(nodes$group)[i],
-                                           color = grp_col[i])
-    }
-
     if (legend && (K < legend_max)) {
-      out <- out %>% visNetwork::visLegend()
+      leg_nodes <- data.frame(id = seq_along(grp_col),
+                              label = names(grp_col),
+                              color = grp_col,
+                              shape = "square",
+                              shadow = TRUE,
+                              size = 20)
+      out <- out %>% visNetwork::visLegend(addNodes = leg_nodes,
+                                           useGroups = FALSE)
     }
   }
 
