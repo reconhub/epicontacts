@@ -21,6 +21,9 @@
 #'   recycled if necessary, so that the default \code{TRUE} effectively uses all
 #'   columns of the linelist.
 #'
+#' @param type An index or character string indicating which field of the
+#'     linelist should be used to determine the shapes of the nodes.
+#'
 #' @param edge_width An integer indicating the width of the edges. Defaults to
 #'   3.
 #'
@@ -73,6 +76,7 @@
 #' }
 
 vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
+                            type = NULL, type_code = NULL,
                             legend = TRUE, legend_max = 10,
                             col_pal = cases_pal, NA_col = "lightgrey",
                             width = "90%", height = "700px",
@@ -100,6 +104,25 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
     if (!group %in% names(x$linelist)) {
       msg <- sprintf("Group '%s' is not in the linelist", group)
+      stop(msg)
+    }
+  }
+
+
+  ## check type (node attribute used for color)
+  if (length(type) > 1L) {
+    stop("'type' must indicate a single node attribute")
+  }
+  if (is.logical(type) && !type) {
+    type <- NULL
+  }
+  if (!is.null(type)) {
+    if (is.numeric(type)) {
+      type <- names(x$linelist)[type]
+    }
+
+    if (!type %in% names(x$linelist)) {
+      msg <- sprintf("Type '%s' is not in the linelist", type)
       stop(msg)
     }
   }
@@ -154,19 +177,35 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
     nodes$group <- factor(nodes$group)
   }
 
+  ## add shape info
+  if (!is.null(type)) {
+    if (is.null(type_code)) {
+      msg <- paste("'type_code' needed if 'type' provided;",
+                   "to see codes, type: codeawesome")
+      stop(msg)
+    }
+    node_type <- as.character(unlist(x$linelist[type]))
+    type_code["NA"] <- "fa-question-circle"
+    node_code <- codeawesome[type_code[node_type]]
+    nodes$shape <- "icon"
+    nodes$icon.code <- node_code
+  } else {
+    nodes$borderWidth <- 2
+  }
+
   ## add edge info
 
   edges <- x$contacts
+  edges$width <- edge_width
   if (x$directed) {
     edges$arrows <- "to"
   }
 
 
-  ## buil visNetwork output
+  ## build visNetwork output
 
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width, height = height, ...)
-
 
   ## specify group colors, add legend
 
@@ -193,9 +232,7 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) group else NULL
 
-
-  out <- out %>% visNetwork::visNodes(borderWidth = 2)  %>%
-    visNetwork::visEdges(width = edge_width) %>%
+  out <- out %>%
     visNetwork::visOptions(highlightNearest = TRUE) %>%
     visNetwork::visOptions(selectedBy = arg_selec,
                            manipulation = editor,

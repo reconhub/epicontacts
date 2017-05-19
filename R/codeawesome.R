@@ -1,6 +1,11 @@
-
-## codes to be used with fontawesome
-## this object is not exported
+#' Reference codes for fontawesome
+#'
+#' The object \code{codeawesome} is a character vector of fontawesome codes,
+#' named after their aliases.
+#'
+#' @docType data
+#' @export
+#' @author Thibaut Jombart
 
 codeawesome <- structure(
   c("f000", "f001", "f002", "f003", "f004", "f005", "f006", "f007", "f008",
