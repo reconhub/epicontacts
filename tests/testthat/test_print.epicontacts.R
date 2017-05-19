@@ -9,5 +9,5 @@ test_that("Printing objects works", {
 
 
     expect_equal_to_reference(capture.output(print(x)),
-                              file = "rds/print1.rds")
+                              file = "rds/print3.rds")
 })
