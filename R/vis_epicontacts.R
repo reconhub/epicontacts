@@ -75,7 +75,8 @@
 #' }
 #' }
 
-vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
+vis_epicontacts <- function(x, group = "id",
+                            label = "id", annot  =  TRUE,
                             type = NULL, type_code = NULL,
                             legend = TRUE, legend_max = 10,
                             col_pal = cases_pal, NA_col = "lightgrey",
@@ -157,6 +158,15 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
 
   ## generate annotations ('title' in visNetwork terms)
 
+  if (!is.null(label)) {
+    labels <- apply(nodes[, label, drop = FALSE], 1,
+                    paste, collapse = "\n")
+    nodes$label <- labels
+  }
+
+
+  ## generate annotations ('title' in visNetwork terms)
+
   if (!is.null(annot)) {
     temp <- nodes[, annot, drop = FALSE]
     temp <- vapply(names(temp),
@@ -167,9 +177,7 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
   }
 
 
-  ## add node color ('group') and label
-
-  nodes$label <- nodes$id
+  ## add node color ('group')
 
   if (!is.null(group)) {
     nodes$group <- as.character(nodes[, group])
@@ -185,7 +193,15 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
       stop(msg)
     }
     node_type <- as.character(unlist(x$linelist[type]))
-    type_code["NA"] <- "fa-question-circle"
+    type_code["NA"] <- "question-circle"
+    unknown_codes <- !type_code %in% names(codeawesome)
+    if (any(unknown_codes)) {
+      culprits <- paste(type_code[unknown_codes],
+                        collapse = ", ")
+      msg <- sprintf("unknown icon codes: %s \nto see 'codeawesome'",
+                     culprits)
+      stop(msg)
+    }
     node_code <- codeawesome[type_code[node_type]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
