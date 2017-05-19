@@ -227,9 +227,9 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
       leg_nodes <- data.frame(id = seq_along(grp_col),
                               label = names(grp_col),
                               color = grp_col,
-                              shape = "square",
+                              shape = "box",
                               shadow = TRUE,
-                              size = 20)
+                              font.size = 20)
       out <- out %>% visNetwork::visLegend(addNodes = leg_nodes,
                                            useGroups = FALSE)
     }
@@ -247,7 +247,8 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
     visNetwork::visOptions(highlightNearest = TRUE) %>%
     visNetwork::visOptions(selectedBy = arg_selec,
                            manipulation = editor,
-                           highlightNearest = enabled)
+                           highlightNearest = enabled) %>%
+    visNetwork::visPhysics(stabilization = FALSE)
 
   return(out)
 }
