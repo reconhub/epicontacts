@@ -4,13 +4,13 @@
 \alias{plot.epicontacts}
 \title{Plot epicontacts objects}
 \usage{
-\method{plot}{epicontacts}(x, y = "id", method = c("visNetwork", "graph3D"),
-  thin = TRUE, ...)
+\method{plot}{epicontacts}(x, group = "id", method = c("visNetwork",
+  "graph3D"), thin = TRUE, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
 
-\item{y}{An integer or a character string indicating which attribute column
+\item{group}{An integer or a character string indicating which attribute column
 in the linelist should be used to color the nodes.}
 
 \item{method}{A character string indicating the plotting method to be used;
