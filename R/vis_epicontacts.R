@@ -193,12 +193,22 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
     nodes$borderWidth <- 2
   }
 
+
   ## add edge info
 
   edges <- x$contacts
   edges$width <- edge_width
   if (x$directed) {
     edges$arrows <- "to"
+  }
+
+
+  if (!is.null(group)) {
+    K <- length(unique(nodes$group))
+    grp_col <- col_pal(K)
+    names(grp_col) <- levels(nodes$group)
+    grp_col["NA"] <- NA_col
+    nodes$color <- nodes$icon.color <- grp_col[paste(nodes$group)]
   }
 
 
@@ -210,10 +220,6 @@ vis_epicontacts <- function(x, group = "id", annot  =  TRUE,
   ## specify group colors, add legend
 
   if (!is.null(group)) {
-    K <- length(unique(nodes$group))
-    grp_col <- col_pal(K)
-    grp_col[levels(nodes$group) == "NA"] <- NA_col
-
     for (i in seq_len(K)) {
       out <- out %>% visNetwork::visGroups(groupname = levels(nodes$group)[i],
                                            color = grp_col[i])
