@@ -17,7 +17,7 @@
 #'
 #' \item \code{char2col}: translates a character or a factor to a color using a
 #' palette (comes from the \code{adegenet} package)
-#' 
+#'
 #' }
 #'
 #'
@@ -33,9 +33,23 @@
 #'
 #' barplot(1:5, col = cases_pal(5))
 #' barplot(1:50, col = cases_pal(50))
-#' 
+#'
 
 cases_pal <- function(n){
+  if(!is.numeric(n)) stop("n is not a number")
+  colors <- c("#cc6666", "#ff8566", "#ffb366","#33cccc",
+              "#85e0e0", "#adc2eb", "#9f9fdf","#666699")
+  return(colorRampPalette(colors)(n))
+}
+
+
+
+
+
+#' @export
+#' @rdname colors
+
+pale_pal <- function(n){
   if (!is.numeric(n)) {
     stop("n is not a number")
   }
@@ -77,7 +91,7 @@ spectral <- grDevices::colorRampPalette(
 #' @param pal A color palette.
 #'
 #' @param NA_col The color to be used for NA values.
-#' 
+#'
 char2col <- function (x, pal = cases_pal, NA_col = "lightgrey"){
   x <- factor(x)
   lev <- levels(x)
