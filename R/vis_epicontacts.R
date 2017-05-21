@@ -126,7 +126,7 @@ vis_epicontacts <- function(x, node_color = "id",
   edge_label <- assert_edge_label(x, edge_label)
 
   ## check node_color (node attribute used for color)
-  edge_color <- assert_edge_label(x, edge_color)
+  edge_color <- assert_edge_color(x, edge_color)
 
 
   ## make a list of all nodes, and generate a data.frame of node attributes
@@ -197,7 +197,6 @@ vis_epicontacts <- function(x, node_color = "id",
 
 
   ## add edge info
-
   edges <- x$contacts
   edges$width <- edge_width
   if (x$directed) {
@@ -205,7 +204,7 @@ vis_epicontacts <- function(x, node_color = "id",
   }
 
   if (!is.null(edge_label)) {
-    edges$label <- edges[, "edge_label"]
+    edges$label <- edges[, edge_label]
   }
 
 
