@@ -22,7 +22,7 @@
 #'   columns of the linelist.
 #'
 #' @param node_shape An index or character string indicating which field of the
-#'     linelist should be used to determine the shapes of the nodes.
+#'   linelist should be used to determine the shapes of the nodes.
 #'
 #' @param shapes A named vector of characters indicating which icon code should
 #'   be used for each value \code{node_shape}, e.g. \code{c(m = "male", f =
@@ -33,6 +33,9 @@
 #'   of the linelist should be used for labelling the nodes. Logical will be
 #'   recycled if necessary, so that the default \code{TRUE} effectively uses all
 #'   columns of the linelist.
+#'
+#' @param edge_label An index or character string indicating which field of the
+#'   contacts data should be used to label the edges of the graph.
 #'
 #' @param edge_width An integer indicating the width of the edges. Defaults to
 #'   3.
@@ -90,6 +93,7 @@
 vis_epicontacts <- function(x, node_color = "id",
                             label = "id", annot  =  TRUE,
                             node_shape = NULL, shapes = NULL,
+                            edge_label = NULL,
                             legend = TRUE, legend_max = 10,
                             col_pal = cases_pal, NA_col = "lightgrey",
                             width = "90%", height = "700px",
@@ -104,63 +108,15 @@ vis_epicontacts <- function(x, node_color = "id",
 
 
   ## check node_color (node attribute used for color)
-  if (length(node_color) > 1L) {
-    stop("'node_color' must indicate a single node attribute")
-  }
-  if (is.logical(node_color) && !node_color) {
-    node_color <- NULL
-  }
-  if (!is.null(node_color)) {
-    if (is.numeric(node_color)) {
-      node_color <- names(x$linelist)[node_color]
-    }
-
-    if (!node_color %in% names(x$linelist)) {
-      msg <- sprintf("node_color '%s' is not in the linelist", node_color)
-      stop(msg)
-    }
-  }
-
+  node_color <- assert_node_color(x, node_color)
 
   ## check node_shape (node attribute used for color)
-  if (length(node_shape) > 1L) {
-    stop("'node_shape' must indicate a single node attribute")
-  }
-  if (is.logical(node_shape) && !node_shape) {
-    node_shape <- NULL
-  }
-  if (!is.null(node_shape)) {
-    if (is.numeric(node_shape)) {
-      node_shape <- names(x$linelist)[node_shape]
-    }
-
-    if (!node_shape %in% names(x$linelist)) {
-      msg <- sprintf("node_shape '%s' is not in the linelist", node_shape)
-      stop(msg)
-    }
-  }
-
+  node_shape <- assert_node_shape(x, node_shape)
 
   ## check annot (txt displayed when clicking on node)
-  if (is.logical(annot) && sum(annot) == 0L) {
-    annot <- NULL
-  }
-  if (!is.null(annot)) {
-    if (is.numeric(annot) || is.logical(annot)) {
-      annot <- names(x$linelist)[annot]
-    }
-
-    if (!all(annot %in% names(x$linelist))) {
-      culprits <- annot[!annot %in% names(x$linelist)]
-      culprits <- paste(culprits, collapse = ", ")
-      msg <- sprintf("Annot '%s' is not in the linelist", culprits)
-      stop(msg)
-    }
-  }
-
+  annot <- assert_annot(x, annot)
 
   ## make a list of all nodes, and generate a data.frame of node attributes
-
   nodes <- data.frame(id = unique(c(x$linelist$id,
                                     x$contacts$from,
                                     x$contacts$to)))
