@@ -7,7 +7,7 @@
 #'
 #' @param x An \code{\link{epicontacts}} object
 #'
-#' @param y An integer or a character string indicating which attribute column
+#' @param group An integer or a character string indicating which attribute column
 #' in the linelist should be used to color the nodes.
 #'
 #' @param thin A logical indicating if the data should be thinned so that only
@@ -52,7 +52,7 @@
 #' plot(x, 4, method = "graph3D")
 #' }
 #' }
-plot.epicontacts <- function(x, y = "id",
+plot.epicontacts <- function(x, group = "id",
                              method = c("visNetwork", "graph3D"),
                              thin = TRUE, ...){
     ## checks
@@ -63,19 +63,19 @@ plot.epicontacts <- function(x, y = "id",
     
     method <- match.arg(method)
 
-    if (is.numeric(y) && length(y) > 0L) {
-        y <- names(x$linelist)[y][1L]
+    if (is.numeric(group) && length(group) > 0L) {
+        group <- names(x$linelist)[group][1L]
     }
 
     
     ## make plots
     
     if (method == "visNetwork") {
-        return(vis_epicontacts(x, group = y, ...))
+        return(vis_epicontacts(x, group = group, ...))
     }
 
     if (method == "graph3D") {
-        return(graph3D(x, group = y, ...))
+        return(graph3D(x, group = group, ...))
     }
     
 }

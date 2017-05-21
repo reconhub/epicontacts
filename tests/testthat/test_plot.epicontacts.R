@@ -45,6 +45,6 @@ test_that("Errors as expected", {
                         from = "infector",
                         directed=FALSE)
 
-  expect_error(plot(x, y = "foobar"))
+  expect_error(plot(x, group = "foobar"))
 
 })
