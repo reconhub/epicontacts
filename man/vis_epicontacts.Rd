@@ -16,6 +16,11 @@ vis_epicontacts(x, node_color = "id", label = "id", annot = TRUE,
 \item{node_color}{An index or character string indicating which field of the
 linelist should be used to color the nodes.}
 
+\item{label}{An index, logical, or character string indicating which fields
+of the linelist should be used for labelling the nodes. Logical will be
+recycled if necessary, so that the default \code{TRUE} effectively uses all
+columns of the linelist.}
+
 \item{annot}{An index, logical, or character string indicating which fields
 of the linelist should be used for annotating the nodes. Logical will be
 recycled if necessary, so that the default \code{TRUE} effectively uses all
@@ -23,6 +28,11 @@ columns of the linelist.}
 
 \item{node_shape}{An index or character string indicating which field of the
 linelist should be used to determine the shapes of the nodes.}
+
+\item{shapes}{A named vector of characters indicating which icon code should
+be used for each value \code{node_shape}, e.g. \code{c(m = "male", f =
+"female")} if 'm' amd 'f' are values from \code{node_shape}. See
+\code{\link{codeawesome}} for all available codes.}
 
 \item{legend}{A logical indicating whether a legend should be added to the
 plot.}
