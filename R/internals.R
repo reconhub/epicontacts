@@ -2,6 +2,8 @@
 ## assert_xxx functions make basic tests on 'xxx' against the data ('x', an
 ## epicontacts object), and return a possibly processed 'xxx'.
 
+## author: Thibaut Jombart
+
 assert_node_color <- function(x, node_color) {
   if (length(node_color) > 1L) {
     stop("'node_color' must indicate a single node attribute")
@@ -72,4 +74,56 @@ assert_annot <- function(x, annot) {
   }
 
   return(annot)
+}
+
+
+
+
+
+
+assert_edge_label <- function(x, edge_label) {
+  if (length(edge_label) > 1L) {
+    stop("'edge_label' must indicate a single edge attribute")
+  }
+  if (is.logical(edge_label) && !edge_label) {
+    edge_label <- NULL
+  }
+  if (!is.null(edge_label)) {
+    if (is.numeric(edge_label)) {
+      edge_label <- names(x$contacts)[edge_label]
+    }
+
+    if (!edge_label %in% names(x$contacts)) {
+      msg <- sprintf("edge_label '%s' is not in the contacts", edge_label)
+      stop(msg)
+    }
+  }
+
+  return(edge_label)
+}
+
+
+
+
+
+
+assert_edge_color <- function(x, edge_color) {
+  if (length(edge_color) > 1L) {
+    stop("'edge_color' must indicate a single edge attribute")
+  }
+  if (is.logical(edge_color) && !edge_color) {
+    edge_color <- NULL
+  }
+  if (!is.null(edge_color)) {
+    if (is.numeric(edge_color)) {
+      edge_color <- names(x$contacts)[edge_color]
+    }
+
+    if (!edge_color %in% names(x$contacts)) {
+      msg <- sprintf("edge_color '%s' is not in the contacts", edge_color)
+      stop(msg)
+    }
+  }
+
+  return(edge_color)
 }

@@ -37,6 +37,9 @@
 #' @param edge_label An index or character string indicating which field of the
 #'   contacts data should be used to label the edges of the graph.
 #'
+#' @param edge_color An index or character string indicating which field of the
+#'   contacts data should be used to color the edges of the graph.
+#'
 #' @param edge_width An integer indicating the width of the edges. Defaults to
 #'   3.
 #'
@@ -93,7 +96,7 @@
 vis_epicontacts <- function(x, node_color = "id",
                             label = "id", annot  =  TRUE,
                             node_shape = NULL, shapes = NULL,
-                            edge_label = NULL,
+                            edge_label = NULL, edge_color = NULL,
                             legend = TRUE, legend_max = 10,
                             col_pal = cases_pal, NA_col = "lightgrey",
                             width = "90%", height = "700px",
@@ -115,6 +118,13 @@ vis_epicontacts <- function(x, node_color = "id",
 
   ## check annot (txt displayed when clicking on node)
   annot <- assert_annot(x, annot)
+
+  ## check node_color (node attribute used for color)
+  edge_label <- assert_edge_label(x, edge_label)
+
+  ## check node_color (node attribute used for color)
+  edge_color <- assert_edge_label(x, edge_color)
+
 
   ## make a list of all nodes, and generate a data.frame of node attributes
   nodes <- data.frame(id = unique(c(x$linelist$id,
@@ -151,6 +161,12 @@ vis_epicontacts <- function(x, node_color = "id",
     nodes$group <- as.character(nodes[, node_color])
     nodes$group[is.na(nodes$group)] <- "NA"
     nodes$group <- factor(nodes$group)
+    lev <- levels(nodes$group)
+    K <- length(lev)
+    grp_col <- col_pal(K)
+    names(grp_col) <- levels(nodes$group)
+    grp_col["NA"] <- NA_col
+    nodes$group.color <- nodes$icon.color <- grp_col[paste(nodes$group)]
   }
 
   ## add shape info
@@ -186,15 +202,13 @@ vis_epicontacts <- function(x, node_color = "id",
     edges$arrows <- "to"
   }
 
+  if (!is.null(edge_label)) {
+    edges$label <- edges[, "edge_label"]
+  }
 
-  if (!is.null(node_color)) {
-    nodes$group <- factor(nodes$group)
-    lev <- levels(nodes$group)
-    K <- length(lev)
-    grp_col <- col_pal(K)
-    names(grp_col) <- levels(nodes$group)
-    grp_col["NA"] <- NA_col
-    nodes$group.color <- nodes$icon.color <- grp_col[paste(nodes$group)]
+
+  if (!is.null(edge_color)) {
+    edges$color <- edges[, "edge_color"]
   }
 
 
@@ -203,6 +217,7 @@ vis_epicontacts <- function(x, node_color = "id",
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height, ...)
+
 
   ## specify group colors, add legend
 

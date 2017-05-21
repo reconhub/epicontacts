@@ -5,10 +5,11 @@
 \title{Plot epicontacts objects using visNetwork}
 \usage{
 vis_epicontacts(x, node_color = "id", label = "id", annot = TRUE,
-  node_shape = NULL, shapes = NULL, edge_label = NULL, legend = TRUE,
-  legend_max = 10, col_pal = cases_pal, NA_col = "lightgrey",
-  width = "90\%", height = "700px", selector = TRUE, editor = FALSE,
-  edge_width = 3, ...)
+  node_shape = NULL, shapes = NULL, edge_label = NULL,
+  edge_color = NULL, legend = TRUE, legend_max = 10,
+  col_pal = cases_pal, NA_col = "lightgrey", width = "90\%",
+  height = "700px", selector = TRUE, editor = FALSE, edge_width = 3,
+  ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -36,6 +37,9 @@ be used for each value \code{node_shape}, e.g. \code{c(m = "male", f =
 
 \item{edge_label}{An index or character string indicating which field of the
 contacts data should be used to label the edges of the graph.}
+
+\item{edge_color}{An index or character string indicating which field of the
+contacts data should be used to color the edges of the graph.}
 
 \item{legend}{A logical indicating whether a legend should be added to the
 plot.}
