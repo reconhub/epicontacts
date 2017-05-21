@@ -2,7 +2,7 @@ context("Colors and palettes")
 
 test_that("Test color palettes", {
     skip_on_cran()
-    
+
     expect_true(all(is_color(cases_pal(1))))
     expect_true(all(is_color(cases_pal(100))))
     expect_true(all(is_color(spectral(1))))
@@ -10,7 +10,7 @@ test_that("Test color palettes", {
 
     msg <- "n is not a number"
     expect_error(cases_pal("asd"), msg)
-    
+
 })
 
 
@@ -23,7 +23,7 @@ test_that("Test transp", {
 
     col <- cases_pal(100)
     expect_true(all(is_color(transp(col))))
-    
+
 })
 
 
@@ -31,11 +31,11 @@ test_that("Test transp", {
 
 
 
-test_that("Test char2col", {
+test_that("Test fac2col", {
     skip_on_cran()
 
     x <- sample(letters[1:5], 50, replace = TRUE)
-    expect_true(all(is_color(char2col(x))))
-    expect_length(char2col(x), length(x))
-    
+    expect_true(all(is_color(fac2col(x))))
+    expect_length(fac2col(x), length(x))
+
 })

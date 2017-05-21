@@ -7,9 +7,9 @@
 vis_epicontacts(x, node_color = "id", label = "id", annot = TRUE,
   node_shape = NULL, shapes = NULL, edge_label = NULL,
   edge_color = NULL, legend = TRUE, legend_max = 10,
-  col_pal = cases_pal, NA_col = "lightgrey", width = "90\%",
-  height = "700px", selector = TRUE, editor = FALSE, edge_width = 3,
-  ...)
+  col_pal = cases_pal, NA_col = "lightgrey", edge_col_pal = edges_pal,
+  width = "90\%", height = "700px", selector = TRUE, editor = FALSE,
+  edge_width = 3, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -46,9 +46,11 @@ plot.}
 
 \item{legend_max}{The maximum number of groups for a legend to be displayed.}
 
-\item{col_pal}{A color palette for the groups.}
+\item{col_pal}{A color palette for the nodes.}
 
 \item{NA_col}{The color used for unknown group.}
+
+\item{edge_col_pal}{A color palette for the edges.}
 
 \item{width}{The width of the output, in html compatible format (e.g. '90\%'
 or '800px').}

@@ -48,7 +48,9 @@
 #'
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
-#' @param col_pal A color palette for the groups.
+#' @param col_pal A color palette for the nodes.
+#'
+#' @param edge_col_pal A color palette for the edges.
 #'
 #' @param NA_col The color used for unknown group.
 #'
@@ -99,6 +101,7 @@ vis_epicontacts <- function(x, node_color = "id",
                             edge_label = NULL, edge_color = NULL,
                             legend = TRUE, legend_max = 10,
                             col_pal = cases_pal, NA_col = "lightgrey",
+                            edge_col_pal = edges_pal,
                             width = "90%", height = "700px",
                             selector = TRUE, editor = FALSE,
                             edge_width = 3, ...){
@@ -158,18 +161,17 @@ vis_epicontacts <- function(x, node_color = "id",
   ## add node color ('group')
 
   if (!is.null(node_color)) {
-    nodes$group <- as.character(nodes[, node_color])
-    nodes$group[is.na(nodes$group)] <- "NA"
-    nodes$group <- factor(nodes$group)
-    lev <- levels(nodes$group)
-    K <- length(lev)
-    grp_col <- col_pal(K)
-    names(grp_col) <- levels(nodes$group)
-    grp_col["NA"] <- NA_col
-    nodes$group.color <- nodes$icon.color <- grp_col[paste(nodes$group)]
+    node_col_info <- fac2col(factor(nodes[, node_color]),
+                             col_pal,
+                             NA_col,
+                             legend = TRUE)
+    K <- length(node_col_info$leg_lab)
+    nodes$group.color <- nodes$icon.color <- node_col_info$color
   }
 
+
   ## add shape info
+
   if (!is.null(node_shape)) {
     if (is.null(shapes)) {
       msg <- paste("'shapes' needed if 'node_shape' provided;",
@@ -208,7 +210,12 @@ vis_epicontacts <- function(x, node_color = "id",
 
 
   if (!is.null(edge_color)) {
-    edges$color <- edges[, "edge_color"]
+    edge_col_info <- fac2col(factor(edges[, edge_color]),
+                             edge_col_pal,
+                             NA_col,
+                             legend = TRUE)
+    L <- length(edge_col_info$leg_lab)
+    edges$color <- edge_col_info$color
   }
 
 
@@ -221,17 +228,20 @@ vis_epicontacts <- function(x, node_color = "id",
 
   ## specify group colors, add legend
 
-  if (!is.null(node_color)) {
-    if (legend && (K < legend_max)) {
-      leg_nodes <- data.frame(id = seq_along(grp_col),
-                              label = names(grp_col),
-                              color = grp_col,
+  if (legend) {
+    if (!is.null(node_color) &&  (K < legend_max)) {
+      leg_nodes <- data.frame(id = 1:K,
+                              label = node_col_info$leg_lab,
+                              color = node_col_info$leg_col,
                               shape = "box",
                               shadow = TRUE,
                               font.size = 20)
-      out <- out %>% visNetwork::visLegend(addNodes = leg_nodes,
-                                           useGroups = FALSE)
+    } else {
+      leg_nodes <- NULL
     }
+    out <- out %>% visNetwork::visLegend(addNodes = leg_nodes,
+                                         useGroups = FALSE)
+
   }
 
 

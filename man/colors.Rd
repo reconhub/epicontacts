@@ -2,21 +2,21 @@
 % Please edit documentation in R/colors.R
 \name{transp}
 \alias{transp}
+\alias{edges_pal}
 \alias{cases_pal}
-\alias{pale_pal}
 \alias{spectral}
-\alias{char2col}
+\alias{fac2col}
 \title{Color tools and palettes for epicontacts}
 \usage{
 transp(col, alpha = 0.5)
 
-cases_pal(n)
+edges_pal(n)
 
-pale_pal(n)
+cases_pal(n)
 
 spectral(n)
 
-char2col(x, pal = cases_pal, NA_col = "lightgrey")
+fac2col(x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE)
 }
 \arguments{
 \item{col}{A color vector to which transparency should be added.}
@@ -31,6 +31,10 @@ transparency, and 1 for full opacity.}
 \item{pal}{A color palette.}
 
 \item{NA_col}{The color to be used for NA values.}
+
+\item{legend}{A logical indicating if legend info should be added to the
+output. If TRUE, the output will be a list, with colors in the
+\code{$color} component.}
 }
 \description{
 These functions are used for defining palettes or colors in the
@@ -48,7 +52,7 @@ These functions are used for defining palettes or colors in the
 \item \code{transp}: makes colors transparent (comes from the
 \code{adegenet} package)
 
-\item \code{char2col}: translates a character or a factor to a color using a
+\item \code{fac2col}: translates a character or a factor to a color using a
 palette (comes from the \code{adegenet} package)
 
 }

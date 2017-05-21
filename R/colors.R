@@ -15,7 +15,7 @@
 #' \item \code{transp}: makes colors transparent (comes from the
 #' \code{adegenet} package)
 #'
-#' \item \code{char2col}: translates a character or a factor to a color using a
+#' \item \code{fac2col}: translates a character or a factor to a color using a
 #' palette (comes from the \code{adegenet} package)
 #'
 #' }
@@ -60,7 +60,7 @@ transp <- function(col, alpha = .5){
 #' @export
 #' @rdname colors
 
-cases_pal <- function(n){
+edges_pal <- function(n){
   if(!is.numeric(n)) stop("n is not a number")
   colors <- c("#cc6666", "#ff8566", "#ffb366","#33cccc",
               "#85e0e0", "#adc2eb", "#9f9fdf","#666699")
@@ -74,7 +74,7 @@ cases_pal <- function(n){
 #' @export
 #' @rdname colors
 
-pale_pal <- function(n){
+cases_pal <- function(n){
   if (!is.numeric(n)) {
     stop("n is not a number")
   }
@@ -117,13 +117,20 @@ spectral <- grDevices::colorRampPalette(
 #'
 #' @param NA_col The color to be used for NA values.
 #'
-char2col <- function (x, pal = cases_pal, NA_col = "lightgrey"){
+#' @param legend A logical indicating if legend info should be added to the
+#'   output. If TRUE, the output will be a list, with colors in the
+#'   \code{$color} component.
+#'
+fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE){
   x <- factor(x)
   lev <- levels(x)
   nlev <- length(lev)
   col <- pal(nlev)
   res <- rep(NA_col, length(x))
   res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
+  if (legend) {
+    res <- list(color = res, leg_col = col, leg_lab = lev)
+  }
   return(res)
 }
 
