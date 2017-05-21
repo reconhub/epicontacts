@@ -13,7 +13,7 @@
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #'
-#' @param group An index or character string indicating which field of the
+#' @param node_color An index or character string indicating which field of the
 #'     linelist should be used to color the nodes.
 #'
 #' @param annot An index, logical, or character string indicating which fields
@@ -21,7 +21,7 @@
 #'   recycled if necessary, so that the default \code{TRUE} effectively uses all
 #'   columns of the linelist.
 #'
-#' @param type An index or character string indicating which field of the
+#' @param node_shape An index or character string indicating which field of the
 #'     linelist should be used to determine the shapes of the nodes.
 #'
 #' @param edge_width An integer indicating the width of the edges. Defaults to
@@ -70,14 +70,16 @@
 #'
 #' \dontrun{
 #' plot(x)
-#' plot(x, group = "place_infect")
-#' plot(x, group = "loc_hosp", legend_max=20, annot=TRUE)
+#' plot(x, node_color = "place_infect")
+#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
+#' plot(x, "place_infect", node_shape = "sex",
+#'      shapes = c(M = "male", F = "female"))
 #' }
 #' }
 
-vis_epicontacts <- function(x, group = "id",
+vis_epicontacts <- function(x, node_color = "id",
                             label = "id", annot  =  TRUE,
-                            type = NULL, type_code = NULL,
+                            node_shape = NULL, shapes = NULL,
                             legend = TRUE, legend_max = 10,
                             col_pal = cases_pal, NA_col = "lightgrey",
                             width = "90%", height = "700px",
@@ -91,39 +93,39 @@ vis_epicontacts <- function(x, group = "id",
   ## code).
 
 
-  ## check group (node attribute used for color)
-  if (length(group) > 1L) {
-    stop("'group' must indicate a single node attribute")
+  ## check node_color (node attribute used for color)
+  if (length(node_color) > 1L) {
+    stop("'node_color' must indicate a single node attribute")
   }
-  if (is.logical(group) && !group) {
-    group <- NULL
+  if (is.logical(node_color) && !node_color) {
+    node_color <- NULL
   }
-  if (!is.null(group)) {
-    if (is.numeric(group)) {
-      group <- names(x$linelist)[group]
+  if (!is.null(node_color)) {
+    if (is.numeric(node_color)) {
+      node_color <- names(x$linelist)[node_color]
     }
 
-    if (!group %in% names(x$linelist)) {
-      msg <- sprintf("Group '%s' is not in the linelist", group)
+    if (!node_color %in% names(x$linelist)) {
+      msg <- sprintf("node_color '%s' is not in the linelist", node_color)
       stop(msg)
     }
   }
 
 
-  ## check type (node attribute used for color)
-  if (length(type) > 1L) {
-    stop("'type' must indicate a single node attribute")
+  ## check node_shape (node attribute used for color)
+  if (length(node_shape) > 1L) {
+    stop("'node_shape' must indicate a single node attribute")
   }
-  if (is.logical(type) && !type) {
-    type <- NULL
+  if (is.logical(node_shape) && !node_shape) {
+    node_shape <- NULL
   }
-  if (!is.null(type)) {
-    if (is.numeric(type)) {
-      type <- names(x$linelist)[type]
+  if (!is.null(node_shape)) {
+    if (is.numeric(node_shape)) {
+      node_shape <- names(x$linelist)[node_shape]
     }
 
-    if (!type %in% names(x$linelist)) {
-      msg <- sprintf("Type '%s' is not in the linelist", type)
+    if (!node_shape %in% names(x$linelist)) {
+      msg <- sprintf("node_shape '%s' is not in the linelist", node_shape)
       stop(msg)
     }
   }
@@ -179,30 +181,30 @@ vis_epicontacts <- function(x, group = "id",
 
   ## add node color ('group')
 
-  if (!is.null(group)) {
-    nodes$group <- as.character(nodes[, group])
+  if (!is.null(node_color)) {
+    nodes$group <- as.character(nodes[, node_color])
     nodes$group[is.na(nodes$group)] <- "NA"
     nodes$group <- factor(nodes$group)
   }
 
   ## add shape info
-  if (!is.null(type)) {
-    if (is.null(type_code)) {
-      msg <- paste("'type_code' needed if 'type' provided;",
-                   "to see codes, type: codeawesome")
+  if (!is.null(node_shape)) {
+    if (is.null(shapes)) {
+      msg <- paste("'shapes' needed if 'node_shape' provided;",
+                   "to see codes, node_shape: codeawesome")
       stop(msg)
     }
-    node_type <- as.character(unlist(x$linelist[type]))
-    type_code["NA"] <- "question-circle"
-    unknown_codes <- !type_code %in% names(codeawesome)
+    vec_node_shapes <- as.character(unlist(nodes[node_shape]))
+    shapes["NA"] <- "question-circle"
+    unknown_codes <- !shapes %in% names(codeawesome)
     if (any(unknown_codes)) {
-      culprits <- paste(type_code[unknown_codes],
+      culprits <- paste(shapes[unknown_codes],
                         collapse = ", ")
       msg <- sprintf("unknown icon codes: %s \nto see 'codeawesome'",
                      culprits)
       stop(msg)
     }
-    node_code <- codeawesome[type_code[node_type]]
+    node_code <- codeawesome[shapes[vec_node_shapes]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
   } else {
@@ -219,7 +221,7 @@ vis_epicontacts <- function(x, group = "id",
   }
 
 
-  if (!is.null(group)) {
+  if (!is.null(node_color)) {
     nodes$group <- factor(nodes$group)
     lev <- levels(nodes$group)
     K <- length(lev)
@@ -238,7 +240,7 @@ vis_epicontacts <- function(x, group = "id",
 
   ## specify group colors, add legend
 
-  if (!is.null(group)) {
+  if (!is.null(node_color)) {
     if (legend && (K < legend_max)) {
       leg_nodes <- data.frame(id = seq_along(grp_col),
                               label = names(grp_col),
@@ -257,7 +259,7 @@ vis_epicontacts <- function(x, group = "id",
   ## set nodes borders, edge width, and plotting options
 
   enabled <- list(enabled = TRUE)
-  arg_selec <- if (selector) group else NULL
+  arg_selec <- if (selector) node_color else NULL
 
   out <- out %>%
     visNetwork::visOptions(highlightNearest = TRUE) %>%

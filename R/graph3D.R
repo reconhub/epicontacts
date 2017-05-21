@@ -11,16 +11,16 @@
 #'
 #' @param x An \code{\link{epicontacts}} object
 #'
-#' @param group An index or character string indicating which field of the
+#' @param node_color An index or character string indicating which field of the
 #'     linelist should be used to color the nodes. Default is \code{id}
 #'
 #' @param annot An index, logical, or character string indicating which fields
 #' of the linelist should be used for annotating the nodes upon mouseover. The default
-#' \code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').
-#' 
-#' @param col_pal A color palette for the groups.
+#' \code{TRUE} shows the 'id' and 'node_color' (if the grouping column is different from 'id').
 #'
-#' @param NA_col The color used for unknown group.
+#' @param col_pal A color palette for the node_colors.
+#'
+#' @param NA_col The color used for unknown node_color.
 #'
 #' @param g_title The title of the graph.
 #'
@@ -56,7 +56,7 @@
 #' ## example using MERS outbreak in Korea, 2014
 #' head(mers_korea_2015[[1]])
 #' head(mers_korea_2015[[2]])
-#' 
+#'
 #' x <- make_epicontacts(linelist = mers_korea_2015$linelist,
 #'                       contacts = mers_korea_2015$contacts,
 #'                       directed = FALSE)
@@ -64,14 +64,14 @@
 #' \dontrun{
 #' graph3D(x)
 #' graph3D(x, annot = FALSE)
-#' graph3D(x, group = "sex", g_title = "MERS Korea 2014")
-#' graph3D(x, group = "sex", annot = c("sex", "age"),
+#' graph3D(x, node_color = "sex", g_title = "MERS Korea 2014")
+#' graph3D(x, node_color = "sex", annot = c("sex", "age"),
 #'         g_title = "MERS Korea 2014")
 #' }
 #' }
 
 graph3D <- function(x,
-                    group = "id",
+                    node_color = "id",
                     annot = TRUE,
                     col_pal = cases_pal,
                     NA_col = "lightgrey",
@@ -82,21 +82,21 @@ graph3D <- function(x,
                     edge_size = .5) {
 
 
-    
-    ## check group (node attribute used for color)
-    if (length(group) > 1L) {
-        stop("'group' must indicate a single node attribute")
+
+    ## check node_color (node attribute used for color)
+    if (length(node_color) > 1L) {
+        stop("'node_color' must indicate a single node attribute")
     }
-    if (is.logical(group) && !group) {
-        group <- NULL
+    if (is.logical(node_color) && !node_color) {
+        node_color <- NULL
     }
-    if (!is.null(group)) {
-        if (is.numeric(group)) {
-            group <- names(x$linelist)[group]
+    if (!is.null(node_color)) {
+        if (is.numeric(node_color)) {
+            node_color <- names(x$linelist)[node_color]
         }
 
-        if (!group %in% names(x$linelist)) {
-            msg <- sprintf("Group '%s' is not in the linelist", group)
+        if (!node_color %in% names(x$linelist)) {
+            msg <- sprintf("node_color '%s' is not in the linelist", node_color)
             stop(msg)
         }
     }
@@ -111,10 +111,10 @@ graph3D <- function(x,
             annot <- names(x$linelist)[annot]
         } else {
             if (is.logical(annot)) {
-                annot = unique(c("id", group))
+                annot = unique(c("id", node_color))
             }
         }
-        
+
         if (!all(annot %in% names(x$linelist))) {
             culprits <- annot[!annot %in% names(x$linelist)]
             culprits <- paste(culprits, collapse = ", ")
@@ -122,7 +122,7 @@ graph3D <- function(x,
             stop(msg)
         }
     }
-    
+
 
 
     ## Subset those ids which have at least one edge with another id
@@ -142,7 +142,7 @@ graph3D <- function(x,
         suppressWarnings(dplyr::left_join(nodes, x$linelist)))
 
 
-    
+
     ## generate annotations ('label' in threejs terms)
     if (!is.null(annot)) {
         temp <- nodes[, annot, drop = FALSE]
@@ -152,20 +152,20 @@ graph3D <- function(x,
     } else {
         nodes$label <- ""
     }
-    
-    
+
+
 
     # attribute for grouping
-    if (!is.null(group)) {
-        nodes$group <- as.character(nodes[,group])
+    if (!is.null(node_color)) {
+        nodes$group <- as.character(nodes[,node_color])
         nodes$group[is.na(nodes$group)] <- "NA"
         nodes$group <- factor(nodes$group)
     }
 
-    
+
     ## Set node attributes
     ## node color
-    if (!is.null(group)) {
+    if (!is.null(node_color)) {
         K <- length(unique(nodes$group))
         grp.col <- col_pal(K)
         grp.col[levels(nodes$group)=="NA"] <- NA_col
@@ -175,24 +175,24 @@ graph3D <- function(x,
       nodes$color <- "#97C2FC"
     }
 
-        
+
     ## changing original "id" column to one required by threejs::graphjs()
     ##   & backing up old id
-    nodes$orig_id <- nodes$id 
+    nodes$orig_id <- nodes$id
     nodes$id <- 1:nrow(nodes) # has to be integer
 
-    
+
     ## make edges
     edges <- x$contacts
     edges_from = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
                                   by = c("from" = "orig_id"))["id"]
-    
+
     edges_to = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
                                   by = c("to" = "orig_id"))["id"]
     edges$from = edges_from$id
     edges$to = edges_to$id
 
-    
+
     ## Set edge attributes
     edges$size = edge_size
     edges$color = "lightgrey"
@@ -205,7 +205,7 @@ graph3D <- function(x,
 
     # Create 3D graph
     out <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
-                          showLabels=FALSE, fg = label_col, bg = bg_col)
+                          showLabels = FALSE, fg = label_col, bg = bg_col)
 
     return(out)
 }

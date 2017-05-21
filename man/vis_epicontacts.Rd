@@ -4,8 +4,8 @@
 \alias{vis_epicontacts}
 \title{Plot epicontacts objects using visNetwork}
 \usage{
-vis_epicontacts(x, group = "id", label = "id", annot = TRUE,
-  type = NULL, type_code = NULL, legend = TRUE, legend_max = 10,
+vis_epicontacts(x, node_color = "id", label = "id", annot = TRUE,
+  node_shape = NULL, shapes = NULL, legend = TRUE, legend_max = 10,
   col_pal = cases_pal, NA_col = "lightgrey", width = "90\%",
   height = "700px", selector = TRUE, editor = FALSE, edge_width = 3,
   ...)
@@ -13,7 +13,7 @@ vis_epicontacts(x, group = "id", label = "id", annot = TRUE,
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
 
-\item{group}{An index or character string indicating which field of the
+\item{node_color}{An index or character string indicating which field of the
 linelist should be used to color the nodes.}
 
 \item{annot}{An index, logical, or character string indicating which fields
@@ -21,7 +21,7 @@ of the linelist should be used for annotating the nodes. Logical will be
 recycled if necessary, so that the default \code{TRUE} effectively uses all
 columns of the linelist.}
 
-\item{type}{An index or character string indicating which field of the
+\item{node_shape}{An index or character string indicating which field of the
 linelist should be used to determine the shapes of the nodes.}
 
 \item{legend}{A logical indicating whether a legend should be added to the
@@ -71,8 +71,10 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
 
 \dontrun{
 plot(x)
-plot(x, group = "place_infect")
-plot(x, group = "loc_hosp", legend_max=20, annot=TRUE)
+plot(x, node_color = "place_infect")
+plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
+plot(x, "place_infect", node_shape = "sex",
+     shapes = c(M = "male", F = "female"))
 }
 }
 }

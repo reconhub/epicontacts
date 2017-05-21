@@ -64,7 +64,7 @@ cases_pal <- function(n){
   if(!is.numeric(n)) stop("n is not a number")
   colors <- c("#cc6666", "#ff8566", "#ffb366","#33cccc",
               "#85e0e0", "#adc2eb", "#9f9fdf","#666699")
-  return(transp(colorRampPalette(colors)(n), .7))
+  return(transp(grDevices::colorRampPalette(colors)(n), .7))
 }
 
 

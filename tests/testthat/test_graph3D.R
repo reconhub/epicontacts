@@ -27,19 +27,19 @@ test_that("graph3D errors as expected on bad annotation and group specification"
   expect_error(graph3D(x, annot = c("id", "toto", "caca")),
                msg)
 
-  msg <- "Group 'foobar' is not in the linelist"
-  expect_error(graph3D(x, group = "foobar"),
+  msg <- "node_color 'foobar' is not in the linelist"
+  expect_error(graph3D(x, node_color = "foobar"),
                msg)
 
-  msg <- "'group' must indicate a single node attribute"
-  expect_error(graph3D(x, group = c(1:3)), msg)
+  msg <- "'node_color' must indicate a single node attribute"
+  expect_error(graph3D(x, node_color = c(1:3)), msg)
 
 
-  expect_equal(graph3D(x, group = NULL),
-               graph3D(x, group = FALSE))
+  expect_equal(graph3D(x, node_color = NULL),
+               graph3D(x, node_color = FALSE))
 
-  expect_equal(graph3D(x, group = 1),
-               graph3D(x, group = "id"))
+  expect_equal(graph3D(x, node_color = 1),
+               graph3D(x, node_color = "id"))
 
   expect_equal(graph3D(x, annot = NULL),
                graph3D(x, annot = FALSE))

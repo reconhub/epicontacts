@@ -4,23 +4,23 @@
 \alias{graph3D}
 \title{Interactive 3D Force-directed graph from epicontacts object}
 \usage{
-graph3D(x, group = "id", annot = TRUE, col_pal = cases_pal,
+graph3D(x, node_color = "id", annot = TRUE, col_pal = cases_pal,
   NA_col = "lightgrey", g_title = "", bg_col = "white",
   label_col = "darkgrey", node_size = 1, edge_size = 0.5)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
 
-\item{group}{An index or character string indicating which field of the
+\item{node_color}{An index or character string indicating which field of the
 linelist should be used to color the nodes. Default is \code{id}}
 
 \item{annot}{An index, logical, or character string indicating which fields
 of the linelist should be used for annotating the nodes upon mouseover. The default
-\code{TRUE} shows the 'id' and 'group' (if the grouping column is different from 'id').}
+\code{TRUE} shows the 'id' and 'node_color' (if the grouping column is different from 'id').}
 
-\item{col_pal}{A color palette for the groups.}
+\item{col_pal}{A color palette for the node_colors.}
 
-\item{NA_col}{The color used for unknown group.}
+\item{NA_col}{The color used for unknown node_color.}
 
 \item{g_title}{The title of the graph.}
 
@@ -60,8 +60,8 @@ x <- make_epicontacts(linelist = mers_korea_2015$linelist,
 \dontrun{
 graph3D(x)
 graph3D(x, annot = FALSE)
-graph3D(x, group = "sex", g_title = "MERS Korea 2014")
-graph3D(x, group = "sex", annot = c("sex", "age"),
+graph3D(x, node_color = "sex", g_title = "MERS Korea 2014")
+graph3D(x, node_color = "sex", annot = c("sex", "age"),
         g_title = "MERS Korea 2014")
 }
 }

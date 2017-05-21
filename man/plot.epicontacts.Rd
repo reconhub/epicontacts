@@ -4,13 +4,13 @@
 \alias{plot.epicontacts}
 \title{Plot epicontacts objects}
 \usage{
-\method{plot}{epicontacts}(x, group = "id", method = c("visNetwork",
+\method{plot}{epicontacts}(x, node_color = "id", method = c("visNetwork",
   "graph3D"), thin = TRUE, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
 
-\item{group}{An integer or a character string indicating which attribute column
+\item{node_color}{An integer or a character string indicating which attribute column
 in the linelist should be used to color the nodes.}
 
 \item{method}{A character string indicating the plotting method to be used;
@@ -44,19 +44,22 @@ head(mers_korea_2015[[1]])
 head(mers_korea_2015[[2]])
 
 x <- make_epicontacts(linelist = mers_korea_2015[[1]],
-                       contacts = mers_korea_2015[[2]], directed=TRUE)
+                      contacts = mers_korea_2015[[2]], directed=TRUE)
 
 \dontrun{
 plot(x)
 plot(x, "place_infect")
 plot(x, "loc_hosp", legend_max = 20, annot = TRUE)
+plot(x, "place_infect", node_shape = "sex",
+     shapes = c(M = "male", F = "female"))
 plot(x, 4)
 plot(x, 4, method = "graph3D")
 }
 }
 }
 \seealso{
-\code{\link{vis_epicontacts}}, which uses the package \code{visNetwork}.
+\code{\link{vis_epicontacts}}, which uses the package
+  \code{visNetwork}, and \code{\link{codeawesome}} for icon codes.
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})

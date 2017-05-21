@@ -5,6 +5,7 @@
 docs/
 README.Rmd
 README.md
+README.html
 ^appveyor\.yml$
 figs/
 ^cran-comments.md$

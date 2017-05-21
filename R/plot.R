@@ -7,7 +7,7 @@
 #'
 #' @param x An \code{\link{epicontacts}} object
 #'
-#' @param group An integer or a character string indicating which attribute column
+#' @param node_color An integer or a character string indicating which attribute column
 #' in the linelist should be used to color the nodes.
 #'
 #' @param thin A logical indicating if the data should be thinned so that only
@@ -15,7 +15,7 @@
 #'
 #' @param method A character string indicating the plotting method to be used;
 #' available values are "visNetwork" and "graph3D"; see details.
-#' 
+#'
 #' @param ... Further arguments passed to the plotting methods.
 #'
 #' @author Thibaut Jombart (\email{thibautjombart@@gmail.com})
@@ -33,7 +33,9 @@
 #'
 #' @importFrom graphics plot
 #'
-#' @seealso \code{\link{vis_epicontacts}}, which uses the package \code{visNetwork}.
+#' @seealso \code{\link{vis_epicontacts}}, which uses the package
+#'   \code{visNetwork}, and \code{\link{codeawesome}} for icon codes.
+#'
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -42,40 +44,42 @@
 #' head(mers_korea_2015[[2]])
 #'
 #' x <- make_epicontacts(linelist = mers_korea_2015[[1]],
-#'                        contacts = mers_korea_2015[[2]], directed=TRUE)
+#'                       contacts = mers_korea_2015[[2]], directed=TRUE)
 #'
 #' \dontrun{
 #' plot(x)
 #' plot(x, "place_infect")
 #' plot(x, "loc_hosp", legend_max = 20, annot = TRUE)
+#' plot(x, "place_infect", node_shape = "sex",
+#'      shapes = c(M = "male", F = "female"))
 #' plot(x, 4)
 #' plot(x, 4, method = "graph3D")
 #' }
 #' }
-plot.epicontacts <- function(x, group = "id",
+plot.epicontacts <- function(x, node_color = "id",
                              method = c("visNetwork", "graph3D"),
                              thin = TRUE, ...){
     ## checks
-    
+
     if (thin) {
         x <- thin(x)
     }
-    
+
     method <- match.arg(method)
 
-    if (is.numeric(group) && length(group) > 0L) {
-        group <- names(x$linelist)[group][1L]
+    if (is.numeric(node_color) && length(node_color) > 0L) {
+        node_color <- names(x$linelist)[node_color][1L]
     }
 
-    
+
     ## make plots
-    
+
     if (method == "visNetwork") {
-        return(vis_epicontacts(x, group = group, ...))
+        return(vis_epicontacts(x, node_color = node_color, ...))
     }
 
     if (method == "graph3D") {
-        return(graph3D(x, group = group, ...))
+        return(graph3D(x, node_color = node_color, ...))
     }
-    
+
 }
