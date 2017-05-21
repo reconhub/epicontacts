@@ -92,6 +92,9 @@
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
 #' plot(x, "place_infect", node_shape = "sex",
 #'      shapes = c(M = "male", F = "female"))
+#'
+#' plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
+#'      edge_label = "exposure", edge_color = "exposure")
 #' }
 #' }
 
@@ -229,8 +232,7 @@ vis_epicontacts <- function(x, node_color = "id",
 
   if (legend) {
     if (!is.null(node_color) &&  (K < legend_max)) {
-      leg_nodes <- data.frame(id = 1:K,
-                              label = node_col_info$leg_lab,
+      leg_nodes <- data.frame(label = node_col_info$leg_lab,
                               color = node_col_info$leg_col,
                               shape = "box",
                               shadow = TRUE,
@@ -238,7 +240,17 @@ vis_epicontacts <- function(x, node_color = "id",
     } else {
       leg_nodes <- NULL
     }
+
+    if (!is.null(edge_color) &&  (L < legend_max)) {
+      leg_edges <- data.frame(label = edge_col_info$leg_lab,
+                              color = edge_col_info$leg_col,
+                              font.size = 15)
+    } else {
+      leg_edges <- NULL
+    }
+
     out <- out %>% visNetwork::visLegend(addNodes = leg_nodes,
+                                         addEdges = leg_edges,
                                          useGroups = FALSE)
 
   }

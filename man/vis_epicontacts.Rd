@@ -94,6 +94,9 @@ plot(x, node_color = "place_infect")
 plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
 plot(x, "place_infect", node_shape = "sex",
      shapes = c(M = "male", F = "female"))
+
+plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
+     edge_label = "exposure", edge_color = "exposure")
 }
 }
 }
