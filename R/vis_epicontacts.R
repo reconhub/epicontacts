@@ -133,11 +133,13 @@ vis_epicontacts <- function(x, node_color = "id",
 
 
   ## make a list of all nodes, and generate a data.frame of node attributes
+  browser()
   nodes <- data.frame(id = unique(c(x$linelist$id,
                                     x$contacts$from,
-                                    x$contacts$to)))
-  nodes <- suppressMessages(
-    suppressWarnings(dplyr::left_join(nodes, x$linelist)))
+                                    x$contacts$to)),
+                      stringsAsFactors = FALSE)
+
+  nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
 
 
   ## generate annotations ('title' in visNetwork terms)
