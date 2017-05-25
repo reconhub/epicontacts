@@ -38,11 +38,13 @@ thin <- function(x, what = "linelist") {
 
     what <- what[1]
     if (what == "linelist" || what == 1) {
-        to.keep <- get_id(x, "contacts")
-        out <- x[i = to.keep]
+      to_keep <- intersect(get_id(x, "linelist"),
+                           get_id(x, "contacts"))
+      out <- x[i = to_keep]
     } else if (what == "contacts" || what == 2) {
-        to.keep <- get_id(x, "linelist")
-        out <- x[j = to.keep, contacts = "both"]
+      to_keep <- intersect(get_id(x, "linelist"),
+                           get_id(x, "contacts"))
+        out <- x[j = to_keep, contacts = "both"]
     } else {
         msg <- paste0("Wrong values for 'what'; accepted values are:\n",
                       "'linelist', 'contact', 1, 2")

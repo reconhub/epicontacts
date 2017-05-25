@@ -133,7 +133,6 @@ vis_epicontacts <- function(x, node_color = "id",
 
 
   ## make a list of all nodes, and generate a data.frame of node attributes
-  browser()
   nodes <- data.frame(id = unique(c(x$linelist$id,
                                     x$contacts$from,
                                     x$contacts$to)),
