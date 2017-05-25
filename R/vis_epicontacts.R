@@ -192,6 +192,8 @@ vis_epicontacts <- function(x, node_color = "id",
                      culprits)
       stop(msg)
     }
+
+    vec_node_shapes <- paste(vec_node_shapes)
     node_code <- codeawesome[shapes[vec_node_shapes]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
