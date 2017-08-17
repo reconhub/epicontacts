@@ -178,7 +178,8 @@ graph3D <- function(x,
     igraph::E(g)$color <- "lightgray"
 
     # Create 3D graph (note fg not supported, but may be in the future)
-    threejs::graphjs(g, main = g_title, fg = label_col, bg = bg_col, vertex.size = node_size)
+    threejs::graphjs(g, main = g_title, fg = label_col, bg = bg_col,
+                     vertex.color = nodes$color, vertex.size = node_size)
 }
 
 
