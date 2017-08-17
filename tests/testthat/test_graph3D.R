@@ -9,10 +9,9 @@ test_that("graph3D produces json that is not null", {
     directed=TRUE)
 
   g <- graph3D(x)
-  expect_is(g$x, "json")
-  expect_gt(length(g$x), 0)
-
-
+  expect_is(g, "scatterplotThree")
+  expect_is(g, "htmlwidget")
+  expect_is(g$x, "list")
 })
 
 test_that("graph3D errors as expected on bad annotation and group specification", {
