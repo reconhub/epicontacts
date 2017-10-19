@@ -200,8 +200,7 @@ vis_epicontacts <- function(x, node_color = "id",
   } else {
     nodes$borderWidth <- 2
   }
-
-
+  
   ## add edge info
   edges <- x$contacts
   edges$width <- edge_width
@@ -272,6 +271,11 @@ vis_epicontacts <- function(x, node_color = "id",
                            manipulation = editor,
                            highlightNearest = enabled) %>%
     visNetwork::visPhysics(stabilization = FALSE)
-
+  
+  # add fontAwesome
+  out <-
+    out %>%
+    visNetwork::addFontAwesome()
+  
   return(out)
 }
