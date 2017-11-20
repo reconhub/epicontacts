@@ -6,3 +6,5 @@
 .Rproj.user/
 inst/doc
 epicontacts.Rproj
+.DS_Store
+inst/*
