@@ -9,4 +9,5 @@ README.html
 ^appveyor\.yml$
 figs/
 ^cran-comments.md$
-docs
+^docs
+^logo
