@@ -1,3 +1,13 @@
+epicontacts 1.1.0 (2017-11-20)
+==================
+
+### NEW FEATURES
+
+- `vis_epicontacts()` now accepts fontawesome icon codes for node shapes
+
+- `graph3D()` will now plot an **igraph** object direct thanks to updates in **threejs** API
+
+
 epicontacts 1.0.1 (2017-05-11)
 ==================
 

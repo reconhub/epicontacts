@@ -31,19 +31,12 @@ generic methods to work with the data.
 `make_epicontacts()` creates the `epicontacts` data structure. The function
 accepts arguments for:
 
-- **linelist**: a data frame with at least one column providing unique case
-- **identifiers contacts**: a data frame with at least two columns indicating
-- **individuals that were in contact with one another (*nb* these may or may not
-- **be referenced in the line list) id**: the name or index for the column in
-- **the linelist that contains unique identifiers for individual cases; defaults
-- **to the first column from**: the name or index for the column in the contacts
-- **that contains the originating case; defaults to first column; can still be
-- **used in non-directed networks but should not be interpreted as direction
-- **(see **directed** argument) to**: the name or index for the column in the
-- **contacts that contains secondary case; defaults to second column; can still
-- **be used in non-directed networks but should not be interpreted as direction
-- **(see **directed** argument) directed**: indicator as to whether or not the
-- **contact moved in a direction (i.e. "from" one individual "to" another)
+- **linelist**: a data frame with at least one column providing unique case identifiers 
+- **contacts**: a data frame with at least two columns indicating individuals that were in contact with one another (*nb* these may or may not be referenced in the line list) 
+- **id**: the name or index for the column in the linelist that contains unique identifiers for individual cases; defaults to the first column 
+- **from**: the name or index for the column in the contacts that contains the originating case; defaults to first column; can still be used in non-directed networks but should not be interpreted as direction (see **directed** argument) 
+- **to**: the name or index for the column in the contacts that contains secondary case; defaults to second column; can still be used in non-directed networks but should not be interpreted as direction (see **directed** argument) 
+- **directed**: indicator as to whether or not the contact moved in a direction (i.e. "from" one individual "to" another)
 
 Before creating an `epicontacts` object, it may be helpful to examine the
 structure of the line list and contact data. The example that follows uses the
@@ -154,6 +147,6 @@ interactive visualiztion of the network of cases and contacts. Note that this
 method includes a number of options to customize the plot. For more see
 `?vis_epicontacts`.
 
-```{r}
+```{r, eval = F}
 plot(rokupafuneral, y = "outcome")
 ```
