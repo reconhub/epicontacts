@@ -14,8 +14,7 @@ vis_epicontacts(x, thin = TRUE, node_color = "id", label = "id",
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
 
-\item{thin}{A logical indicating if the data should be thinned so that only
-cases with contacts should be plotted.}
+\item{thin}{A logical indicating if the data should be thinned with \code{\link{thin}} so that only cases with contacts should be plotted.}
 
 \item{node_color}{An index or character string indicating which field of the
 linelist should be used to color the nodes.}
