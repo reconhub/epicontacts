@@ -4,8 +4,8 @@
 \alias{vis_epicontacts}
 \title{Plot epicontacts objects using visNetwork}
 \usage{
-vis_epicontacts(x, node_color = "id", label = "id", annot = TRUE,
-  node_shape = NULL, shapes = NULL, edge_label = NULL,
+vis_epicontacts(x, thin = TRUE, node_color = "id", label = "id",
+  annot = TRUE, node_shape = NULL, shapes = NULL, edge_label = NULL,
   edge_color = NULL, legend = TRUE, legend_max = 10,
   col_pal = cases_pal, NA_col = "lightgrey", edge_col_pal = edges_pal,
   width = "90\%", height = "700px", selector = TRUE, editor = FALSE,
@@ -13,6 +13,9 @@ vis_epicontacts(x, node_color = "id", label = "id", annot = TRUE,
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
+
+\item{thin}{A logical indicating if the data should be thinned so that only
+cases with contacts should be plotted.}
 
 \item{node_color}{An index or character string indicating which field of the
 linelist should be used to color the nodes.}

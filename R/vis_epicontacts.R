@@ -12,6 +12,9 @@
 #' VP Nagraj (\email{vpnagraj@@virginia.edu})
 #'
 #' @param x An \code{\link{epicontacts}} object.
+#' 
+#' @param thin A logical indicating if the data should be thinned so that only
+#'     cases with contacts should be plotted.
 #'
 #' @param node_color An index or character string indicating which field of the
 #'     linelist should be used to color the nodes.
@@ -98,7 +101,8 @@
 #' }
 #' }
 
-vis_epicontacts <- function(x, node_color = "id",
+vis_epicontacts <- function(x, thin = TRUE, 
+                            node_color = "id",
                             label = "id", annot  =  TRUE,
                             node_shape = NULL, shapes = NULL,
                             edge_label = NULL, edge_color = NULL,
@@ -115,7 +119,12 @@ vis_epicontacts <- function(x, node_color = "id",
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
 
-
+  ## handling
+  
+  if (thin) {
+    x <- thin(x)
+  }
+  
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 
