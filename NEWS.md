@@ -1,3 +1,10 @@
+epicontacts 1.1.1 (2018-3-26)
+==================
+
+### BUG FIXES
+
+- `vis_epicontacts()` and `plot()` now both use same default thinning
+
 epicontacts 1.1.0 (2017-11-20)
 ==================
 
