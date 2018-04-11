@@ -10,8 +10,7 @@
 #' @param node_color An integer or a character string indicating which attribute column
 #' in the linelist should be used to color the nodes.
 #'
-#' @param thin A logical indicating if the data should be thinned so that only
-#'     cases with contacts should be plotted.
+#' @param thin A logical indicating if the data should be thinned with \code{\link{thin}} so that only cases with contacts should be plotted.
 #'
 #' @param method A character string indicating the plotting method to be used;
 #' available values are "visNetwork" and "graph3D"; see details.

@@ -8,7 +8,7 @@ test_that("Printing objects works", {
                            id="case_id", to="case_id", from="infector",
                            directed = FALSE)
 
-
-    expect_equal_to_reference(capture.output(print(x)),
-                              file = "rds/print1.rds")
+    # nb rds/print.rds was created with the following:
+    # saveRDS(testthat::capture_output(print(x)), file = "rds/print.rds")
+    expect_equal(capture_output(print(x)), readRDS("rds/print.rds"))
 })

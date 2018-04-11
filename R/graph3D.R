@@ -44,9 +44,6 @@
 #'
 #' @references
 #'
-#' Original three.js code by David Piegza:
-#'     \url{https://github.com/davidpiegza/Graph-Visualization}.
-#'
 #' Original rthreejs code by B. W. Lewis:
 #' \url{https://github.com/bwlewis/rthreejs}.
 #'
@@ -128,7 +125,7 @@ graph3D <- function(x,
     ## Subset those ids which have at least one edge with another id
     ##    (to mimic visNetwork plot, else loner nodes are also printed)
     x <- subset_clusters_by_size(x, cs_min = 2)
-    # x <- as.igraph.epicontacts(x)
+    g <- as.igraph.epicontacts(x)
 
 
     ## Get vertex attributes and prepare as input for graph
@@ -147,17 +144,15 @@ graph3D <- function(x,
     if (!is.null(annot)) {
         temp <- nodes[, annot, drop = FALSE]
         temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
-        nodes$label <- paste("<p>",
+        nodes$label <- paste(g_title, "<p>",
                              apply(temp, 1, paste0, collapse = "<br>"), "</p>")
-    } else {
-        nodes$label <- ""
-    }
+    } else nodes$label <- ""
 
 
 
     # attribute for grouping
     if (!is.null(node_color)) {
-        nodes$group <- as.character(nodes[,node_color])
+        nodes$group <- as.character(nodes[, node_color])
         nodes$group[is.na(nodes$group)] <- "NA"
         nodes$group <- factor(nodes$group)
     }
@@ -175,39 +170,16 @@ graph3D <- function(x,
       nodes$color <- "#97C2FC"
     }
 
-
-    ## changing original "id" column to one required by threejs::graphjs()
-    ##   & backing up old id
-    nodes$orig_id <- nodes$id
-    nodes$id <- 1:nrow(nodes) # has to be integer
-
-
-    ## make edges
-    edges <- x$contacts
-    edges_from = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
-                                  by = c("from" = "orig_id"))["id"]
-
-    edges_to = dplyr::left_join(edges, nodes[ , c("orig_id", "id")],
-                                  by = c("to" = "orig_id"))["id"]
-    edges$from = edges_from$id
-    edges$to = edges_to$id
-
+    igraph::V(g)$color <- nodes$color
+    igraph::V(g)$label <- nodes$label
 
     ## Set edge attributes
-    edges$size = edge_size
-    edges$color = "lightgrey"
+    igraph::E(g)$size <- edge_size
+    igraph::E(g)$color <- "lightgray"
 
-    ## Set vertex attributes
-    nodes$size = node_size
-
-    # Subset vertex dataframe for graphjs
-    nodes <- nodes[ , c("id", "size", "color", "label")]
-
-    # Create 3D graph
-    out <- threejs::graphjs(edges = edges, nodes = nodes, main = g_title,
-                          showLabels = FALSE, fg = label_col, bg = bg_col)
-
-    return(out)
+    # Create 3D graph (note fg not supported, but may be in the future)
+    threejs::graphjs(g, main = g_title, fg = label_col, bg = bg_col,
+                     vertex.color = nodes$color, vertex.size = node_size)
 }
 
 

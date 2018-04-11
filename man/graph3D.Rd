@@ -67,9 +67,6 @@ graph3D(x, node_color = "sex", annot = c("sex", "age"),
 }
 }
 \references{
-Original three.js code by David Piegza:
-    \url{https://github.com/davidpiegza/Graph-Visualization}.
-
 Original rthreejs code by B. W. Lewis:
 \url{https://github.com/bwlewis/rthreejs}.
 }

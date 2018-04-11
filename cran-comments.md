@@ -1,14 +1,10 @@
-Attempted to submit with `devtools::release()` now submitting again with CRAN web upload form. 
-
-Also fixed missing vignette index. 
-
-Adjusted url to package to canonical CRAN link format.
+Submitting **epicontacts** version 1.1.1.
 
 ## Test environments
 
-* local OS X install, R 3.3.2
-* Ubuntu 12.04, R 3.3.2 via TRAVIS CI
-* win-builder (`devtools::win_build()`) 
+* local OS X install, R 3.4.0
+* Ubuntu 14.04, R 3.4.2 via TRAVIS CI
+* win-builder (`devtools::build_win()`) 
 
 ## R CMD check results
 
