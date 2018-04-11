@@ -112,12 +112,6 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
   }
 
-
-  ## convert factors to characters
-  if (is.factor(linelist$id)) linelist$id <- as.character(linelist$id)
-  if (is.factor(linelist$from)) linelist$from <- as.character(linelist$from)
-  if (is.factor(linelist$to)) linelist$to <- as.character(linelist$to)
-
   ## reordering
   if (is.character(id)) {
     id <- match(id, names(linelist))
@@ -126,6 +120,10 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
   linelist <- subset(linelist,
                      select = c(id, setdiff(seq_len(ncol(linelist)), id)))
 
+  ## convert factors to characters
+  if (is.factor(linelist$id)) linelist$id <- as.character(linelist$id)
+  if (is.factor(linelist$from)) linelist$from <- as.character(linelist$from)
+  if (is.factor(linelist$to)) linelist$to <- as.character(linelist$to)
 
 
   ## process contacts ##
@@ -141,7 +139,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     stop("contacts is NA")
   }
 
-  contacts <- as.data.frame(contacts)
+  contacts <- as.data.frame(contacts, stringsAsFactors = FALSE)
 
   if(nrow(contacts) < 1L) {
     stop("contacts should have at least one row")
