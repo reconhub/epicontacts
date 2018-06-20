@@ -12,6 +12,8 @@ Welcome to the *epicontacts* package!
 [![Coverage Status](https://codecov.io/github/reconhub/epicontacts/coverage.svg?branch=master)](https://codecov.io/github/reconhub/epicontacts?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/epicontacts)](https://cran.r-project.org/package=epicontacts)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/epicontacts)](https://cran.r-project.org/package=epicontacts)
+[![Downloads from Rstudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/epicontacts)](http://www.r-pkg.org/pkg/epicontacts)
+
 
 
 
@@ -173,38 +175,37 @@ x
 #> 
 #>   // linelist
 #> 
-#> # A tibble: 162 × 15
-#>       id   age age_class    sex        place_infect reporting_ctry
-#>    <chr> <int>     <chr> <fctr>              <fctr>         <fctr>
-#> 1   SK_1    68     60-69      M         Middle East    South Korea
-#> 2   SK_2    63     60-69      F Outside Middle East    South Korea
-#> 3   SK_3    76     70-79      M Outside Middle East    South Korea
-#> 4   SK_4    46     40-49      F Outside Middle East    South Korea
-#> 5   SK_5    50     50-59      M Outside Middle East    South Korea
-#> 6   SK_6    71     70-79      M Outside Middle East    South Korea
-#> 7   SK_7    28     20-29      F Outside Middle East    South Korea
-#> 8   SK_8    46     40-49      F Outside Middle East    South Korea
-#> 9   SK_9    56     50-59      M Outside Middle East    South Korea
-#> 10 SK_10    44     40-49      M Outside Middle East          China
-#> # ... with 152 more rows, and 9 more variables: loc_hosp <fctr>,
-#> #   dt_onset <date>, dt_report <date>, week_report <fctr>,
-#> #   dt_start_exp <date>, dt_end_exp <date>, dt_diag <date>,
-#> #   outcome <fctr>, dt_death <date>
+#> # A tibble: 162 x 15
+#>    id      age age_class sex   place_infect  reporting_ctry loc_hosp      
+#>  * <chr> <int> <chr>     <fct> <fct>         <fct>          <fct>         
+#>  1 SK_1     68 60-69     M     Middle East   South Korea    Pyeongtaek St…
+#>  2 SK_2     63 60-69     F     Outside Midd… South Korea    Pyeongtaek St…
+#>  3 SK_3     76 70-79     M     Outside Midd… South Korea    Pyeongtaek St…
+#>  4 SK_4     46 40-49     F     Outside Midd… South Korea    Pyeongtaek St…
+#>  5 SK_5     50 50-59     M     Outside Midd… South Korea    365 Yeollin C…
+#>  6 SK_6     71 70-79     M     Outside Midd… South Korea    Pyeongtaek St…
+#>  7 SK_7     28 20-29     F     Outside Midd… South Korea    Pyeongtaek St…
+#>  8 SK_8     46 40-49     F     Outside Midd… South Korea    Seoul Clinic,…
+#>  9 SK_9     56 50-59     M     Outside Midd… South Korea    Pyeongtaek St…
+#> 10 SK_10    44 40-49     M     Outside Midd… China          Pyeongtaek St…
+#> # ... with 152 more rows, and 8 more variables: dt_onset <date>,
+#> #   dt_report <date>, week_report <fct>, dt_start_exp <date>,
+#> #   dt_end_exp <date>, dt_diag <date>, outcome <fct>, dt_death <date>
 #> 
 #>   // contacts
 #> 
-#> # A tibble: 98 × 4
-#>     from     to       exposure diff_dt_onset
-#>    <chr>  <chr>         <fctr>         <int>
-#> 1  SK_14 SK_113 Emergency room            10
-#> 2  SK_14 SK_116 Emergency room            13
-#> 3  SK_14  SK_41 Emergency room            14
-#> 4  SK_14 SK_112 Emergency room            14
-#> 5  SK_14 SK_100 Emergency room            15
-#> 6  SK_14 SK_114 Emergency room            15
-#> 7  SK_14 SK_136 Emergency room            15
-#> 8  SK_14  SK_47 Emergency room            16
-#> 9  SK_14 SK_110 Emergency room            16
+#> # A tibble: 98 x 4
+#>    from  to     exposure       diff_dt_onset
+#>    <chr> <chr>  <fct>                  <int>
+#>  1 SK_14 SK_113 Emergency room            10
+#>  2 SK_14 SK_116 Emergency room            13
+#>  3 SK_14 SK_41  Emergency room            14
+#>  4 SK_14 SK_112 Emergency room            14
+#>  5 SK_14 SK_100 Emergency room            15
+#>  6 SK_14 SK_114 Emergency room            15
+#>  7 SK_14 SK_136 Emergency room            15
+#>  8 SK_14 SK_47  Emergency room            16
+#>  9 SK_14 SK_110 Emergency room            16
 #> 10 SK_14 SK_122 Emergency room            16
 #> # ... with 88 more rows
 class(x)
