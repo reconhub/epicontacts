@@ -47,6 +47,9 @@
 #'
 #' @param legend A logical indicating whether a legend should be added to the
 #'   plot.
+#' 
+#' @param x_axis A character string indicating which field of the linelist data
+#'   should be used to specify the x axis position (must be numeric or Date)
 #'
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
@@ -72,6 +75,7 @@
 #'
 #'
 #' @importFrom magrittr "%>%"
+#' @importFrom magrittr "%<>%"
 #'
 #' @return The same output as \code{visNetwork}.
 #'
@@ -100,17 +104,13 @@
 #' }
 #' }
 
-vis_epicontacts <- function(x, thin = TRUE, 
-                            node_color = "id",
-                            label = "id", annot  =  TRUE,
-                            node_shape = NULL, shapes = NULL,
-                            edge_label = NULL, edge_color = NULL,
-                            legend = TRUE, legend_max = 10,
-                            col_pal = cases_pal, NA_col = "lightgrey",
-                            edge_col_pal = edges_pal,
-                            width = "90%", height = "700px",
-                            selector = TRUE, editor = FALSE,
-                            edge_width = 3, ...){
+vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
+                            annot  =  TRUE, node_shape = NULL, shapes = NULL,
+                            edge_label = NULL, edge_color = NULL, legend = TRUE,
+                            legend_max = 10, x_axis = NULL, col_pal = cases_pal,
+                            NA_col = "lightgrey", edge_col_pal = edges_pal,
+                            width = "90%", height = "700px", selector = TRUE,
+                            editor = FALSE, edge_width = 3, ...){
 
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
@@ -230,7 +230,23 @@ vis_epicontacts <- function(x, thin = TRUE,
     edges$color <- edge_col_info$color
   }
 
+  if(!is.null(x_axis)) {
 
+    if(!inherits(x$linelist[[x_axis]], c("numeric", "Date", "integer"))) {
+      stop("Data used to specify x axis must be a date or number")
+    }
+
+    nodes$level <- x$linelist[[x_axis]]
+    
+    if(inherits(nodes$level, "Date")) {
+      nodes$level %<>% as.numeric
+    }
+
+    nodes$level %<>% subtract(min(.))
+    
+  } 
+
+  
   ## build visNetwork output
 
   out <- visNetwork::visNetwork(nodes, edges,
@@ -266,7 +282,7 @@ vis_epicontacts <- function(x, thin = TRUE,
   }
 
 
-
+  if(!is.null(x_axis)) out %<>% visHierarchicalLayout(direction = 'LR')
 
   ## set nodes borders, edge width, and plotting options
 
