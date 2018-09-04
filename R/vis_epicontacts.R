@@ -103,7 +103,6 @@
 #'      edge_label = "exposure", edge_color = "exposure")
 #' }
 #' }
-
 vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
                             annot  =  TRUE, node_shape = NULL, shapes = NULL,
                             edge_label = NULL, edge_color = NULL, legend = TRUE,
@@ -231,29 +230,16 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   }
 
   if(!is.null(x_axis)) {
-
     if(!inherits(x$linelist[[x_axis]], c("numeric", "Date", "integer"))) {
       stop("Data used to specify x axis must be a date or number")
     }
-
-    nodes$level <- x$linelist[[x_axis]]
-    
-    if(inherits(nodes$level, "Date")) {
-      nodes$level %<>% as.numeric
-    }
-
-    nodes$level %<>% subtract(min(.))
-    
+    nodes$level <- nodes[[x_axis]] - min(nodes[[x_axis]], na.rm = TRUE) + 1L
   } 
 
-  
   ## build visNetwork output
-
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height, ...)
-
-
   ## specify group colors, add legend
 
   if (legend) {
@@ -282,8 +268,11 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   }
 
 
-  if(!is.null(x_axis)) out %<>% visHierarchicalLayout(direction = 'LR')
-
+  if (!is.null(x_axis)){
+    out <- visNetwork::visHierarchicalLayout(out, 
+					     direction = 'LR',
+					     sortMethod = 'directed')
+  }
   ## set nodes borders, edge width, and plotting options
 
   enabled <- list(enabled = TRUE)
