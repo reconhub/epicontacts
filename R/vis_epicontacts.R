@@ -203,9 +203,37 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   } else {
     nodes$borderWidth <- 2
   }
-  
   ## add edge info
   edges <- x$contacts
+  if (!is.null(x_axis)) {
+    if(!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
+      stop("Data used to specify x axis must be a date or number")
+    }
+    drange      <- range(nodes[[x_axis]], na.rm = TRUE)
+    nodes$level <- nodes[[x_axis]] - drange[1] + 1L
+    drange      <- seq(drange[1], drange[2], by = 1L)
+    ddf         <- data.frame(
+			      id = as.character(drange),
+			      label = as.character(drange),
+			      level = drange - drange[1] + 1L,
+			      stringsAsFactors = FALSE
+                     	     )
+    nodes       <- merge(nodes, 
+			 ddf, 
+			 by = c("level", "id", "label"), 
+			 all = TRUE,
+			 sort = FALSE)
+    dedges      <- data.frame(from = ddf$id[-nrow(ddf)],
+			      to   = ddf$id[-1]
+			     )
+    edges       <- merge(edges, 
+			 dedges, 
+			 by = c("from", "to"),
+			 all = TRUE,
+			 sort = FALSE
+			)
+  } 
+  
   edges$width <- edge_width
   if (x$directed) {
     edges$arrows <- "to"
@@ -225,12 +253,6 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
     edges$color <- edge_col_info$color
   }
 
-  if(!is.null(x_axis)) {
-    if(!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
-      stop("Data used to specify x axis must be a date or number")
-    }
-    nodes$level <- nodes[[x_axis]] - min(nodes[[x_axis]], na.rm = TRUE) + 1L
-  } 
 
   ## build visNetwork output
   out <- visNetwork::visNetwork(nodes, edges,
@@ -267,8 +289,7 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
 
   if (!is.null(x_axis)){
     out <- visNetwork::visHierarchicalLayout(out, 
-					     direction = 'LR',
-					     sortMethod = 'directed')
+					     direction = 'LR')
   }
   ## set nodes borders, edge width, and plotting options
 
