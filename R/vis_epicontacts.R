@@ -10,6 +10,7 @@
 #' @author
 #' Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #' VP Nagraj (\email{vpnagraj@@virginia.edu})
+#' Zhian N. Kamvar (\email{zkamvar@@gmail.com})
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #' 
@@ -92,6 +93,7 @@
 #' plot(x)
 #' plot(x, node_color = "place_infect")
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
+#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 #' plot(x, "place_infect", node_shape = "sex",
 #'      shapes = c(M = "male", F = "female"))
 #'
@@ -212,26 +214,46 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
     drange      <- range(nodes[[x_axis]], na.rm = TRUE)
     nodes$level <- nodes[[x_axis]] - drange[1] + 1L
     drange      <- seq(drange[1], drange[2], by = 1L)
-    ddf         <- data.frame(
-			      id = as.character(drange),
-			      label = as.character(drange),
-			      level = drange - drange[1] + 1L,
-			      stringsAsFactors = FALSE
-                     	     )
-    nodes       <- merge(nodes, 
-			 ddf, 
-			 by = c("level", "id", "label"), 
-			 all = TRUE,
-			 sort = FALSE)
-    dedges      <- data.frame(from = ddf$id[-nrow(ddf)],
-			      to   = ddf$id[-1]
-			     )
-    edges       <- merge(edges, 
-			 dedges, 
-			 by = c("from", "to"),
-			 all = TRUE,
-			 sort = FALSE
-			)
+    dnodes      <- data.frame(
+                              id = as.character(drange),
+                              level = drange - drange[1] + 1L,
+                              stringsAsFactors = FALSE
+                             )
+    dedges      <- data.frame(
+                              from = dnodes$id[-nrow(dnodes)],
+                              to   = dnodes$id[-1]
+                             )
+    nmerge      <- c("id", "level")
+    emerge      <- c("from", "to")
+    if (!is.null(label)) {
+      dnodes$label <- dnodes$id
+      nmerge <- c(nmerge, "label")
+    }
+    if (!is.null(node_shape)) {
+      dnodes$shape     <- "icon"
+      dnodes$icon.code <- codeawesome["clock-o"]
+      nmerge <- c(nmerge, "shape", "icon.code")
+    }
+    if (!is.null(node_color)) {
+      dnodes$group.color <- dnodes$icon.color <- "#666666"
+      nmerge <- c(nmerge, "group.color", "icon.color")
+    }
+    if (!is.null(annot)) {
+      dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
+      nmerge <- c(nmerge, "title")
+    }
+    nodes <- merge(nodes, 
+                   dnodes, 
+                   by = nmerge, 
+                   all = TRUE,
+                   sort = FALSE
+                  )
+    edges <- merge(edges, 
+                   dedges, 
+                   by = emerge,
+                   all = TRUE,
+                   sort = FALSE
+                  )
   } 
   
   edges$width <- edge_width

@@ -98,6 +98,7 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
 plot(x)
 plot(x, node_color = "place_infect")
 plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
+plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 plot(x, "place_infect", node_shape = "sex",
      shapes = c(M = "male", F = "female"))
 
@@ -112,4 +113,5 @@ plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 VP Nagraj (\email{vpnagraj@virginia.edu})
+Zhian N. Kamvar (\email{zkamvar@gmail.com})
 }
