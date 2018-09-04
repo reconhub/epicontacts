@@ -73,10 +73,6 @@
 #'
 #' @param ... Further arguments to be passed to \code{visNetwork}.
 #'
-#'
-#' @importFrom magrittr "%>%"
-#' @importFrom magrittr "%<>%"
-#'
 #' @return The same output as \code{visNetwork}.
 #'
 #' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
@@ -230,7 +226,7 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   }
 
   if(!is.null(x_axis)) {
-    if(!inherits(x$linelist[[x_axis]], c("numeric", "Date", "integer"))) {
+    if(!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
       stop("Data used to specify x axis must be a date or number")
     }
     nodes$level <- nodes[[x_axis]] - min(nodes[[x_axis]], na.rm = TRUE) + 1L
@@ -261,9 +257,10 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
       leg_edges <- NULL
     }
 
-    out <- out %>% visNetwork::visLegend(addNodes = leg_nodes,
-                                         addEdges = leg_edges,
-                                         useGroups = FALSE)
+    out <- visNetwork::visLegend(out,
+				 addNodes = leg_nodes,
+                                 addEdges = leg_edges,
+                                 useGroups = FALSE)
 
   }
 
@@ -278,17 +275,16 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) node_color else NULL
 
-  out <- out %>%
-    visNetwork::visOptions(highlightNearest = TRUE) %>%
-    visNetwork::visOptions(selectedBy = arg_selec,
-                           manipulation = editor,
-                           highlightNearest = enabled) %>%
-    visNetwork::visPhysics(stabilization = FALSE)
+  out <- visNetwork::visOptions(out, highlightNearest = TRUE)
+  out <- visNetwork::visOptions(out,
+	                        selectedBy = arg_selec,
+                                manipulation = editor,
+                                highlightNearest = enabled)
+  out <- visNetwork::visPhysics(out, stabilization = FALSE)
   
   # add fontAwesome
-  out <-
-    out %>%
-    visNetwork::addFontAwesome()
+  out <- visNetwork::addFontAwesome(out)
   
   return(out)
 }
+

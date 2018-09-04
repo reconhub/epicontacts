@@ -5,10 +5,11 @@
 \title{Plot epicontacts objects using visNetwork}
 \usage{
 vis_epicontacts(x, thin = TRUE, node_color = "id", label = "id",
-  annot = TRUE, node_shape = NULL, shapes = NULL, edge_label = NULL,
-  edge_color = NULL, legend = TRUE, legend_max = 10,
-  col_pal = cases_pal, NA_col = "lightgrey", edge_col_pal = edges_pal,
-  width = "90\%", height = "700px", selector = TRUE, editor = FALSE,
+  annot = TRUE, node_shape = NULL, shapes = NULL,
+  edge_label = NULL, edge_color = NULL, legend = TRUE,
+  legend_max = 10, x_axis = NULL, col_pal = cases_pal,
+  NA_col = "lightgrey", edge_col_pal = edges_pal, width = "90\%",
+  height = "700px", selector = TRUE, editor = FALSE,
   edge_width = 3, ...)
 }
 \arguments{
@@ -47,6 +48,9 @@ contacts data should be used to color the edges of the graph.}
 plot.}
 
 \item{legend_max}{The maximum number of groups for a legend to be displayed.}
+
+\item{x_axis}{A character string indicating which field of the linelist data
+should be used to specify the x axis position (must be numeric or Date)}
 
 \item{col_pal}{A color palette for the nodes.}
 
