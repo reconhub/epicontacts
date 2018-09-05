@@ -10,6 +10,7 @@
 #' @author
 #' Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #' VP Nagraj (\email{vpnagraj@@virginia.edu})
+#' Zhian N. Kamvar (\email{zkamvar@@gmail.com})
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #' 
@@ -47,6 +48,9 @@
 #'
 #' @param legend A logical indicating whether a legend should be added to the
 #'   plot.
+#' 
+#' @param x_axis A character string indicating which field of the linelist data
+#'   should be used to specify the x axis position (must be numeric or Date)
 #'
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
@@ -70,9 +74,6 @@
 #'
 #' @param ... Further arguments to be passed to \code{visNetwork}.
 #'
-#'
-#' @importFrom magrittr "%>%"
-#'
 #' @return The same output as \code{visNetwork}.
 #'
 #' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
@@ -92,6 +93,7 @@
 #' plot(x)
 #' plot(x, node_color = "place_infect")
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
+#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 #' plot(x, "place_infect", node_shape = "sex",
 #'      shapes = c(M = "male", F = "female"))
 #'
@@ -99,18 +101,13 @@
 #'      edge_label = "exposure", edge_color = "exposure")
 #' }
 #' }
-
-vis_epicontacts <- function(x, thin = TRUE, 
-                            node_color = "id",
-                            label = "id", annot  =  TRUE,
-                            node_shape = NULL, shapes = NULL,
-                            edge_label = NULL, edge_color = NULL,
-                            legend = TRUE, legend_max = 10,
-                            col_pal = cases_pal, NA_col = "lightgrey",
-                            edge_col_pal = edges_pal,
-                            width = "90%", height = "700px",
-                            selector = TRUE, editor = FALSE,
-                            edge_width = 3, ...){
+vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
+                            annot  =  TRUE, node_shape = NULL, shapes = NULL,
+                            edge_label = NULL, edge_color = NULL, legend = TRUE,
+                            legend_max = 10, x_axis = NULL, col_pal = cases_pal,
+                            NA_col = "lightgrey", edge_col_pal = edges_pal,
+                            width = "90%", height = "700px", selector = TRUE,
+                            editor = FALSE, edge_width = 3, ...){
 
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
@@ -208,9 +205,57 @@ vis_epicontacts <- function(x, thin = TRUE,
   } else {
     nodes$borderWidth <- 2
   }
-  
   ## add edge info
   edges <- x$contacts
+  if (!is.null(x_axis)) {
+    if(!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
+      stop("Data used to specify x axis must be a date or number")
+    }
+    drange      <- range(nodes[[x_axis]], na.rm = TRUE)
+    nodes$level <- nodes[[x_axis]] - drange[1] + 1L
+    drange      <- seq(drange[1], drange[2], by = 1L)
+    dnodes      <- data.frame(
+                              id = as.character(drange),
+                              level = drange - drange[1] + 1L,
+                              stringsAsFactors = FALSE
+                             )
+    dedges      <- data.frame(
+                              from = dnodes$id[-nrow(dnodes)],
+                              to   = dnodes$id[-1]
+                             )
+    nmerge      <- c("id", "level")
+    emerge      <- c("from", "to")
+    if (!is.null(label)) {
+      dnodes$label <- dnodes$id
+      nmerge <- c(nmerge, "label")
+    }
+    if (!is.null(node_shape)) {
+      dnodes$shape     <- "icon"
+      dnodes$icon.code <- codeawesome["clock-o"]
+      nmerge <- c(nmerge, "shape", "icon.code")
+    }
+    if (!is.null(node_color)) {
+      dnodes$group.color <- dnodes$icon.color <- "#666666"
+      nmerge <- c(nmerge, "group.color", "icon.color")
+    }
+    if (!is.null(annot)) {
+      dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
+      nmerge <- c(nmerge, "title")
+    }
+    nodes <- merge(nodes, 
+                   dnodes, 
+                   by = nmerge, 
+                   all = TRUE,
+                   sort = FALSE
+                  )
+    edges <- merge(edges, 
+                   dedges, 
+                   by = emerge,
+                   all = TRUE,
+                   sort = FALSE
+                  )
+  } 
+  
   edges$width <- edge_width
   if (x$directed) {
     edges$arrows <- "to"
@@ -232,12 +277,9 @@ vis_epicontacts <- function(x, thin = TRUE,
 
 
   ## build visNetwork output
-
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height, ...)
-
-
   ## specify group colors, add legend
 
   if (legend) {
@@ -259,31 +301,33 @@ vis_epicontacts <- function(x, thin = TRUE,
       leg_edges <- NULL
     }
 
-    out <- out %>% visNetwork::visLegend(addNodes = leg_nodes,
-                                         addEdges = leg_edges,
-                                         useGroups = FALSE)
+    out <- visNetwork::visLegend(out,
+				 addNodes = leg_nodes,
+                                 addEdges = leg_edges,
+                                 useGroups = FALSE)
 
   }
 
 
-
-
+  if (!is.null(x_axis)){
+    out <- visNetwork::visHierarchicalLayout(out, 
+					     direction = 'LR')
+  }
   ## set nodes borders, edge width, and plotting options
 
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) node_color else NULL
 
-  out <- out %>%
-    visNetwork::visOptions(highlightNearest = TRUE) %>%
-    visNetwork::visOptions(selectedBy = arg_selec,
-                           manipulation = editor,
-                           highlightNearest = enabled) %>%
-    visNetwork::visPhysics(stabilization = FALSE)
+  out <- visNetwork::visOptions(out, highlightNearest = TRUE)
+  out <- visNetwork::visOptions(out,
+	                        selectedBy = arg_selec,
+                                manipulation = editor,
+                                highlightNearest = enabled)
+  out <- visNetwork::visPhysics(out, stabilization = FALSE)
   
   # add fontAwesome
-  out <-
-    out %>%
-    visNetwork::addFontAwesome()
+  out <- visNetwork::addFontAwesome(out)
   
   return(out)
 }
+
