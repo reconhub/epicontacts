@@ -310,9 +310,17 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
 
 
   if (!is.null(x_axis)){
+    
     out <- visNetwork::visHierarchicalLayout(out, 
-					     direction = 'LR')
+                                             direction = 'LR')
+    
+    # only display ids of "real" (i.e. case or linelist) nodes in select list
+    selectvals <- setdiff(nodes$id, dnodes$id)
+    out <- visNetwork::visOptions(out, 
+                                  nodesIdSelection = list(values = selectvals))
+    
   }
+  
   ## set nodes borders, edge width, and plotting options
 
   enabled <- list(enabled = TRUE)
