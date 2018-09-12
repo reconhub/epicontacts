@@ -138,9 +138,12 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
 
 
   ## make a list of all nodes, and generate a data.frame of node attributes
-  nodes <- data.frame(id = unique(c(x$linelist$id,
-                                    x$contacts$from,
-                                    x$contacts$to)),
+  cont_nodes <- c(x$contacts$from, x$contacts$to)
+  list_nodes <- x$linelist$id
+  ## find out which nodes are unconnected to any other nodes
+  ## This is only relevant when `thin = TRUE`
+  orphans <- if (thin) unique(list_nodes[list_nodes %in% cont_nodes]) else NULL
+  nodes <- data.frame(id = unique(c(list_nodes, cont_nodes)),
                       stringsAsFactors = FALSE)
 
   nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
@@ -248,14 +251,18 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
                    all = TRUE,
                    sort = FALSE
                   )
+    nodes <- nodes[!is.na(nodes$level), , drop = FALSE]
+    nodes$x <- 1
+    if (!is.null(orphans)) {
+	    nodes$x[nodes$id %in% orphans] <- 2
+    }
     edges <- merge(edges, 
                    dedges, 
                    by = emerge,
                    all = TRUE,
                    sort = FALSE
                   )
-  } 
-  
+  }   
   edges$width <- edge_width
   if (x$directed) {
     edges$arrows <- "to"
