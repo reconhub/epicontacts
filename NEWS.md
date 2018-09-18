@@ -1,5 +1,10 @@
-epicontacts 1.1.1 (2018-3-26)
+epicontacts 1.1.1 (2018-9-18)
 ==================
+
+### NEW FEATURES
+
+* `vis_epicontacts()` gains an `x_axis` argument to specify a column to use for
+  displaying dates.
 
 ### BUG FIXES
 
