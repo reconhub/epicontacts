@@ -77,6 +77,7 @@
 #' @return The same output as \code{visNetwork}.
 #'
 #' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+#'   \code{\link{edges_pal}} and \code{\link{cases_pal}} for color palettes used
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -92,6 +93,8 @@
 #' \dontrun{
 #' plot(x)
 #' plot(x, node_color = "place_infect")
+#' # show transmission tree with time as the horizontal axis, showing all nodes
+#' vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 #' plot(x, "place_infect", node_shape = "sex",
@@ -138,9 +141,11 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
 
 
   ## make a list of all nodes, and generate a data.frame of node attributes
-  nodes <- data.frame(id = unique(c(x$linelist$id,
-                                    x$contacts$from,
-                                    x$contacts$to)),
+  cont_nodes <- c(x$contacts$from, x$contacts$to)
+  list_nodes <- x$linelist$id
+  ## find out which nodes are unconnected to any other nodes
+  ## This is only relevant when `thin = TRUE`
+  nodes <- data.frame(id = unique(c(list_nodes, cont_nodes)),
                       stringsAsFactors = FALSE)
 
   nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
@@ -208,7 +213,7 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   ## add edge info
   edges <- x$contacts
   if (!is.null(x_axis)) {
-    if(!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
+    if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
       stop("Data used to specify x axis must be a date or number")
     }
     drange      <- range(nodes[[x_axis]], na.rm = TRUE)
@@ -242,20 +247,20 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
       dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
       nmerge <- c(nmerge, "title")
     }
-    nodes <- merge(nodes, 
-                   dnodes, 
-                   by = nmerge, 
+    nodes <- merge(nodes,
+                   dnodes,
+                   by = nmerge,
                    all = TRUE,
                    sort = FALSE
                   )
-    edges <- merge(edges, 
-                   dedges, 
+    nodes <- nodes[!is.na(nodes$level), , drop = FALSE]
+    edges <- merge(edges,
+                   dedges,
                    by = emerge,
                    all = TRUE,
                    sort = FALSE
                   )
-  } 
-  
+  }
   edges$width <- edge_width
   if (x$directed) {
     edges$arrows <- "to"

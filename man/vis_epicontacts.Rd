@@ -97,6 +97,8 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
 \dontrun{
 plot(x)
 plot(x, node_color = "place_infect")
+# show transmission tree with time as the horizontal axis, showing all nodes
+vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
 plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
 plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 plot(x, "place_infect", node_shape = "sex",
@@ -109,6 +111,7 @@ plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
 }
 \seealso{
 \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+  \code{\link{edges_pal}} and \code{\link{cases_pal}} for color palettes used
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
