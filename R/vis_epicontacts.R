@@ -393,7 +393,7 @@ vis_epicontacts <- function(x,
     if(!is.null(node_shape)) {
       nodes$icon.color <- node_col_info$color
     } else if(!is.null(x_axis) & type == 'network') {
-      nodes$group.color <- node_col_info$color
+      nodes$group.color <- nodes$icon.color <- node_col_info$color
     } else {
       nodes$color.background <- nodes$color.highlight.background <- node_col_info$color
       nodes$color.border <- nodes$color.highlight.border <- 'black'
