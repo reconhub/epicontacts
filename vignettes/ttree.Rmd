@@ -1,0 +1,127 @@
+---
+title: "Interactive and static visualisation of transmission trees using epicontacts"
+date: "`r Sys.Date()`"
+output: 
+    rmarkdown::html_vignette:
+        toc: true
+toc_depth: 4
+vignette: >
+    %\VignetteIndexEntry{visualise transmission trees}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r init, include=F}
+library(knitr)
+opts_chunk$set(message=FALSE, warning=FALSE, eval=TRUE, echo=TRUE)
+```
+
+## Introduction
+
+Visualising chains of transmission in an infectious disease outbreak can provide
+a useful overview of the situation and help guide interventions. This vignette
+illustrates how the `epicontacts` package can be used to create dynamic transmission 
+chain visualisations like the one below:
+
+```{r, echo = FALSE}
+## Simulate outbreak and return epicontacts object
+devtools::load_all("~/Dropbox/dev/epicontacts")
+sim_epicontacts <- function(R0 = 2, gentime_mu = 15, gentime_sd = 8) {
+
+	## create generation time distribution
+	param <- epitrix::gamma_mucv2shapescale(gentime_mu, gentime_sd/gentime_mu)
+	dist <- distcrete::distcrete('gamma', 1, shape = param$shape, scale = param$scale)
+	gentime <- dist$d(1:40)
+	
+	## simulate outbreak
+	sim <- outbreaker::simOutbreak(R0 = R0, 
+																 infec.curve = gentime, 
+																 duration = 50,
+																 n = 50,
+																 rate.import.case = 0.2)
+	
+	## create anonymised case ID
+	case_ID <- replicate(sim$n, paste0(sample(c(0:9, letters), 5, TRUE), collapse = ''))
+	
+	## create linelist with simulated metadata
+	linelist <- data.frame(id = case_ID[sim$id],
+	                       onset = as.Date(sim$onset, origin = "2012-07-02"),
+	                       sex = sample(c("male", "female"), sim$n, TRUE),
+	                       age = round(runif(sim$n, 0, 70), 1),
+	                       outcome = sample(c("alive", "dead", "unknown"), sim$n, TRUE))
+	
+	contacts <- data.frame(from = case_ID[match(sim$ances, sim$id)], 
+												 to = case_ID[sim$id])
+	contacts$status <- sample(c("confirmed", "suspected"), nrow(contacts), TRUE)
+	contacts$duration <- runif(nrow(contacts), 0, 20)
+	## contact happened 0-10 days before start of symptom onset
+	t_onset <- linelist$onset[match(contacts$to, linelist$id)]
+	contacts$date <- t_onset - floor(runif(nrow(contacts), 0, 10))
+	
+	x <- make_epicontacts(linelist, na.omit(contacts))
+
+	return(x)
+	
+}
+
+set.seed(2)
+x <- sim_epicontacts()
+
+plot(x,
+     type = 'ttree',
+     x_axis = 'onset',
+     ttree_shape = 'branching',
+     root_order = 'size',
+     node_order = 'onset',
+     node_size = 'R_i',
+     node_color = 'onset',
+     edge_linetype = 'status',
+     edge_color = 'duration',
+     edge_flex = TRUE,
+     position_unlinked = 'bottom',
+     reverse_root_order = FALSE,
+     reverse_node_order = TRUE,
+     selector = FALSE,
+     highlight_downstream = TRUE,
+		 width = 800,
+		 height = 900
+     )
+
+```
+
+## Creating an epicontacts object
+
+We begin with an `epicontacts` object, which consists of a linelist dataframe (specifying case IDs and any available case metadata) and a contacts dataframe (specifying pairs of IDs that have been in contact and any available properties of these contacts). For a detailed introduction to the `epicontacts` class, see the [overview vignette](epicontacts.html).
+
+For this vignette, we will use a simulated outbreak as an example dataset. The linelist dataframe contains anonymised case IDs, dates
+of symptom onset, age, sex and outcome for each case. The contacts dataframe specifies the infector and infectee in the `from` and `to` columns, respectively, as well as the contact status (suspected or confirmed), duration of contact and date of first contact. It is important to note that the current implementation can only accomodate a single infector per case.
+
+Below is an overview of the outbreak data as an `epicontacts` object.
+
+```{r, echo=FALSE}
+x
+```
+
+
+## Interactive transmission tree visualisation
+
+We can then create a dynamic and interactive visualise of these transmission
+chains using the `plot` function. We specify that we want to visualise our network
+as a transmission tree using the `type` argument, and indicate which column in our 
+linelist should be used for the x-axis (in this case, the date of symptom onset).
+
+```{r}
+plot(x, type = 'ttree', x_axis = 'onset')
+```
+
+
+
+
+
+
+
+
+
+
+
+

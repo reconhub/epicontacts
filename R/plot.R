@@ -28,6 +28,8 @@
 #'
 #' \item \code{graph3D}: calls the function \code{\link{graph3D}}
 #'
+#' \item \code{ggplot}: calls the function \code{link\vis_ggplot}
+#'
 #' }
 #'
 #' @importFrom graphics plot
@@ -56,29 +58,42 @@
 #' }
 #' }
 plot.epicontacts <- function(x, node_color = "id",
-                             method = c("visNetwork", "graph3D"),
+                             method = c("visNetwork", "graph3D", "ggplot"),
                              thin = TRUE, ...){
-    ## checks
+  ## checks
 
-    if (thin) {
-        x <- thin(x)
+  if (thin) {
+    x <- thin(x)
+  }
+
+  method <- match.arg(method)
+
+  if (is.numeric(node_color) && length(node_color) > 0L) {
+    node_color <- names(x$linelist)[node_color][1L]
+  }
+
+
+  ## make plots
+
+  if (method == "visNetwork") {
+    if(missing(node_color)) {
+      return(vis_epicontacts(x, ...))
+    } else {
+      return(vis_epicontacts(x, node_color = node_color, ...))
     }
+  }
 
-    method <- match.arg(method)
+  if (method == "graph3D") {
+    return(graph3D(x, node_color = node_color, ...))
+  }
 
-    if (is.numeric(node_color) && length(node_color) > 0L) {
-        node_color <- names(x$linelist)[node_color][1L]
+  if (method == "ggplot") {
+    if(missing(node_color)) {
+      return(vis_ggplot(x, ...))
+    } else {
+      return(vis_ggplot(x, node_color = node_color, ...))
     }
+  }
 
-
-    ## make plots
-
-    if (method == "visNetwork") {
-        return(vis_epicontacts(x, node_color = node_color, ...))
-    }
-
-    if (method == "graph3D") {
-        return(graph3D(x, node_color = node_color, ...))
-    }
-
+  
 }
