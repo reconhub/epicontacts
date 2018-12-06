@@ -15,7 +15,7 @@ License: GPL (>=2)
 LazyData: TRUE
 RoxygenNote: 6.1.0
 Imports: grDevices, dplyr, igraph, visNetwork, threejs, colorspace
-Suggests: outbreaks, testthat, covr, shiny, readr, knitr, rmarkdown
+Suggests: outbreaks, testthat, covr, shiny, readr, knitr, rmarkdown, outbreaker, distcrete, epitrix
 VignetteBuilder: knitr
 URL: https://www.repidemicsconsortium.org/epicontacts/
 BugReports: https://github.com/reconhub/epicontacts/issues
