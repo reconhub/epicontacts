@@ -58,7 +58,7 @@ sim_epicontacts <- function(R0 = 2, gentime_mu = 15, gentime_sd = 8) {
 	t_onset <- linelist$onset[match(contacts$to, linelist$id)]
 	contacts$date <- t_onset - floor(runif(nrow(contacts), 0, 10))
 	
-	x <- make_epicontacts(linelist, na.omit(contacts))
+	x <- make_epicontacts(linelist, contacts)
 
 	return(x)
 	
