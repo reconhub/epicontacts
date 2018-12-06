@@ -25,7 +25,6 @@ chain visualisations like the one below:
 
 ```{r, echo = FALSE}
 ## Simulate outbreak and return epicontacts object
-devtools::load_all("~/Dropbox/dev/epicontacts")
 sim_epicontacts <- function(R0 = 2, gentime_mu = 15, gentime_sd = 8) {
 
 	## create generation time distribution

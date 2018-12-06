@@ -1,4 +1,5 @@
 *~
+*.swp
 .RData
 .Rhistory
 .Rproj.user

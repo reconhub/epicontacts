@@ -5,7 +5,7 @@
 \title{Plot epicontacts objects}
 \usage{
 \method{plot}{epicontacts}(x, node_color = "id",
-  method = c("visNetwork", "graph3D"), thin = TRUE, ...)
+  method = c("visNetwork", "graph3D", "ggplot"), thin = TRUE, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
@@ -33,6 +33,8 @@ the package, depending on the value of \code{method}:
 \item \code{visNetwork}: calls the function \code{\link{vis_epicontacts}}
 
 \item \code{graph3D}: calls the function \code{\link{graph3D}}
+
+\item \code{ggplot}: calls the function \code{link\vis_ggplot}
 
 }
 }
