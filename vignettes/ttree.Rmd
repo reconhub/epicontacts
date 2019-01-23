@@ -1,5 +1,5 @@
 ---
-title: "Interactive and static visualisation of transmission trees using epicontacts"
+title: "Visualisation of transmission trees using epicontacts"
 date: "`r Sys.Date()`"
 output: 
     rmarkdown::html_vignette:
@@ -63,13 +63,13 @@ sim_epicontacts <- function(R0 = 2, gentime_mu = 15, gentime_sd = 8) {
 	
 }
 
-set.seed(2)
+set.seed(3)
 x <- sim_epicontacts()
 
 plot(x,
      type = 'ttree',
      x_axis = 'onset',
-     ttree_shape = 'branching',
+     ttree_shape = 'rectangle',
      root_order = 'size',
      node_order = 'onset',
      node_size = 'R_i',
@@ -113,14 +113,190 @@ linelist should be used for the x-axis (in this case, the date of symptom onset)
 plot(x, type = 'ttree', x_axis = 'onset')
 ```
 
+This is a dynamic visualisation with moveable nodes that provides additional node
+information upon node hovering.
 
+## Specifying node and edge attributes
 
+Node color, node shape and node size can be mapped to a given column in the linelist 
+using the `node_color`, `node_shape` and `node_size` arguments. Two additional node attributes
+are calculated for each case that may be of interest, and can be also mapped. `R_i` is 
+describes the individual reproductive number for each case (i.e. the number of infections 
+caused by each case), and `size` is the total number of downstream cases (i.e the size of the
+cluster with that case as an ancestor). For example:
 
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     selector = FALSE)
+```
 
+We can specify the size range of the nodes using the `size_range` argument. 
 
+Edge color, width and linetype can be mapped to a given column in the contacts dataframe.
+For example:
 
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_color = 'status',
+     edge_linetype = 'status',
+     edge_width = 'duration',
+     selector = FALSE)
+```
 
+## Specifying transmission tree shape
 
+There are two main shapes that the transmission tree can assume, specified using the `ttree_shape`
+argument. The first is a `branching` shape as shown above, where a straight edge connects 
+any two nodes. This is the most intuitive representation, however can result in overlapping edges
+in a densely connected network. The second shape is `rectangle`, which produces a tree resembling
+a phylogeny. For example:
 
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     selector = FALSE)
+```
 
+Furthermore, the vertical ordering of the nodes within the tree can be mapped to a given column
+in the linelist dataframe using the `node_order` argument. This specifies the variable used to 
+vertically order cases connected to the same infector. Similarly, the vertical ordering of the 
+roots of each transmission chain (i.e. the index case of each chain) is specified using the 
+`root_order` argument. The ordering can be reversed using the `reverse_node_order` and 
+`reverse_root_order` arguments. Below is a tree with roots ordered by date of onset, 
+(`root_order = "onset"`) and internal nodes ordered by downstream clust size (`node_order = "size"`).
 
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     selector = FALSE)
+```
+
+Each case node can be assigned a unique vertical position by toggling the `position_dodge` 
+argument. The position of unconnected cases (i.e. with no reported contacts) is specified using the
+`position_unlinked` argument. 
+
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     position_dodge = TRUE,
+     position_unlinked = 'top',
+     selector = FALSE)
+```
+
+## Additional options
+Edges can curve upon manual adjustment of nodes, instead of remaining straight,
+by toggling the `edge_flex` argument. All downstream cases of a given node can be
+highlighted upon node selection using the `highlight_downstream` argument. 
+
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     edge_flex = TRUE,
+     highlight_downstream = TRUE,
+     selector = FALSE)
+```
+
+The `height` and `width` of the figure can be specified in pixels. 
+
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     height = 1000,
+     selector = FALSE)
+```
+
+## Multiple infectors per case
+
+The current algorithm was intended for visualising transmission trees with only a single
+infector per case. As of now it can accomodate multiple infectors per case, however 
+the clustering algorithm is not intended for this use case. It will attempt to place
+roots that are linked by downstream cases in close proximity to each other, but this
+is still a work in progres and works best with `ttree_shape = "branching"`. 
+
+```{r, echo = FALSE}
+set.seed(1)
+to <- sample(x$linelist$id, 5)
+from <- sapply(match(to, x$linelist$id), 
+               function(i) sample(x$linelist$id[x$linelist$onset < x$linelist$onset[i]], 1))
+
+contact_2 <- data.frame(from = from, 
+                        to = to,
+                        status = sample(c("confirmed", "suspected"), 5, TRUE),
+                        duration = runif(5, 0, 20),
+                        date = sample(x$linelist$onset, 5))
+
+x$contacts <- rbind(x$contacts, contact_2)
+```
+```{r}
+plot(x, 
+     type = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'branching',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     height = 1000,
+     position_dodge = FALSE,
+     selector = FALSE)
+```

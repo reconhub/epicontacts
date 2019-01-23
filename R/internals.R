@@ -204,26 +204,100 @@ assert_edge_width <- function(x, edge_width) {
 
 
 
+assert_edge_alpha <- function(x, edge_alpha) {
+  if (length(edge_alpha) > 1L) {
+    stop("'edge_alpha' must indicate a single edge attribute")
+  }
+  if (is.logical(edge_alpha) && !edge_alpha) {
+    edge_alpha <- NULL
+  }
+  if (!is.null(edge_alpha)) {
+    if (is.numeric(edge_alpha)) {
+      edge_alpha <- names(x$contacts)[edge_alpha]
+    }
+
+    if (!edge_alpha %in% names(x$contacts)) {
+      msg <- sprintf("edge_alpha '%s' is not in the contacts", edge_alpha)
+      stop(msg)
+    }
+  }
+
+  return(edge_alpha)
+}
+
+
+
+
+
+
 
 ## Recursive function to identify how many layers deep a case is and who its
-## root is. Leaf indicates the node you start with.
-get_treestat <- function(i, depth, clust_size, contacts, leaf) {
+## root is. Leaf indicates the node you start with. With multiple infectors
+## chose the infector with the minimum value in 'rank_contact'.
+get_treestat <- function(i, depth, clust_size, contacts, linelist, leaf,
+                         rank_contact, reverse_rank_contact, infector_keep, root) {
   infector <- contacts$from[which(contacts$to == i)]
   if(length(infector) == 0) {
     infector <- NA
+  } else if(length(infector) > 1) {
+    if(!reverse_rank_contact) {
+      infector <- infector[which.max(linelist[[rank_contact]][match(infector, linelist$id)])]
+    } else {
+      infector <- infector[which.min(linelist[[rank_contact]][match(infector, linelist$id)])]
+    }
   }
-  ## Break loop
+  ## This is the infector of the *leaf* - have to start the algorithm with
+  ## infector_keep = NULL so that we know when it's been assigned
+  if(is.null(infector_keep)) infector_keep <- infector
+  ## Break loop if cyclical
   if(!is.na(infector) & infector == leaf) {
     stop("type = 'ttree' does not work with cyclical networks. use type = 'network'")
   }
   if(is.na(infector) | infector == 0) {
-    return(list(depth = depth, clust_size = clust_size))
+    return(list(depth = depth, clust_size = clust_size, infector = infector_keep, root = i)) 
   } else {
     depth <- depth + 1
-    inf_ind <- which(contacts$to == infector)
+    inf_ind <- which(linelist$id == infector)
     clust_size[inf_ind] <- clust_size[inf_ind] + 1
-    get_treestat(infector, depth, clust_size, contacts, leaf)
+    get_treestat(infector, depth, clust_size, contacts, linelist, leaf,
+                 rank_contact, reverse_rank_contact, infector_keep, NULL)
   }
+}
+
+
+
+
+
+
+## Recursive function to identify how many layers deep a case is and who its
+## root is. Leaf indicates the node you start with. With multiple infectors
+## chose the infector with the minimum value in 'rank_contact'.
+get_all_roots <- function(i, root, contacts, linelist, leaf) {
+
+  infector <- contacts$from[which(contacts$to == i)]
+  if(length(infector) == 0) {
+    infector <- NA
+  }
+
+
+  if(length(infector) == 1 & any(is.na(infector)) | any(infector == 0)) {
+      return(i)
+  }
+
+  for(j in infector) {
+    
+    ## Break loop if cyclical
+    if(j == leaf) {
+      stop("type = 'ttree' does not work with cyclical networks. use type = 'network'")
+    }
+
+    sub_root <- get_all_roots(j, root = root, contacts, linelist, leaf)
+    root <- c(root, sub_root)
+    
+  }
+
+  return(root)
+  
 }
 
 
@@ -235,12 +309,14 @@ get_treestat <- function(i, depth, clust_size, contacts, leaf) {
 ## closest to its infectees, starting at the leaves of the tree and moving to
 ## the root. It returns the x and y coordinates of each case.
 get_coor <- function(x,
-                     x_axis = x_axis,
+                     x_axis,
                      position_dodge = FALSE,
                      root_order = 'size',
-                     node_order = NULL,
+                     node_order = 'size',
                      reverse_root_order = FALSE,
-                     reverse_node_order = TRUE,
+                     reverse_node_order = FALSE,
+                     rank_contact = x_axis,
+                     reverse_rank_contact = FALSE,
                      position_unlinked = 'bottom') {
 
   ## Position_dodge specifies if two cases can occupy the same y coordinate
@@ -262,12 +338,19 @@ get_coor <- function(x,
 
   N <- nrow(linelist)
   depth <- rep(0, N)
+  infector <- root <- rep(NA, N)
   clust_size <- rep(1, N)
   for(i in linelist$id) {
-    treestat <- get_treestat(i, 1, clust_size, contacts, i)
+    treestat <- get_treestat(i, 1, clust_size, contacts, linelist, i,
+                             rank_contact, reverse_rank_contact,
+                             infector_keep = NULL, root = NULL)
     depth[which(linelist$id == i)] <- treestat$depth
+    infector[which(linelist$id == i)] <- treestat$infector
+    root[which(linelist$id == i)] <- treestat$root
     clust_size <- treestat$clust_size
   }
+
+  linelist$size <- clust_size
 
   contacts$from[is.na(contacts$from)] <- 0
 
@@ -292,7 +375,7 @@ get_coor <- function(x,
     if(i > 1) {
 
       ## Group cases by infector
-      grouped <- split(ind, contacts$from[ind])
+      grouped <- split(ind, contacts$from[match(linelist$id[ind], contacts$to)])
       
       for(y in grouped) {
 
@@ -318,23 +401,58 @@ get_coor <- function(x,
         to_add[match(y, ind)] <- splt
         
       }
-      
-      ## Make cases adopt values from infectors
-      mat[ind, 1:(i-1)] <- mat[match(contacts$from[ind], linelist$id), 1:(i-1)]
+
+      ## Make cases adopt values from infector chosen in get_treestat
+      mat[ind, 1:(i-1)] <- mat[match(infector[ind], linelist$id), 1:(i-1)]
       
     } else {
 
+      ## We need to link roots that are connected by secondary connections
+      tab <- table(contacts$to)
+      multiple_inf <- names(tab)[tab>1]
+      if(length(multiple_inf) > 0) {
+
+        linked <- list()
+        
+        for(j in seq_along(multiple_inf)) {
+          linked[[j]] <- get_all_roots(multiple_inf[j], NULL, contacts, linelist, multiple_inf[j])
+        }
+
+        linked_roots <- lapply(linked, function(j) if(length(unique(j)) > 1) t(combn(unique(j), 2)))
+        linked_roots <- linked_roots[!vapply(linked_roots, is.null, TRUE)]
+        linked_roots <- matrix(unlist(linked_roots), ncol = 2, byrow = TRUE)
+
+      }
+      
       splt <- get_split(length(ind))
       
       if(!is.null(root_order)) {
         
         if(root_order == 'size') {
-          
-          to_add[order(clust_size[ind], decreasing = reverse_root_order)] <- splt
+
+          ord <- order(clust_size[ind], decreasing = reverse_root_order)
+          to_add[ord] <- splt
           
         } else {
 
-          to_add[order(linelist[[root_order]][ind], decreasing = reverse_root_order)] <- splt
+          ord <- order(linelist[[root_order]][ind], decreasing = reverse_root_order)
+
+          if(length(multiple_inf) > 0) {
+            for(j in seq_len(nrow(linked_roots))) {
+              sub_ord <- ord[match(linked_roots[j,], linelist$id[ind])]
+              min_ind <- match(linked_roots[j, which.min(sub_ord)], linelist$id[ind])
+              max_ind <- match(linked_roots[j, which.max(sub_ord)], linelist$id[ind])
+              ord[min_ind] <- ord[max_ind] - 0.01
+            }
+
+            ord <- match(ord, sort(ord))
+            to_add <- splt[ord]
+            
+          } else {
+
+            to_add[ord] <- splt
+            
+          }
           
         }
         
@@ -352,14 +470,28 @@ get_coor <- function(x,
 
   ## Get the numeric y value
   val <- apply(mat, 1, sum)
-  
+
   ## Get isolated cases and put them on the bottom
-  if(position_unlinked == 'top') {
-    val[depth == 1 & clust_size == 1] <- 1000
-  } else if(position_unlinked == 'bottom') {
-    val[depth == 1 & clust_size == 1] <- -1000
+  ## If position_dodge, order these by root_order
+  tmp <- contacts[contacts$from != 0,]
+  unlinked <- which(!linelist$id %in% c(tmp$from, tmp$to))
+  if(length(unlinked) > 0) {
+    if(position_dodge) {
+      unlinked_order <- order(linelist[[root_order]][unlinked],
+                              decreasing = reverse_root_order)
+      unlinked_to_add <- seq_along(unlinked)
+    } else {
+      unlinked_order <- seq_along(unlinked)
+      unlinked_to_add <- 0
+    }
+    
+    if(position_unlinked == 'top') {
+      val[unlinked[unlinked_order]] <- 1000 + unlinked_to_add
+    } else if(position_unlinked == 'bottom') {
+      val[unlinked[unlinked_order]] <- -1000 + unlinked_to_add
+    }
   }
-  
+
   ## This orders the cases
   y_pos <- match(val, sort(unique(val)))
   y_pos <- y_pos/max(y_pos)
@@ -390,83 +522,111 @@ get_v_rect <- function(linelist, contacts) {
   ## Cases which are not on the same height as their infector will require a new node
   to_keep <- which(apply(df, 1, function(i) i[1] != i[2]))
 
-  ## These nodes are all hidden - to give matching df size, recycle linelist elements
-  new_node <- linelist[rep(1, length(to_keep)),]
-  new_node$id <- (nrow(linelist)+1):(nrow(linelist)+length(to_keep))
-  if(is.character(linelist$id)) {
-    new_node$id <- as.character(new_node$id)
-  }
-
-  ## These unobserved nodes will sit on the x position of the infector and the
-  ## y position of the infectee
-  new_node$x <- df$x_inf[to_keep]
-  new_node$y <- df$y_i[to_keep]
-
-  ## Edge df providing horizontal edges from leaves to interior node
-  new_edge <- data.frame(from = new_node$id,
-                         to = linelist$id[to_keep],
-                         stringsAsFactors = FALSE)
-
-  tpair <- cbind(contacts$from[match(new_edge$to, contacts$to)],
-                 new_edge$to)
-  
-  match_ind <- apply(tpair, 1, function(x) which(x[[1]] == contacts$from &
-                                                 x[[2]] == contacts$to))
-
-  new_edge <- cbind(new_edge, contacts[match_ind, !names(contacts) %in% c("from", "to")])
-  
-  
-  ## Group into cases with shared ancestor
-  splt <- split(new_edge$from, contacts$from[to_keep])
-  nm <- names(splt)
-  for(i in seq_along(splt)) {
+  if(length(to_keep) > 0) {
     
-    ## y position of new_node
-    anchor <- nm[i]
-
-    ## Match classes of unobserved and observed nodes by re-converting to
-    ## numeric if need be
-    if(is.numeric(linelist$id)) {
-      anchor <- as.numeric(anchor)
-    }
-    
-    ids <- splt[[i]]
-    y <- linelist$y[match(nm[i], linelist$id)]
-    yy <- new_node$y[match(ids, new_node$id)]
-
-    ## Identify the next nodes up and down
-    node_up <- ids[which(yy == min(yy[yy > y]))]
-    node_down <- ids[which(yy == max(yy[yy < y]))]
-    vert_nodes <- data.frame(from = c(anchor, anchor),
-                             to = c(node_up, node_down))
-
-    while(nrow(vert_nodes) < length(ids)) {
-      next_node_up <- ids[which(yy == min(yy[yy > yy[which(ids == node_up)]]))]
-      next_node_down <- ids[which(yy == max(yy[yy < yy[which(ids == node_down)]]))]
-      vert_nodes <- rbind(vert_nodes,
-                          data.frame(from = c(node_up, node_down),
-                                     to = c(next_node_up, next_node_down)))
-      node_up <- next_node_up
-      node_down <- next_node_down
+    ## These nodes are all hidden - to give matching df size, recycle linelist elements
+    new_node <- linelist[rep(1, length(to_keep)),]
+    new_node$id <- (nrow(linelist)+1):(nrow(linelist)+length(to_keep))
+    if(is.character(linelist$id)) {
+      new_node$id <- as.character(new_node$id)
     }
 
-    ## cbind additional edge data
-    vert_nodes <- cbind(vert_nodes,
-                        new_edge[match(vert_nodes$to, new_edge$from),
-                                 !names(new_edge) %in% c("from", "to")])
-    
-    new_edge <- rbind(new_edge, vert_nodes)
-    
-  }
-  
-  nodes <- rbind(linelist, new_node)
-  edges <- rbind(contacts[-to_keep,], new_edge)
+    ## These unobserved nodes will sit on the x position of the infector and the
+    ## y position of the infectee
+    new_node$x <- df$x_inf[to_keep]
+    new_node$y <- df$y_i[to_keep]
 
+    ## Edge df providing horizontal edges from leaves to interior node
+    new_edge <- data.frame(from = new_node$id,
+                           to = linelist$id[to_keep],
+                           stringsAsFactors = FALSE)
+
+    tpair <- cbind(contacts$from[match(new_edge$to, contacts$to)],
+                   new_edge$to)
+
+    ## Currently just select the first edge if there are more than one edge
+    ## between two cases
+    match_ind <- apply(tpair, 1, function(x) which(x[[1]] == contacts$from &
+                                                   x[[2]] == contacts$to)[1])
+
+    new_edge <- cbind(new_edge, contacts[match_ind, !names(contacts) %in% c("from", "to")])
+    names(new_edge) <- names(contacts)
+
+    ## Group into cases with shared ancestor
+    splt <- split(new_edge$from, contacts$from[match(new_edge$to, contacts$to)])
+    nm <- names(splt)
+    for(i in seq_along(splt)) {
+      
+      ## y position of new_node
+      anchor <- nm[i]
+
+      ## Match classes of unobserved and observed nodes by re-converting to
+      ## numeric if need be
+      if(is.numeric(linelist$id)) {
+        anchor <- as.numeric(anchor)
+      }
+      
+      ids <- splt[[i]]
+      anchor_y <- linelist$y[match(nm[i], linelist$id)]
+      d_y <- new_node$y[match(ids, new_node$id)]
+
+      ## Identify the next nodes up and down
+      vert_nodes <- NULL
+      y_above <- d_y[d_y > anchor_y]
+      y_below <- d_y[d_y < anchor_y]
+      if(length(y_above) != 0) {
+        node_up <- ids[which(d_y == min(y_above))]
+        vert_nodes <- rbind(vert_nodes,
+                            data.frame(from = anchor, to = node_up))
+      }
+      if(length(y_below) != 0) {
+        node_down <- ids[which(d_y == max(y_below))]
+        vert_nodes <- rbind(vert_nodes,
+                            data.frame(from = anchor, to = node_down))
+      }
+      
+      while(nrow(vert_nodes) < length(ids)) {
+        if(length(y_above != 0)) {
+          y_above <- d_y[d_y > d_y[which(ids == node_up)]]
+        }
+        if(length(y_below != 0)) {
+          y_below <- d_y[d_y < d_y[which(ids == node_down)]]
+        }
+        if(length(y_above) != 0) {
+          next_node_up <- ids[which(d_y == min(y_above))]
+          vert_nodes <- rbind(vert_nodes,
+                              data.frame(from = node_up, to = next_node_up))
+          node_up <- next_node_up
+        }
+        if(length(y_below) != 0) {
+          next_node_down <- ids[which(d_y == max(y_below))]
+          vert_nodes <- rbind(vert_nodes,
+                              data.frame(from = node_down, to = next_node_down))
+          node_down <- next_node_down
+        }
+      }
+
+      ## cbind additional edge data
+      vert_nodes <- cbind(vert_nodes,
+                          new_edge[match(vert_nodes$to, new_edge$from),
+                                   !names(new_edge) %in% c("from", "to")])
+      names(vert_nodes) <- names(contacts)
+      
+      new_edge <- rbind(new_edge, vert_nodes)
+      
+    }
+
+    nodes <- rbind(linelist, new_node)
+    edges <- rbind(contacts[-match(linelist$id[to_keep], contacts$to),], new_edge)
+  } else {
+    nodes <- linelist
+    edges <- contacts
+  }
   nodes$hidden <- TRUE
   nodes$hidden[match(linelist$id, nodes$id)] <- FALSE
 
   return(list(nodes = nodes, edges = edges))
-  
+
 }
 
 
@@ -488,7 +648,7 @@ get_g_rect <- function(linelist, contacts) {
                    x_i = linelist$x)
 
   ## Cases which are not on the same height as their infector will require a new node
-  new_node_ind <- which(apply(df, 1, function(i) i[1] != i[2]))
+  new_node_ind <- which(apply(df[,1:2], 1, function(i) i[1] != i[2]))
 
   ## These nodes are all hidden - to give matching df size, recycle linelist elements
   new_node <- linelist[rep(1, length(new_node_ind)),]
@@ -503,10 +663,10 @@ get_g_rect <- function(linelist, contacts) {
   new_node$y <- df$y_i[new_node_ind]
 
   ## Group into cases with shared ancestor
-  splt <- split(linelist$id[new_node_ind], contacts$from[new_node_ind])
+  splt <- split(linelist$id[new_node_ind], contacts$from[match(linelist$id[new_node_ind], contacts$to)])
   nm <- names(splt)
   out <- NULL
-  
+
   for(i in seq_along(splt)) {
     
     ## anchor is the common ancestor of all cases in splt[[i]]
@@ -528,32 +688,49 @@ get_g_rect <- function(linelist, contacts) {
     d_y <- linelist$y[match(ids, linelist$id)]
 
     ## Identify the next nodes up and down
-    node_up <- ids[which(d_y == min(d_y[d_y > anchor_y]))]
-    node_down <- ids[which(d_y == max(d_y[d_y < anchor_y]))]
+    vert_nodes <- NULL
+    y_above <- d_y[d_y > anchor_y]
+    y_below <- d_y[d_y < anchor_y]
+    if(length(y_above) != 0) {
+      node_up <- ids[which(d_y == min(y_above))]
+      vert_nodes <- rbind(vert_nodes,
+                          data.frame(from = anchor, to = node_up))
+    }
+    if(length(y_below) != 0) {
+      node_down <- ids[which(d_y == max(y_below))]
+      vert_nodes <- rbind(vert_nodes,
+                          data.frame(from = anchor, to = node_down))
+    }
 
-    ## Get coordinates of the nodes above and below anchor
-    vert_node <- data.frame(from = c(anchor, anchor),
-                            to = c(node_up, node_down))
-
-    ## Iterate until a node has been added for each case in ids
-    while(nrow(vert_node) < length(ids)) {
-      next_node_up <- ids[which(d_y == min(d_y[d_y > d_y[which(ids == node_up)]]))]
-      next_node_down <- ids[which(d_y == max(d_y[d_y < d_y[which(ids == node_down)]]))]
-      vert_node <- rbind(vert_node,
-                         data.frame(from = c(node_up, node_down),
-                                    to = c(next_node_up, next_node_down)))
-      node_up <- next_node_up
-      node_down <- next_node_down
+    while(nrow(vert_nodes) < length(ids)) {
+      if(length(y_above != 0)) {
+        y_above <- d_y[d_y > d_y[which(ids == node_up)]]
+      }
+      if(length(y_below != 0)) {
+        y_below <- d_y[d_y < d_y[which(ids == node_down)]]
+      }
+      if(length(y_above) != 0) {
+        next_node_up <- ids[which(d_y == min(y_above))]
+        vert_nodes <- rbind(vert_nodes,
+                            data.frame(from = node_up, to = next_node_up))
+        node_up <- next_node_up
+      }
+      if(length(y_below) != 0) {
+        next_node_down <- ids[which(d_y == max(y_below))]
+        vert_nodes <- rbind(vert_nodes,
+                            data.frame(from = node_down, to = next_node_down))
+        node_down <- next_node_down
+      }
     }
 
     ## Construct coordinates from these nodes
-    tmp <- data.frame(y = linelist$y[match(vert_node$from, linelist$id)],
-                      yend = linelist$y[match(vert_node$to, linelist$id)])
+    tmp <- data.frame(y = linelist$y[match(vert_nodes$from, linelist$id)],
+                      yend = linelist$y[match(vert_nodes$to, linelist$id)])
     tmp$xend <- tmp$x <- linelist$x[match(anchor, linelist$id)]
 
     ## Find edge attributes going from anchor -> each leaf
-    vert_node$from <- anchor
-    ind <- apply(vert_node, 1, function(x) which(x[[1]] == contacts$from &
+    vert_nodes$from <- anchor
+    ind <- apply(vert_nodes, 1, function(x) which(x[[1]] == contacts$from &
                                                  x[[2]] == contacts$to))
 
     ## cbind edge attributes

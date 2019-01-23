@@ -61,7 +61,6 @@ plot.epicontacts <- function(x, node_color = "id",
                              method = c("visNetwork", "graph3D", "ggplot"),
                              thin = TRUE, ...){
   ## checks
-
   if (thin) {
     x <- thin(x)
   }

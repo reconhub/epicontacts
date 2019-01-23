@@ -128,6 +128,14 @@
 #' @param reverse_node_order A logical indicating if the ordering of the nodes
 #'   should be reversed. This argument is only called when type = 'ttree'.
 #'
+#' @param rank_contact If more than one incoming contact is provided for a given
+#'   case, which attribute in the linelist should be used to rank the contacts
+#'   and choose the top value. This contact forms the 'backbone' of the
+#'   transmission tree and determines the y-position of the case.
+#'
+#' @param reverse_rank_contact Logical indicating if the contact ranking should
+#'   be reversed in order.
+#'
 #' @param position_unlinked A character string indicating where unlinked cases
 #'   should be placed. Valid options are 'top', 'bottom' and 'middle', where
 #'   'middle' will place unlinked cases according to root_order. This argument
@@ -207,6 +215,8 @@ vis_epicontacts <- function(x,
                             node_order = 'onset',
                             reverse_root_order = FALSE,
                             reverse_node_order = FALSE,
+                            rank_contact = x_axis,
+                            reverse_rank_contact = FALSE,
                             position_unlinked = 'bottom',
                             edge_flex = FALSE,
                             highlight_downstream = FALSE,
@@ -219,11 +229,20 @@ vis_epicontacts <- function(x,
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
 
-  ## handling
-  if (thin) {
-    x <- thin(x)
+  ## check that x_axis is specified
+  if(type == 'ttree') {
+    if (is.null(x_axis)) {
+      stop("x_axis must be specified if type = 'ttree'")
+    } else if(any(is.na(x$linelist[[x_axis]]))) {
+      ## Prune NA x_axis values
+      is_na <- is.na(x$linelist[[x_axis]])
+      x$contacts <- x$contacts[!(x$contacts$from %in% x$linelist$id[is_na] |
+                                 x$contacts$to %in% x$linelist$id[is_na]),]
+      x$linelist <- x$linelist[!is_na,]
+      if(thin) x <- thin(x)
+    }
   }
-
+  
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 
@@ -249,7 +268,7 @@ vis_epicontacts <- function(x,
   edge_linetype <- assert_edge_linetype(x, edge_linetype)
 
   ## Calculate R_i if needed
-  if('R_i' %in% c(node_shape, node_color, node_size)) {
+  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- sapply(x$linelist$id, function(i) sum(x$contacts$from == i, na.rm = TRUE))
   }
   
@@ -293,19 +312,14 @@ vis_epicontacts <- function(x,
     }
     
     ## Check for multiple incoming edges per node
-    tab <- table(x$contacts$to)
-    culprits <- names(tab)[tab > 1]
-    if (length(culprits) != 0) {
-      culprits <- paste(culprits, collapse = ", ")
-      msg <- sprintf("multiple infectors found for %s . use type = 'network'",
-                     culprits)
-      stop(msg)
-    }
-
-    ## check that x_axis is specified
-    if (is.null(x_axis)) {
-      stop("x_axis must be specified if type = 'ttree'")
-    }
+#    tab <- table(x$contacts$to)
+#    culprits <- names(tab)[tab > 1]
+#    if (length(culprits) != 0) {
+#      culprits <- paste(culprits, collapse = ", ")
+#      msg <- sprintf("multiple infectors found for %s . use type = 'network'",
+#                     culprits)
+#      stop(msg)
+#    }
 
     ## set default highlight_nearest to TRUE
     if(missing(highlight_downstream)) {
@@ -314,7 +328,7 @@ vis_epicontacts <- function(x,
 
     nodes <- x$linelist
     edges <- x$contacts
-    
+
     ## Get x and y coordinates
     coor <- get_coor(x,
                      x_axis = x_axis,
@@ -323,8 +337,10 @@ vis_epicontacts <- function(x,
                      reverse_root_order = reverse_root_order,
                      node_order = node_order,
                      reverse_node_order = reverse_node_order,
-                     position_unlinked = position_unlinked)
-    
+                     position_unlinked = position_unlinked,
+                     rank_contact = rank_contact,
+                     reverse_rank_contact = reverse_rank_contact)
+
     nodes$x <- coor$x
     nodes$y <- coor$y
 

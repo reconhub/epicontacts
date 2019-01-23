@@ -31,10 +31,12 @@
 #'   contacts data should be used to color the edges of the graph.
 #' 
 #' @param edge_linetype An integer or character string indicating which field of
-#'   the contacts data should be used to indicate the edge linetype. If the
-#'   output format is visNetwork, this field of the contacts data must contain a
-#'   binary variable, as visNetwork only supports dashed/non-dashed edges.
-#'  
+#'   the contacts data should be used to indicate the edge linetype.
+#' 
+#' @param edge_alpha An integer/numeric indicating the global transparency of
+#'   the edges, or a character string indicating which field of the contacts data
+#'   should be used to indicate the edge transparency.
+#' 
 #' @param col_pal A scale_fill ggplot function specifying the color palette for
 #'   the nodes. The function must be provided (e.g. scale_fill_discrete), not
 #'   the palette itself (e.g. scale_fill_discrete()). 
@@ -81,6 +83,14 @@
 #' @param reverse_node_order A logical indicating if the ordering of the nodes
 #'   should be reversed. This argument is only called when type = 'ttree'.
 #'
+#' @param null_node_color A character indicating the global node colour if
+#'   node_color has not been specifed or has been specified as NULL.
+#'
+#' @param null_edge_color A character indicating the global edge colour if
+#'   edge_color has not been specifed or has been specified as NULL.
+#'
+#' @param lineend Character indicating the lineend to be used for geom_segment.
+#' 
 #' @param position_unlinked A character string indicating where unlinked cases
 #'   should be placed. Valid options are 'top', 'bottom' and 'middle', where
 #'   'middle' will place unlinked cases according to root_order. This argument
@@ -89,6 +99,13 @@
 #' @param position_dodge A logical indicating if two cases can occupy the same y
 #'   coordinate or 'dodge' each other. This argument is only called when type =
 #'   'ttree'.
+#'
+#' @param label A logical indicating if case IDs should be displayed on the
+#'   y-axis labels. Only works when position_dodge = TRUE, otherwise
+#'   y-coordinates are not unique.
+#'
+#' @param y_coor Manual specification of y coordinates. Must be a vector with one
+#'   y coordinate for each case between 0 and 1.
 #'
 #' @param ... Further arguments to be passed to \code{ggplot}.
 #'
@@ -129,29 +146,29 @@ vis_ggplot <- function(x,
                        edge_color = NULL,
                        edge_width = 1,
                        edge_linetype = NULL,
+                       edge_alpha = NULL,
                        col_pal = NULL,
                        edge_col_pal = NULL,
                        size_range = c(3, 10),
                        legend = TRUE,
-                       thin = TRUE,
                        ttree_shape = 'branching',
                        root_order = 'size',
                        node_order = 'size',
                        reverse_root_order = FALSE,
                        reverse_node_order = FALSE,
+                       null_node_color = 'black',
+                       null_edge_color = 'black',
+                       lineend = 'butt',
                        position_unlinked = 'bottom',
-                       position_dodge = FALSE){
+                       position_dodge = FALSE,
+                       label = FALSE,
+                       y_coor = NULL){
 
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
   ## for the whole lot. These attributes are in turn used for plotting: as color
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
-
-  ## handling
-  if (thin) {
-    x <- thin(x)
-  }
 
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
@@ -165,20 +182,28 @@ vis_ggplot <- function(x,
   ## check edge_linetype (edge attribute used for linetype)
   edge_linetype <- assert_edge_linetype(x, edge_linetype)
 
+  ## check edge_alpha (edge attribute used for alpha)
+  edge_alpha <- assert_edge_alpha(x, edge_alpha)
+
+  ## If label = TRUE, position_dodge must also be
+  if(label & !position_dodge) {
+    stop("position_dodge must be TRUE if label is TRUE")
+  }
+  
   ## Calculate R_i if needed
-  if('R_i' %in% c(node_color, node_size)) {
+  if('R_i' %in% c(node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- sapply(x$linelist$id, function(i) sum(x$contacts$from == i, na.rm = TRUE))
   }
   
   ## Check for multiple incoming edges per node
-  tab <- table(x$contacts$to)
-  culprits <- names(tab)[tab > 1]
-  if (length(culprits) != 0) {
-    culprits <- paste(culprits, collapse = ", ")
-    msg <- sprintf("multiple infectors found for %s . use type = 'network'",
-                   culprits)
-    stop(msg)
-  }
+#  tab <- table(x$contacts$to)
+#  culprits <- names(tab)[tab > 1]
+#  if (length(culprits) != 0) {
+#    culprits <- paste(culprits, collapse = ", ")
+#    msg <- sprintf("multiple infectors found for %s . use type = 'network'",
+#                   culprits)
+#    stop(msg)
+#  }
 
   ## check that x_axis is specified
   if (is.null(x_axis)) {
@@ -187,9 +212,10 @@ vis_ggplot <- function(x,
 
   nodes <- x$linelist
   edges <- x$contacts
-  
+
   ## Get x and y coordinates
-  coor <- get_coor(x,
+  if(is.null(y_coor)) {
+    coor <- get_coor(x,
                    x_axis = x_axis,
                    position_dodge = position_dodge,
                    root_order = root_order,
@@ -197,10 +223,13 @@ vis_ggplot <- function(x,
                    node_order = node_order,
                    reverse_node_order = reverse_node_order,
                    position_unlinked = position_unlinked)
-    
+  } else {
+    coor <- data.frame(x = x$linelist[[x_axis]], y = y_coor)
+  }
+  
   nodes$x <- coor$x
   nodes$y <- coor$y
-    
+
   ## Move isolated cases to the bottom
   if(position_unlinked == 'top') {
     nodes$y[nodes$y == 0] <- 1
@@ -210,29 +239,31 @@ vis_ggplot <- function(x,
 
     ## Get vertical and horizontal edges with correct edge attributes
     df <- get_g_rect(nodes, edges)
-    
-    inf_ind <- match(edges$from[match(edges$to, nodes$id)], nodes$id)
 
-    df1 <- data.frame(y = nodes$y,
-                      yend = nodes$y,
+    i_ind <- match(edges$to, nodes$id)
+    inf_ind <- match(edges$from, nodes$id)
+
+    ## Get horizontal edges
+    df1 <- data.frame(y = nodes$y[i_ind],
+                      yend = nodes$y[i_ind],
                       x = nodes$x[inf_ind],
-                      xend = nodes$x)
+                      xend = nodes$x[i_ind])
     df1 <- cbind(df1, edges[!names(edges) %in% c("from", "to")])
-    df1 <- na.omit(df1)
+    df <- df[apply(df[,1:4], 1, function(xx) !any(is.na(xx))),]
     
     df <- rbind(df, df1)
 
   } else if(ttree_shape == 'branching') {
 
-    inf_ind <- match(edges$from[match(edges$to, nodes$id)], nodes$id)
     i_ind <- match(edges$to, nodes$id)
+    inf_ind <- match(edges$from, nodes$id)
     
     df <- data.frame(y = nodes$y[inf_ind],
                      yend = nodes$y[i_ind],
                      x = nodes$x[inf_ind],
                      xend = nodes$x[i_ind])
     df <- cbind(df, edges[!names(edges) %in% c("from", "to")])
-    df <- na.omit(df)
+    df <- df[apply(df[,1:4], 1, function(xx) !any(is.na(xx))),]
 
   }
 
@@ -315,7 +346,7 @@ vis_ggplot <- function(x,
       point <- geom_point(data = nodes,
                           aes_string(x = "x",
                                      y = "y"),
-                          fill = 'black',
+                          fill = null_node_color,
                           size = node_size,
                           shape = 21)
     } else {
@@ -363,7 +394,7 @@ vis_ggplot <- function(x,
                           aes_string(x = "x",
                                      y = "y",
                                      size = node_size),
-                          fill = 'black',
+                          fill = null_node_color,
                           shape = 21)
     } else {
       point <- geom_point(data = nodes,
@@ -376,27 +407,88 @@ vis_ggplot <- function(x,
     
   }
 
+  ## If edge_alpha is numeric, use as alpha specification for all edges
+  if(inherits(edge_alpha, c("numeric", "integer"))) {
+    if(is.null(edge_color) | missing(edge_color)) {
+      seg <- geom_segment(aes_string(x = "x",
+                                     xend = "xend",
+                                     y = "y",
+                                     yend = "yend",
+                                     linetype = edge_linetype),
+                          color = null_edge_color,
+#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          alpha = edge_alpha,
+                          lineend = lineend,
+                          size = edge_width)
+    } else {
+      seg <- geom_segment(aes_string(x = "x",
+                                     xend = "xend",
+                                     y = "y",
+                                     yend = "yend",
+                                     color = edge_color,
+                                     linetype = edge_linetype),
+#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          alpha = edge_alpha,
+                          lineend = lineend,
+                          size = edge_width)
+
+    }
+  } else {
+    if(is.null(edge_color) | missing(edge_color)) {
+      seg <- geom_segment(aes_string(x = "x",
+                                     xend = "xend",
+                                     y = "y",
+                                     yend = "yend",
+                                     linetype = edge_linetype,
+                                     alpha = edge_alpha),
+                          color = null_edge_color,
+                          lineend = lineend,
+#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          size = edge_width)
+    } else {
+      seg <- geom_segment(aes_string(x = "x",
+                                     xend = "xend",
+                                     y = "y",
+                                     yend = "yend",
+                                     color = edge_color,
+                                     linetype = edge_linetype,
+                                     alpha = edge_alpha),
+                          lineend = lineend,
+#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          size = edge_width)
+    }
+  }
+
+
+  if(label) {
+    y_scale <- scale_y_continuous(name = NULL,
+                                  breaks = sort(coor$y),
+                                  minor_breaks = NULL,
+                                  labels = x$linelist$id[order(coor$y)],
+                                  expand = c(0.01, 0.01))
+    ttheme <- theme(axis.ticks.y = element_blank(),
+                    axis.title.y = element_blank(),
+                    panel.grid.minor.y = element_blank())
+  } else {
+    y_scale <- NULL
+    ttheme <-theme(axis.text.y = element_blank(),
+                   axis.ticks.y = element_blank(),
+                   axis.title.y = element_blank(),
+                   panel.grid.major.y = element_blank(),
+                   panel.grid.minor.y = element_blank())
+  }
+
   out <- ggplot(df) +
-    geom_segment(aes_string(x = "x",
-                            xend = "xend",
-                            y = "y",
-                            yend = "yend",
-                            color = edge_color,
-                            linetype = edge_linetype),
-                 lineend = 'square',
-                 size = edge_width) +
+    seg +
     point +
     col_pal +
     edge_col_pal +
     size_pal +
+    y_scale +
     theme_minimal() +
-    labs(x = x_axis) +
-    theme(axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          axis.title.y = element_blank(),
-          panel.grid.major.y = element_blank(),
-          panel.grid.minor.y = element_blank())
-
+    ttheme +
+    labs(x = x_axis)
+    
   return(out)
   
 }
