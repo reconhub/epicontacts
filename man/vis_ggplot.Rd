@@ -6,11 +6,13 @@
 \usage{
 vis_ggplot(x, x_axis, node_color = x_axis, node_size = 5,
   edge_color = NULL, edge_width = 1, edge_linetype = NULL,
-  col_pal = NULL, edge_col_pal = NULL, size_range = c(3, 10),
-  legend = TRUE, thin = TRUE, ttree_shape = "branching",
+  edge_alpha = NULL, col_pal = NULL, edge_col_pal = NULL,
+  size_range = c(3, 10), legend = TRUE, ttree_shape = "branching",
   root_order = "size", node_order = "size",
   reverse_root_order = FALSE, reverse_node_order = FALSE,
-  position_unlinked = "bottom", position_dodge = FALSE)
+  null_node_color = "black", null_edge_color = "black",
+  lineend = "butt", position_unlinked = "bottom",
+  position_dodge = FALSE, label = FALSE, y_coor = NULL)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -33,9 +35,11 @@ infection/contacts) will be calculated and used to specify the node size.}
 contacts data should be used to color the edges of the graph.}
 
 \item{edge_linetype}{An integer or character string indicating which field of
-the contacts data should be used to indicate the edge linetype. If the
-output format is visNetwork, this field of the contacts data must contain a
-binary variable, as visNetwork only supports dashed/non-dashed edges.}
+the contacts data should be used to indicate the edge linetype.}
+
+\item{edge_alpha}{An integer/numeric indicating the global transparency of
+the edges, or a character string indicating which field of the contacts data
+should be used to indicate the edge transparency.}
 
 \item{col_pal}{A scale_fill ggplot function specifying the color palette for
 the nodes. The function must be provided (e.g. scale_fill_discrete), not
@@ -50,9 +54,6 @@ maximum node size.}
 
 \item{legend}{A logical indicating whether a legend should be added to the
 plot.}
-
-\item{thin}{A logical indicating if the data should be thinned with
-\code{\link{thin}} so that only cases with contacts should be plotted.}
 
 \item{ttree_shape}{'branching' will create a branching transmission
 tree. 'rectangle' will create a rectangular shaped plot similar to a
@@ -78,6 +79,14 @@ hsould be reversed. This argument is only called when type = 'ttree'.}
 \item{reverse_node_order}{A logical indicating if the ordering of the nodes
 should be reversed. This argument is only called when type = 'ttree'.}
 
+\item{null_node_color}{A character indicating the global node colour if
+node_color has not been specifed or has been specified as NULL.}
+
+\item{null_edge_color}{A character indicating the global edge colour if
+edge_color has not been specifed or has been specified as NULL.}
+
+\item{lineend}{Character indicating the lineend to be used for geom_segment.}
+
 \item{position_unlinked}{A character string indicating where unlinked cases
 should be placed. Valid options are 'top', 'bottom' and 'middle', where
 'middle' will place unlinked cases according to root_order. This argument
@@ -86,6 +95,16 @@ is only called when type = 'ttree'.}
 \item{position_dodge}{A logical indicating if two cases can occupy the same y
 coordinate or 'dodge' each other. This argument is only called when type =
 'ttree'.}
+
+\item{label}{A logical indicating if case IDs should be displayed on the
+y-axis labels. Only works when position_dodge = TRUE, otherwise
+y-coordinates are not unique.}
+
+\item{y_coor}{Manual specification of y coordinates. Must be a vector with one
+y coordinate for each case between 0 and 1.}
+
+\item{thin}{A logical indicating if the data should be thinned with
+\code{\link{thin}} so that only cases with contacts should be plotted.}
 
 \item{ttree_output}{'visnetwork' will output to visNetwork, 'ggplot' will
 output to ggplot2. visnetwork is recommended for interactive uses, ggplot

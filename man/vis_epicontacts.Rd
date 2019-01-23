@@ -14,7 +14,8 @@ vis_epicontacts(x, type = "network", node_color = "id",
   thin = TRUE, selector = TRUE, editor = FALSE, x_axis = NULL,
   ttree_shape = "branching", root_order = "size",
   node_order = "onset", reverse_root_order = FALSE,
-  reverse_node_order = FALSE, position_unlinked = "bottom",
+  reverse_node_order = FALSE, rank_contact = x_axis,
+  reverse_rank_contact = FALSE, position_unlinked = "bottom",
   edge_flex = FALSE, highlight_downstream = FALSE,
   position_dodge = FALSE, ...)
 }
@@ -133,6 +134,14 @@ hsould be reversed. This argument is only called when type = 'ttree'.}
 
 \item{reverse_node_order}{A logical indicating if the ordering of the nodes
 should be reversed. This argument is only called when type = 'ttree'.}
+
+\item{rank_contact}{If more than one incoming contact is provided for a given
+case, which attribute in the linelist should be used to rank the contacts
+and choose the top value. This contact forms the 'backbone' of the
+transmission tree and determines the y-position of the case.}
+
+\item{reverse_rank_contact}{Logical indicating if the contact ranking should
+be reversed in order.}
 
 \item{position_unlinked}{A character string indicating where unlinked cases
 should be placed. Valid options are 'top', 'bottom' and 'middle', where
