@@ -300,3 +300,31 @@ plot(x,
      position_dodge = FALSE,
      selector = FALSE)
 ```
+
+## Outputting to ggplot
+
+The same algorithm was implemented within ggplot. Most of the available options remain the same,
+though check the documentation to be sure. The benefit of the ggplot output is that it allows
+much more customisation by the user, as seen below in renaming the legend labels.
+
+```{r, fig.width = 10, fig.height = 8}
+plot(x, 
+     method = 'ggplot',
+     x_axis = 'onset',
+     ttree_shape = 'branching',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(3, 8),
+     edge_linetype = 'status',
+     position_dodge = FALSE) +
+  labs(x = "Date of symptom onset",
+       fill = 'Age of case',
+       size = "# cases infected",
+       linetype = "Contact status") +
+  scale_x_date(breaks = "1 week", 
+               date_labels = "%d-%b")
+```
