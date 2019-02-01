@@ -161,6 +161,7 @@ vis_ggplot <- function(x,
                        lineend = 'butt',
                        position_unlinked = 'bottom',
                        position_dodge = FALSE,
+                       split_type = 2,
                        label = FALSE,
                        y_coor = NULL){
 
@@ -222,7 +223,8 @@ vis_ggplot <- function(x,
                    reverse_root_order = reverse_root_order,
                    node_order = node_order,
                    reverse_node_order = reverse_node_order,
-                   position_unlinked = position_unlinked)
+                   position_unlinked = position_unlinked,
+                   split_type = split_type)
   } else {
     coor <- data.frame(x = x$linelist[[x_axis]], y = y_coor)
   }

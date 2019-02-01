@@ -34,7 +34,7 @@ the package, depending on the value of \code{method}:
 
 \item \code{graph3D}: calls the function \code{\link{graph3D}}
 
-\item \code{ggplot}: calls the function \code{link\vis_ggplot}
+\item \code{ggplot}: calls the function \code{link{vis_ggplot}}
 
 }
 }

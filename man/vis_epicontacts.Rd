@@ -17,7 +17,7 @@ vis_epicontacts(x, type = "network", node_color = "id",
   reverse_node_order = FALSE, rank_contact = x_axis,
   reverse_rank_contact = FALSE, position_unlinked = "bottom",
   edge_flex = FALSE, highlight_downstream = FALSE,
-  position_dodge = FALSE, ...)
+  position_dodge = FALSE, split_type = 2, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}

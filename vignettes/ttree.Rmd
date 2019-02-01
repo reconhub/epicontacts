@@ -24,6 +24,9 @@ illustrates how the `epicontacts` package can be used to create dynamic transmis
 chain visualisations like the one below:
 
 ```{r, echo = FALSE}
+library(viridis)
+library(ggplot2)
+library(epicontacts)
 ## Simulate outbreak and return epicontacts object
 sim_epicontacts <- function(R0 = 2, gentime_mu = 15, gentime_sd = 8) {
 
@@ -63,10 +66,9 @@ sim_epicontacts <- function(R0 = 2, gentime_mu = 15, gentime_sd = 8) {
 	
 }
 
-set.seed(3)
-x <- sim_epicontacts()
+data(package = 'epicontacts')
 
-plot(x,
+plot(sim,
      type = 'ttree',
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -98,7 +100,7 @@ of symptom onset, age, sex and outcome for each case. The contacts dataframe spe
 Below is an overview of the outbreak data as an `epicontacts` object.
 
 ```{r, echo=FALSE}
-x
+sim
 ```
 
 
@@ -110,7 +112,7 @@ as a transmission tree using the `type` argument, and indicate which column in o
 linelist should be used for the x-axis (in this case, the date of symptom onset).
 
 ```{r}
-plot(x, type = 'ttree', x_axis = 'onset')
+plot(sim, type = 'ttree', x_axis = 'onset')
 ```
 
 This is a dynamic visualisation with moveable nodes that provides additional node
@@ -126,7 +128,7 @@ caused by each case), and `size` is the total number of downstream cases (i.e th
 cluster with that case as an ancestor). For example:
 
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      node_color = 'age',
@@ -141,7 +143,7 @@ Edge color, width and linetype can be mapped to a given column in the contacts d
 For example:
 
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      node_color = 'age',
@@ -162,7 +164,7 @@ in a densely connected network. The second shape is `rectangle`, which produces 
 a phylogeny. For example:
 
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -182,7 +184,7 @@ roots of each transmission chain (i.e. the index case of each chain) is specifie
 (`root_order = "onset"`) and internal nodes ordered by downstream clust size (`node_order = "size"`).
 
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -202,7 +204,7 @@ argument. The position of unconnected cases (i.e. with no reported contacts) is 
 `position_unlinked` argument. 
 
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -225,7 +227,7 @@ by toggling the `edge_flex` argument. All downstream cases of a given node can b
 highlighted upon node selection using the `highlight_downstream` argument. 
 
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -245,7 +247,7 @@ plot(x,
 The `height` and `width` of the figure can be specified in pixels. 
 
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -271,20 +273,20 @@ is still a work in progres and works best with `ttree_shape = "branching"`.
 
 ```{r, echo = FALSE}
 set.seed(1)
-to <- sample(x$linelist$id, 5)
-from <- sapply(match(to, x$linelist$id), 
-               function(i) sample(x$linelist$id[x$linelist$onset < x$linelist$onset[i]], 1))
+to <- sample(sim$linelist$id, 5)
+from <- sapply(match(to, sim$linelist$id), 
+               function(i) sample(sim$linelist$id[sim$linelist$onset < sim$linelist$onset[i]], 1))
 
 contact_2 <- data.frame(from = from, 
                         to = to,
                         status = sample(c("confirmed", "suspected"), 5, TRUE),
                         duration = runif(5, 0, 20),
-                        date = sample(x$linelist$onset, 5))
+                        date = sample(sim$linelist$onset, 5))
 
-x$contacts <- rbind(x$contacts, contact_2)
+sim$contacts <- rbind(sim$contacts, contact_2)
 ```
 ```{r}
-plot(x, 
+plot(sim, 
      type = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'branching',
@@ -308,7 +310,7 @@ though check the documentation to be sure. The benefit of the ggplot output is t
 much more customisation by the user, as seen below in renaming the legend labels.
 
 ```{r, fig.width = 10, fig.height = 8}
-plot(x, 
+plot(sim, 
      method = 'ggplot',
      x_axis = 'onset',
      ttree_shape = 'branching',

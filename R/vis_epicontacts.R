@@ -221,6 +221,7 @@ vis_epicontacts <- function(x,
                             edge_flex = FALSE,
                             highlight_downstream = FALSE,
                             position_dodge = FALSE,
+                            split_type = 2,
                             ...){
 
   ## In the following, we pull the list of all plotted nodes (those from the
@@ -339,7 +340,8 @@ vis_epicontacts <- function(x,
                      reverse_node_order = reverse_node_order,
                      position_unlinked = position_unlinked,
                      rank_contact = rank_contact,
-                     reverse_rank_contact = reverse_rank_contact)
+                     reverse_rank_contact = reverse_rank_contact,
+                     split_type = split_type)
 
     nodes$x <- coor$x
     nodes$y <- coor$y
@@ -591,8 +593,9 @@ vis_epicontacts <- function(x,
     if (!is.null(node_color) &&  (K < legend_max)) {
       leg_nodes <- data.frame(label = node_col_info$leg_lab,
                               color = node_col_info$leg_col,
-                              shape = "box",
-                              shadow = TRUE,
+                              shape = "circle",
+                              shadow = FALSE,
+                              position = 'top',
                               font.size = 20)
     } else {
       leg_nodes <- NULL

@@ -12,7 +12,8 @@ vis_ggplot(x, x_axis, node_color = x_axis, node_size = 5,
   reverse_root_order = FALSE, reverse_node_order = FALSE,
   null_node_color = "black", null_edge_color = "black",
   lineend = "butt", position_unlinked = "bottom",
-  position_dodge = FALSE, label = FALSE, y_coor = NULL)
+  position_dodge = FALSE, split_type = 2, label = FALSE,
+  y_coor = NULL)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}

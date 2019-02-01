@@ -317,19 +317,35 @@ get_coor <- function(x,
                      reverse_node_order = FALSE,
                      rank_contact = x_axis,
                      reverse_rank_contact = FALSE,
-                     position_unlinked = 'bottom') {
+                     position_unlinked = 'bottom',
+                     split_type = 2) {
 
   ## Position_dodge specifies if two cases can occupy the same y coordinate
-  get_split <- function(len) {
-    if(len %% 2 != 0 & position_dodge) {
-      len <- len + 1
-      odd <- TRUE
-    } else {
-      odd <- FALSE
+  get_split <- function(len, split_type = 1) {
+    if(split_type == 1) {
+      if(len %% 2 != 0 & position_dodge) {
+        len <- len + 1
+        odd <- TRUE
+      } else {
+        odd <- FALSE
+      }
+      sq <- seq(1, 1 + 2*(len - 1), 2)
+      out <- sq - median(sq)
+      if(odd & position_dodge) out <- out[-1]
+    } else if(split_type == 2) {
+      if(position_dodge) {
+        out <- 1:len
+      } else {
+        out <- 0:(len - 1)
+      }
+    } else if(split_type == 3) {
+      if(position_dodge) {
+        out <- (1:len)*-1
+      } else {
+        out <- (0:(len - 1)*-1)
+      }
     }
-    sq <- seq(1, 1 + 2*(len - 1), 2)
-    out <- sq - median(sq)
-    if(odd & position_dodge) out <- out[-1]
+
     return(out)
   }
 
@@ -380,7 +396,7 @@ get_coor <- function(x,
       for(y in grouped) {
 
         ## Get the splitting at each infector
-        splt <- get_split(length(y))
+        splt <- get_split(length(y), split_type)
 
         ## Re-order nodes by order_nodes
         if(!is.null(node_order)) {
@@ -420,11 +436,15 @@ get_coor <- function(x,
 
         linked_roots <- lapply(linked, function(j) if(length(unique(j)) > 1) t(combn(unique(j), 2)))
         linked_roots <- linked_roots[!vapply(linked_roots, is.null, TRUE)]
-        linked_roots <- matrix(unlist(linked_roots), ncol = 2, byrow = TRUE)
+        if(length(linked_roots) > 0) {
+          linked_roots <- matrix(unlist(linked_roots), ncol = 2, byrow = TRUE)
+        }
 
+      } else {
+        linked_roots <- numeric()
       }
       
-      splt <- get_split(length(ind))
+      splt <- get_split(length(ind), split_type)
       
       if(!is.null(root_order)) {
         
@@ -436,8 +456,7 @@ get_coor <- function(x,
         } else {
 
           ord <- order(linelist[[root_order]][ind], decreasing = reverse_root_order)
-
-          if(length(multiple_inf) > 0) {
+          if(length(linked_roots) > 0) {
             for(j in seq_len(nrow(linked_roots))) {
               sub_ord <- ord[match(linked_roots[j,], linelist$id[ind])]
               min_ind <- match(linked_roots[j, which.min(sub_ord)], linelist$id[ind])
@@ -464,7 +483,7 @@ get_coor <- function(x,
 
     }
     
-    mat[ind, i] <- to_add*prop[i]#/2
+    mat[ind, i] <- to_add*prop[i]/2
     
   }
 
@@ -733,8 +752,8 @@ get_g_rect <- function(linelist, contacts) {
     ind <- apply(vert_nodes, 1, function(x) which(x[[1]] == contacts$from &
                                                  x[[2]] == contacts$to))
 
-    ## cbind edge attributes
-    tmp <- cbind(tmp, contacts[ind, !names(contacts) %in% c("from", "to")])
+    ## cbind edge attributes - choose the first one if there are multiple
+    tmp <- cbind(tmp, contacts[sapply(ind, "[", 1), !names(contacts) %in% c("from", "to")])
     
     out <- rbind(out, tmp)
 
