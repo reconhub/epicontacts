@@ -37,6 +37,10 @@
 #'   the edges, or a character string indicating which field of the contacts data
 #'   should be used to indicate the edge transparency.
 #' 
+#' @param edge_width An integer/numeric indicating the global width of
+#'   the edges, or a character string indicating which field of the contacts data
+#'   should be mapped to the edge width.
+#' 
 #' @param col_pal A scale_fill ggplot function specifying the color palette for
 #'   the nodes. The function must be provided (e.g. scale_fill_discrete), not
 #'   the palette itself (e.g. scale_fill_discrete()). 
@@ -51,18 +55,10 @@
 #' @param legend A logical indicating whether a legend should be added to the
 #'   plot.
 #' 
-#' @param thin A logical indicating if the data should be thinned with
-#'   \code{\link{thin}} so that only cases with contacts should be plotted.
-#'
 #' @param ttree_shape 'branching' will create a branching transmission
 #'   tree. 'rectangle' will create a rectangular shaped plot similar to a
 #'   phylogeny that avoids overlapping edges. This argument is only called when
 #'   type = 'ttree'.
-#'
-#' @param ttree_output 'visnetwork' will output to visNetwork, 'ggplot' will
-#'   output to ggplot2. visnetwork is recommended for interactive uses, ggplot
-#'   for static figure generation and when axis labels and legends are
-#'   required. ggplot figures are only available for type = 'ttree'.
 #'
 #' @param root_order A character string indicating which field of the linelist
 #'   data is used to vertically order index cases of individual transmission
@@ -100,6 +96,10 @@
 #'   coordinate or 'dodge' each other. This argument is only called when type =
 #'   'ttree'.
 #'
+#' @param split_type If 1, the parent node is positioned in the middle of its
+#'   downstream nodes. If 2, the parent node is found at the top. If 3, at the
+#'   bottom.
+#'
 #' @param label A logical indicating if case IDs should be displayed on the
 #'   y-axis labels. Only works when position_dodge = TRUE, otherwise
 #'   y-coordinates are not unique.
@@ -114,6 +114,11 @@
 #' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
 #'   \code{\link{edges_pal}} and \code{\link{cases_pal}} for color palettes used
 #'
+#' @importFrom ggplot2 aes_string element_blank geom_point geom_segment ggplot
+#'   labs scale_color_gradient scale_color_viridis_d scale_fill_viridis_c
+#'   scale_fill_viridis_d scale_size scale_y_continuous theme theme_minimal
+#'
+#' 
 #' @examples
 #' if (require(outbreaks)) {
 #'

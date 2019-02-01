@@ -160,6 +160,10 @@ the the selected node should be highlighted. Defaults to FALSE if type =
 coordinate or 'dodge' each other. This argument is only called when type =
 'ttree'.}
 
+\item{split_type}{If 1, the parent node is positioned in the middle of its
+downstream nodes. If 2, the parent node is found at the top. If 3, at the
+bottom.}
+
 \item{...}{Further arguments to be passed to \code{visNetwork}.}
 }
 \value{

@@ -35,6 +35,10 @@ infection/contacts) will be calculated and used to specify the node size.}
 \item{edge_color}{An index or character string indicating which field of the
 contacts data should be used to color the edges of the graph.}
 
+\item{edge_width}{An integer/numeric indicating the global width of
+the edges, or a character string indicating which field of the contacts data
+should be mapped to the edge width.}
+
 \item{edge_linetype}{An integer or character string indicating which field of
 the contacts data should be used to indicate the edge linetype.}
 
@@ -97,20 +101,16 @@ is only called when type = 'ttree'.}
 coordinate or 'dodge' each other. This argument is only called when type =
 'ttree'.}
 
+\item{split_type}{If 1, the parent node is positioned in the middle of its
+downstream nodes. If 2, the parent node is found at the top. If 3, at the
+bottom.}
+
 \item{label}{A logical indicating if case IDs should be displayed on the
 y-axis labels. Only works when position_dodge = TRUE, otherwise
 y-coordinates are not unique.}
 
 \item{y_coor}{Manual specification of y coordinates. Must be a vector with one
 y coordinate for each case between 0 and 1.}
-
-\item{thin}{A logical indicating if the data should be thinned with
-\code{\link{thin}} so that only cases with contacts should be plotted.}
-
-\item{ttree_output}{'visnetwork' will output to visNetwork, 'ggplot' will
-output to ggplot2. visnetwork is recommended for interactive uses, ggplot
-for static figure generation and when axis labels and legends are
-required. ggplot figures are only available for type = 'ttree'.}
 
 \item{...}{Further arguments to be passed to \code{ggplot}.}
 }

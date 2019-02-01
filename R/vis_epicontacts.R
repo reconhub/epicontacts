@@ -152,7 +152,11 @@
 #' @param position_dodge A logical indicating if two cases can occupy the same y
 #'   coordinate or 'dodge' each other. This argument is only called when type =
 #'   'ttree'.
-#'
+#' 
+#' @param split_type If 1, the parent node is positioned in the middle of its
+#'   downstream nodes. If 2, the parent node is found at the top. If 3, at the
+#'   bottom.
+#' 
 #' @param ... Further arguments to be passed to \code{visNetwork}.
 #'
 #' @return The same output as \code{visNetwork}.
@@ -309,7 +313,7 @@ vis_epicontacts <- function(x,
       col_pal <- viridis::viridis_pal()
     }
     if(missing(edge_col_pal)) {
-      edge_col_pal <- colorRampPalette(c("red", "black"))
+      edge_col_pal <- grDevices::colorRampPalette(c("red", "black"))
     }
     
     ## Check for multiple incoming edges per node

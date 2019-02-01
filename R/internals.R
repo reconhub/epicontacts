@@ -1,3 +1,10 @@
+#' Simulated outbreak for vignette
+#' 
+#' @name sim
+#' @docType data
+#'
+#'
+"sim"
 
 ## assert_xxx functions make basic tests on 'xxx' against the data ('x', an
 ## epicontacts object), and return a possibly processed 'xxx'.
@@ -330,7 +337,7 @@ get_coor <- function(x,
         odd <- FALSE
       }
       sq <- seq(1, 1 + 2*(len - 1), 2)
-      out <- sq - median(sq)
+      out <- sq - stats::median(sq)
       if(odd & position_dodge) out <- out[-1]
     } else if(split_type == 2) {
       if(position_dodge) {
@@ -434,7 +441,7 @@ get_coor <- function(x,
           linked[[j]] <- get_all_roots(multiple_inf[j], NULL, contacts, linelist, multiple_inf[j])
         }
 
-        linked_roots <- lapply(linked, function(j) if(length(unique(j)) > 1) t(combn(unique(j), 2)))
+        linked_roots <- lapply(linked, function(j) if(length(unique(j)) > 1) t(utils::combn(unique(j), 2)))
         linked_roots <- linked_roots[!vapply(linked_roots, is.null, TRUE)]
         if(length(linked_roots) > 0) {
           linked_roots <- matrix(unlist(linked_roots), ncol = 2, byrow = TRUE)
