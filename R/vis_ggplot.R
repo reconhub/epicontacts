@@ -166,7 +166,7 @@ vis_ggplot <- function(x,
                        lineend = 'butt',
                        position_unlinked = 'bottom',
                        position_dodge = FALSE,
-                       split_type = 2,
+                       split_type = 1,
                        label = FALSE,
                        y_coor = NULL){
 
@@ -195,6 +195,9 @@ vis_ggplot <- function(x,
   if(label & !position_dodge) {
     stop("position_dodge must be TRUE if label is TRUE")
   }
+
+  ## Remove NAs in contacts
+  x$contacts <- subset(x$contacts, !is.na(x$contacts$from) & !is.na(x$contacts$to))
   
   ## Calculate R_i if needed
   if('R_i' %in% c(node_color, node_size, node_order, root_order)) {
@@ -230,12 +233,12 @@ vis_ggplot <- function(x,
                    reverse_node_order = reverse_node_order,
                    position_unlinked = position_unlinked,
                    split_type = split_type)
+    nodes$y <- coor$y[-(1:2)]
   } else {
-    coor <- data.frame(x = x$linelist[[x_axis]], y = y_coor)
+    nodes$y <- y_coor
   }
   
-  nodes$x <- coor$x
-  nodes$y <- coor$y
+  nodes$x <- x$linelist[[x_axis]]
 
   ## Move isolated cases to the bottom
   if(position_unlinked == 'top') {
@@ -380,7 +383,7 @@ vis_ggplot <- function(x,
       node_size <- paste0(node_size, '_')
       nodes[[node_size]] <- numeric_node_size
       size_pal <- scale_size(range = c(size_range[1], size_range[2]),
-                             breaks = as.numeric(dates),
+                             breaks = scales::pretty_breaks(as.numeric(dates)),
                              labels = dates)
       
     } else if(inherits(nodes[[node_size]], 'factor')) {
@@ -390,10 +393,11 @@ vis_ggplot <- function(x,
       ind <- as.integer(nodes[[node_size]])
       nodes[[node_size]] <- ind
       size_pal <- scale_size(range = c(size_range[1], size_range[2]),
-                             breaks = sort(unique(ind)),
+                             breaks = scales::pretty_breaks(sort(unique(ind))),
                              labels = lev)
     } else {
-      size_pal <- scale_size(range = c(size_range[1], size_range[2]))
+      size_pal <- scale_size(range = c(size_range[1], size_range[2]),
+                             breaks = scales::pretty_breaks())
     }
 
     if(is.null(node_color) | missing(node_color)) {
@@ -441,7 +445,9 @@ vis_ggplot <- function(x,
 
     }
   } else {
+
     if(is.null(edge_color) | missing(edge_color)) {
+
       seg <- geom_segment(aes_string(x = "x",
                                      xend = "xend",
                                      y = "y",
@@ -465,7 +471,6 @@ vis_ggplot <- function(x,
                           size = edge_width)
     }
   }
-
 
   if(label) {
     y_scale <- scale_y_continuous(name = NULL,
