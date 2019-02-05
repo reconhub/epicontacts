@@ -141,11 +141,11 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
 
 
   ## make a list of all nodes, and generate a data.frame of node attributes
-  cont_nodes <- c(x$contacts$from, x$contacts$to)
-  list_nodes <- x$linelist$id
+  all_nodes <- get_id(x, which = "all", na.rm = TRUE)
+
   ## find out which nodes are unconnected to any other nodes
   ## This is only relevant when `thin = TRUE`
-  nodes <- data.frame(id = unique(c(list_nodes, cont_nodes)),
+  nodes <- data.frame(id = all_nodes,
                       stringsAsFactors = FALSE)
 
   nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)

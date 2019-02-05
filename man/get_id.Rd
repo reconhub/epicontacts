@@ -5,13 +5,16 @@
 \title{Access unique identifiers in epicontacts objects}
 \usage{
 get_id(x, which = c("linelist", "contacts", "all", "common", "from",
-  "to"))
+  "to"), na.rm = TRUE)
 }
 \arguments{
 \item{x}{an \code{\link{epicontacts}} object}
 
 \item{which}{the type of ID to return (see description); value can be
 'linelist', 'contacts', 'all', 'common', 'from' or 'to'.}
+
+\item{na.rm}{a `logical` indicating if `NA` should be removed from the output
+(`TRUE`, default) or not.}
 }
 \value{
 x a character vector of unique identifiers
