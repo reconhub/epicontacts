@@ -16,6 +16,9 @@
 #' @param which the type of ID to return (see description); value can be
 #'     'linelist', 'contacts', 'all', 'common', 'from' or 'to'.
 #'
+#' @param na.rm a `logical` indicating if `NA` should be removed from the output
+#'   (`TRUE`, default) or not.
+#'
 #' @return x a character vector of unique identifiers
 #'
 #' @examples
@@ -39,43 +42,48 @@
 #' }
 #'
 
-get_id <- function(x, which = c("linelist", "contacts", "all", "common", "from", "to")){
-    ## Issues with linelist and contacts is that there is no telling how much
-    ## overlap there are between the two datasets; whenever looking for a list
-    ## of unique identifiers, one could in fact refer to 6 different things
-    ## which are covered here.
+get_id <- function(x, which = c("linelist", "contacts", "all", "common", "from", "to"),
+                   na.rm = TRUE){
+  ## Issues with linelist and contacts is that there is no telling how much
+  ## overlap there are between the two datasets; whenever looking for a list
+  ## of unique identifiers, one could in fact refer to 6 different things
+  ## which are covered here.
 
-    ## checks
-    if (!inherits(x, "epicontacts")) {
-        stop("x is not an 'epicontacts' object")
-    }
-    which <- match.arg(which)
+  ## checks
+  if (!inherits(x, "epicontacts")) {
+    stop("x is not an 'epicontacts' object")
+  }
+  which <- match.arg(which)
 
-    ## get IDs
-    if (which=="linelist") {
-        out <- x$linelist$id
+  ## get IDs
+  if (which=="linelist") {
+    out <- x$linelist$id
+  }
+  if (which=="contacts") {
+    out <- unique(unlist(x$contacts[,1:2]))
+  }
+  if (which=="all") {
+    out <- unique(c(x$linelist$id, unlist(x$contacts[,1:2])))
+  }
+  if (which=="common") {
+    out <- intersect(x$linelist$id, unique(unlist(x$contacts[,1:2])))
+  }
+  if (which=="from") {
+    if (!x$directed) {
+      warning("x is not directed; 'from' has no particular meaning")
     }
-    if (which=="contacts") {
-        out <- unique(unlist(x$contacts[,1:2]))
+    out <- unique(x$contacts$from)
+  }
+  if (which=="to") {
+    if (!x$directed) {
+      warning("x is not directed; 'to' has no particular meaning")
     }
-    if (which=="all") {
-        out <- unique(c(x$linelist$id, unlist(x$contacts[,1:2])))
-    }
-    if (which=="common") {
-        out <- intersect(x$linelist$id, unique(unlist(x$contacts[,1:2])))
-    }
-    if (which=="from") {
-        if (!x$directed) {
-            warning("x is not directed; 'from' has no particular meaning")
-        }
-        out <- unique(x$contacts$from)
-    }
-    if (which=="to") {
-        if (!x$directed) {
-            warning("x is not directed; 'to' has no particular meaning")
-        }
-        out <- unique(x$contacts$to)
-    }
+    out <- unique(x$contacts$to)
+  }
+  if (na.rm) {
+    to_keep <- !is.na(out)
+    out <- out[to_keep]
+  }
 
-    return(out)
+  return(out)
 }
