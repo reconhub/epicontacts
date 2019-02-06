@@ -290,8 +290,17 @@ vis_epicontacts <- function(x,
   ## check edge_width (edge attribute used for width)
   edge_width <- assert_edge_width(x, edge_width)
 
+
   ## check edge_linetype (edge attribute used for linetype)
   edge_linetype <- assert_edge_linetype(x, edge_linetype)
+
+  ## make a list of all nodes, and generate a data.frame of node attributes
+  all_nodes <- get_id(x, which = "all", na.rm = TRUE)
+
+  ## find out which nodes are unconnected to any other nodes
+  ## This is only relevant when `thin = TRUE`
+  nodes <- data.frame(id = all_nodes,
+                      stringsAsFactors = FALSE)
 
   ## Calculate R_i if needed
   if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
