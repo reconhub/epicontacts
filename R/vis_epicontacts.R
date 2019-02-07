@@ -472,14 +472,15 @@ vis_epicontacts <- function(x,
                                   selectedBy = arg_selec,
                                   manipulation = editor)
   }
-
+  
+  ## should nodes collapse upon double clicking
+  if(collapse) {
+    collapse <- list(enabled = TRUE, keepCoord = TRUE)
+  }
 
   ## options specific to highlight_downstream
   if(highlight_downstream) {
     
-    if(collapse) {
-      collapse <- list(enabled = TRUE, keepCoord = TRUE)
-    }
 
     out <- visNetwork::visOptions(out,
                                   highlightNearest = list(enabled = TRUE,
@@ -496,7 +497,8 @@ vis_epicontacts <- function(x,
                                   highlightNearest = list(enabled = TRUE,
                                                           hideColor = 'rgba(200,200,200,1)'),
                                   selectedBy = arg_selec,
-                                  manipulation = editor)
+                                  manipulation = editor,
+                                  collapse = collapse)
   }
 
   out <- visNetwork::visPhysics(out, stabilization = FALSE)

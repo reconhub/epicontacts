@@ -555,12 +555,12 @@ vis_ttree <- function(x,
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) node_color else NULL
 
+  if(collapse) {
+    collapse <- list(enabled = TRUE, keepCoord = TRUE)
+  }
+  
   ## options specific to highlight_downstream
   if(highlight_downstream) {
-    
-    if(collapse) {
-      collapse <- list(enabled = TRUE, keepCoord = TRUE)
-    }
 
     out <- visNetwork::visOptions(out,
                                   highlightNearest = list(enabled = TRUE,
@@ -577,7 +577,8 @@ vis_ttree <- function(x,
                                   highlightNearest = list(enabled = TRUE,
                                                           hideColor = 'rgba(200,200,200,1)'),
                                   selectedBy = arg_selec,
-                                  manipulation = editor)
+                                  manipulation = editor,
+                                  collapse = collapse)
   }
 
   ## add fontAwesome
