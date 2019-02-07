@@ -555,6 +555,7 @@ vis_ttree <- function(x,
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) node_color else NULL
 
+  ## should nodes collapse upon double clicking
   if(collapse) {
     collapse <- list(enabled = TRUE, keepCoord = TRUE)
   }
