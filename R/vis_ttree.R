@@ -113,7 +113,7 @@ vis_ttree <- function(x,
                       position_unlinked = 'bottom',
                       edge_flex = FALSE,
                       position_dodge = FALSE,
-                      parent_pos = 'middle',
+                      parent_pos = c('middle', 'top', 'bottom'),
                       n_breaks = 10,
                       double_axis = FALSE,
                       ...) {
@@ -122,7 +122,7 @@ vis_ttree <- function(x,
   ## specified default. A list based method using the assign function looks
   ## neater but causes global binding warnings in check.
   args <- list(...)
-  node_color <- get_val('node_colour', x_axis, args)
+  node_color <- get_val('node_color', x_axis, args)
   node_shape <- get_val('node_shape', NULL, args)
   node_size <- get_val('node_size', 20, args)
   edge_color <- get_val('edge_color', NULL, args)
@@ -152,6 +152,8 @@ vis_ttree <- function(x,
   if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- sapply(x$linelist$id, function(i) sum(x$contacts$from == i, na.rm = TRUE))
   }
+
+  parent_pos <- match.arg(parent_pos)
 
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
