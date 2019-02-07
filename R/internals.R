@@ -23,7 +23,7 @@ assert_node_color <- function(x, node_color) {
       node_color <- names(x$linelist)[node_color]
     }
 
-    if (!node_color %in% c(names(x$linelist), 'R_i')) {
+    if (!node_color %in% c(names(x$linelist), 'R_i', 'clust_size')) {
       msg <- sprintf("node_color '%s' is not in the linelist", node_color)
       stop(msg)
     }
@@ -50,7 +50,7 @@ assert_node_shape <- function(x, node_shape) {
       node_shape <- names(x$linelist)[node_shape]
     }
 
-    if (!node_shape %in% c(names(x$linelist), 'R_i')) {
+    if (!node_shape %in% c(names(x$linelist), 'R_i', 'clust_size')) {
       msg <- sprintf("node_shape '%s' is not in the linelist", node_shape)
       stop(msg)
     }
@@ -73,7 +73,7 @@ assert_node_size <- function(x, node_size) {
     node_size <- NULL
   }
   if (!is.null(node_size)) {
-    if (!is.numeric(node_size) & !node_size %in% c(names(x$linelist), "R_i")) {
+    if (!is.numeric(node_size) & !node_size %in% c(names(x$linelist), 'R_i', 'clust_size')) {
       msg <- sprintf("node_size '%s' is not in the linelist", node_size)
       stop(msg)
     }
@@ -237,6 +237,86 @@ assert_edge_alpha <- function(x, edge_alpha) {
 
 
 
+assert_node_order <- function(x, node_order) {
+
+  if (length(node_order) > 1L) {
+    stop("'node_order' must indicate a single node attribute")
+  }
+  if (is.logical(node_order)){
+    stop("'node_order' cannot be a logical")
+  }
+  if (!is.null(node_order)) {
+    if (is.numeric(node_order)) {
+      node_order <- names(x$linelist)[node_order]
+    }
+
+    if (!node_order %in% c(names(x$linelist), 'R_i', 'size')) {
+      msg <- sprintf("node_order '%s' is not in the linelist", node_order)
+      stop(msg)
+    }
+  }
+
+  return(node_order)
+}
+
+
+
+
+
+
+assert_root_order <- function(x, root_order) {
+
+  if (length(root_order) > 1L) {
+    stop("'root_order' must indicate a single node attribute")
+  }
+  if (is.logical(root_order)){
+    stop("'root_order' cannot be a logical")
+  }
+  if (!is.null(root_order)) {
+    if (is.numeric(root_order)) {
+      root_order <- names(x$linelist)[root_order]
+    }
+
+    if (!root_order %in% c(names(x$linelist), 'R_i', 'size')) {
+      msg <- sprintf("root_order '%s' is not in the linelist", root_order)
+      stop(msg)
+    }
+  }
+
+  return(root_order)
+}
+
+
+
+
+
+
+assert_rank_contact <- function(x, rank_contact) {
+
+  if (length(rank_contact) > 1L) {
+    stop("'rank_contact' must indicate a single edge or node attribute")
+  }
+  if (is.logical(rank_contact)){
+    stop("'rank_contact' cannot be a logical")
+  }
+  if (!is.null(rank_contact)) {
+    if (is.numeric(rank_contact)) {
+      rank_contact <- names(x$contacts)[rank_contact]
+    }
+
+    if (!rank_contact %in% c(names(x$linelist), names(x$contacts), 'R_i', 'size')) {
+      msg <- sprintf("rank_contact '%s' is not in linelist or contacts", rank_contact)
+      stop(msg)
+    }
+  }
+
+  return(rank_contact)
+}
+
+
+
+
+
 
 ## Recursive function to identify how many layers deep a case is and who its
 ## root is. Leaf indicates the node you start with. With multiple infectors,
@@ -294,9 +374,9 @@ clean_cycles <- function(i, leaf, contacts, linelist, cycle_elements,
     return(contacts)
   } else if(nrow(incoming_edge) > 1) {
     if(!reverse_rank_contact) {
-      to_keep <- contacts[which.max(contacts[[rank_contact]]),]
+      to_keep <- incoming_edge[which.max(incoming_edge[[rank_contact]]),]
     } else {
-      to_keep <- contacts[which.min(contacts[[rank_contact]]),]
+      to_keep <- incoming_edge[which.min(incoming_edge[[rank_contact]]),]
     }
   } else {
     to_keep <- incoming_edge
@@ -357,6 +437,7 @@ get_all_roots <- function(i, root, contacts, linelist, leaf) {
     
     ## Break loop if cyclical
     if(j == leaf) {
+      browser()
       stop("type = 'ttree' does not work with cyclical networks. use type = 'network'")
     }
 
@@ -388,11 +469,11 @@ get_coor <- function(x,
                      reverse_rank_contact = FALSE,
                      position_unlinked = 'bottom',
                      double_axis = TRUE,
-                     split_type = 2) {
+                     parent_pos = 'middle') {
 
   ## Position_dodge specifies if two cases can occupy the same y coordinate
-  get_split <- function(len, split_type = 1) {
-    if(split_type == 1) {
+  get_split <- function(len, parent_pos = 'middle') {
+    if(parent_pos == 'middle') {
       if(len %% 2 != 0 & position_dodge) {
         len <- len + 1
         odd <- TRUE
@@ -402,13 +483,13 @@ get_coor <- function(x,
       sq <- seq(1, 1 + 2*(len - 1), 2)
       out <- sq - stats::median(sq)
       if(odd & position_dodge) out <- out[-1]
-    } else if(split_type == 2) {
+    } else if(parent_pos == 'bottom') {
       if(position_dodge) {
         out <- 1:len
       } else {
         out <- 0:(len - 1)
       }
-    } else if(split_type == 3) {
+    } else if(parent_pos == 'top') {
       if(position_dodge) {
         out <- (1:len)*-1
       } else {
@@ -451,16 +532,14 @@ get_coor <- function(x,
   contacts_clean <- contacts
   for(i in linelist$id) {
     contacts_clean <- clean_cycles(i,
-                                   leaf = 1,
+                                   leaf = i,
                                    contacts = contacts_clean,
                                    linelist = linelist,
                                    cycle_elements = NULL,
                                    rank_contact = rank_contact,
                                    reverse_rank_contact = reverse_rank_contact)
   }
-  
   for(i in linelist$id) {
-    
     treestat <- get_treestat(i,
                              depth = 1,
                              clust_size = clust_size,
@@ -509,7 +588,7 @@ get_coor <- function(x,
       for(y in grouped) {
 
         ## Get the splitting at each infector
-        splt <- get_split(length(y), split_type)
+        splt <- get_split(length(y), parent_pos)
 
         ## Re-order nodes by order_nodes
         if(!is.null(node_order)) {
@@ -542,12 +621,20 @@ get_coor <- function(x,
       if(length(multiple_inf) > 0) {
 
         linked <- list()
-        
+
+        ## We have to use contacts_clean (ie with cycles removed) when
+        ## identifying linked roots, otherwise we get stuck in cycle.
         for(j in seq_along(multiple_inf)) {
-          linked[[j]] <- get_all_roots(multiple_inf[j], NULL, contacts, linelist, multiple_inf[j])
+          linked[[j]] <- get_all_roots(multiple_inf[j],
+                                       NULL,
+                                       contacts_clean,
+                                       linelist,
+                                       multiple_inf[j])
         }
 
-        linked_roots <- lapply(linked, function(j) if(length(unique(j)) > 1) t(utils::combn(unique(j), 2)))
+        ## Get all combinations of linked roots
+        get_combn <- function(j) if(length(unique(j)) > 1) t(utils::combn(unique(j), 2))
+        linked_roots <- lapply(linked, get_combn)
         linked_roots <- linked_roots[!vapply(linked_roots, is.null, TRUE)]
         if(length(linked_roots) > 0) {
           linked_roots <- matrix(unlist(linked_roots), ncol = 2, byrow = TRUE)
@@ -556,8 +643,8 @@ get_coor <- function(x,
       } else {
         linked_roots <- numeric()
       }
-      
-      splt <- get_split(length(ind), split_type)
+
+      splt <- get_split(length(ind), parent_pos)
       
       if(!is.null(root_order)) {
         
@@ -584,13 +671,17 @@ get_coor <- function(x,
           
         } else {
 
+          ## Bring the lower ranked root (from root_order) right below the
+          ## higher ranked root by subtracting 0.01
           ord <- order(linelist[[root_order]][ind], decreasing = reverse_root_order)
           if(length(linked_roots) > 0) {
+            to_subtract <- 0.01
             for(j in seq_len(nrow(linked_roots))) {
               sub_ord <- ord[match(linked_roots[j,], linelist$id[ind])]
               min_ind <- match(linked_roots[j, which.min(sub_ord)], linelist$id[ind])
               max_ind <- match(linked_roots[j, which.max(sub_ord)], linelist$id[ind])
-              ord[min_ind] <- ord[max_ind] - 0.01
+              ord[min_ind] <- ord[max_ind] - to_subtract
+              to_subtract <- to_subtract + 0.01
             }
 
             ord <- match(ord, sort(ord))
@@ -666,7 +757,7 @@ get_coor <- function(x,
   }
   
   ##  return(data.frame(x = x$linelist[[x_axis]], y = y_pos))
-  return(list(y = y_pos, infector = infector))
+  return(list(y = y_pos, infector = infector, clust_size = clust_size))
   
 }
 
@@ -953,4 +1044,19 @@ extr_num <- function(x) {
 rescale <- function(x, min_val = 0, max_val = 1) {
   out <- (x - min(x))/(diff(range(x)))*(max_val - min_val)
   out <- out + min_val
+}
+
+
+## Make all string elements the same length n by inserting whitespaces
+get_adj_width <- function(x, n) {
+  diff <- n - nchar(x)
+  edge <- vapply(diff/2, strrep, " ", x = "  ")
+  return(paste0(edge, x, edge))
+}
+
+
+## This function will return the value of var in args if present, otherwise
+## returns the default value def.
+get_val <- function(var, def, args) {
+  if(var %in% names(args)) return(args[[var]]) else return(def)
 }

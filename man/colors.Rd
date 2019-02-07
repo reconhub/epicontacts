@@ -16,7 +16,8 @@ cases_pal(n)
 
 spectral(n)
 
-fac2col(x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE)
+fac2col(x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE,
+  adj_width = FALSE)
 }
 \arguments{
 \item{col}{A color vector to which transparency should be added.}
@@ -35,6 +36,10 @@ transparency, and 1 for full opacity.}
 \item{legend}{A logical indicating if legend info should be added to the
 output. If TRUE, the output will be a list, with colors in the
 \code{$color} component.}
+
+\item{adj_width}{A logical indicating if legend labels should be adjusted so
+they all have the same number of characters (by inserting
+whitespaces). This ensures the size of the legend keys are the same.}
 }
 \description{
 These functions are used for defining palettes or colors in the

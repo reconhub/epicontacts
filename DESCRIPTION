@@ -1,8 +1,8 @@
 Package: epicontacts
 Type: Package
 Title: Handling, Visualisation and Analysis of Epidemiological Contacts
-Version: 1.1.1
-Date: 2018-03-26
+Version: 1.2.0
+Date: 2018-02-06
 Authors@R: c(person("VP", "Nagraj", email = "vpnagraj@virginia.edu", role = c("aut", "cre")),
        	     person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut")),
 	     person("Nistara", "Randhawa", email = "nrandhawa@ucdavis.edu", role = c("aut")),
@@ -15,7 +15,7 @@ License: GPL (>=2)
 LazyData: TRUE
 RoxygenNote: 6.1.1
 Encoding: UTF-8
-Imports: grDevices, dplyr, igraph, visNetwork, threejs, colorspace, ggplot2
+Imports: grDevices, dplyr, igraph, visNetwork, threejs, colorspace, ggplot2, scales
 Suggests: outbreaks, testthat, covr, shiny, readr, knitr, rmarkdown, outbreaker, distcrete, epitrix, viridis
 VignetteBuilder: knitr
 URL: https://www.repidemicsconsortium.org/epicontacts/

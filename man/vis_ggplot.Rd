@@ -12,7 +12,7 @@ vis_ggplot(x, x_axis, node_color = x_axis, node_size = 5,
   reverse_root_order = FALSE, reverse_node_order = FALSE,
   null_node_color = "black", null_edge_color = "black",
   lineend = "butt", position_unlinked = "bottom",
-  position_dodge = FALSE, split_type = 2, label = FALSE,
+  position_dodge = FALSE, parent_pos = "middle", label = FALSE,
   y_coor = NULL)
 }
 \arguments{
@@ -101,9 +101,8 @@ is only called when type = 'ttree'.}
 coordinate or 'dodge' each other. This argument is only called when type =
 'ttree'.}
 
-\item{split_type}{If 1, the parent node is positioned in the middle of its
-downstream nodes. If 2, the parent node is found at the top. If 3, at the
-bottom.}
+\item{parent_pos}{Specify the position of the parent node relative to its
+children. Can be one of 'middle', 'top' or 'bottom'.}
 
 \item{label}{A logical indicating if case IDs should be displayed on the
 y-axis labels. Only works when position_dodge = TRUE, otherwise

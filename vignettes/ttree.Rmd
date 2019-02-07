@@ -67,9 +67,9 @@ sim_epicontacts <- function(R0 = 2, gentime_mu = 15, gentime_sd = 8) {
 }
 
 data(package = 'epicontacts')
-
+sim$directed <- TRUE
 plot(sim,
-     type = 'ttree',
+     method = 'ttree',
      x_axis = 'onset',
      ttree_shape = 'rectangle',
      root_order = 'size',
@@ -84,8 +84,6 @@ plot(sim,
      reverse_node_order = TRUE,
      selector = FALSE,
      highlight_downstream = TRUE,
-		 width = 800,
-		 height = 900
      )
 
 ```
@@ -95,7 +93,7 @@ plot(sim,
 We begin with an `epicontacts` object, which consists of a linelist dataframe (specifying case IDs and any available case metadata) and a contacts dataframe (specifying pairs of IDs that have been in contact and any available properties of these contacts). For a detailed introduction to the `epicontacts` class, see the [overview vignette](epicontacts.html).
 
 For this vignette, we will use a simulated outbreak as an example dataset. The linelist dataframe contains anonymised case IDs, dates
-of symptom onset, age, sex and outcome for each case. The contacts dataframe specifies the infector and infectee in the `from` and `to` columns, respectively, as well as the contact status (suspected or confirmed), duration of contact and date of first contact. It is important to note that the current implementation can only accomodate a single infector per case.
+of symptom onset, age, sex and outcome for each case. The contacts dataframe specifies the infector and infectee in the `from` and `to` columns, respectively, as well as the contact status (suspected or confirmed), duration of contact and date of first contact.
 
 Below is an overview of the outbreak data as an `epicontacts` object.
 
@@ -108,11 +106,11 @@ sim
 
 We can then create a dynamic and interactive visualise of these transmission
 chains using the `plot` function. We specify that we want to visualise our network
-as a transmission tree using the `type` argument, and indicate which column in our 
-linelist should be used for the x-axis (in this case, the date of symptom onset).
+as a transmission tree using the `method` argument, and indicate which column in our 
+linelistp should be used for the x-axis (in this case, the date of symptom onset).
 
 ```{r}
-plot(sim, type = 'ttree', x_axis = 'onset')
+plot(sim, method = 'ttree', x_axis = 'onset')
 ```
 
 This is a dynamic visualisation with moveable nodes that provides additional node
@@ -129,7 +127,7 @@ cluster with that case as an ancestor). For example:
 
 ```{r}
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
      x_axis = 'onset',
      node_color = 'age',
      node_size = 'R_i',
@@ -144,7 +142,7 @@ For example:
 
 ```{r}
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
      x_axis = 'onset',
      node_color = 'age',
      node_size = 'R_i',
@@ -165,7 +163,7 @@ a phylogeny. For example:
 
 ```{r}
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
      node_color = 'age',
@@ -185,7 +183,7 @@ roots of each transmission chain (i.e. the index case of each chain) is specifie
 
 ```{r}
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
      root_order = 'onset',
@@ -205,7 +203,7 @@ argument. The position of unconnected cases (i.e. with no reported contacts) is 
 
 ```{r}
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
      root_order = 'onset',
@@ -221,14 +219,91 @@ plot(sim,
      selector = FALSE)
 ```
 
-## Additional options
-Edges can curve upon manual adjustment of nodes, instead of remaining straight,
-by toggling the `edge_flex` argument. All downstream cases of a given node can be
-highlighted upon node selection using the `highlight_downstream` argument. 
+Finally, the position of the parent node relative to the children nodes can be
+specified using the `parent_pos` argument. The default option is to place the
+parent node in the middle, however it can be placed at the bottom (`parent_pos =
+'bottom'`) or at the top (`parent_pos = 'top'`).
 
 ```{r}
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     position_dodge = FALSE,
+     position_unlinked = 'top',
+     parent_pos = 'bottom',
+     selector = FALSE)
+```
+
+## Time axis
+A second date axis can be added at the top of the plot using the `double_axis` 
+argument. The format of the date labels can be specified using the `date_labels` 
+argument, which uses the standard codes defined in `strftime()`.
+
+```{r}
+plot(sim, 
+     method = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     position_dodge = TRUE,
+     position_unlinked = 'top',
+     double_axis = TRUE,
+     date_labels = "%b %d",
+     selector = FALSE)
+```
+
+## Collapsing nodes
+The option to collapse nodes up double-clicking them is toggled using the
+`collapse` argument. Note that this currently only works properly for
+`ttree_shape = 'branching'` due to a bug within `visNetwork`. Try double
+clicking on a node below. 
+
+```{r}
+plot(sim, 
+     method = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'branching',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'age',
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     position_dodge = TRUE,
+     position_unlinked = 'top',
+     double_axis = TRUE,
+     date_label = "%b %d",
+     collapse = TRUE,
+     selector = FALSE)
+```
+
+## Additional options
+Edges can curve upon manual adjustment of nodes, instead of remaining straight,
+by toggling the `edge_flex` argument. All downstream cases of a given node can
+be highlighted upon node selection using the `highlight_downstream`
+argument. Node labels can be hidden using the `hide_labels` argument.
+
+```{r}
+plot(sim, 
+     method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
      root_order = 'onset',
@@ -241,6 +316,7 @@ plot(sim,
      edge_linetype = 'status',
      edge_flex = TRUE,
      highlight_downstream = TRUE,
+     hide_labels = TRUE,
      selector = FALSE)
 ```
 
@@ -248,7 +324,7 @@ The `height` and `width` of the figure can be specified in pixels.
 
 ```{r}
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
      root_order = 'onset',
@@ -263,13 +339,11 @@ plot(sim,
      selector = FALSE)
 ```
 
-## Multiple infectors per case
+## Multiple infectors per case and cyclical networks
 
-The current algorithm was intended for visualising transmission trees with only a single
-infector per case. As of now it can accomodate multiple infectors per case, however 
-the clustering algorithm is not intended for this use case. It will attempt to place
-roots that are linked by downstream cases in close proximity to each other, but this
-is still a work in progres and works best with `ttree_shape = "branching"`. 
+The clustering algorithm can now handle multiple infectors per case, as well as cyclical networks. 
+It will attempt to place roots that are linked by downstream cases in close proximity to each other, 
+though this is still a work in progress. 
 
 ```{r, echo = FALSE}
 set.seed(1)
@@ -286,10 +360,11 @@ contact_2 <- data.frame(from = from,
 sim$contacts <- rbind(sim$contacts, contact_2)
 ```
 ```{r}
+sim$directed <- TRUE
 plot(sim, 
-     type = 'ttree', 
+     method = 'ttree', 
      x_axis = 'onset',
-     ttree_shape = 'branching',
+     ttree_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'size',
      reverse_node_order = FALSE,
@@ -310,10 +385,11 @@ though check the documentation to be sure. The benefit of the ggplot output is t
 much more customisation by the user, as seen below in renaming the legend labels.
 
 ```{r, fig.width = 10, fig.height = 8}
+sim$directed <- FALSE
 plot(sim, 
      method = 'ggplot',
      x_axis = 'onset',
-     ttree_shape = 'branching',
+     ttree_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'size',
      reverse_node_order = FALSE,

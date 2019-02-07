@@ -96,9 +96,8 @@
 #'   coordinate or 'dodge' each other. This argument is only called when type =
 #'   'ttree'.
 #'
-#' @param split_type If 1, the parent node is positioned in the middle of its
-#'   downstream nodes. If 2, the parent node is found at the top. If 3, at the
-#'   bottom.
+#' @param parent_pos Specify the position of the parent node relative to its
+#'   children. Can be one of 'middle', 'top' or 'bottom'.
 #'
 #' @param label A logical indicating if case IDs should be displayed on the
 #'   y-axis labels. Only works when position_dodge = TRUE, otherwise
@@ -116,7 +115,7 @@
 #'
 #' @importFrom ggplot2 aes_string element_blank geom_point geom_segment ggplot
 #'   labs scale_color_gradient scale_color_viridis_d scale_fill_viridis_c
-#'   scale_fill_viridis_d scale_size scale_y_continuous theme theme_minimal
+#'   scale_fill_viridis_d scale_size scale_y_continuous theme theme_minimal unit
 #'
 #' 
 #' @examples
@@ -166,9 +165,9 @@ vis_ggplot <- function(x,
                        lineend = 'butt',
                        position_unlinked = 'bottom',
                        position_dodge = FALSE,
-                       split_type = 1,
+                       parent_pos = 'middle',
                        label = FALSE,
-                       y_coor = NULL){
+                       y_coor = NULL) {
 
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
@@ -232,13 +231,14 @@ vis_ggplot <- function(x,
                    node_order = node_order,
                    reverse_node_order = reverse_node_order,
                    position_unlinked = position_unlinked,
-                   split_type = split_type)
+                   parent_pos = parent_pos)
     nodes$y <- coor$y[-(1:2)]
   } else {
     nodes$y <- y_coor
   }
   
   nodes$x <- x$linelist[[x_axis]]
+  nodes$clust_size <- coor$clust_size
 
   ## Move isolated cases to the bottom
   if(position_unlinked == 'top') {
@@ -418,6 +418,12 @@ vis_ggplot <- function(x,
     
   }
 
+  if(x$directed) {
+    arrow <- arrow(length = unit(0.015, "npc"), type = 'closed', ends = 'last')
+  } else {
+    arrow <- NULL
+  }
+  
   ## If edge_alpha is numeric, use as alpha specification for all edges
   if(inherits(edge_alpha, c("numeric", "integer"))) {
     if(is.null(edge_color) | missing(edge_color)) {
@@ -427,7 +433,7 @@ vis_ggplot <- function(x,
                                      yend = "yend",
                                      linetype = edge_linetype),
                           color = null_edge_color,
-#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          arrow = arrow,
                           alpha = edge_alpha,
                           lineend = lineend,
                           size = edge_width)
@@ -438,7 +444,7 @@ vis_ggplot <- function(x,
                                      yend = "yend",
                                      color = edge_color,
                                      linetype = edge_linetype),
-#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          arrow = arrow,
                           alpha = edge_alpha,
                           lineend = lineend,
                           size = edge_width)
@@ -456,7 +462,7 @@ vis_ggplot <- function(x,
                                      alpha = edge_alpha),
                           color = null_edge_color,
                           lineend = lineend,
-#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          arrow = arrow,
                           size = edge_width)
     } else {
       seg <- geom_segment(aes_string(x = "x",
@@ -467,7 +473,7 @@ vis_ggplot <- function(x,
                                      linetype = edge_linetype,
                                      alpha = edge_alpha),
                           lineend = lineend,
-#                          arrow = arrow(length = unit(0.02, "npc"), type = 'closed', ends = 'last'),
+                          arrow = arrow,
                           size = edge_width)
     }
   }

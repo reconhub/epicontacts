@@ -5,7 +5,8 @@
 \title{Plot epicontacts objects}
 \usage{
 \method{plot}{epicontacts}(x, node_color = "id",
-  method = c("visNetwork", "graph3D", "ggplot"), thin = TRUE, ...)
+  method = c("visNetwork", "graph3D", "ggplot", "ttree"), thin = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}

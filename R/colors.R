@@ -121,9 +121,15 @@ spectral <- grDevices::colorRampPalette(
 #'   output. If TRUE, the output will be a list, with colors in the
 #'   \code{$color} component.
 #'
-fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE){
+#' @param adj_width A logical indicating if legend labels should be adjusted so
+#'   they all have the same number of characters (by inserting
+#'   whitespaces). This ensures the size of the legend keys are the same.
+#'
+fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE,
+                     adj_width = FALSE){
   x <- factor(x)
   lev <- levels(x)
+  if(adj_width) lev <- get_adj_width(lev, max(nchar(lev)))
   nlev <- length(lev)
   col <- pal(nlev)
   res <- rep(NA_col, length(x))
@@ -133,4 +139,3 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE){
   }
   return(res)
 }
-

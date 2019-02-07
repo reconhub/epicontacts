@@ -15,13 +15,6 @@
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #'
-#' @param type A character string indicating the type of plot. 'network' will
-#'   use the visNetwork physics engine to determine node positions and can be
-#'   used for all network types. 'ttree' calculates node positions manually and
-#'   is designed specifically for visualising transmission trees. 'ttree' only
-#'   works for acyclical networks with one ingoing edge per node (i.e. one
-#'   infector per individual).
-#' 
 #' @param node_color An index or character string indicating which field of the
 #'   linelist should be used to color the nodes. If node color = 'R_i', the
 #'   individual reproductive number for each case (i.e. number of outgoing
@@ -92,6 +85,12 @@
 #' 
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
+#' @param x_axis A character string indicating which field of the linelist data
+#'   should be used to specify the x axis position (must be numeric or Date).
+#'
+#' @param date_labels A string giving the formatting specification for the
+#' x-axis date labels. Codes are defined in ‘strftime()’.
+#' 
 #' @param thin A logical indicating if the data should be thinned with
 #'   \code{\link{thin}} so that only cases with contacts should be plotted.
 #'
@@ -101,71 +100,10 @@
 #' @param editor A logical indicating if the editor tool should be used;
 #'   defaults to FALSE.
 #'
-#' @param x_axis A character string indicating which field of the linelist data
-#'   should be used to specify the x axis position (must be numeric or Date).
-#'
-#' @param ttree_shape 'branching' will create a branching transmission
-#'   tree. 'rectangle' will create a rectangular shaped plot similar to a
-#'   phylogeny that avoids overlapping edges. This argument is only called when
-#'   type = 'ttree'.
-#'
-#' @param root_order A character string indicating which field of the linelist
-#'   data is used to vertically order index cases of individual transmission
-#'   chains (i.e. the 'roots' of the transmission trees). If root_order =
-#'   'size', index cases will be ordered by the size of the downstream
-#'   transmission chains they generate. This argument is only called when type =
-#'   'ttree'.
-#'
-#' @param node_order A character string indicating which field of the linelist
-#'   data is used to vertically order nodes in the transmission tree (i.e. the
-#'   'roots' of the transmission trees). If node_order = 'size', nodes will be
-#'   ordered by the size of the downstream transmission chains they generate.
-#'   This argument is only called when type = 'ttree'.
-#'
-#' @param reverse_root_order A logical indicating if the ordering of the roots
-#'   hsould be reversed. This argument is only called when type = 'ttree'.
-#'
-#' @param reverse_node_order A logical indicating if the ordering of the nodes
-#'   should be reversed. This argument is only called when type = 'ttree'.
-#'
-#' @param rank_contact If more than one incoming contact is provided for a given
-#'   case, which attribute in the linelist should be used to rank the contacts
-#'   and choose the top value. This contact forms the 'backbone' of the
-#'   transmission tree and determines the y-position of the case.
-#'
-#' @param reverse_rank_contact Logical indicating if the contact ranking should
-#'   be reversed in order.
-#'
-#' @param position_unlinked A character string indicating where unlinked cases
-#'   should be placed. Valid options are 'top', 'bottom' and 'middle', where
-#'   'middle' will place unlinked cases according to root_order. This argument
-#'   is only called when type = 'ttree'.
-#'
-#' @param edge_flex A logical indicating if edges should bend when moved in
-#'   visNetwork. If FALSE, edges will remain straight. This argument
-#'   is only called when type = 'ttree' and ttree_output = 'visNetwork'.
-#'
 #' @param highlight_downstream A logical indicating if all cases 'downstream' of
-#'   the the selected node should be highlighted. Defaults to FALSE if type =
-#'   'network' and defaults to TRUE if type = 'ttree'.
+#'   the the selected node should be highlighted. 
 #'
-#' @param position_dodge A logical indicating if two cases can occupy the same y
-#'   coordinate or 'dodge' each other. This argument is only called when type =
-#'   'ttree'.
-#' 
-#' @param split_type If 1, the parent node is positioned in the middle of its
-#'   downstream nodes. If 2, the parent node is found at the top. If 3, at the
-#'   bottom.
-#'
-#' @param n_breaks The number of breaks on the x-axis timeline.
-#'
-#' @param double_axis Logical indicating if a second x-axis should be added at
-#'   the top.
-#'
-#' @param date_labels A string giving the formatting specification for the
-#' x-axis date labels. Codes are defined in ‘strftime()’.
-#'
-#' @param hide_label A logical indicating if case label should be hidden.
+#' @param hide_labels A logical indicating if case labels should be hidden.
 #'
 #' @param collapse A logical indicating if the network should be collapsed at a
 #'   given node upon double-clicking.
@@ -203,7 +141,6 @@
 #' }
 #' }
 vis_epicontacts <- function(x,
-                            type = 'network',
                             node_color = "id",
                             node_shape = NULL,
                             node_size = 20,
@@ -223,48 +160,21 @@ vis_epicontacts <- function(x,
                             height = "700px",
                             legend = TRUE,
                             legend_max = 10,
+                            x_axis = NULL,
+                            date_labels = "%d/%m/%Y",
                             thin = TRUE,
                             selector = TRUE,
                             editor = FALSE,
-                            x_axis = NULL,
-                            ttree_shape = 'branching',
-                            root_order = 'size',
-                            node_order = 'onset',
-                            reverse_root_order = FALSE,
-                            reverse_node_order = FALSE,
-                            rank_contact = x_axis,
-                            reverse_rank_contact = FALSE,
-                            position_unlinked = 'bottom',
-                            edge_flex = FALSE,
                             highlight_downstream = FALSE,
-                            position_dodge = FALSE,
-                            split_type = 1,
-                            n_breaks = 10,
-                            double_axis = FALSE,
-                            date_labels = "%d/%m/%Y",
-                            hide_label = FALSE,
+                            hide_labels = FALSE,
                             collapse = TRUE,
                             ...){
-
+  
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
   ## for the whole lot. These attributes are in turn used for plotting: as color
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
-
-  ## check that x_axis is specified
-  if(type == 'ttree') {
-    if (is.null(x_axis)) {
-      stop("x_axis must be specified if type = 'ttree'")
-    } else if(any(is.na(x$linelist[[x_axis]]))) {
-      ## Prune NA x_axis values
-      is_na <- is.na(x$linelist[[x_axis]])
-      x$contacts <- x$contacts[!(x$contacts$from %in% x$linelist$id[is_na] |
-                                 x$contacts$to %in% x$linelist$id[is_na]),]
-      x$linelist <- x$linelist[!is_na,]
-      if(thin) x <- thin(x)
-    }
-  }
 
   ## Remove NAs in contacts
   x$contacts <- subset(x$contacts, !is.na(x$contacts$from) & !is.na(x$contacts$to))
@@ -290,7 +200,6 @@ vis_epicontacts <- function(x,
   ## check edge_width (edge attribute used for width)
   edge_width <- assert_edge_width(x, edge_width)
 
-
   ## check edge_linetype (edge attribute used for linetype)
   edge_linetype <- assert_edge_linetype(x, edge_linetype)
 
@@ -301,131 +210,22 @@ vis_epicontacts <- function(x,
   ## This is only relevant when `thin = TRUE`
   nodes <- data.frame(id = all_nodes,
                       stringsAsFactors = FALSE)
-
-  ## Calculate R_i if needed
-  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
-    x$linelist$R_i <- sapply(x$linelist$id, function(i) sum(x$contacts$from == i, na.rm = TRUE))
-  }
   
-  if (type == 'network') {
+  ## make a list of all nodes, and generate a data.frame of node attributes
+  cont_nodes <- c(x$contacts$from, x$contacts$to)
+  list_nodes <- x$linelist$id
 
-    ## make a list of all nodes, and generate a data.frame of node attributes
-    cont_nodes <- c(x$contacts$from, x$contacts$to)
-    list_nodes <- x$linelist$id
+  nodes <- data.frame(id = unique(c(list_nodes, cont_nodes)),
+                      stringsAsFactors = FALSE)
 
-    nodes <- data.frame(id = unique(c(list_nodes, cont_nodes)),
-                        stringsAsFactors = FALSE)
+  nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
 
-    nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
+  edges <- x$contacts
 
-    
-    if(!missing(ttree_shape)) {
-      warning("Argument 'ttree_shape' is unused when type = 'network'")
-    }
-
-    edges <- x$contacts
-    
-    ## check ttree options
-  } else if(type == 'ttree') {
-
-    ## Change default height and width to pixel measures - visNetwork seems to
-    ## struggle with percentage height specification
-    if(missing(width)) {
-      width <- "1000px"
-    }
-    if(missing(height)) {
-      height <- "900px"
-    }
-    if(missing(node_color)) {
-      node_color <- x_axis
-    }
-    if(missing(col_pal)) {
-      col_pal <- viridis::viridis_pal()
-    }
-    if(missing(edge_col_pal)) {
-      edge_col_pal <- grDevices::colorRampPalette(c("red", "black"))
-    }
-    
-    ## Check for multiple incoming edges per node
-#    tab <- table(x$contacts$to)
-#    culprits <- names(tab)[tab > 1]
-#    if (length(culprits) != 0) {
-#      culprits <- paste(culprits, collapse = ", ")
-#      msg <- sprintf("multiple infectors found for %s . use type = 'network'",
-#                     culprits)
-#      stop(msg)
-#    }
-
-    ## set default highlight_nearest to TRUE
-    if(missing(highlight_downstream)) {
-      highlight_downstream <- TRUE
-    }
-
-    nodes <- x$linelist
-    edges <- x$contacts
-
-    ## Get x and y coordinates
-    coor <- get_coor(x,
-                     x_axis = x_axis,
-                     position_dodge = position_dodge,
-                     root_order = root_order,
-                     reverse_root_order = reverse_root_order,
-                     node_order = node_order,
-                     reverse_node_order = reverse_node_order,
-                     position_unlinked = position_unlinked,
-                     rank_contact = rank_contact,
-                     reverse_rank_contact = reverse_rank_contact,
-                     double_axis = double_axis,
-                     split_type = split_type)
-
-    nodes$x <- x$linelist[[x_axis]]
-    x_axis_lab <- pretty(nodes[[x_axis]], n = n_breaks)
-    
-    ## Date -> numeric as visnetwork doesn't support dates
-    if(inherits(nodes$x, 'Date')) {
-      nodes$x <- as.numeric(nodes$x)
-    }
-    
-    ## Rescale coordinates to 0-1, flip y coordinates
-    ## Make sure x rescaling accounts for x-axis nodes
-    resc_x <- rescale(c(nodes$x, x_axis_lab), 0, 1)
-
-    coor$y <- 1 - coor$y
-    
-    ## If percent specification, scale to 150x1840px (ie 100% dimension)
-    if(regexpr('%', width) != -1) {
-      resc_x <- extr_num(width)*resc_x*18.4
-    } else {
-      resc_x <- extr_num(width)*resc_x
-    }
-    nodes$x <- resc_x[1:nrow(nodes)]
-
-    if(regexpr('%', height) != -1) {
-      coor$y <- extr_num(height)*coor$y*1.5
-    } else {
-      coor$y <- extr_num(height)*coor$y
-    }
-
-    nodes$y <- coor$y[-(1:ifelse(double_axis, 2, 1))]
-    
-    ## Get nodes and edges for rectangle shape
-    if(ttree_shape == 'rectangle') {
-
-      rect <- get_v_rect(nodes, edges)
-      nodes <- rect$nodes
-      edges <- rect$edges
-      hidden <- nodes$hidden
-      
-      ## No hidden nodes if shape is branching
-    } else if(ttree_shape == 'branching') {
-      hidden <- NULL
-      edges$to_node <- TRUE
-    }
-  }
-
+  
   ## generate annotations ('title' in visNetwork terms)
   if (!is.null(label)) {
-    if(hide_label) {
+    if(hide_labels) {
       nodes$label <- ""
     } else {
       labels <- apply(nodes[, label, drop = FALSE], 1,
@@ -434,6 +234,7 @@ vis_epicontacts <- function(x,
     }
   }
 
+  
   ## generate annotations ('title' in visNetwork terms)
   if (!is.null(annot)) {
     temp <- nodes[, annot, drop = FALSE]
@@ -444,17 +245,18 @@ vis_epicontacts <- function(x,
                          apply(temp, 1, paste0, collapse = "<br>"), "</p>")
   }
 
-
+  
   ## add node color ('group')
   if (!is.null(node_color)) {
     node_col_info <- fac2col(factor(nodes[, node_color]),
                              col_pal,
                              NA_col,
-                             legend = TRUE)
+                             legend = TRUE,
+                             adj_width = TRUE)
     K <- length(node_col_info$leg_lab)
     if(!is.null(node_shape)) {
       nodes$icon.color <- node_col_info$color
-    } else if(!is.null(x_axis) & type == 'network') {
+    } else if(!is.null(x_axis)) {
       nodes$group.color <- nodes$icon.color <- node_col_info$color
     } else {
       nodes$color.background <- nodes$color.highlight.background <- node_col_info$color
@@ -521,22 +323,13 @@ vis_epicontacts <- function(x,
   }
   
   if (x$directed) {
-    if(type == 'ttree') {
-      edges$arrows <- ifelse(edges$to_node, 'to', NA)
-    } else {
-      edges$arrows <- "to"
-    }
+    edges$arrows <- "to"
   }
 
 
   ## add edge labels
   if (!is.null(edge_label)) {
-    if(type == 'ttree') {
-      edges$label <- edges[, edge_label]
-      edges$label[!edges$to_node] <- ""
-    } else {
-      edges$label <- edges[, edge_label]
-    }
+    edges$label <- edges[, edge_label]
   }
 
   ## add edge color
@@ -548,7 +341,6 @@ vis_epicontacts <- function(x,
     L <- length(edge_col_info$leg_lab)
     edges$color <- edge_col_info$color
   } else {
-    ## default ot black
     edges$color <- 'black'
   }
 
@@ -556,7 +348,7 @@ vis_epicontacts <- function(x,
   ## add edge linetype
   if(!is.null(edge_linetype)) {
     unq <- unique(edges[[edge_linetype]])
-    if(length(na.omit(unq)) > 2) {
+    if(length(stats::na.omit(unq)) > 2) {
       stop("visNetwork only supports two linetypes; use binary variable or set method = 'ggplot'.")
     }
     ## Uses alphabetical order / factor order
@@ -571,7 +363,6 @@ vis_epicontacts <- function(x,
     drange      <- range(nodes[[x_axis]], na.rm = TRUE)
     nodes$level <- nodes[[x_axis]] - drange[1] + 1L
     drange      <- seq(drange[1], drange[2], by = 1L)
-    drange <- pretty(drange, n = n_breaks)
 
     if(inherits(drange, "Date")) {
       drange_id <- format(drange, date_labels)
@@ -608,41 +399,6 @@ vis_epicontacts <- function(x,
       nmerge <- c(nmerge, "title")
     }
 
-    if(type == 'ttree') {
-
-      ddnodes <- nodes[rep(1, nrow(dnodes)),]
-      ddnodes[] <- NA
-      var <- c('id', 'label', 'title')
-      ddnodes[var] <- dnodes[var]
-      col_var <- c('color.background', 'color.highlight.background',
-                   'color.border', 'color.highlight.border')
-      ddnodes[col_var] <- 'black'
-      ddnodes$size <- 0.1
-      ddnodes$borderWidth <- 0.1
-      ddnodes$x <- tail(resc_x, length(pretty(x$linelist[[x_axis]], n = n_breaks)))
-      ddnodes$y <- coor$y[1]
-      ddnodes$level <- 1
-      if(ttree_shape == 'rectangle') ddnodes$hidden <- FALSE
-
-      if(double_axis) {
-
-        ddnodes_2 <- ddnodes
-        ddnodes_2$y <- coor$y[2]
-        ddnodes_2$id <- paste0(ddnodes_2$id, "_2")
-        ddnodes <- rbind(ddnodes, ddnodes_2)
-
-        dedges_2 <- dedges
-        dedges_2$from <- paste0(dedges_2$from, "_2")
-        dedges_2$to <- paste0(dedges_2$to, "_2")
-        dedges <- rbind(dedges, dedges_2)
-        
-      }
-      
-      dnodes <- ddnodes
-      nmerge <- names(dnodes)
-      
-    }
-
     nodes <- merge(nodes,
                    dnodes,
                    by = nmerge,
@@ -660,36 +416,17 @@ vis_epicontacts <- function(x,
   
   ## build visNetwork output
 
-  if (type == 'network') {
-
-    out <- visNetwork::visNetwork(nodes, edges,
-                                  width = width,
-                                  height = height, ...)
-  } else if (type == 'ttree') {
-
-    edges$arrows.scaleFactor <- 0.1
-    out <- visNetwork::visNetwork(nodes, edges,
-                      width = width,
-                      height = height)
-    out <- visNetwork::visNodes(out,
-                    fixed = list(x = TRUE, y = FALSE),
-                    hidden = hidden,
-                    borderWidth = 2,
-                    borderWidthSelected = 2)
-    out <- visNetwork::visEdges(out,
-                    smooth = edge_flex,
-                    arrowStrikethrough = FALSE,
-#                    arrows = list(to = list(scaleFactor = 0.5)),
-                    selectionWidth = 1)
-    out <- visNetwork::visPhysics(out,
-                      enabled = FALSE)
-
-  }
+  out <- visNetwork::visNetwork(nodes, edges,
+                                width = width,
+                                height = height, ...)
   
-  tt_style <- "position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #EEEEEE;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #000000;"
+  tt_style <- paste0("position: fixed;visibility:hidden;",
+                     "padding: 5px;white-space: nowrap;",
+                     "font-family: verdana;font-size:14px;",
+                     "font-color:#000000;background-color: #EEEEEE;",
+                     "-moz-border-radius: 3px;-webkit-border-radius: 3px;",
+                     "border-radius: 3px;border: 1px solid #000000;")
   out <- visNetwork::visInteraction(out, tooltipStyle = tt_style)
-
-  #f5f4ed
   
   ## specify group colors, add legend
   if (legend) {
@@ -698,7 +435,6 @@ vis_epicontacts <- function(x,
                               color = node_col_info$leg_col,
                               shape = "circle",
                               shadow = FALSE,
-                              position = 'top',
                               font.size = 20)
     } else {
       leg_nodes <- NULL
@@ -723,10 +459,10 @@ vis_epicontacts <- function(x,
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) node_color else NULL
   
-  ## options specific for x_axis and type = 'network'
-  if (!is.null(x_axis) & type == 'network'){
+  ## options specific for x_axis
+  if (!is.null(x_axis)) {
     
-    out <- visNetwork::visHierarchicalLayout(out, 
+    out <- visNetwork::visHierarchicalLayout(out,
                                              direction = 'LR')
     
                                         # only display ids of "real" (i.e. case or linelist) nodes in select list
@@ -763,9 +499,7 @@ vis_epicontacts <- function(x,
                                   manipulation = editor)
   }
 
-  if(type != 'ttree') {
-    out <- visNetwork::visPhysics(out, stabilization = FALSE)
-  }
+  out <- visNetwork::visPhysics(out, stabilization = FALSE)
 
   ## add fontAwesome
   out <- visNetwork::addFontAwesome(out)

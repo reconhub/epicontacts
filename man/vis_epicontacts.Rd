@@ -4,30 +4,19 @@
 \alias{vis_epicontacts}
 \title{Plot epicontacts objects using visNetwork}
 \usage{
-vis_epicontacts(x, type = "network", node_color = "id",
-  node_shape = NULL, node_size = 20, edge_color = NULL,
-  edge_width = 3, edge_linetype = NULL, edge_label = NULL,
-  col_pal = cases_pal, edge_col_pal = edges_pal,
-  NA_col = "lightgrey", shapes = NULL, size_range = c(5, 20),
-  width_range = c(1, 5), label = "id", annot = TRUE,
-  width = "90\%", height = "700px", legend = TRUE, legend_max = 10,
-  thin = TRUE, selector = TRUE, editor = FALSE, x_axis = NULL,
-  ttree_shape = "branching", root_order = "size",
-  node_order = "onset", reverse_root_order = FALSE,
-  reverse_node_order = FALSE, rank_contact = x_axis,
-  reverse_rank_contact = FALSE, position_unlinked = "bottom",
-  edge_flex = FALSE, highlight_downstream = FALSE,
-  position_dodge = FALSE, split_type = 2, ...)
+vis_epicontacts(x, node_color = "id", node_shape = NULL,
+  node_size = 20, edge_color = NULL, edge_width = 3,
+  edge_linetype = NULL, edge_label = NULL, col_pal = cases_pal,
+  edge_col_pal = edges_pal, NA_col = "lightgrey", shapes = NULL,
+  size_range = c(5, 20), width_range = c(1, 5), label = "id",
+  annot = TRUE, width = "90\%", height = "700px", legend = TRUE,
+  legend_max = 10, x_axis = NULL, date_labels = "\%d/\%m/\%Y",
+  thin = TRUE, selector = TRUE, editor = FALSE,
+  highlight_downstream = FALSE, hide_labels = FALSE, collapse = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
-
-\item{type}{A character string indicating the type of plot. 'network' will
-use the visNetwork physics engine to determine node positions and can be
-used for all network types. 'ttree' calculates node positions manually and
-is designed specifically for visualising transmission trees. 'ttree' only
-works for acyclical networks with one ingoing edge per node (i.e. one
-infector per individual).}
 
 \item{node_color}{An index or character string indicating which field of the
 linelist should be used to color the nodes. If node color = 'R_i', the
@@ -99,6 +88,12 @@ plot.}
 
 \item{legend_max}{The maximum number of groups for a legend to be displayed.}
 
+\item{x_axis}{A character string indicating which field of the linelist data
+should be used to specify the x axis position (must be numeric or Date).}
+
+\item{date_labels}{A string giving the formatting specification for the
+x-axis date labels. Codes are defined in ‘strftime()’.}
+
 \item{thin}{A logical indicating if the data should be thinned with
 \code{\link{thin}} so that only cases with contacts should be plotted.}
 
@@ -108,61 +103,13 @@ defaults to TRUE.}
 \item{editor}{A logical indicating if the editor tool should be used;
 defaults to FALSE.}
 
-\item{x_axis}{A character string indicating which field of the linelist data
-should be used to specify the x axis position (must be numeric or Date).}
-
-\item{ttree_shape}{'branching' will create a branching transmission
-tree. 'rectangle' will create a rectangular shaped plot similar to a
-phylogeny that avoids overlapping edges. This argument is only called when
-type = 'ttree'.}
-
-\item{root_order}{A character string indicating which field of the linelist
-data is used to vertically order index cases of individual transmission
-chains (i.e. the 'roots' of the transmission trees). If root_order =
-'size', index cases will be ordered by the size of the downstream
-transmission chains they generate. This argument is only called when type =
-'ttree'.}
-
-\item{node_order}{A character string indicating which field of the linelist
-data is used to vertically order nodes in the transmission tree (i.e. the
-'roots' of the transmission trees). If node_order = 'size', nodes will be
-ordered by the size of the downstream transmission chains they generate.
-This argument is only called when type = 'ttree'.}
-
-\item{reverse_root_order}{A logical indicating if the ordering of the roots
-hsould be reversed. This argument is only called when type = 'ttree'.}
-
-\item{reverse_node_order}{A logical indicating if the ordering of the nodes
-should be reversed. This argument is only called when type = 'ttree'.}
-
-\item{rank_contact}{If more than one incoming contact is provided for a given
-case, which attribute in the linelist should be used to rank the contacts
-and choose the top value. This contact forms the 'backbone' of the
-transmission tree and determines the y-position of the case.}
-
-\item{reverse_rank_contact}{Logical indicating if the contact ranking should
-be reversed in order.}
-
-\item{position_unlinked}{A character string indicating where unlinked cases
-should be placed. Valid options are 'top', 'bottom' and 'middle', where
-'middle' will place unlinked cases according to root_order. This argument
-is only called when type = 'ttree'.}
-
-\item{edge_flex}{A logical indicating if edges should bend when moved in
-visNetwork. If FALSE, edges will remain straight. This argument
-is only called when type = 'ttree' and ttree_output = 'visNetwork'.}
-
 \item{highlight_downstream}{A logical indicating if all cases 'downstream' of
-the the selected node should be highlighted. Defaults to FALSE if type =
-'network' and defaults to TRUE if type = 'ttree'.}
+the the selected node should be highlighted.}
 
-\item{position_dodge}{A logical indicating if two cases can occupy the same y
-coordinate or 'dodge' each other. This argument is only called when type =
-'ttree'.}
+\item{hide_labels}{A logical indicating if case labels should be hidden.}
 
-\item{split_type}{If 1, the parent node is positioned in the middle of its
-downstream nodes. If 2, the parent node is found at the top. If 3, at the
-bottom.}
+\item{collapse}{A logical indicating if the network should be collapsed at a
+given node upon double-clicking.}
 
 \item{...}{Further arguments to be passed to \code{visNetwork}.}
 }

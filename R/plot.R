@@ -58,7 +58,7 @@
 #' }
 #' }
 plot.epicontacts <- function(x, node_color = "id",
-                             method = c("visNetwork", "graph3D", "ggplot"),
+                             method = c("visNetwork", "graph3D", "ggplot", "ttree"),
                              thin = TRUE, ...){
   ## checks
   if (thin) {
@@ -80,19 +80,20 @@ plot.epicontacts <- function(x, node_color = "id",
     } else {
       return(vis_epicontacts(x, node_color = node_color, ...))
     }
-  }
-
-  if (method == "graph3D") {
+  } else if (method == "ttree") {
+    if(missing(node_color)) {
+      return(vis_ttree(x, ...))
+    } else {
+      return(vis_ttree(x, node_color = node_color, ...))
+    }
+  } else if (method == "graph3D") {
     return(graph3D(x, node_color = node_color, ...))
-  }
-
-  if (method == "ggplot") {
+  } else if (method == "ggplot") {
     if(missing(node_color)) {
       return(vis_ggplot(x, ...))
     } else {
       return(vis_ggplot(x, node_color = node_color, ...))
     }
   }
-
   
 }
