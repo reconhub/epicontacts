@@ -299,7 +299,8 @@ plot(sim,
 Edges can curve upon manual adjustment of nodes, instead of remaining straight,
 by toggling the `edge_flex` argument. All downstream cases of a given node can
 be highlighted upon node selection using the `highlight_downstream`
-argument. Node labels can be hidden using the `hide_labels` argument.
+argument. Node labels can be hidden using the `hide_labels` argument. This can
+free up some space to label the edges using the `edge_label` argument. 
 
 ```{r}
 plot(sim, 
@@ -314,6 +315,7 @@ plot(sim,
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
+     edge_label = 'status',
      edge_flex = TRUE,
      highlight_downstream = TRUE,
      hide_labels = TRUE,
