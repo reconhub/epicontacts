@@ -44,11 +44,8 @@ get_degree <- function(x, type = c("in", "out", "both"),
     }
     type <- match.arg(type)
 
-    if (only_linelist) {
-        all_nodes <- x$linelist$id
-    } else {
-        all_nodes <- unique(c(x$contacts$from, x$contacts$to))
-    }
+    what      <- if (only_linelist) "linelist" else "contacts"
+    all_nodes <- get_id(x, which = what, na.rm = TRUE)
 
     if (!x$directed) {
         type <- "both"
