@@ -30,6 +30,14 @@ print.summary_epicontacts <- function(x, ...){
         cat("\n  // number of contacts:", x$n_contacts)
     }
 
+    if (!is.null(x$na_from)) {
+        cat("\n     // number missing 'from':", x$na_from)
+    }
+
+    if (!is.null(x$na_to)) {
+        cat("\n     // number missing 'to':", x$na_to)
+    }
+    
     if (!is.null(x$prop_contacts_in_linelist)) {
         cat("\n  // contacts with both cases in linelist:",
             round(100 * x$prop_contacts_in_linelist,3), "%")
