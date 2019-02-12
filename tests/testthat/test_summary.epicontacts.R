@@ -18,7 +18,7 @@ test_that("Printing summaries", {
     y <- thin(y)
     y$contacts$from[6:9] <- NA
     y$contacts$to[1]     <- NA
-   expect_output(summary(y), "number missing 'from': 4") 
-   expect_output(summary(y), "number missing 'to': 1") 
+   expect_output(print(summary(y)), "number missing 'from': 4") 
+   expect_output(print(summary(y)), "number missing 'to': 1") 
     
 })
