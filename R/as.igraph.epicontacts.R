@@ -56,8 +56,11 @@ as.igraph.epicontacts <- function(x){
     verts$epicontacts_name <- verts$name
     verts$name <- NULL
   }
-
-
+  missing_contacts <- anyNA(x$contacts$from) || anyNA(x$contacts$to)
+  missing_vertex   <- anyNA(x$linelist$id)
+  if (missing_contacts && !missing_vertex) {
+    verts <- dplyr::add_row(verts, id = NA) 
+  }
   ## Creating igraph object
 
   net <- igraph::graph_from_data_frame(x$contacts, vertices = verts,
