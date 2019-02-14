@@ -38,15 +38,19 @@ plot(sim,
      root_order = 'size',
      node_order = 'onset',
      node_size = 'R_i',
-     node_color = 'onset',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#ba1717", "#006b99")),
      edge_linetype = 'status',
-     edge_color = 'duration',
+     edge_color = 'status',
      edge_flex = TRUE,
      position_unlinked = 'bottom',
      reverse_root_order = FALSE,
      reverse_node_order = TRUE,
+     hide_labels = TRUE,
+     height = 700,
      selector = FALSE,
-     highlight_downstream = TRUE,
+     legend = TRUE,
+     highlight_downstream = TRUE
      )
 
 ```
@@ -323,17 +327,16 @@ to <- sample(sim$linelist$id, 5)
 from <- sapply(match(to, sim$linelist$id), 
                function(i) sample(sim$linelist$id[sim$linelist$onset < sim$linelist$onset[i]], 1))
 
-contact_2 <- data.frame(from = from, 
+contacts_2 <- data.frame(from = from, 
                         to = to,
                         status = sample(c("confirmed", "suspected"), 5, TRUE),
                         duration = runif(5, 0, 20),
                         date = sample(sim$linelist$onset, 5))
 
-sim$contacts <- rbind(sim$contacts, contact_2)
-```
-```{r}
-sim$directed <- TRUE
-plot(sim, 
+sim_2 <- sim
+sim_2$contacts <- rbind(sim_2$contacts, contacts_2)
+sim_2 $directed <- TRUE
+plot(sim_2, 
      method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -357,8 +360,8 @@ though check the documentation to be sure. The benefit of the ggplot output is t
 much more customisation by the user, as seen below in renaming the legend labels.
 
 ```{r, fig.width = 10, fig.height = 8}
-sim$directed <- FALSE
-plot(sim, 
+sim_2$directed <- FALSE
+plot(sim_2, 
      method = 'ggplot',
      x_axis = 'onset',
      ttree_shape = 'rectangle',

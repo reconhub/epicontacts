@@ -130,15 +130,15 @@ vis_ttree <- function(x,
   edge_linetype <- get_val('edge_linetype', NULL, args)
   edge_label <- get_val('edge_label', NULL, args)
   col_pal <- get_val('col_pal', viridis::viridis_pal(), args)
-  edge_col_pal <- get_val('edge_col_pal', grDevices::colorRampPalette(c("red", "black")), args)
+  edge_col_pal <- get_val('edge_col_pal', grDevices::colorRampPalette(c("black", "red")), args)
   NA_col <- get_val('NA_col', "lightgrey", args)
   shapes <- get_val('shapes', NULL, args)
   size_range <- get_val('size_range', c(5, 20), args)
   width_range <- get_val('width_range', c(1, 5), args)
   label <- get_val('label', "id", args)
   annot  <- get_val('annot', TRUE, args)
-  width <- get_val('width', "1000px", args)
-  height <- get_val('height', "900px", args)
+  width <- get_val('width', "800px", args)
+  height <- get_val('height', "700px", args)
   legend <- get_val('legend', TRUE, args)
   legend_max <- get_val('legend_max', 10, args)
   selector <- get_val('selector', TRUE, args)
@@ -532,7 +532,7 @@ vis_ttree <- function(x,
                               color = node_col_info$leg_col,
                               shape = "circle",
                               shadow = FALSE,
-                              font.size = 20)
+                              font.size = 15)
     } else {
       leg_nodes <- NULL
     }
