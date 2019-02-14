@@ -44,11 +44,8 @@ get_degree <- function(x, type = c("in", "out", "both"),
     }
     type <- match.arg(type)
 
-    if (only_linelist) {
-        all_nodes <- x$linelist$id
-    } else {
-        all_nodes <- unique(c(x$contacts$from, x$contacts$to))
-    }
+    what      <- if (only_linelist) "linelist" else "contacts"
+    all_nodes <- get_id(x, which = what, na.rm = TRUE)
 
     if (!x$directed) {
         type <- "both"
@@ -56,16 +53,21 @@ get_degree <- function(x, type = c("in", "out", "both"),
 
     ## compute degrees
     if (type=="in") {
-        out <- vapply(all_nodes, function(e) sum(e == x$contacts$to),
+      out <- vapply(all_nodes,
+                    function(e)
+                      sum(e == x$contacts$to, na.rm = TRUE),
                       FUN.VALUE = 0L)
     }
     if (type=="out") {
-        out <- vapply(all_nodes, function(e) sum(e == x$contacts$from),
+      out <- vapply(all_nodes,
+                    function(e)
+                      sum(e == x$contacts$from, na.rm = TRUE),
                       FUN.VALUE=0L)
     }
     if (type=="both") {
         out <- vapply(all_nodes,
-                      function(e) sum(e == c(x$contacts$from, x$contacts$to)),
+                      function(e)
+                        sum(e == c(x$contacts$from, x$contacts$to), na.rm = TRUE),
                       FUN.VALUE = 0L)
     }
 

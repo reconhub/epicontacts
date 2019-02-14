@@ -111,11 +111,12 @@ test_that("Returns epicontacts object subsetted correctly", {
 
     id <- names(which.max(get_degree(x, "out")))
     z <- thin(subset(x, cluster_id = id), 2)
-    expect_equal_to_reference(z, file = "rds/z.rds")
+    nocoords <- grep("(lat|lon)", names(z$linelist), perl = TRUE, invert = TRUE) - 1
+    expect_equal_to_reference(z[k = nocoords], file = "rds/z.rds")
 
 
     zz <- subset(x, cs = 10)
-    expect_equal_to_reference(zz, file = "rds/zz.rds")
+    expect_equal_to_reference(zz[k = nocoords], file = "rds/zz.rds")
     expect_true(all(get_clusters(zz, "data.frame")$cluster_size == 10L))
 
 
