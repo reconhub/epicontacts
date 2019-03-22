@@ -31,7 +31,7 @@
 #'   ordered by the size of the downstream transmission chains they generate.
 #'
 #' @param reverse_root_order A logical indicating if the ordering of the roots
-#'   hsould be reversed.
+#'   should be reversed.
 #'
 #' @param reverse_node_order A logical indicating if the ordering of the nodes
 #'   should be reversed.
@@ -124,7 +124,7 @@ vis_ttree <- function(x,
   args <- list(...)
   node_color <- get_val('node_color', x_axis, args)
   node_shape <- get_val('node_shape', NULL, args)
-  node_size <- get_val('node_size', 20, args)
+  node_size <- get_val('node_size', 15, args)
   edge_color <- get_val('edge_color', NULL, args)
   edge_width <- get_val('edge_width', 3, args)
   edge_linetype <- get_val('edge_linetype', NULL, args)
@@ -137,11 +137,11 @@ vis_ttree <- function(x,
   width_range <- get_val('width_range', c(1, 5), args)
   label <- get_val('label', "id", args)
   annot  <- get_val('annot', TRUE, args)
-  width <- get_val('width', "800px", args)
+  width <- get_val('width', "700px", args)
   height <- get_val('height', "700px", args)
   legend <- get_val('legend', TRUE, args)
   legend_max <- get_val('legend_max', 10, args)
-  selector <- get_val('selector', TRUE, args)
+  selector <- get_val('selector', FALSE, args)
   editor <- get_val('editor', FALSE, args)
   hide_labels <- get_val('hide_labels', FALSE, args)
   highlight_downstream <- get_val('highlight_downstream', TRUE, args)
@@ -400,12 +400,12 @@ vis_ttree <- function(x,
 
   ## add edge linetype
   if(!is.null(edge_linetype)) {
-    unq <- unique(edges[[edge_linetype]])
-    if(length(stats::na.omit(unq)) > 2) {
+    unq_linetype <- unique(edges[[edge_linetype]])
+    if(length(stats::na.omit(unq_linetype)) > 2) {
       stop("visNetwork only supports two linetypes; use binary variable or set method = 'ggplot'.")
     }
     ## Uses alphabetical order / factor order
-    edges$dashes <- edges[[edge_linetype]] != sort(unq)[1]
+    edges$dashes <- edges[[edge_linetype]] != sort(unq_linetype)[1]
   }
 
   ## set up nodes and edges if x_axis is specified
@@ -413,30 +413,33 @@ vis_ttree <- function(x,
   if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
     stop("Data used to specify x axis must be a date or number")
   }
-  drange      <- range(nodes[[x_axis]], na.rm = TRUE)
+  drange <- range(nodes[[x_axis]], na.rm = TRUE)
   nodes$level <- nodes[[x_axis]] - drange[1] + 1L
-  drange      <- seq(drange[1], drange[2], by = 1L)
+  drange <- seq(drange[1], drange[2], by = 1L)
   drange <- pretty(drange, n = n_breaks)
-
   if(inherits(drange, "Date")) {
     drange_id <- format(drange, date_labels)
   } else {
-    drange_id <- drange
+    drange_id <- paste0("date_", drange)
   }
   
-  dnodes      <- data.frame(
+  dnodes <- data.frame(
     id = as.character(drange_id),
     level = drange - drange[1] + 1L,
     stringsAsFactors = FALSE
   )
-  dedges      <- data.frame(
+  dedges <- data.frame(
     from = dnodes$id[-nrow(dnodes)],
     to   = dnodes$id[-1]
   )
-  nmerge      <- c("id", "level")
-  emerge      <- c("from", "to")
+  nmerge <- c("id", "level")
+  emerge <- c("from", "to")
   if (!is.null(label)) {
-    dnodes$label <- dnodes$id
+    if(inherits(drange, "Date")) {
+      dnodes$label <- as.character(format(drange, date_labels))
+    } else {
+      dnodes$label <- as.character(drange)
+    }
     nmerge <- c(nmerge, "label")
   }
   if (!is.null(node_shape)) {
@@ -480,7 +483,7 @@ vis_ttree <- function(x,
     dedges <- rbind(dedges, dedges_2)
     
   }
-  
+
   dnodes <- ddnodes
   nmerge <- names(dnodes)
 
@@ -499,7 +502,6 @@ vis_ttree <- function(x,
                  )
   
   ## build visNetwork output
-
   edges$arrows.scaleFactor <- 0.1
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
@@ -540,15 +542,34 @@ vis_ttree <- function(x,
     if (!is.null(edge_color) &&  (L < legend_max)) {
       leg_edges <- data.frame(label = edge_col_info$leg_lab,
                               color = edge_col_info$leg_col,
-                              font.size = 15)
+                              dashes = FALSE,
+                              font.size = 15,
+                              font.align = 'top')
     } else {
       leg_edges <- NULL
+    }
+
+    if (!is.null(edge_linetype)) {
+      ## Don't add extra legend keys if variable is the same
+      if(!is.null(edge_color) && edge_linetype == edge_color) {
+        leg_edges$dashes <- c(FALSE, TRUE)
+      } else {
+        tmp <- data.frame(label = unq_linetype,
+                          color = 'black',
+                          dashes = c(FALSE, TRUE),
+                          font.size = 15,
+                          font.align = 'top')
+        leg_edges <- rbind(leg_edges, tmp)
+      }
     }
 
     out <- visNetwork::visLegend(out,
                                  zoom = FALSE,
                                  addNodes = leg_nodes,
                                  addEdges = leg_edges,
+                                 width = ifelse(is.null(edge_linetype),
+                                                0.07,
+                                                0.10),
                                  useGroups = FALSE)
 
   }

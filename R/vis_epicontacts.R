@@ -210,6 +210,12 @@ vis_epicontacts <- function(x,
   ## This is only relevant when `thin = TRUE`
   nodes <- data.frame(id = all_nodes,
                       stringsAsFactors = FALSE)
+
+  ## Calculate R_i if needed
+  if('R_i' %in% c(node_shape, node_color, node_size)) {
+    x$linelist$R_i <- sapply(x$linelist$id,
+                             function(i) sum(x$contacts$from == i, na.rm = TRUE))
+  }
   
   ## make a list of all nodes, and generate a data.frame of node attributes
   cont_nodes <- c(x$contacts$from, x$contacts$to)
@@ -221,7 +227,6 @@ vis_epicontacts <- function(x,
   nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
 
   edges <- x$contacts
-
   
   ## generate annotations ('title' in visNetwork terms)
   if (!is.null(label)) {
@@ -344,16 +349,27 @@ vis_epicontacts <- function(x,
     edges$color <- 'black'
   }
 
+  ## ## add edge linetype
+  ## if(!is.null(edge_linetype)) {
+  ##   unq <- unique(edges[[edge_linetype]])
+  ##   if(length(stats::na.omit(unq)) > 2) {
+  ##     stop("visNetwork only supports two linetypes; use binary variable or set method = 'ggplot'.")
+  ##   }
+  ##   ## Uses alphabetical order / factor order
+  ##   edges$dashes <- edges[[edge_linetype]] != sort(unq)[1]
+  ## }
 
   ## add edge linetype
   if(!is.null(edge_linetype)) {
-    unq <- unique(edges[[edge_linetype]])
-    if(length(stats::na.omit(unq)) > 2) {
+    unq_linetype <- unique(edges[[edge_linetype]])
+    if(length(stats::na.omit(unq_linetype)) > 2) {
       stop("visNetwork only supports two linetypes; use binary variable or set method = 'ggplot'.")
     }
     ## Uses alphabetical order / factor order
-    edges$dashes <- edges[[edge_linetype]] != sort(unq)[1]
+    edges$dashes <- edges[[edge_linetype]] != sort(unq_linetype)[1]
   }
+
+
 
   ## set up nodes and edges if x_axis is specified
   if (!is.null(x_axis)) {
@@ -443,9 +459,25 @@ vis_epicontacts <- function(x,
     if (!is.null(edge_color) &&  (L < legend_max)) {
       leg_edges <- data.frame(label = edge_col_info$leg_lab,
                               color = edge_col_info$leg_col,
-                              font.size = 15)
+                              dashes = FALSE,
+                              font.size = 15,
+                              font.align = 'top')
     } else {
       leg_edges <- NULL
+    }
+
+    if (!is.null(edge_linetype)) {
+      ## Don't add extra legend keys if variable is the same
+      if(!is.null(edge_color) && edge_linetype == edge_color) {
+        leg_edges$dashes <- c(FALSE, TRUE)
+      } else {
+        tmp <- data.frame(label = unq_linetype,
+                          color = 'black',
+                          dashes = c(FALSE, TRUE),
+                          font.size = 15,
+                          font.align = 'top')
+        leg_edges <- rbind(leg_edges, tmp)
+      }
     }
 
     out <- visNetwork::visLegend(out,

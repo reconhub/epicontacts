@@ -753,12 +753,13 @@ get_coor <- function(x,
 
   ## This orders the cases and adds two positions at the top and bottom to
   ## provide space for the axes
+  y_adj <- 2
   if(double_axis) {
     y_pos <- match(val, sort(unique(val)))
-    y_pos = rescale(c(min(y_pos) - 2, max(y_pos) + 2, y_pos), 0, 1)
+    y_pos = rescale(c(min(y_pos) - y_adj, max(y_pos) + y_adj, y_pos), 0, 1)
   } else {
     y_pos <- match(val, sort(unique(val)))
-    y_pos = rescale(c(min(y_pos) - 2, y_pos), 0, 1)
+    y_pos = rescale(c(min(y_pos) - y_adj, y_pos), 0, 1)
   }
 
   ## Also return infector because we need scaffold tree for later

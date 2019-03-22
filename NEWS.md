@@ -1,3 +1,14 @@
+epicontacts 1.2.0 (2018-9-18)
+==================
+
+### NEW FEATURES
+
+* visualise contact networks with a timed x-axis using `method = 'ttree'`.
+
+### BUG FIXES
+
+- fixed `NA` handling in `get_degree`.
+
 epicontacts 1.1.1 (2018-9-18)
 ==================
 

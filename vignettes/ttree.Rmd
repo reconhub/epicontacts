@@ -1,5 +1,5 @@
 ---
-title: "Visualisation of timed transmission trees using epicontacts"
+title: "Visualising timed transmission trees using epicontacts"
 date: "`r Sys.Date()`"
 output: 
     rmarkdown::html_vignette:
@@ -22,7 +22,8 @@ Visualising chains of transmission in an infectious disease outbreak can provide
 a useful overview of the situation and help guide interventions. This vignette
 illustrates how the `epicontacts` package can be used to create interactive
 transmission chain visualisations that display time on the x-axis, like the one
-below:
+below. Hover over the nodes for more information, drag the nodes to move them
+and click on them to highlight downstream cases.
 
 ```{r, echo = FALSE}
 library(viridis)
@@ -34,23 +35,24 @@ sim$directed <- TRUE
 plot(sim,
      method = 'ttree',
      x_axis = 'onset',
+#     legend = FALSE,
      ttree_shape = 'rectangle',
      root_order = 'size',
      node_order = 'onset',
      node_size = 'R_i',
      node_color = 'sex',
-     col_pal = colorRampPalette(c("#ba1717", "#006b99")),
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      edge_linetype = 'status',
-     edge_color = 'status',
-     edge_flex = TRUE,
+     edge_flex = FALSE,
      position_unlinked = 'bottom',
      reverse_root_order = FALSE,
      reverse_node_order = TRUE,
      hide_labels = TRUE,
      height = 700,
-     selector = FALSE,
      legend = TRUE,
-     highlight_downstream = TRUE
+     highlight_downstream = TRUE,
+     hide_labels = TRUE,
+     double_axis = TRUE
      )
 
 ```
@@ -66,8 +68,9 @@ the [overview vignette](epicontacts.html).
 For this vignette, we will use a simulated outbreak as an example dataset. The
 linelist dataframe contains anonymised case IDs, dates of symptom onset, age,
 sex and outcome for each case. The contacts dataframe specifies the infector and
-infectee in the `from` and `to` columns, respectively, as well as the contact
-status (suspected or confirmed), duration of contact and date of first contact.
+infectee in the `from` and `to` columns, as well as the contact status
+(suspected or confirmed), location of contact (community or hospital), duration
+of contact and date of first contact.
 
 Below is an overview of the outbreak data as an `epicontacts` object.
 
@@ -78,17 +81,16 @@ sim
 
 ## Basic plotting
 
-We can then visualise of these transmission chains using the `plot` function. We
-specify that we want to visualise our network as a transmission tree using the
-`method` argument, and indicate which column in our linelistp should be used for
-the x-axis (in this case, the date of symptom onset).
+We can then visualise these transmission chains using the `plot` function. We
+specify that we want to visualise our network as a timed transmission tree using
+the `method` argument, and indicate which column of the linelist should be used
+for the x-axis (in this case, the date of symptom onset).
 
 ```{r}
-plot(sim, method = 'ttree', x_axis = 'onset')
+plot(sim,
+     method = 'ttree',
+     x_axis = 'onset')
 ```
-
-This is a dynamic visualisation with moveable nodes that provides additional node
-information upon node hovering.
 
 ## Specifying node and edge attributes
 
@@ -103,13 +105,14 @@ cluster with that case as an ancestor). For example:
 plot(sim, 
      method = 'ttree', 
      x_axis = 'onset',
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
-     size_range = c(5, 20),
-     selector = FALSE)
+     size_range = c(5, 20))
 ```
 
-We can specify the size range of the nodes using the `size_range` argument. 
+We can specify the size range of the nodes using the `size_range` argument, and
+the color palette using the `col_pal` argument.
 
 Edge color, width and linetype can be mapped to a given column in the contacts dataframe.
 For example:
@@ -118,13 +121,13 @@ For example:
 plot(sim, 
      method = 'ttree', 
      x_axis = 'onset',
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_color = 'status',
      edge_linetype = 'status',
-     edge_width = 'duration',
-     selector = FALSE)
+     edge_width = 'duration')
 ```
 
 ## Specifying transmission tree shape
@@ -140,11 +143,11 @@ plot(sim,
      method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
-     edge_linetype = 'status',
-     selector = FALSE)
+     edge_linetype = 'status')
 ```
 
 Furthermore, the vertical ordering of the nodes within the tree can be mapped to a given column
@@ -164,11 +167,11 @@ plot(sim,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
-     edge_linetype = 'status',
-     selector = FALSE)
+     edge_linetype = 'status')
 ```
 
 Each case node can be assigned a unique vertical position by toggling the `position_dodge` 
@@ -184,13 +187,13 @@ plot(sim,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = TRUE,
-     position_unlinked = 'top',
-     selector = FALSE)
+     position_unlinked = 'top')
 ```
 
 Finally, the position of the parent node relative to the children nodes can be
@@ -207,14 +210,14 @@ plot(sim,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = FALSE,
      position_unlinked = 'top',
-     parent_pos = 'bottom',
-     selector = FALSE)
+     parent_pos = 'bottom')
 ```
 
 ## Time axis
@@ -231,15 +234,16 @@ plot(sim,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = TRUE,
      position_unlinked = 'top',
      double_axis = TRUE,
-     date_labels = "%b %d",
-     selector = FALSE)
+     date_labels = "%b %d")
 ```
 
 ## Collapsing nodes
@@ -257,7 +261,8 @@ plot(sim,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
@@ -265,8 +270,7 @@ plot(sim,
      position_unlinked = 'top',
      double_axis = TRUE,
      date_label = "%b %d",
-     collapse = TRUE,
-     selector = FALSE)
+     collapse = TRUE)
 ```
 
 ## Additional options
@@ -285,15 +289,16 @@ plot(sim,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      edge_label = 'status',
      edge_flex = TRUE,
      highlight_downstream = TRUE,
-     hide_labels = TRUE,
-     selector = FALSE)
+     hide_labels = TRUE)
 ```
 
 The `height` and `width` of the figure can be specified in pixels. 
@@ -307,12 +312,13 @@ plot(sim,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
-     height = 1000,
-     selector = FALSE)
+     height = 1000)
 ```
 
 ## Multiple infectors per case and cyclical networks
@@ -330,6 +336,7 @@ from <- sapply(match(to, sim$linelist$id),
 contacts_2 <- data.frame(from = from, 
                         to = to,
                         status = sample(c("confirmed", "suspected"), 5, TRUE),
+                        location = sample(c("community", "hospital"), 5, TRUE),
                         duration = runif(5, 0, 20),
                         date = sample(sim$linelist$onset, 5))
 
@@ -344,14 +351,14 @@ plot(sim_2,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      height = 1000,
-     position_dodge = FALSE,
-     selector = FALSE)
-```
+     position_dodge = FALSE)
+```  
 
 ## Outputting to ggplot
 
@@ -359,7 +366,7 @@ The same algorithm was implemented within ggplot. Most of the available options 
 though check the documentation to be sure. The benefit of the ggplot output is that it allows
 much more customisation by the user, as seen below in renaming the legend labels.
 
-```{r, fig.width = 10, fig.height = 8}
+```{r, fig.width = 7, fig.height = 8}
 sim_2$directed <- FALSE
 plot(sim_2, 
      method = 'ggplot',
@@ -369,7 +376,8 @@ plot(sim_2,
      node_order = 'size',
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
-     node_color = 'age',
+     node_color = 'sex',
+     col_pal = my_func,
      node_size = 'R_i',
      size_range = c(3, 8),
      edge_linetype = 'status',

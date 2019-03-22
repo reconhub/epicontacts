@@ -34,7 +34,7 @@ data is used to vertically order nodes in the transmission tree (i.e. the
 ordered by the size of the downstream transmission chains they generate.}
 
 \item{reverse_root_order}{A logical indicating if the ordering of the roots
-hsould be reversed.}
+should be reversed.}
 
 \item{reverse_node_order}{A logical indicating if the ordering of the nodes
 should be reversed.}
