@@ -114,7 +114,7 @@ vis_ttree <- function(x,
                       edge_flex = FALSE,
                       position_dodge = FALSE,
                       parent_pos = c('middle', 'top', 'bottom'),
-                      n_breaks = 10,
+                      n_breaks = 5,
                       double_axis = FALSE,
                       ...) {
 
@@ -147,11 +147,7 @@ vis_ttree <- function(x,
   highlight_downstream <- get_val('highlight_downstream', TRUE, args)
   date_labels <- get_val('date_labels', "%d/%m/%Y", args)
   collapse <- get_val('collapse', TRUE, args)
-
-  ## Calculate R_i if needed
-  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
-    x$linelist$R_i <- sapply(x$linelist$id, function(i) sum(x$contacts$from == i, na.rm = TRUE))
-  }
+  thin <- get_val('thin', FALSE, args)
 
   parent_pos <- match.arg(parent_pos)
 
@@ -161,6 +157,18 @@ vis_ttree <- function(x,
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
 
+  ## Remove NAs in contacts and remove contacts that don't have both nodes in linelist
+  x$contacts <- subset(x$contacts, !is.na(x$contacts$from) & !is.na(x$contacts$to))
+  x$contacts <- subset(x$contacts, x$contacts$from %in% x$linelist$id &
+                                   x$contacts$to %in% x$linelist$id)
+
+  ## Remove linelist elements that aren't in contacts
+  if(thin) {
+    x$linelist <- x$linelist[x$linelist$id %in% x$contacts$from |
+                             x$linelist$id %in% x$contacts$to,]
+  }
+
+  
   ## check that x_axis is specified
   if (is.null(x_axis)) {
     stop("x_axis must be specified")
@@ -170,10 +178,15 @@ vis_ttree <- function(x,
     x$contacts <- x$contacts[!(x$contacts$from %in% x$linelist$id[is_na] |
                                x$contacts$to %in% x$linelist$id[is_na]),]
     x$linelist <- x$linelist[!is_na,]
+    
   }
 
-  ## Remove NAs in contacts
-  x$contacts <- subset(x$contacts, !is.na(x$contacts$from) & !is.na(x$contacts$to))
+  ## Calculate R_i if needed
+  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
+    x$linelist$R_i <- vapply(x$linelist$id,
+                             function(i) sum(x$contacts$from == i, na.rm = TRUE),
+                             numeric(1))
+  }
   
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
@@ -216,11 +229,6 @@ vis_ttree <- function(x,
   nodes <- data.frame(id = all_nodes,
                       stringsAsFactors = FALSE)
 
-  ## set default highlight_nearest to TRUE
-  if(missing(highlight_downstream)) {
-    highlight_downstream <- TRUE
-  }
-
   nodes <- x$linelist
   edges <- x$contacts
 
@@ -243,7 +251,7 @@ vis_ttree <- function(x,
   x_axis_lab <- pretty(nodes[[x_axis]], n = n_breaks)
   
   ## Date -> numeric as visnetwork doesn't support dates
-  if(inherits(nodes$x, 'Date')) {
+  if(inherits(nodes$x, c('Date', 'POSIXct'))) {
     nodes$x <- as.numeric(nodes$x)
   }
   
@@ -375,7 +383,7 @@ vis_ttree <- function(x,
       edges$width <- rescale(as.numeric(edge_width_values), width_range[1], width_range[2])
     }
   }
-  
+
   if (x$directed) {
     edges$arrows <- ifelse(edges$to_node, 'to', NA)
   }
@@ -410,14 +418,14 @@ vis_ttree <- function(x,
 
   ## set up nodes and edges if x_axis is specified
   
-  if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
+  if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer", "POSIXct"))) {
     stop("Data used to specify x axis must be a date or number")
   }
   drange <- range(nodes[[x_axis]], na.rm = TRUE)
   nodes$level <- nodes[[x_axis]] - drange[1] + 1L
   drange <- seq(drange[1], drange[2], by = 1L)
   drange <- pretty(drange, n = n_breaks)
-  if(inherits(drange, "Date")) {
+  if(inherits(drange, c("Date", "POSIXct"))) {
     drange_id <- format(drange, date_labels)
   } else {
     drange_id <- paste0("date_", drange)
@@ -435,7 +443,7 @@ vis_ttree <- function(x,
   nmerge <- c("id", "level")
   emerge <- c("from", "to")
   if (!is.null(label)) {
-    if(inherits(drange, "Date")) {
+    if(inherits(drange, c("Date", "POSIXct"))) {
       dnodes$label <- as.character(format(drange, date_labels))
     } else {
       dnodes$label <- as.character(drange)
@@ -500,9 +508,9 @@ vis_ttree <- function(x,
                  all = TRUE,
                  sort = FALSE
                  )
-  
+
   ## build visNetwork output
-  edges$arrows.scaleFactor <- 0.1
+  edges$arrows.ScaleFactor <- 5
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height)

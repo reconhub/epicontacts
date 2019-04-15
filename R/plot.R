@@ -82,9 +82,9 @@ plot.epicontacts <- function(x, node_color = "id",
     }
   } else if (method == "ttree") {
     if(missing(node_color)) {
-      return(vis_ttree(x, ...))
+      return(vis_ttree(x, thin = thin, ...))
     } else {
-      return(vis_ttree(x, node_color = node_color, ...))
+      return(vis_ttree(x, thin = thin, node_color = node_color, ...))
     }
   } else if (method == "graph3D") {
     return(graph3D(x, node_color = node_color, ...))

@@ -200,19 +200,11 @@ vis_ggplot <- function(x,
   
   ## Calculate R_i if needed
   if('R_i' %in% c(node_color, node_size, node_order, root_order)) {
-    x$linelist$R_i <- sapply(x$linelist$id, function(i) sum(x$contacts$from == i, na.rm = TRUE))
+    x$linelist$R_i <- vapply(x$linelist$id,
+                             function(i) sum(x$contacts$from == i, na.rm = TRUE),
+                             1)
   }
   
-  ## Check for multiple incoming edges per node
-#  tab <- table(x$contacts$to)
-#  culprits <- names(tab)[tab > 1]
-#  if (length(culprits) != 0) {
-#    culprits <- paste(culprits, collapse = ", ")
-#    msg <- sprintf("multiple infectors found for %s . use type = 'network'",
-#                   culprits)
-#    stop(msg)
-#  }
-
   ## check that x_axis is specified
   if (is.null(x_axis)) {
     stop("x_axis must be specified if type = 'ttree'")
@@ -224,26 +216,22 @@ vis_ggplot <- function(x,
   ## Get x and y coordinates
   if(is.null(y_coor)) {
     coor <- get_coor(x,
-                   x_axis = x_axis,
-                   position_dodge = position_dodge,
-                   root_order = root_order,
-                   reverse_root_order = reverse_root_order,
-                   node_order = node_order,
-                   reverse_node_order = reverse_node_order,
-                   position_unlinked = position_unlinked,
-                   parent_pos = parent_pos)
-    nodes$y <- coor$y[-(1:2)]
+                     x_axis = x_axis,
+                     position_dodge = position_dodge,
+                     root_order = root_order,
+                     reverse_root_order = reverse_root_order,
+                     node_order = node_order,
+                     reverse_node_order = reverse_node_order,
+                     position_unlinked = position_unlinked,
+                     parent_pos = parent_pos,
+                     method = 'ggplot')
+    nodes$y <- coor$y
   } else {
     nodes$y <- y_coor
   }
   
   nodes$x <- x$linelist[[x_axis]]
   nodes$clust_size <- coor$clust_size
-
-  ## Move isolated cases to the bottom
-  if(position_unlinked == 'top') {
-    nodes$y[nodes$y == 0] <- 1
-  }
 
   if(ttree_shape == 'rectangle') {
 

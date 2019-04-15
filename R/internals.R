@@ -13,7 +13,7 @@
 
 assert_node_color <- function(x, node_color) {
   if (length(node_color) > 1L) {
-    stop("'node_color' must indicate a single node attribute")
+    stop("'node_color' mustindicate a single node attribute")
   }
   if (is.logical(node_color) && !node_color) {
     node_color <- NULL
@@ -470,7 +470,8 @@ get_coor <- function(x,
                      reverse_rank_contact = FALSE,
                      position_unlinked = 'bottom',
                      double_axis = TRUE,
-                     parent_pos = 'middle') {
+                     parent_pos = 'middle',
+                     method = 'ttree') {
 
   ## Get split defines how children nodes are 'split' relative to their parent
   ## Position_dodge specifies if a parent and child can share the same y position
@@ -507,8 +508,7 @@ get_coor <- function(x,
   x <- get_clusters(x)
   linelist <- x$linelist
   contacts <- x$contacts
-
-
+  
   ## If rank_contact is a node attribute, calculate an edge attribute for each
   ## contact by taking the difference in node attributes
   if(!rank_contact %in% names(contacts)) {
@@ -517,7 +517,7 @@ get_coor <- function(x,
       stop("rank_contact is not found in linelist or contacts")
     }
 
-    if(!inherits(linelist[[rank_contact]], c("Date", "numeric", "integer"))) {
+    if(!inherits(linelist[[rank_contact]], c("Date", "numeric", "integer", "POSIXct", "POSIXt"))) {
       stop("rank_contact must indicate a Date, numeric or integer value")
     }
 
@@ -752,14 +752,20 @@ get_coor <- function(x,
   }
 
   ## This orders the cases and adds two positions at the top and bottom to
-  ## provide space for the axes
+  ## provide space for the axes - only do this for method == 'ttree', otherwise
+  ## we will have additional nodes in the ggplot
   y_adj <- 2
-  if(double_axis) {
-    y_pos <- match(val, sort(unique(val)))
-    y_pos = rescale(c(min(y_pos) - y_adj, max(y_pos) + y_adj, y_pos), 0, 1)
+  if(method == 'ttree') {
+    if(double_axis) {
+      y_pos <- match(val, sort(unique(val)))
+      y_pos = rescale(c(min(y_pos) - y_adj, max(y_pos) + y_adj, y_pos), 0, 1)
+    } else {
+      y_pos <- match(val, sort(unique(val)))
+      y_pos = rescale(c(min(y_pos) - y_adj, y_pos), 0, 1)
+    }
   } else {
     y_pos <- match(val, sort(unique(val)))
-    y_pos = rescale(c(min(y_pos) - y_adj, y_pos), 0, 1)
+    y_pos = rescale(y_pos, 0, 1)
   }
 
   ## Also return infector because we need scaffold tree for later
