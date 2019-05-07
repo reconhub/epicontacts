@@ -288,7 +288,7 @@ vis_ttree <- function(x,
     ## No hidden nodes if shape is branching
   } else if(ttree_shape == 'branching') {
     hidden <- NULL
-    edges$to_node <- TRUE
+    if(nrow(edges) > 0) edges$to_node <- TRUE
   }
 
   ## generate annotations ('title' in visNetwork terms)
@@ -425,11 +425,8 @@ vis_ttree <- function(x,
   nodes$level <- nodes[[x_axis]] - drange[1] + 1L
   drange <- seq(drange[1], drange[2], by = 1L)
   drange <- pretty(drange, n = n_breaks)
-  if(inherits(drange, c("Date", "POSIXct"))) {
-    drange_id <- format(drange, date_labels)
-  } else {
-    drange_id <- paste0("date_", drange)
-  }
+  ## create unique node ids for axes
+  drange_id <- paste0("date_", seq_along(drange))
   
   dnodes <- data.frame(
     id = as.character(drange_id),
@@ -584,7 +581,7 @@ vis_ttree <- function(x,
 
   ## set nodes borders, edge width, and plotting options
   enabled <- list(enabled = TRUE)
-  arg_selec <- if (selector) node_color else NULL
+  arg_selec <- if (selector) 'id' else NULL
 
   ## should nodes collapse upon double clicking
   if(collapse) {

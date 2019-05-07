@@ -9,6 +9,6 @@ test_that("Printing objects works", {
                            directed = FALSE)
 
     # nb rds/print.rds was created with the following:
-    #saveRDS(testthat::capture_output(print(x)), file = "rds/print.rds")
+    ##saveRDS(testthat::capture_output(print(x)), file = "rds/print.rds")
     expect_equal(capture_output(print(x)), readRDS("rds/print.rds"))
 })

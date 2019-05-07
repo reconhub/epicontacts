@@ -13,7 +13,7 @@
 
 assert_node_color <- function(x, node_color) {
   if (length(node_color) > 1L) {
-    stop("'node_color' mustindicate a single node attribute")
+    stop("'node_color' must indicate a single node attribute")
   }
   if (is.logical(node_color) && !node_color) {
     node_color <- NULL
