@@ -32,14 +32,27 @@
 #' }
 
 subset_clusters_by_id <- function(x, id){
+    # Convert epicontacts object to igraph and get linelist + contacts dataframes
     net <- as.igraph.epicontacts(x)
+    net_linelist <- igraph::as_data_frame(net, "vertices")
+    net_contacts <- igraph::as_data_frame(net, "edges")
+
+    # Get cluster information for each node/case
     cs <- igraph::clusters(net)
     net_nodes <- data.frame(nodes =igraph::V(net)$id,
                             cs_member = cs$membership,
                             stringsAsFactors = FALSE)
+    # Identify cluster containing nodes/cases of interest
     cluster_to_subset <- unique(net_nodes$cs_member[which(net_nodes$nodes %in% id)])
+
+    # Identify members of cluster belonging to nodes/cases of interest
     id_to_subset <- net_nodes$nodes[ which(net_nodes$cs_member %in% cluster_to_subset)]
-    epi_subset <- x[id_to_subset]
+    # Create new epicontacts object with cluster members
+    new_linelist <- net_linelist[ net_linelist$name %in% id_to_subset, ]
+    new_contacts <- net_contacts[ net_contacts$from %in% id_to_subset |
+                                  net_contacts$to %in% id_to_subset, ]
+    epi_subset <- make_epicontacts(new_linelist, new_contacts, directed = x$directed)
+    
     return(epi_subset)
 }
 
