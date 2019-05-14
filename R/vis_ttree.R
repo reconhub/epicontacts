@@ -139,6 +139,7 @@ vis_ttree <- function(x,
   annot  <- get_val('annot', TRUE, args)
   width <- get_val('width', "700px", args)
   height <- get_val('height', "700px", args)
+  title <- get_val('title', NULL, args)
   legend <- get_val('legend', TRUE, args)
   legend_max <- get_val('legend_max', 10, args)
   selector <- get_val('selector', FALSE, args)
@@ -613,6 +614,12 @@ vis_ttree <- function(x,
   ## add fontAwesome
   out <- visNetwork::addFontAwesome(out)
 
+  ## add plot title
+  if(!is.null(title)) {
+    out$x$main$text <- title
+    out$x$main$style <- "font-weight:bold;font-size:20px;text-align:center"
+  }
+  
   return(out)
   
 }

@@ -9,11 +9,11 @@ vis_epicontacts(x, node_color = "id", node_shape = NULL,
   edge_linetype = NULL, edge_label = NULL, col_pal = cases_pal,
   edge_col_pal = edges_pal, NA_col = "lightgrey", shapes = NULL,
   size_range = c(5, 20), width_range = c(1, 5), label = "id",
-  annot = TRUE, width = "90\%", height = "700px", legend = TRUE,
-  legend_max = 10, x_axis = NULL, date_labels = "\%d/\%m/\%Y",
-  thin = TRUE, selector = TRUE, editor = FALSE,
-  highlight_downstream = FALSE, hide_labels = FALSE, collapse = TRUE,
-  ...)
+  annot = TRUE, width = "90\%", height = "700px", title = NULL,
+  legend = TRUE, legend_max = 10, x_axis = NULL,
+  date_labels = "\%d/\%m/\%Y", thin = TRUE, selector = TRUE,
+  editor = FALSE, highlight_downstream = FALSE, hide_labels = FALSE,
+  collapse = TRUE, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -82,6 +82,8 @@ or '800px').}
 
 \item{height}{The height of the output, in html compatible format
 (e.g. '800px').}
+
+\item{title}{An optional character string indicating the plot title.}
 
 \item{legend}{A logical indicating whether a legend should be added to the
 plot.}

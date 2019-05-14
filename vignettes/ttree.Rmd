@@ -273,6 +273,32 @@ plot(sim,
      collapse = TRUE)
 ```
 
+## Adding a title
+A title can be added to the plot as follows:
+
+```{r}
+plot(sim, 
+     method = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'branching',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     position_dodge = TRUE,
+     position_unlinked = 'top',
+     double_axis = TRUE,
+     date_label = "%b %d",
+     title = "Transmission chains, June-August 2018",
+     collapse = TRUE)
+```
+
+
 ## Additional options
 Edges can curve upon manual adjustment of nodes, instead of remaining straight,
 by toggling the `edge_flex` argument. All downstream cases of a given node can
@@ -319,6 +345,72 @@ plot(sim,
      size_range = c(5, 20),
      edge_linetype = 'status',
      height = 1000)
+```
+
+
+## Identifying spurious contacts
+
+The arguments `edge_color` and `edge_linetype` can be used to label contacts that seem spurious. In the example below, many of the contacts occur between cases with unrealistic serial intervals. To highlight these, we first specify a `max_si` and `min_si` and then create new columns in the `contacts` dataframe that indicate which contacts fall outside of this range. We use the `get_pairwise` function to calculate the difference in onset dates between contacts.
+
+```{r, echo = FALSE}
+set.seed(2)
+sim_3 <- sim
+sim_3$contacts$from <- sample(sim$contacts$from, replace = FALSE)
+```
+
+```{r, echo = TRUE}
+max_si <- 30
+min_si <- 3
+
+si <- get_pairwise(sim_3, 'onset', function(x, y) y - x)
+sim_3$contacts$suspicious <- si < min_si | si > max_si
+
+plot(sim_3, 
+     method = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_color = 'suspicious',
+     title = "Uncleaned contact network",
+     height = 1000,
+     width = 900,
+     hide_labels = TRUE,
+     thin = TRUE,
+     position_dodge = TRUE)
+```  
+
+We can then remove these contacts and plot only those that seem feasible:
+
+```{r, echo = TRUE}
+sim_3_clean <- sim_3
+sim_3_clean$contacts <- sim_3$contacts[!sim_3$contacts$suspicious,]
+  
+plot(sim_3_clean, 
+     method = 'ttree', 
+     x_axis = 'onset',
+     ttree_shape = 'rectangle',
+     root_order = 'onset',
+     node_order = 'size',
+     reverse_node_order = FALSE,
+     reverse_root_order = TRUE,
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_color = 'suspicious',
+     title = "Cleaned contact network",
+     height = 1000,
+     width = 900,
+     hide_labels = TRUE,
+     thin = TRUE,
+     position_dodge = TRUE)
 ```
 
 ## Multiple infectors per case and cyclical networks
@@ -377,7 +469,6 @@ plot(sim_2,
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
      node_color = 'sex',
-#     col_pal = my_func,
      node_size = 'R_i',
      size_range = c(3, 8),
      edge_linetype = 'status',
@@ -389,3 +480,4 @@ plot(sim_2,
   scale_x_date(breaks = "1 week", 
                date_labels = "%d-%b")
 ```
+

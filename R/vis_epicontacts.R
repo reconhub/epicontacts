@@ -80,6 +80,8 @@
 #' @param height The height of the output, in html compatible format
 #'   (e.g. '800px').
 #'
+#' @param title An optional character string indicating the plot title.
+#'
 #' @param legend A logical indicating whether a legend should be added to the
 #'   plot.
 #' 
@@ -158,6 +160,7 @@ vis_epicontacts <- function(x,
                             annot  =  TRUE,
                             width = "90%",
                             height = "700px",
+                            title = NULL,
                             legend = TRUE,
                             legend_max = 10,
                             x_axis = NULL,
@@ -538,6 +541,12 @@ vis_epicontacts <- function(x,
   ## add fontAwesome
   out <- visNetwork::addFontAwesome(out)
 
+  ## add plot title
+  if(!is.null(title)) {
+    out$x$main$text <- title
+    out$x$main$style <- "font-weight:bold;font-size:20px;text-align:center"
+  }
+  
   return(out)
   
 }
