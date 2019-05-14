@@ -354,18 +354,18 @@ The arguments `edge_color` and `edge_linetype` can be used to label contacts tha
 
 ```{r, echo = FALSE}
 set.seed(2)
-sim_3 <- sim
-sim_3$contacts$from <- sample(sim$contacts$from, replace = FALSE)
+sim_2 <- sim
+sim_2$contacts$from <- sample(sim$contacts$from, replace = FALSE)
 ```
 
 ```{r, echo = TRUE}
 max_si <- 30
 min_si <- 3
 
-si <- get_pairwise(sim_3, 'onset', function(x, y) y - x)
-sim_3$contacts$suspicious <- si < min_si | si > max_si
+si <- get_pairwise(sim_2, 'onset', function(x, y) y - x)
+sim_2$contacts$suspicious <- si < min_si | si > max_si
 
-plot(sim_3, 
+plot(sim_2, 
      method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -389,10 +389,10 @@ plot(sim_3,
 We can then remove these contacts and plot only those that seem feasible:
 
 ```{r, echo = TRUE}
-sim_3_clean <- sim_3
-sim_3_clean$contacts <- sim_3$contacts[!sim_3$contacts$suspicious,]
+sim_2_clean <- sim_2
+sim_2_clean$contacts <- sim_2$contacts[!sim_2$contacts$suspicious,]
   
-plot(sim_3_clean, 
+plot(sim_2_clean, 
      method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -425,17 +425,17 @@ to <- sample(sim$linelist$id, 5)
 from <- sapply(match(to, sim$linelist$id), 
                function(i) sample(sim$linelist$id[sim$linelist$onset < sim$linelist$onset[i]], 1))
 
-contacts_2 <- data.frame(from = from, 
+contacts_3 <- data.frame(from = from, 
                         to = to,
                         status = sample(c("confirmed", "suspected"), 5, TRUE),
                         location = sample(c("community", "hospital"), 5, TRUE),
                         duration = runif(5, 0, 20),
                         date = sample(sim$linelist$onset, 5))
 
-sim_2 <- sim
-sim_2$contacts <- rbind(sim_2$contacts, contacts_2)
-sim_2 $directed <- TRUE
-plot(sim_2, 
+sim_3 <- sim
+sim_3$contacts <- rbind(sim_3$contacts, contacts_3)
+sim_3 $directed <- TRUE
+plot(sim_3, 
      method = 'ttree', 
      x_axis = 'onset',
      ttree_shape = 'rectangle',
@@ -459,8 +459,8 @@ though check the documentation to be sure. The benefit of the ggplot output is t
 much more customisation by the user, as seen below in renaming the legend labels.
 
 ```{r, fig.width = 7, fig.height = 8}
-sim_2$directed <- FALSE
-plot(sim_2, 
+sim_3$directed <- FALSE
+plot(sim_3, 
      method = 'ggplot',
      x_axis = 'onset',
      ttree_shape = 'rectangle',
