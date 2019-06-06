@@ -99,6 +99,13 @@
 #' @param parent_pos Specify the position of the parent node relative to its
 #'   children. Can be one of 'middle', 'top' or 'bottom'.
 #'
+#' @param custom_parent_pos A function specifying the position of children nodes
+#'   relative to their parent. This function must accept a single integer `x` as
+#'   its only argument, specifying the number of children nodes. It must return
+#'   a vector of length x, specifying the position of each child relative to the
+#'   parent, where a x > 0 indicates above the parent, x < 0 indicates below the
+#'   parent, and x = 0 indicates the same height as the parent.
+#'
 #' @param label A logical indicating if case IDs should be displayed on the
 #'   y-axis labels. Only works when position_dodge = TRUE, otherwise
 #'   y-coordinates are not unique.
@@ -166,8 +173,10 @@ vis_ggplot <- function(x,
                        position_unlinked = 'bottom',
                        position_dodge = FALSE,
                        parent_pos = 'middle',
+                       custom_parent_pos = NULL,
                        label = FALSE,
-                       y_coor = NULL) {
+                       y_coor = NULL,
+                       igraph_type = NULL) {
 
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
@@ -223,15 +232,18 @@ vis_ggplot <- function(x,
                      node_order = node_order,
                      reverse_node_order = reverse_node_order,
                      position_unlinked = position_unlinked,
+                     axis_type = 'none',
                      parent_pos = parent_pos,
-                     method = 'ggplot')
+                     custom_parent_pos = custom_parent_pos,
+                     method = 'ggplot',
+                     igraph_type = igraph_type)
     nodes$y <- coor$y
   } else {
     nodes$y <- y_coor
   }
   
   nodes$x <- x$linelist[[x_axis]]
-  nodes$clust_size <- coor$clust_size
+  nodes$subtree_size <- coor$subtree_size
 
   if(ttree_shape == 'rectangle') {
 

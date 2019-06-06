@@ -23,7 +23,7 @@ assert_node_color <- function(x, node_color) {
       node_color <- names(x$linelist)[node_color]
     }
 
-    if (!node_color %in% c(names(x$linelist), 'R_i', 'clust_size')) {
+    if (!node_color %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
       msg <- sprintf("node_color '%s' is not in the linelist", node_color)
       stop(msg)
     }
@@ -50,7 +50,7 @@ assert_node_shape <- function(x, node_shape) {
       node_shape <- names(x$linelist)[node_shape]
     }
 
-    if (!node_shape %in% c(names(x$linelist), 'R_i', 'clust_size')) {
+    if (!node_shape %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
       msg <- sprintf("node_shape '%s' is not in the linelist", node_shape)
       stop(msg)
     }
@@ -73,7 +73,7 @@ assert_node_size <- function(x, node_size) {
     node_size <- NULL
   }
   if (!is.null(node_size)) {
-    if (!is.numeric(node_size) & !node_size %in% c(names(x$linelist), 'R_i', 'clust_size')) {
+    if (!is.numeric(node_size) & !node_size %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
       msg <- sprintf("node_size '%s' is not in the linelist", node_size)
       stop(msg)
     }
@@ -318,13 +318,33 @@ assert_rank_contact <- function(x, rank_contact) {
 
 
 
+assert_custom_parent_pos <- function(custom_parent_pos) {
+
+  if(!is.null(custom_parent_pos)) {
+    if (!is.function(custom_parent_pos)) {
+      stop("'custom_parent_pos' must be a function")
+    }
+    if (length(methods::formalArgs(custom_parent_pos)) != 1L) {
+      stop("'custom_parent_pos' must have only one argument")
+    }
+  }
+
+  return(custom_parent_pos)
+  
+}
+
+
+
+
+
+
 ## Recursive function to identify how many layers deep a case is and who its
 ## root is. Leaf indicates the node you start with. With multiple infectors,
 ## choose the link with the maximum value in 'rank_contact', which is either an
 ## edge attribute, or an edge attribute calculated from a node attribute by
 ## taking the difference in node attributes (e.g. difference in times of
 ## infection if rank_contact = 't_inf').
-get_treestat <- function(i, depth, clust_size, contacts, linelist, leaf,
+get_treestat <- function(i, depth, subtree_size, contacts, linelist, leaf,
                          rank_contact, reverse_rank_contact, infector_keep, root) {
 
   ind <- which(contacts$to == i)
@@ -353,12 +373,12 @@ get_treestat <- function(i, depth, clust_size, contacts, linelist, leaf,
     stop("type = 'ttree' does not work with cyclical networks. use type = 'network'")
   }
   if(is.na(infector) || infector == 0) {
-    return(list(depth = depth, clust_size = clust_size, infector = infector_keep, root = i)) 
+    return(list(depth = depth, subtree_size = subtree_size, infector = infector_keep, root = i)) 
   } else {
     depth <- depth + 1
     inf_ind <- which(linelist$id == infector)
-    clust_size[inf_ind] <- clust_size[inf_ind] + 1
-    get_treestat(infector, depth, clust_size, contacts, linelist, leaf,
+    subtree_size[inf_ind] <- subtree_size[inf_ind] + 1
+    get_treestat(infector, depth, subtree_size, contacts, linelist, leaf,
                  rank_contact, reverse_rank_contact, infector_keep, NULL)
   }
 }
@@ -367,7 +387,7 @@ get_treestat <- function(i, depth, clust_size, contacts, linelist, leaf,
 
 ## Identify cycles in the network and remove the edge with the lowest rank in
 ## 'rank_contact'
-clean_cycles <- function(i, leaf, contacts, linelist, cycle_elements,
+clean_cycles <- function(i, leaf, contacts, cycle_elements,
                          rank_contact, reverse_rank_contact) {
 
   incoming_edge <- contacts[which(contacts$to == i),]
@@ -399,14 +419,14 @@ clean_cycles <- function(i, leaf, contacts, linelist, cycle_elements,
     contacts <- contacts[-ind_remove,]
 
     ## Restart loop from leaf with updated contacts
-    contacts <- clean_cycles(leaf, leaf, contacts, linelist, NULL,
+    contacts <- clean_cycles(leaf, leaf, contacts, NULL,
                              rank_contact, reverse_rank_contact)
     
     ## If no loop, move onwards
   } else {
     
     cycle_elements <- rbind(cycle_elements, to_keep)
-    contacts <- clean_cycles(to_keep$from, leaf, contacts, linelist, cycle_elements,
+    contacts <- clean_cycles(to_keep$from, leaf, contacts, cycle_elements,
                              rank_contact, reverse_rank_contact)
     
   }
@@ -469,42 +489,54 @@ get_coor <- function(x,
                      rank_contact = x_axis,
                      reverse_rank_contact = FALSE,
                      position_unlinked = 'bottom',
-                     double_axis = TRUE,
+                     axis_type = c("single", "double", "none"),
                      parent_pos = 'middle',
-                     method = 'ttree') {
+                     custom_parent_pos = NULL,
+                     method = 'ttree',
+                     igraph_type = NULL) {
 
   ## Get split defines how children nodes are 'split' relative to their parent
   ## Position_dodge specifies if a parent and child can share the same y position
   ## split_type specifies where the parent sits relative to the children
-  get_split <- function(len, parent_pos = 'middle') {
-    if(parent_pos == 'middle') {
-      if(len %% 2 != 0 & position_dodge) {
-        len <- len + 1
-        odd <- TRUE
-      } else {
-        odd <- FALSE
+  get_split <- function(len, parent_pos = 'middle', custom_parent_pos = NULL) {
+
+    if(is.null(custom_parent_pos)) {
+      if(parent_pos == 'middle') {
+        if(len %% 2 != 0 & position_dodge) {
+          len <- len + 1
+          odd <- TRUE
+        } else {
+          odd <- FALSE
+        }
+        sq <- seq(1, 1 + 2*(len - 1), 2)
+        out <- sq - stats::median(sq)
+        if(odd & position_dodge) out <- out[-1]
+      } else if(parent_pos == 'bottom') {
+        if(position_dodge) {
+          out <- 1:len
+        } else {
+          out <- 0:(len - 1)
+        }
+      } else if(parent_pos == 'top') {
+        if(position_dodge) {
+          out <- (1:len)*-1
+        } else {
+          out <- (0:(len - 1)*-1)
+        }
       }
-      sq <- seq(1, 1 + 2*(len - 1), 2)
-      out <- sq - stats::median(sq)
-      if(odd & position_dodge) out <- out[-1]
-    } else if(parent_pos == 'bottom') {
-      if(position_dodge) {
-        out <- 1:len
-      } else {
-        out <- 0:(len - 1)
-      }
-    } else if(parent_pos == 'top') {
-      if(position_dodge) {
-        out <- (1:len)*-1
-      } else {
-        out <- (0:(len - 1)*-1)
-      }
+    } else {
+      out <- custom_parent_pos(len)
     }
 
     return(out)
   }
 
+  axis_type <- match.arg(axis_type)
+
   ## Add cluster membership, for use in root clustering
+  x$linelist$id <- as.character(x$linelist$id)
+  x$contacts$from <- as.character(x$contacts$from)
+  x$contacts$to <- as.character(x$contacts$to)
   x <- get_clusters(x)
   linelist <- x$linelist
   contacts <- x$contacts
@@ -541,7 +573,7 @@ get_coor <- function(x,
   infector <- root <- rep(NA, N)
 
   ## Clust size is the number of nodes downstream of a given node
-  clust_size <- rep(1, N)
+  subtree_size <- rep(1, N)
 
   ## We remove cycles when building the scaffold tree. We do so by recursively
   ## removing the weakest edge in a cycle (as defined by rank_contact)
@@ -551,7 +583,6 @@ get_coor <- function(x,
     contacts_clean <- clean_cycles(i,
                                    leaf = i,
                                    contacts = contacts_clean,
-                                   linelist = linelist,
                                    cycle_elements = NULL,
                                    rank_contact = rank_contact,
                                    reverse_rank_contact = reverse_rank_contact)
@@ -561,7 +592,7 @@ get_coor <- function(x,
   for(i in linelist$id) {
     treestat <- get_treestat(i,
                              depth = 1,
-                             clust_size = clust_size,
+                             subtree_size = subtree_size,
                              contacts = contacts_clean,
                              linelist = linelist,
                              leaf = i,
@@ -573,13 +604,13 @@ get_coor <- function(x,
     depth[which(linelist$id == i)] <- treestat$depth
     infector[which(linelist$id == i)] <- treestat$infector
     root[which(linelist$id == i)] <- treestat$root
-    clust_size <- treestat$clust_size
+    subtree_size <- treestat$subtree_size
   }
 
   ## Add cluster size to linelist so that it can be called in node_order /
   ## root_order This will overwrite a node attribute called size, if it exists
   ## (but only within this function)
-  linelist$size <- clust_size
+  linelist$size <- subtree_size
 
   ## NAs treated as 0 to be safe, though these should be removed beforehand
   contacts$from[is.na(contacts$from)] <- 0
@@ -607,7 +638,7 @@ get_coor <- function(x,
       for(y in grouped) {
 
         ## Get the splitting at each infector
-        splt <- get_split(length(y), parent_pos)
+        splt <- get_split(length(y), parent_pos, custom_parent_pos)
 
         ## Re-order nodes by order_nodes
         if(!is.null(node_order)) {
@@ -650,7 +681,7 @@ get_coor <- function(x,
       }
 
       ## Get splitting of roots
-      splt <- get_split(length(ind), parent_pos)
+      splt <- get_split(length(ind), parent_pos, custom_parent_pos)
       
       if(!is.null(root_order)) {
 
@@ -751,17 +782,38 @@ get_coor <- function(x,
     }
   }
 
+  ## potential igraph algorithm
+  if(!is.null(igraph_type)) {
+
+    net <- igraph::graph_from_data_frame(na.omit(x$contacts),
+                                         vertices = x$linelist)
+
+    if(igraph_type == 'rt') {
+      val <- igraph::layout.reingold.tilford(net, root = which(depth == 1))[,1]
+    } else if(igraph_type == 'sugiyama') {
+      val <- igraph::layout.sugiyama(net, layers = x$linelist[[x_axis]])$layout[,1]
+    } else if(igraph_type == 'fr') {
+      val <- igraph::layout.fruchterman.reingold(net,
+                                                 minx = x$linelist[[x_axis]],
+                                                 maxx = x$linelist[[x_axis]])[,2]
+    }
+
+  }
+  
   ## This orders the cases and adds two positions at the top and bottom to
   ## provide space for the axes - only do this for method == 'ttree', otherwise
   ## we will have additional nodes in the ggplot
   y_adj <- 2
   if(method == 'ttree') {
-    if(double_axis) {
+    if(axis_type == 'double') {
       y_pos <- match(val, sort(unique(val)))
       y_pos = rescale(c(min(y_pos) - y_adj, max(y_pos) + y_adj, y_pos), 0, 1)
-    } else {
+    } else if(axis_type == 'single') {
       y_pos <- match(val, sort(unique(val)))
       y_pos = rescale(c(min(y_pos) - y_adj, y_pos), 0, 1)
+    } else if(axis_type == 'none') {
+      y_pos <- match(val, sort(unique(val)))
+      y_pos = rescale(y_pos, 0, 1)
     }
   } else {
     y_pos <- match(val, sort(unique(val)))
@@ -769,7 +821,7 @@ get_coor <- function(x,
   }
 
   ## Also return infector because we need scaffold tree for later
-  return(list(y = y_pos, infector = infector, clust_size = clust_size))
+  return(list(y = y_pos, infector = infector, subtree_size = subtree_size))
   
 }
 
@@ -799,7 +851,8 @@ get_v_rect <- function(linelist, contacts) {
 
     ## These nodes are all hidden - to give matching df size, recycle linelist elements
     new_node <- linelist[rep(1, length(to_keep)),]
-    new_node$id <- (nrow(linelist)+1):(nrow(linelist)+length(to_keep))
+    ## Random node ids
+    new_node$id <- runif(length(to_keep))
     if(is.character(linelist$id)) {
       new_node$id <- as.character(new_node$id)
     }
@@ -963,7 +1016,7 @@ get_g_rect <- function(linelist, contacts) {
 
   ## These nodes are all hidden - to give matching df size, recycle linelist elements
   new_node <- linelist[rep(1, length(new_node_ind)),]
-  new_node$id <- (nrow(linelist)+1):(nrow(linelist)+length(new_node_ind))
+  new_node$id <- runif(length(new_node_ind))
   if(is.character(linelist$id)) {
     new_node$id <- as.character(new_node$id)
   }

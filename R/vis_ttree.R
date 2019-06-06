@@ -58,11 +58,11 @@
 #'
 #' @param parent_pos Specify the position of the parent node relative to its
 #'   children. Can be one of 'middle', 'top' or 'bottom'.
-#'
+#' 
 #' @param n_breaks The number of breaks on the x-axis timeline.
 #'
-#' @param double_axis Logical indicating if a second x-axis should be added at
-#'   the top.
+#' @param axis_type Number of axes to be plotted (one of 'single', 'double',
+#'   'none')
 #'
 #' @param ... Additional arguments specified in \code{vis_epicontacts}.
 #'
@@ -96,7 +96,7 @@
 #' height = 2500,
 #' selector = FALSE,
 #' hide_labels = TRUE,
-#' double_axis = TRUE,
+#' axis_type = 'double',
 #' date_labels = "%b %d",
 #' width = 1500)
 #' }
@@ -104,8 +104,8 @@
 vis_ttree <- function(x,
                       x_axis = NULL,
                       ttree_shape = 'branching',
-                      root_order = 'size',
-                      node_order = 'size',
+                      root_order = x_axis,
+                      node_order = x_axis,
                       reverse_root_order = FALSE,
                       reverse_node_order = FALSE,
                       rank_contact = x_axis,
@@ -115,7 +115,8 @@ vis_ttree <- function(x,
                       position_dodge = FALSE,
                       parent_pos = c('middle', 'top', 'bottom'),
                       n_breaks = 5,
-                      double_axis = FALSE,
+                      axis_type = c("single", "double", "none"),
+                      igraph_type = NULL,
                       ...) {
 
   ## this will assign the value specified in ... if present, otherwise use the
@@ -149,8 +150,11 @@ vis_ttree <- function(x,
   date_labels <- get_val('date_labels', "%d/%m/%Y", args)
   collapse <- get_val('collapse', TRUE, args)
   thin <- get_val('thin', FALSE, args)
+  font_size <- get_val('font_size', 15, args)
+  custom_parent_pos <- get_val('custom_parent_pos', NULL, args)
 
   parent_pos <- match.arg(parent_pos)
+  axis_type <- match.arg(axis_type)
 
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
@@ -219,8 +223,11 @@ vis_ttree <- function(x,
   ## check root_order (node attribute used for vertical root ordering)
   root_order <- assert_root_order(x, root_order)
 
-  ## check root_order (node attribute used for vertical root ordering)
+  ## check rank_contact
   rank_contact <- assert_rank_contact(x, rank_contact)
+
+  ## check root_order (node attribute used for vertical root ordering)
+  custom_parent_pos <- assert_custom_parent_pos(custom_parent_pos)
 
   ## make a list of all nodes, and generate a data.frame of node attributes
   all_nodes <- get_id(x, which = "all", na.rm = TRUE)
@@ -244,11 +251,13 @@ vis_ttree <- function(x,
                    position_unlinked = position_unlinked,
                    rank_contact = rank_contact,
                    reverse_rank_contact = reverse_rank_contact,
-                   double_axis = double_axis,
-                   parent_pos = parent_pos)
+                   axis_type = axis_type,
+                   parent_pos = parent_pos,
+                   custom_parent_pos = custom_parent_pos,
+                   igraph_type = igraph_type)
 
   nodes$x <- x$linelist[[x_axis]]
-  nodes$clust_size <- coor$clust_size
+  nodes$subtree_size <- coor$subtree_size
   x_axis_lab <- pretty(nodes[[x_axis]], n = n_breaks)
   
   ## Date -> numeric as visnetwork doesn't support dates
@@ -276,7 +285,12 @@ vis_ttree <- function(x,
     coor$y <- extr_num(height)*coor$y
   }
 
-  nodes$y <- coor$y[-(1:ifelse(double_axis, 2, 1))]
+  ## extract y coordinates ignoring axes
+  if(axis_type %in% c("single", "double")) {
+    nodes$y <- coor$y[-(1:ifelse(axis_type == 'double', 2, 1))]
+  } else {
+    nodes$y <- coor$y
+  }
   
   ## Get nodes and edges for rectangle shape
   if(ttree_shape == 'rectangle') {
@@ -329,7 +343,9 @@ vis_ttree <- function(x,
     }
   } else {
     ## if node_color set to NULL (not default) color nodes black
-    nodes$group.color <- nodes$icon.color <- nodes$color.border <- 'black'
+    nodes$color.background <- nodes$color.highlight.background <- 'black'
+    nodes$color.border <- nodes$color.highlight.border <- 'black'
+
   }
 
   ## add node size
@@ -368,9 +384,10 @@ vis_ttree <- function(x,
     node_code <- codeawesome[shapes[vec_node_shapes]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
-  } else {
-    nodes$borderWidth <- 2
+
   }
+
+  nodes$borderWidth <- 2
 
   ## add edge width
   if(!is.null(edge_width)) {
@@ -422,91 +439,105 @@ vis_ttree <- function(x,
   if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer", "POSIXct"))) {
     stop("Data used to specify x axis must be a date or number")
   }
-  drange <- range(nodes[[x_axis]], na.rm = TRUE)
-  nodes$level <- nodes[[x_axis]] - drange[1] + 1L
-  drange <- seq(drange[1], drange[2], by = 1L)
-  drange <- pretty(drange, n = n_breaks)
-  ## create unique node ids for axes
-  drange_id <- paste0("date_", seq_along(drange))
-  
-  dnodes <- data.frame(
-    id = as.character(drange_id),
-    level = drange - drange[1] + 1L,
-    stringsAsFactors = FALSE
-  )
-  dedges <- data.frame(
-    from = dnodes$id[-nrow(dnodes)],
-    to   = dnodes$id[-1]
-  )
-  nmerge <- c("id", "level")
-  emerge <- c("from", "to")
-  if (!is.null(label)) {
-    if(inherits(drange, c("Date", "POSIXct"))) {
-      dnodes$label <- as.character(format(drange, date_labels))
-    } else {
-      dnodes$label <- as.character(drange)
-    }
-    nmerge <- c(nmerge, "label")
-  }
-  if (!is.null(node_shape)) {
-    dnodes$shape     <- "icon"
-    dnodes$icon.code <- codeawesome["clock-o"]
-    nmerge <- c(nmerge, "shape", "icon.code")
-  }
-  if (!is.null(node_color)) {
-    dnodes$group.color <- dnodes$icon.color <- "#666666"
-    nmerge <- c(nmerge, "group.color", "icon.color")
-  }
-  if (!is.null(annot)) {
-    dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
-    nmerge <- c(nmerge, "title")
-  }
 
-  ddnodes <- nodes[rep(1, nrow(dnodes)),]
-  ddnodes[] <- NA
-  var <- c('id', 'label', 'title')
-  ddnodes[var] <- dnodes[var]
-  col_var <- c('color.background', 'color.highlight.background',
-               'color.border', 'color.highlight.border')
-  ddnodes[col_var] <- 'black'
-  ddnodes$size <- 0.1
-  ddnodes$borderWidth <- 0.1
-  ddnodes$x <- utils::tail(resc_x, length(pretty(x$linelist[[x_axis]], n = n_breaks)))
-  ddnodes$y <- coor$y[1]
-  ddnodes$level <- 1
-  if(ttree_shape == 'rectangle') ddnodes$hidden <- FALSE
-
-  if(double_axis) {
-
-    ddnodes_2 <- ddnodes
-    ddnodes_2$y <- coor$y[2]
-    ddnodes_2$id <- paste0(ddnodes_2$id, "_2")
-    ddnodes <- rbind(ddnodes, ddnodes_2)
-
-    dedges_2 <- dedges
-    dedges_2$from <- paste0(dedges_2$from, "_2")
-    dedges_2$to <- paste0(dedges_2$to, "_2")
-    dedges <- rbind(dedges, dedges_2)
+  ## add axes
+  if(axis_type %in% c("single", "double")) {
     
+    drange <- range(nodes[[x_axis]], na.rm = TRUE)
+    nodes$level <- nodes[[x_axis]] - drange[1] + 1L
+    drange <- seq(drange[1], drange[2], by = 1L)
+    drange <- pretty(drange, n = n_breaks)
+    ## create unique node ids for axes
+    drange_id <- paste0("date_", seq_along(drange))
+    
+    dnodes <- data.frame(
+      id = as.character(drange_id),
+      level = drange - drange[1] + 1L,
+      stringsAsFactors = FALSE
+    )
+    dedges <- data.frame(
+      from = dnodes$id[-nrow(dnodes)],
+      to   = dnodes$id[-1]
+    )
+    nmerge <- c("id", "level")
+    emerge <- c("from", "to")
+    if (!is.null(label)) {
+      if(inherits(drange, c("Date", "POSIXct"))) {
+        dnodes$label <- as.character(format(drange, date_labels))
+      } else {
+        dnodes$label <- as.character(drange)
+      }
+      nmerge <- c(nmerge, "label")
+    }
+    if (!is.null(node_shape)) {
+      dnodes$shape     <- "icon"
+      dnodes$icon.code <- codeawesome["clock-o"]
+      nmerge <- c(nmerge, "shape", "icon.code")
+    }
+    if (!is.null(node_color)) {
+      dnodes$group.color <- dnodes$icon.color <- "#666666"
+      nmerge <- c(nmerge, "group.color", "icon.color")
+    }
+    if (!is.null(annot)) {
+      dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
+      nmerge <- c(nmerge, "title")
+    }
+
+    ddnodes <- nodes[rep(1, nrow(dnodes)),]
+    ddnodes[] <- NA
+    var <- c('id', 'label', 'title')
+    ddnodes[var] <- dnodes[var]
+    col_var <- c('color.background', 'color.highlight.background',
+                 'color.border', 'color.highlight.border')
+    if(is.null(node_shape)) {
+      ddnodes[col_var] <- 'black'
+    }
+    ddnodes$size <- 0.1
+    ddnodes$borderWidth <- 0.1
+    ddnodes$x <- utils::tail(resc_x, length(pretty(x$linelist[[x_axis]], n = n_breaks)))
+    ddnodes$y <- coor$y[1]
+    ddnodes$level <- 1
+    if(ttree_shape == 'rectangle') ddnodes$hidden <- FALSE
+
+    if(axis_type == 'double') {
+
+      ddnodes_2 <- ddnodes
+      ddnodes_2$y <- coor$y[2]
+      ddnodes_2$id <- paste0(ddnodes_2$id, "_2")
+      ddnodes <- rbind(ddnodes, ddnodes_2)
+
+      dedges_2 <- dedges
+      dedges_2$from <- paste0(dedges_2$from, "_2")
+      dedges_2$to <- paste0(dedges_2$to, "_2")
+      dedges <- rbind(dedges, dedges_2)
+      
+    }
+
+    dnodes <- ddnodes
+    nmerge <- names(dnodes)
+
+    nodes <- merge(nodes,
+                   dnodes,
+                   by = nmerge,
+                   all = TRUE,
+                   sort = FALSE
+                   )
+    nodes <- nodes[!is.na(nodes$level), , drop = FALSE]
+    edges <- merge(edges,
+                   dedges,
+                   by = emerge,
+                   all = TRUE,
+                   sort = FALSE
+                   )
+
   }
 
-  dnodes <- ddnodes
-  nmerge <- names(dnodes)
-
-  nodes <- merge(nodes,
-                 dnodes,
-                 by = nmerge,
-                 all = TRUE,
-                 sort = FALSE
-                 )
-  nodes <- nodes[!is.na(nodes$level), , drop = FALSE]
-  edges <- merge(edges,
-                 dedges,
-                 by = emerge,
-                 all = TRUE,
-                 sort = FALSE
-                 )
-
+  ## Change font size
+  if(!is.null(font_size)) {
+    edges$font.size <- font_size
+    nodes$font.size <- font_size
+  }
+  
   ## build visNetwork output
   edges$arrows.ScaleFactor <- 5
   out <- visNetwork::visNetwork(nodes, edges,

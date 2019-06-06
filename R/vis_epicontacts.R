@@ -109,6 +109,8 @@
 #'
 #' @param collapse A logical indicating if the network should be collapsed at a
 #'   given node upon double-clicking.
+#'
+#' @param font_size The font size of the node and edge labels.
 #' 
 #' @param ... Further arguments to be passed to \code{visNetwork}.
 #'
