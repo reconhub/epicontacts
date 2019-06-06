@@ -48,14 +48,12 @@ subset_clusters_by_id <- function(x, id){
   ## Identify members of cluster belonging to nodes/cases of interest
   id_to_subset <- net_nodes$nodes[ which(net_nodes$cs_member %in% cluster_to_subset)]
 
-  ## Subset linelist and contacts by ids
+  ## Subset linelist and contacts by ids - use 'either' so that all contacts of
+  ## interest are returned, these can be removed using thin if need be later
   epi_subset <- x[i = id_to_subset,
                   j = id_to_subset,
-                  contacts = 'both']
+                  contacts = 'either']
   
   return(epi_subset)
   
 }
-
-
-
