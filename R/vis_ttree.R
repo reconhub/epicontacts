@@ -22,12 +22,12 @@
 #' @param root_order A character string indicating which field of the linelist
 #'   data is used to vertically order index cases of individual transmission
 #'   chains (i.e. the 'roots' of the transmission trees). If root_order =
-#'   'size', index cases will be ordered by the size of the downstream
+#'   'subtree_size', index cases will be ordered by the size of the downstream
 #'   transmission chains they generate.
 #'
 #' @param node_order A character string indicating which field of the linelist
 #'   data is used to vertically order nodes in the transmission tree (i.e. the
-#'   'roots' of the transmission trees). If node_order = 'size', nodes will be
+#'   'roots' of the transmission trees). If node_order = 'subtree_size', nodes will be
 #'   ordered by the size of the downstream transmission chains they generate.
 #'
 #' @param reverse_root_order A logical indicating if the ordering of the roots

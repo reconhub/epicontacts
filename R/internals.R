@@ -250,7 +250,7 @@ assert_node_order <- function(x, node_order) {
       node_order <- names(x$linelist)[node_order]
     }
 
-    if (!node_order %in% c(names(x$linelist), 'R_i', 'size')) {
+    if (!node_order %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
       msg <- sprintf("node_order '%s' is not in the linelist", node_order)
       stop(msg)
     }
@@ -277,7 +277,7 @@ assert_root_order <- function(x, root_order) {
       root_order <- names(x$linelist)[root_order]
     }
 
-    if (!root_order %in% c(names(x$linelist), 'R_i', 'size')) {
+    if (!root_order %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
       msg <- sprintf("root_order '%s' is not in the linelist", root_order)
       stop(msg)
     }
@@ -304,7 +304,7 @@ assert_rank_contact <- function(x, rank_contact) {
       rank_contact <- names(x$contacts)[rank_contact]
     }
 
-    if (!rank_contact %in% c(names(x$linelist), names(x$contacts), 'R_i', 'size')) {
+    if (!rank_contact %in% c(names(x$linelist), names(x$contacts), 'R_i', 'subtree_size')) {
       msg <- sprintf("rank_contact '%s' is not in linelist or contacts", rank_contact)
       stop(msg)
     }
@@ -482,8 +482,8 @@ get_all_roots <- function(i, root, contacts, linelist, leaf) {
 get_coor <- function(x,
                      x_axis,
                      position_dodge = FALSE,
-                     root_order = 'size',
-                     node_order = 'size',
+                     root_order = 'subtree_size',
+                     node_order = 'subtree_size',
                      reverse_root_order = FALSE,
                      reverse_node_order = FALSE,
                      rank_contact = x_axis,
@@ -610,7 +610,7 @@ get_coor <- function(x,
   ## Add cluster size to linelist so that it can be called in node_order /
   ## root_order This will overwrite a node attribute called size, if it exists
   ## (but only within this function)
-  linelist$size <- subtree_size
+  linelist$subtree_size <- subtree_size
 
   ## NAs treated as 0 to be safe, though these should be removed beforehand
   contacts$from[is.na(contacts$from)] <- 0

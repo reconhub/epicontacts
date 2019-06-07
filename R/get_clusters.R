@@ -87,9 +87,9 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
     x$linelist <- x$linelist[ , !(names(x$linelist) %in% cluster_cols)]
   }
 
-  net_nodes <- setNames(data.frame(id =igraph::V(net)$id,
-                          cluster_member = cs$membership,
-                          stringsAsFactors = FALSE),
+  net_nodes <- setNames(data.frame(id = as(igraph::V(net)$id, class(x$linelist$id)),
+                                   cluster_member = cs$membership,
+                                   stringsAsFactors = FALSE),
                         c("id", member_col))
 
   net_nodes <- dplyr::left_join(net_nodes, cs_size, by = member_col)
