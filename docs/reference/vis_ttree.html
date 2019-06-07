@@ -134,7 +134,7 @@ using the <code>visNetwork</code> package. The produced object is an
   <span class='kw'>root_order</span> <span class='kw'>=</span> <span class='st'>"size"</span>, <span class='kw'>node_order</span> <span class='kw'>=</span> <span class='st'>"size"</span>,
   <span class='kw'>reverse_root_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>reverse_node_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>rank_contact</span> <span class='kw'>=</span> <span class='no'>x_axis</span>, <span class='kw'>reverse_rank_contact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>position_unlinked</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>, <span class='kw'>edge_flex</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>unlinked_pos</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>, <span class='kw'>edge_flex</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>position_dodge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>parent_pos</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"middle"</span>, <span class='st'>"top"</span>, <span class='st'>"bottom"</span>),
   <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>double_axis</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
@@ -196,7 +196,7 @@ taken to rank the contacts.</p></td>
 be reversed in order.</p></td>
     </tr>
     <tr>
-      <th>position_unlinked</th>
+      <th>unlinked_pos</th>
       <td><p>A character string indicating where unlinked cases
 should be placed. Valid options are 'top', 'bottom' and 'middle', where
 'middle' will place unlinked cases according to root_order.</p></td>

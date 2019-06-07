@@ -173,6 +173,7 @@ vis_epicontacts <- function(x,
                             highlight_downstream = FALSE,
                             hide_labels = FALSE,
                             collapse = TRUE,
+                            font_size,
                             ...){
   
   ## In the following, we pull the list of all plotted nodes (those from the

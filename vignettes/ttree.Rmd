@@ -44,7 +44,7 @@ plot(sim,
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      edge_linetype = 'status',
      edge_flex = FALSE,
-     position_unlinked = 'bottom',
+     unlinked_pos = 'bottom',
      reverse_root_order = FALSE,
      reverse_node_order = TRUE,
      hide_labels = TRUE,
@@ -52,7 +52,7 @@ plot(sim,
      legend = TRUE,
      highlight_downstream = TRUE,
      hide_labels = TRUE,
-     double_axis = TRUE
+     axis_type = 'double'
      )
 
 ```
@@ -174,9 +174,9 @@ plot(sim,
      edge_linetype = 'status')
 ```
 
-Each case node can be assigned a unique vertical position by toggling the `position_dodge` 
-argument. The position of unconnected cases (i.e. with no reported contacts) is specified using the
-`position_unlinked` argument. 
+Each case node can be assigned a unique vertical position by toggling the
+`position_dodge` argument. The position of unconnected cases (i.e. with no
+reported contacts) is specified using the `unlinked_pos` argument.
 
 ```{r}
 plot(sim, 
@@ -193,10 +193,10 @@ plot(sim,
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = TRUE,
-     position_unlinked = 'top')
+     unlinked_pos = 'top')
 ```
 
-Finally, the position of the parent node relative to the children nodes can be
+The position of the parent node relative to the children nodes can be
 specified using the `parent_pos` argument. The default option is to place the
 parent node in the middle, however it can be placed at the bottom (`parent_pos =
 'bottom'`) or at the top (`parent_pos = 'top'`).
@@ -216,14 +216,34 @@ plot(sim,
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = FALSE,
-     position_unlinked = 'top',
+     unlinked_pos = 'top',
      parent_pos = 'bottom')
 ```
 
+Alternative tree layouts provided by `igraph` can also be used via the
+`igraph_type` argument. This must be one of `rt`, `sugiyama` or `fr`. Your
+mileage may vary with these layouts, are they are not specifically intended for
+timed transmission trees. At times they may give a more space efficient layout,
+though.
+
+```{r}
+plot(sim, 
+     method = 'ttree', 
+     x_axis = 'onset',
+     node_color = 'sex',
+     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+     node_size = 'R_i',
+     size_range = c(5, 20),
+     edge_linetype = 'status',
+     igraph_type = 'fr')
+```
+
 ## Time axis
-A second date axis can be added at the top of the plot using the `double_axis` 
-argument. The format of the date labels can be specified using the `date_labels` 
-argument, which uses the standard codes defined in `strftime()`.
+The number of dates axes can be specified using the `axis_type` argument. A
+second axis can be added at the top of the plot by specifying `axis_type =
+'double'` (`axis_type = 'none'` will remove the axes). The format of
+the date labels can be specified using the `date_labels` argument, which uses
+the standard codes defined in `strftime()`.
 
 ```{r}
 plot(sim, 
@@ -236,13 +256,12 @@ plot(sim,
      reverse_root_order = TRUE,
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = TRUE,
-     position_unlinked = 'top',
-     double_axis = TRUE,
+     unlinked_pos = 'top',
+     axis_type = 'double',
      date_labels = "%b %d")
 ```
 
@@ -267,8 +286,8 @@ plot(sim,
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = TRUE,
-     position_unlinked = 'top',
-     double_axis = TRUE,
+     unlinked_pos = 'top',
+     axis_type = 'double',
      date_label = "%b %d",
      collapse = TRUE)
 ```
@@ -291,8 +310,8 @@ plot(sim,
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = TRUE,
-     position_unlinked = 'top',
-     double_axis = TRUE,
+     unlinked_pos = 'top',
+     axis_type = 'double',
      date_label = "%b %d",
      title = "Transmission chains, June-August 2018",
      collapse = TRUE)
@@ -420,9 +439,10 @@ It will attempt to place roots that are linked by downstream cases in close prox
 though this is still a work in progress. 
 
 ```{r, echo = FALSE}
-set.seed(1)
+
+set.seed(2)
 to <- sample(sim$linelist$id, 5)
-from <- sapply(match(to, sim$linelist$id), 
+from <- sapply(match(to, sim$linelist$id),
                function(i) sample(sim$linelist$id[sim$linelist$onset < sim$linelist$onset[i]], 1))
 
 contacts_3 <- data.frame(from = from, 
@@ -435,6 +455,7 @@ contacts_3 <- data.frame(from = from,
 sim_3 <- sim
 sim_3$contacts <- rbind(sim_3$contacts, contacts_3)
 sim_3 $directed <- TRUE
+col_pal <- colorRampPalette(c("#427A82", "#AA6F39"))
 plot(sim_3, 
      method = 'ttree', 
      x_axis = 'onset',
@@ -444,19 +465,21 @@ plot(sim_3,
      reverse_node_order = FALSE,
      reverse_root_order = TRUE,
      node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+     col_pal = col_pal,
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      height = 1000,
      position_dodge = FALSE)
+     
 ```  
 
 ## Outputting to ggplot
 
-The same algorithm was implemented within ggplot. Most of the available options remain the same,
-though check the documentation to be sure. The benefit of the ggplot output is that it allows
-much more customisation by the user, as seen below in renaming the legend labels.
+The same algorithm was implemented within ggplot. Most of the available options
+remain the same, though check the documentation to be sure. The benefit of the
+ggplot output is that it allows much more customisation by the user, as seen
+below in renaming the legend labels, for example.
 
 ```{r, fig.width = 7, fig.height = 8}
 sim_3$directed <- FALSE

@@ -60,12 +60,12 @@
 plot.epicontacts <- function(x, node_color = "id",
                              method = c("visNetwork", "graph3D", "ggplot", "ttree"),
                              thin = TRUE, ...){
+  method <- match.arg(method)
+
   ## checks
-  if (thin) {
+  if (thin & method %in% c("visNetwork", "graph3D")) {
     x <- thin(x)
   }
-
-  method <- match.arg(method)
 
   if (is.numeric(node_color) && length(node_color) > 0L) {
     node_color <- names(x$linelist)[node_color][1L]
@@ -82,9 +82,9 @@ plot.epicontacts <- function(x, node_color = "id",
     }
   } else if (method == "ttree") {
     if(missing(node_color)) {
-      return(vis_ttree(x, thin = thin, ...))
+      return(vis_ttree(x, ...))
     } else {
-      return(vis_ttree(x, thin = thin, node_color = node_color, ...))
+      return(vis_ttree(x, node_color = node_color, ...))
     }
   } else if (method == "graph3D") {
     return(graph3D(x, node_color = node_color, ...))

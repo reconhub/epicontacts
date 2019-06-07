@@ -5,12 +5,12 @@
 \title{Plot epicontacts objects using visNetwork}
 \usage{
 vis_ttree(x, x_axis = NULL, ttree_shape = "branching",
-  root_order = "size", node_order = "size",
+  root_order = x_axis, node_order = x_axis,
   reverse_root_order = FALSE, reverse_node_order = FALSE,
   rank_contact = x_axis, reverse_rank_contact = FALSE,
-  position_unlinked = "bottom", edge_flex = FALSE,
-  position_dodge = FALSE, parent_pos = c("middle", "top", "bottom"),
-  n_breaks = 5, double_axis = FALSE, ...)
+  unlinked_pos = "bottom", edge_flex = FALSE, position_dodge = FALSE,
+  parent_pos = c("middle", "top", "bottom"), n_breaks = 5,
+  axis_type = c("single", "double", "none"), igraph_type = NULL, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -49,7 +49,7 @@ taken to rank the contacts.}
 \item{reverse_rank_contact}{Logical indicating if the contact ranking should
 be reversed in order.}
 
-\item{position_unlinked}{A character string indicating where unlinked cases
+\item{unlinked_pos}{A character string indicating where unlinked cases
 should be placed. Valid options are 'top', 'bottom' and 'middle', where
 'middle' will place unlinked cases according to root_order.}
 
@@ -64,8 +64,12 @@ children. Can be one of 'middle', 'top' or 'bottom'.}
 
 \item{n_breaks}{The number of breaks on the x-axis timeline.}
 
-\item{double_axis}{Logical indicating if a second x-axis should be added at
-the top.}
+\item{axis_type}{Number of axes to be plotted (one of 'single', 'double',
+'none')}
+
+\item{igraph_type}{Alternate tree layouts provided by igraph. Must be one of
+'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
+for Fruchterman-Reingold layout.}
 
 \item{...}{Additional arguments specified in \code{vis_epicontacts}.}
 }
@@ -102,7 +106,7 @@ size_range = c(5, 30),
 height = 2500,
 selector = FALSE,
 hide_labels = TRUE,
-double_axis = TRUE,
+axis_type = 'double',
 date_labels = "\%b \%d",
 width = 1500)
 }

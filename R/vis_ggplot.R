@@ -87,7 +87,7 @@
 #'
 #' @param lineend Character indicating the lineend to be used for geom_segment.
 #' 
-#' @param position_unlinked A character string indicating where unlinked cases
+#' @param unlinked_pos A character string indicating where unlinked cases
 #'   should be placed. Valid options are 'top', 'bottom' and 'middle', where
 #'   'middle' will place unlinked cases according to root_order. This argument
 #'   is only called when type = 'ttree'.
@@ -112,6 +112,11 @@
 #'
 #' @param y_coor Manual specification of y coordinates. Must be a vector with one
 #'   y coordinate for each case between 0 and 1.
+#'
+#' @param igraph_type Alternate tree layouts provided by igraph. Must be one of
+#'   'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
+#'   for Fruchterman-Reingold layout.
+#'
 #'
 #' @param ... Further arguments to be passed to \code{ggplot}.
 #'
@@ -170,7 +175,7 @@ vis_ggplot <- function(x,
                        null_node_color = 'black',
                        null_edge_color = 'black',
                        lineend = 'butt',
-                       position_unlinked = 'bottom',
+                       unlinked_pos = 'bottom',
                        position_dodge = FALSE,
                        parent_pos = 'middle',
                        custom_parent_pos = NULL,
@@ -231,7 +236,7 @@ vis_ggplot <- function(x,
                      reverse_root_order = reverse_root_order,
                      node_order = node_order,
                      reverse_node_order = reverse_node_order,
-                     position_unlinked = position_unlinked,
+                     unlinked_pos = unlinked_pos,
                      axis_type = 'none',
                      parent_pos = parent_pos,
                      custom_parent_pos = custom_parent_pos,

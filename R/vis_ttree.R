@@ -46,7 +46,7 @@
 #' @param reverse_rank_contact Logical indicating if the contact ranking should
 #'   be reversed in order.
 #'
-#' @param position_unlinked A character string indicating where unlinked cases
+#' @param unlinked_pos A character string indicating where unlinked cases
 #'   should be placed. Valid options are 'top', 'bottom' and 'middle', where
 #'   'middle' will place unlinked cases according to root_order. 
 #'
@@ -63,6 +63,10 @@
 #'
 #' @param axis_type Number of axes to be plotted (one of 'single', 'double',
 #'   'none')
+#'
+#' @param igraph_type Alternate tree layouts provided by igraph. Must be one of
+#'   'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
+#'   for Fruchterman-Reingold layout.
 #'
 #' @param ... Additional arguments specified in \code{vis_epicontacts}.
 #'
@@ -110,7 +114,7 @@ vis_ttree <- function(x,
                       reverse_node_order = FALSE,
                       rank_contact = x_axis,
                       reverse_rank_contact = FALSE,
-                      position_unlinked = 'bottom',
+                      unlinked_pos = 'bottom',
                       edge_flex = FALSE,
                       position_dodge = FALSE,
                       parent_pos = c('middle', 'top', 'bottom'),
@@ -248,7 +252,7 @@ vis_ttree <- function(x,
                    reverse_root_order = reverse_root_order,
                    node_order = node_order,
                    reverse_node_order = reverse_node_order,
-                   position_unlinked = position_unlinked,
+                   unlinked_pos = unlinked_pos,
                    rank_contact = rank_contact,
                    reverse_rank_contact = reverse_rank_contact,
                    axis_type = axis_type,

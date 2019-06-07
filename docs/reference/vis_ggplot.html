@@ -139,7 +139,7 @@ only one infector per case)</p>
   <span class='kw'>root_order</span> <span class='kw'>=</span> <span class='st'>"size"</span>, <span class='kw'>node_order</span> <span class='kw'>=</span> <span class='st'>"size"</span>,
   <span class='kw'>reverse_root_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>reverse_node_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>null_node_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>null_edge_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>lineend</span> <span class='kw'>=</span> <span class='st'>"butt"</span>, <span class='kw'>position_unlinked</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>,
+  <span class='kw'>lineend</span> <span class='kw'>=</span> <span class='st'>"butt"</span>, <span class='kw'>unlinked_pos</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>,
   <span class='kw'>position_dodge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>parent_pos</span> <span class='kw'>=</span> <span class='st'>"middle"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>y_coor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
@@ -263,7 +263,7 @@ edge_color has not been specifed or has been specified as NULL.</p></td>
       <td><p>Character indicating the lineend to be used for geom_segment.</p></td>
     </tr>
     <tr>
-      <th>position_unlinked</th>
+      <th>unlinked_pos</th>
       <td><p>A character string indicating where unlinked cases
 should be placed. Valid options are 'top', 'bottom' and 'middle', where
 'middle' will place unlinked cases according to root_order. This argument

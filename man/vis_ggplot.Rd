@@ -11,9 +11,9 @@ vis_ggplot(x, x_axis, node_color = x_axis, node_size = 5,
   root_order = "size", node_order = "size",
   reverse_root_order = FALSE, reverse_node_order = FALSE,
   null_node_color = "black", null_edge_color = "black",
-  lineend = "butt", position_unlinked = "bottom",
-  position_dodge = FALSE, parent_pos = "middle", label = FALSE,
-  y_coor = NULL)
+  lineend = "butt", unlinked_pos = "bottom", position_dodge = FALSE,
+  parent_pos = "middle", custom_parent_pos = NULL, label = FALSE,
+  y_coor = NULL, igraph_type = NULL)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -92,7 +92,7 @@ edge_color has not been specifed or has been specified as NULL.}
 
 \item{lineend}{Character indicating the lineend to be used for geom_segment.}
 
-\item{position_unlinked}{A character string indicating where unlinked cases
+\item{unlinked_pos}{A character string indicating where unlinked cases
 should be placed. Valid options are 'top', 'bottom' and 'middle', where
 'middle' will place unlinked cases according to root_order. This argument
 is only called when type = 'ttree'.}
@@ -104,12 +104,23 @@ coordinate or 'dodge' each other. This argument is only called when type =
 \item{parent_pos}{Specify the position of the parent node relative to its
 children. Can be one of 'middle', 'top' or 'bottom'.}
 
+\item{custom_parent_pos}{A function specifying the position of children nodes
+relative to their parent. This function must accept a single integer `x` as
+its only argument, specifying the number of children nodes. It must return
+a vector of length x, specifying the position of each child relative to the
+parent, where a x > 0 indicates above the parent, x < 0 indicates below the
+parent, and x = 0 indicates the same height as the parent.}
+
 \item{label}{A logical indicating if case IDs should be displayed on the
 y-axis labels. Only works when position_dodge = TRUE, otherwise
 y-coordinates are not unique.}
 
 \item{y_coor}{Manual specification of y coordinates. Must be a vector with one
 y coordinate for each case between 0 and 1.}
+
+\item{igraph_type}{Alternate tree layouts provided by igraph. Must be one of
+'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
+for Fruchterman-Reingold layout.}
 
 \item{...}{Further arguments to be passed to \code{ggplot}.}
 }

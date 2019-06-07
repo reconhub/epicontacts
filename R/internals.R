@@ -488,7 +488,7 @@ get_coor <- function(x,
                      reverse_node_order = FALSE,
                      rank_contact = x_axis,
                      reverse_rank_contact = FALSE,
-                     position_unlinked = 'bottom',
+                     unlinked_pos = 'bottom',
                      axis_type = c("single", "double", "none"),
                      parent_pos = 'middle',
                      custom_parent_pos = NULL,
@@ -760,7 +760,7 @@ get_coor <- function(x,
   ## We get global ranking by taking the sum of all pairwise rankings
   val <- apply(mat2, 1, sum)
   
-  ## Get isolated cases and place them as specified by position_unlinked
+  ## Get isolated cases and place them as specified by unlinked_pos
   ## If position_dodge, order these by root_order
   contacts <- contacts[contacts$from != 0,]
   unlinked <- which(!linelist$id %in% c(contacts$from, contacts$to))
@@ -775,9 +775,9 @@ get_coor <- function(x,
     }
 
     ## Place nodes at top or bottom by adding 10000 to val
-    if(position_unlinked == 'top') {
+    if(unlinked_pos == 'top') {
       val[unlinked[unlinked_order]] <- 10000 + unlinked_to_add
-    } else if(position_unlinked == 'bottom') {
+    } else if(unlinked_pos == 'bottom') {
       val[unlinked[unlinked_order]] <- -10000 + unlinked_to_add
     }
   }
@@ -785,7 +785,7 @@ get_coor <- function(x,
   ## potential igraph algorithm
   if(!is.null(igraph_type)) {
 
-    net <- igraph::graph_from_data_frame(na.omit(x$contacts),
+    net <- igraph::graph_from_data_frame(stats::na.omit(x$contacts),
                                          vertices = x$linelist)
 
     if(igraph_type == 'rt') {
@@ -796,6 +796,8 @@ get_coor <- function(x,
       val <- igraph::layout.fruchterman.reingold(net,
                                                  minx = x$linelist[[x_axis]],
                                                  maxx = x$linelist[[x_axis]])[,2]
+    } else {
+      stop("igraph_type must be one of 'rt', 'sugiyama' or 'fr'")
     }
 
   }
@@ -852,7 +854,7 @@ get_v_rect <- function(linelist, contacts) {
     ## These nodes are all hidden - to give matching df size, recycle linelist elements
     new_node <- linelist[rep(1, length(to_keep)),]
     ## Random node ids
-    new_node$id <- runif(length(to_keep))
+    new_node$id <- stats::runif(length(to_keep))
     if(is.character(linelist$id)) {
       new_node$id <- as.character(new_node$id)
     }
@@ -1016,7 +1018,7 @@ get_g_rect <- function(linelist, contacts) {
 
   ## These nodes are all hidden - to give matching df size, recycle linelist elements
   new_node <- linelist[rep(1, length(new_node_ind)),]
-  new_node$id <- runif(length(new_node_ind))
+  new_node$id <- stats::runif(length(new_node_ind))
   if(is.character(linelist$id)) {
     new_node$id <- as.character(new_node$id)
   }
