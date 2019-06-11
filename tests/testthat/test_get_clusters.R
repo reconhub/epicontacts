@@ -141,3 +141,36 @@ test_that("get_clusters override behavior works", {
 
 })
 
+
+
+test_that("get_clusters works on different classes", {
+
+  skip_on_cran()
+
+  ## igraph returned cluster information with case ids coerced to character,
+  ## causing errors when this information was merged with integer case ids in
+  ## the linelist. the fix coerces cluster case id to the same class as the
+  ## linelist case ids.
+  
+  ## all integer
+  ll <- data.frame(1:100)
+  co <- data.frame(from = sample.int(100, 50, TRUE),
+                   to = sample.int(100, 50, TRUE))
+  epic_int <- make_epicontacts(ll, co)
+  expect_error(get_clusters(epic_int), NA)
+
+  ## integer + character
+  ll <- data.frame(1:100)
+  co <- data.frame(from = as.character(sample(100, 50, TRUE)),
+                   to = as.character(sample(100, 50, TRUE)))
+  epic_int <- make_epicontacts(ll, co)
+  expect_error(get_clusters(epic_int), NA)
+
+  ## character + integer
+  ll <- data.frame(as.character(1:100))
+  co <- data.frame(from = sample.int(100, 50, TRUE),
+                   to = sample.int(100, 50, TRUE))
+  epic_int <- make_epicontacts(ll, co)
+  expect_error(get_clusters(epic_int), NA)
+
+})
