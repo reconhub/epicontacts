@@ -159,18 +159,34 @@ test_that("get_clusters works on different classes", {
   epic_int <- make_epicontacts(ll, co)
   expect_error(get_clusters(epic_int), NA)
 
-  ## integer + character
+  ## integer + factor
   ll <- data.frame(1:100)
   co <- data.frame(from = as.character(sample(100, 50, TRUE)),
                    to = as.character(sample(100, 50, TRUE)))
   epic_int <- make_epicontacts(ll, co)
   expect_error(get_clusters(epic_int), NA)
 
-  ## character + integer
+  ## factor + integer
   ll <- data.frame(as.character(1:100))
   co <- data.frame(from = sample.int(100, 50, TRUE),
                    to = sample.int(100, 50, TRUE))
   epic_int <- make_epicontacts(ll, co)
   expect_error(get_clusters(epic_int), NA)
 
+  ## integer + character
+  ll <- data.frame(1:100)
+  co <- data.frame(from = as.character(sample(100, 50, TRUE)),
+                   to = as.character(sample(100, 50, TRUE)),
+                   stringsAsFactors = FALSE)
+  epic_int <- make_epicontacts(ll, co)
+  expect_error(get_clusters(epic_int), NA)
+
+  ## character + integer
+  ll <- data.frame(as.character(1:100),
+                   stringsAsFactors = FALSE)
+  co <- data.frame(from = sample.int(100, 50, TRUE),
+                   to = sample.int(100, 50, TRUE))
+  epic_int <- make_epicontacts(ll, co)
+  expect_error(get_clusters(epic_int), NA)
+  
 })
