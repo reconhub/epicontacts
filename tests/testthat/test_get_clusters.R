@@ -137,7 +137,7 @@ test_that("get_clusters override behavior works", {
 
   bar <- get_clusters(x, override = T)
 
-  all.equal(foo,bar)
+  expect_equal(foo, bar)
 
 })
 
