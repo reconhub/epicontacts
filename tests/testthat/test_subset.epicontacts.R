@@ -110,14 +110,44 @@ test_that("Returns epicontacts object subsetted correctly", {
 
 
     id <- names(which.max(get_degree(x, "out")))
+
+    ## check subset with thinning
+    ## check that all ids in contact and linelist are in the same cluster as id,
+    ## and check that no ids from other clusters are in contact or linelist.
+    ## with thinning this means all cases must also be in the linelist
     z <- thin(subset(x, cluster_id = id), 2)
+    clust <- get_clusters(x, output = "data.frame")
+    clust_id <- clust$cluster_member[match(id, clust$id)]
+    are_in_clust_cont <- sort(unique(unlist(z$contacts[1:2],
+                                            use.names = FALSE)))
+    are_in_clust_ll <- sort(z$linelist$id)
+    should_in_clust <- sort(clust$id[clust$cluster_member == clust_id])
+    should_in_clust <- should_in_clust[should_in_clust %in% x$linelist$id]
+    expect_equal(should_in_clust, are_in_clust_cont)
+    expect_equal(should_in_clust, are_in_clust_ll)
+
+    ## check without thinning
+    ## in this case there can be cases in the contacts and not in the linelist
+    w <- subset(x, cluster_id = id)
+    should_in_clust <- sort(clust$id[clust$cluster_member == clust_id])
+    are_in_clust <- sort(unique(unlist(w$contacts[1:2], use.names = FALSE)))
+    expect_equal(should_in_clust, are_in_clust)
+
+    ## check k subsetting
     nocoords <- grep("(lat|lon)", names(z$linelist), perl = TRUE, invert = TRUE) - 1
-    expect_equal_to_reference(z[k = nocoords], file = "rds/z.rds")
+    k_sub <- z[k = nocoords]
 
+    ## check correct columns have been subsetted
+    expect_equal(names(z$linelist)[nocoords + 1], names(k_sub$linelist))
 
+    ## check contacts haven't been changed
+    expect_equal(z$contacts, k_sub$contacts)
+
+    ## compare to reference
+    expect_equal_to_reference(k_sub, file = "rds/z.rds")
+    
     zz <- subset(x, cs = 10)
     expect_equal_to_reference(zz[k = nocoords], file = "rds/zz.rds")
     expect_true(all(get_clusters(zz, "data.frame")$cluster_size == 10L))
-
 
 })
