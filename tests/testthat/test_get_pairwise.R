@@ -28,8 +28,8 @@ test_that("provide false characters", {
                            directed = TRUE)
 
     expect_error(get_pairwise(x, "gende"))
-    expect_that(length(table(get_pairwise(x, "gender", hard_NA = FALSE))) >
-                length(table(get_pairwise(x, "gender", hard_NA = TRUE))), is_true())
+    expect_true(length(table(get_pairwise(x, "gender", hard_NA = FALSE))) >
+                length(table(get_pairwise(x, "gender", hard_NA = TRUE))))
 
 })
 
