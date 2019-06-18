@@ -54,9 +54,13 @@
 #'
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
-#' @param col_pal A color palette for the nodes.
+#' @param col_pal A color palette for the nodes. Can be a function accepting a
+#'   single number n and returning a vector of n colors, or a named character
+#'   vector/list matching all factor levels in node_color to a color.
 #'
-#' @param edge_col_pal A color palette for the edges.
+#' @param edge_col_pal A color palette for the edges. Can be a function accepting a
+#'   single number n and returning a vector of n colors, or a named character
+#'   vector/list matching all factor levels in edge_color to a color.
 #'
 #' @param NA_col The color used for unknown group.
 #'

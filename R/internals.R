@@ -127,3 +127,14 @@ assert_edge_color <- function(x, edge_color) {
 
   return(edge_color)
 }
+
+
+
+
+
+
+is_color <- function(x) {
+  vapply(x, function(e)
+         !is.null(tryCatch(grDevices::col2rgb(e), error = function(e) NULL)),
+         FALSE)
+}

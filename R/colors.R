@@ -128,6 +128,9 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE){
   lev <- levels(x)
   nlev <- length(lev)
   res <- rep(NA_col, length(x))
+  if(inherits(pal, "list")) {
+    pal <- unlist(pal)
+  }
   if(inherits(pal, "function")) {
     col <- pal(nlev)
     res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
@@ -140,12 +143,15 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE){
                     "all elements in node_color/edge_color")
       stop(msg)
     }
+    if(any(!is_color(pal))) {
+      stop("all values in col_pal/edge_col_pal must be colors")
+    }
     res[!is.na(x)] <- pal[x[!is.na(x)]]
     if (legend) {
       res <- list(color = res, leg_col = unname(pal[lev]), leg_lab = lev)
     }
   } else {
-    stop("col_pal and edge_col_pal must be a function or named character vector")
+    stop("col_pal/edge_col_pal must be a function or named character vector/list")
   }
   return(res)
 }
