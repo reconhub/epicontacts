@@ -6,7 +6,8 @@
 \usage{
 graph3D(x, node_color = "id", annot = TRUE, col_pal = cases_pal,
   NA_col = "lightgrey", g_title = "", bg_col = "white",
-  label_col = "darkgrey", node_size = 1, edge_size = 0.5)
+  label_col = "darkgrey", node_size = 1, edge_size = 0.5,
+  thin = TRUE)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
@@ -31,6 +32,9 @@ of the linelist should be used for annotating the nodes upon mouseover. The defa
 \item{node_size}{The sizes of graph nodes.}
 
 \item{edge_size}{The width of graph edges.}
+
+\item{thin}{A logical indicating if the data should be thinned with
+\code{\link{thin}} so that only cases with contacts should be plotted.}
 }
 \value{
 An htmlwidget object that is displayed using the object's show or print method.

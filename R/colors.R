@@ -113,7 +113,9 @@ spectral <- grDevices::colorRampPalette(
 #'
 #' @param x A character or a factor to be converted to colors.
 #'
-#' @param pal A color palette.
+#' @param pal A color palette. Can be a function accepting a single number n and
+#'   returning a vector of n colors, or a named character vector matching all
+#'   factor levels in x to a color.
 #'
 #' @param NA_col The color to be used for NA values.
 #'
@@ -131,11 +133,31 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE,
   lev <- levels(x)
   if(adj_width) lev <- get_adj_width(lev, max(nchar(lev)))
   nlev <- length(lev)
-  col <- pal(nlev)
   res <- rep(NA_col, length(x))
-  res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
-  if (legend) {
-    res <- list(color = res, leg_col = col, leg_lab = lev)
+  if(inherits(pal, "list")) {
+    pal <- unlist(pal)
+  }
+  if(inherits(pal, "function")) {
+    col <- pal(nlev)
+    res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
+    if (legend) {
+      res <- list(color = res, leg_col = col, leg_lab = lev)
+    }
+  } else if(is.vector(pal, mode = "character") & !is.null(names(pal))) {
+    if(!all(lev %in% names(pal))) {
+      msg <- paste0("col_pal/edge_col_pal must specify a color for ",
+                    "all elements in node_color/edge_color")
+      stop(msg)
+    }
+    if(any(!is_color(pal))) {
+      stop("all values in col_pal/edge_col_pal must be colors")
+    }
+    res[!is.na(x)] <- pal[x[!is.na(x)]]
+    if (legend) {
+      res <- list(color = res, leg_col = unname(pal[lev]), leg_lab = lev)
+    }
+  } else {
+    stop("col_pal/edge_col_pal must be a function or named character vector/list")
   }
   return(res)
 }

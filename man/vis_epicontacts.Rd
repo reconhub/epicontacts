@@ -50,9 +50,13 @@ binary variable, as visNetwork only supports dashed/non-dashed edges.}
 \item{edge_label}{An index or character string indicating which field of the
 contacts data should be used to label the edges of the graph.}
 
-\item{col_pal}{A color palette for the nodes.}
+\item{col_pal}{A color palette for the nodes. Can be a function accepting a
+single number n and returning a vector of n colors, or a named character
+vector/list matching all factor levels in node_color to a color.}
 
-\item{edge_col_pal}{A color palette for the edges.}
+\item{edge_col_pal}{A color palette for the edges. Can be a function accepting a
+single number n and returning a vector of n colors, or a named character
+vector/list matching all factor levels in edge_color to a color.}
 
 \item{NA_col}{The color used for unknown group.}
 

@@ -164,6 +164,7 @@ assert_edge_color <- function(x, edge_color) {
 
 
 
+
 assert_edge_linetype <- function(x, edge_linetype) {
   if (length(edge_linetype) > 1L) {
     stop("'edge_linetype' must indicate a single edge attribute")
@@ -1145,5 +1146,13 @@ get_adj_width <- function(x, n) {
 ## This function will return the value of var in args if present, otherwise
 ## returns the default value def.
 get_val <- function(var, def, args) {
-  if(var %in% names(args)) return(args[[var]]) else return(def)
+  return(ifelse(var %in% names(args), args[[var]], def[[var]]))
+  ##  if(var %in% names(args)) return(args[[var]]) else return(def[[]])
+}
+
+## Determine if character string is a color
+is_color <- function(x) {
+  vapply(x, function(e)
+    !is.null(tryCatch(grDevices::col2rgb(e), error = function(e) NULL)),
+    FALSE)
 }

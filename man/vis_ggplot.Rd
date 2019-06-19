@@ -4,15 +4,12 @@
 \alias{vis_ggplot}
 \title{Plot epicontacts objects using ggplot}
 \usage{
-vis_ggplot(x, x_axis, node_color = x_axis, node_size = 5,
-  edge_color = NULL, edge_width = 1, edge_linetype = NULL,
-  edge_alpha = NULL, col_pal = NULL, edge_col_pal = NULL,
-  size_range = c(3, 10), legend = TRUE, ttree_shape = "branching",
+vis_ggplot(x, x_axis, edge_alpha = NULL, ttree_shape = "branching",
   root_order = "size", node_order = "size",
   reverse_root_order = FALSE, reverse_node_order = FALSE,
   null_node_color = "black", null_edge_color = "black",
   lineend = "butt", unlinked_pos = "bottom", position_dodge = FALSE,
-  parent_pos = "middle", custom_parent_pos = NULL, label = FALSE,
+  parent_pos = "middle", custom_parent_pos = NULL, y_label = FALSE,
   y_coor = NULL, igraph_type = NULL)
 }
 \arguments{
@@ -21,44 +18,9 @@ vis_ggplot(x, x_axis, node_color = x_axis, node_size = 5,
 \item{x_axis}{A character string indicating which field of the linelist data
 should be used to specify the x axis position (must be numeric or Date).}
 
-\item{node_color}{An index or character string indicating which field of the
-linelist should be used to color the nodes. If node color = 'R_i', the
-individual reproductive number for each case (i.e. number of outgoing
-infection/contacts) will be calculated and used to specify the node colour.}
-
-\item{node_size}{An integer indicating the size of the nodes, or a
-character string indicating which field of the linelist should be used
-to determine the size of the node. Defaults to 3. If node color = 'R_i', the
-individual reproductive number for each case (i.e. number of outgoing
-infection/contacts) will be calculated and used to specify the node size.}
-
-\item{edge_color}{An index or character string indicating which field of the
-contacts data should be used to color the edges of the graph.}
-
-\item{edge_width}{An integer/numeric indicating the global width of
-the edges, or a character string indicating which field of the contacts data
-should be mapped to the edge width.}
-
-\item{edge_linetype}{An integer or character string indicating which field of
-the contacts data should be used to indicate the edge linetype.}
-
 \item{edge_alpha}{An integer/numeric indicating the global transparency of
 the edges, or a character string indicating which field of the contacts data
 should be used to indicate the edge transparency.}
-
-\item{col_pal}{A scale_fill ggplot function specifying the color palette for
-the nodes. The function must be provided (e.g. scale_fill_discrete), not
-the palette itself (e.g. scale_fill_discrete()).}
-
-\item{edge_col_pal}{A scale_color ggplot function specifying the color palette for
-the edges. The function must be provided (e.g. scale_color_discrete), not
-the palette itself (e.g. scale_color_discrete()).}
-
-\item{size_range}{A numeric vector of length 2, indicating the minimum and
-maximum node size.}
-
-\item{legend}{A logical indicating whether a legend should be added to the
-plot.}
 
 \item{ttree_shape}{'branching' will create a branching transmission
 tree. 'rectangle' will create a rectangular shaped plot similar to a
@@ -111,7 +73,7 @@ a vector of length x, specifying the position of each child relative to the
 parent, where a x > 0 indicates above the parent, x < 0 indicates below the
 parent, and x = 0 indicates the same height as the parent.}
 
-\item{label}{A logical indicating if case IDs should be displayed on the
+\item{y_label}{A logical indicating if case IDs should be displayed on the
 y-axis labels. Only works when position_dodge = TRUE, otherwise
 y-coordinates are not unique.}
 
