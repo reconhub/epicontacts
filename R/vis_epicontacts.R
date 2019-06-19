@@ -105,8 +105,6 @@
 #' @param highlight_downstream A logical indicating if all cases 'downstream' of
 #'   the the selected node should be highlighted. 
 #'
-#' @param hide_labels A logical indicating if case labels should be hidden.
-#'
 #' @param collapse A logical indicating if the network should be collapsed at a
 #'   given node upon double-clicking.
 #'
@@ -171,7 +169,6 @@ vis_epicontacts <- function(x,
                             selector = TRUE,
                             editor = FALSE,
                             highlight_downstream = FALSE,
-                            hide_labels = FALSE,
                             collapse = TRUE,
                             font_size,
                             ...){
@@ -183,7 +180,12 @@ vis_epicontacts <- function(x,
   ## code).
 
   ## Remove NAs in contacts
-  x$contacts <- subset(x$contacts, !is.na(x$contacts$from) & !is.na(x$contacts$to))
+  x <- x[j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
+
+  ## thin
+  if (thin) {
+    x <- thin(x)
+  }
   
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
@@ -236,13 +238,9 @@ vis_epicontacts <- function(x,
   
   ## generate annotations ('title' in visNetwork terms)
   if (!is.null(label)) {
-    if(hide_labels) {
-      nodes$label <- ""
-    } else {
-      labels <- apply(nodes[, label, drop = FALSE], 1,
-                      paste, collapse = "\n")
-      nodes$label <- labels
-    }
+    labels <- apply(nodes[, label, drop = FALSE], 1,
+                    paste, collapse = "\n")
+    nodes$label <- labels
   }
 
   

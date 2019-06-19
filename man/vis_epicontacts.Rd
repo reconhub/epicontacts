@@ -12,8 +12,8 @@ vis_epicontacts(x, node_color = "id", node_shape = NULL,
   annot = TRUE, width = "90\%", height = "700px", title = NULL,
   legend = TRUE, legend_max = 10, x_axis = NULL,
   date_labels = "\%d/\%m/\%Y", thin = TRUE, selector = TRUE,
-  editor = FALSE, highlight_downstream = FALSE, hide_labels = FALSE,
-  collapse = TRUE, font_size, ...)
+  editor = FALSE, highlight_downstream = FALSE, collapse = TRUE,
+  font_size, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -107,8 +107,6 @@ defaults to FALSE.}
 
 \item{highlight_downstream}{A logical indicating if all cases 'downstream' of
 the the selected node should be highlighted.}
-
-\item{hide_labels}{A logical indicating if case labels should be hidden.}
 
 \item{collapse}{A logical indicating if the network should be collapsed at a
 given node upon double-clicking.}

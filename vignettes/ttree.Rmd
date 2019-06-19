@@ -47,11 +47,10 @@ plot(sim,
      unlinked_pos = 'bottom',
      reverse_root_order = FALSE,
      reverse_node_order = TRUE,
-     hide_labels = TRUE,
+     label = TRUE,
      height = 700,
      legend = TRUE,
      highlight_downstream = TRUE,
-     hide_labels = TRUE,
      axis_type = 'double'
      )
 
@@ -322,7 +321,7 @@ plot(sim,
 Edges can curve upon manual adjustment of nodes, instead of remaining straight,
 by toggling the `edge_flex` argument. All downstream cases of a given node can
 be highlighted upon node selection using the `highlight_downstream`
-argument. Node labels can be hidden using the `hide_labels` argument. This can
+argument. Node labels can be hidden using the `label` argument. This can
 free up some space to label the edges using the `edge_label` argument. 
 
 ```{r}
@@ -343,7 +342,7 @@ plot(sim,
      edge_label = 'status',
      edge_flex = TRUE,
      highlight_downstream = TRUE,
-     hide_labels = TRUE)
+     label = FALSE)
 ```
 
 The `height` and `width` of the figure can be specified in pixels. 
@@ -400,7 +399,7 @@ plot(sim_2,
      title = "Uncleaned contact network",
      height = 1000,
      width = 900,
-     hide_labels = TRUE,
+     label = FALSE,
      thin = TRUE,
      position_dodge = TRUE)
 ```  
@@ -427,7 +426,7 @@ plot(sim_2_clean,
      title = "Cleaned contact network",
      height = 1000,
      width = 900,
-     hide_labels = TRUE,
+     label = FALSE,
      thin = TRUE,
      position_dodge = TRUE)
 ```

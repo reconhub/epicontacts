@@ -7,11 +7,6 @@
 #'
 #' @param x An \code{\link{epicontacts}} object
 #'
-#' @param node_color An integer or a character string indicating which attribute column
-#' in the linelist should be used to color the nodes.
-#'
-#' @param thin A logical indicating if the data should be thinned with \code{\link{thin}} so that only cases with contacts should be plotted.
-#'
 #' @param method A character string indicating the plotting method to be used;
 #' available values are "visNetwork" and "graph3D"; see details.
 #'
@@ -57,43 +52,19 @@
 #' plot(x, 4, method = "graph3D")
 #' }
 #' }
-plot.epicontacts <- function(x, node_color = "id",
+plot.epicontacts <- function(x,
                              method = c("visNetwork", "graph3D", "ggplot", "ttree"),
-                             thin = TRUE, ...){
+                             ...){
+  
   method <- match.arg(method)
 
-  ## checks
-  if (thin & method %in% c("visNetwork", "graph3D")) {
-    x <- thin(x)
-  }
+  lst <- list(visNetwork = vis_epicontacts,
+              graph3D = graph3D,
+              ggplot = vis_ggplot,
+              ttree = vis_ttree)
 
-  if (is.numeric(node_color) && length(node_color) > 0L) {
-    node_color <- names(x$linelist)[node_color][1L]
-  }
+  out <- lst[[method]](x, ...)
 
-
-  ## make plots
-
-  if (method == "visNetwork") {
-    if(missing(node_color)) {
-      return(vis_epicontacts(x, ...))
-    } else {
-      return(vis_epicontacts(x, node_color = node_color, ...))
-    }
-  } else if (method == "ttree") {
-    if(missing(node_color)) {
-      return(vis_ttree(x, ...))
-    } else {
-      return(vis_ttree(x, node_color = node_color, ...))
-    }
-  } else if (method == "graph3D") {
-    return(graph3D(x, node_color = node_color, ...))
-  } else if (method == "ggplot") {
-    if(missing(node_color)) {
-      return(vis_ggplot(x, ...))
-    } else {
-      return(vis_ggplot(x, node_color = node_color, ...))
-    }
-  }
+  return(out)
   
 }
