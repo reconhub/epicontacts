@@ -74,7 +74,6 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
     }
   }
 
-
   output <- match.arg(output)
   net <- as.igraph.epicontacts(x)
   cs <- igraph::clusters(net)

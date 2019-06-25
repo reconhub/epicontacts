@@ -143,35 +143,36 @@ vis_ggplot <- function(x,
   ## this will assign the value specified in ... if present, otherwise use the
   ## specified default. A list based method using the assign function looks
   ## neater but causes global binding warnings in check.
+  def <- as.list(args(vis_epicontacts))
   args <- list(...)
-  node_color <- get_val('node_color', "id", args)
-  node_shape <- get_val('node_shape', NULL, args)
-  node_size <- get_val('node_size', 15, args)
-  edge_color <- get_val('edge_color', NULL, args)
-  edge_width <- get_val('edge_width', 3, args)
-  edge_linetype <- get_val('edge_linetype', NULL, args)
-  edge_label <- get_val('edge_label', NULL, args)
-  col_pal <- get_val('col_pal', viridis::viridis_pal(), args)
-  edge_col_pal <- get_val('edge_col_pal', grDevices::colorRampPalette(c("black", "red")), args)
-  NA_col <- get_val('NA_col', "lightgrey", args)
-  shapes <- get_val('shapes', NULL, args)
-  size_range <- get_val('size_range', c(5, 20), args)
-  width_range <- get_val('width_range', c(1, 5), args)
-  label <- get_val('label', "id", args)
-  annot  <- get_val('annot', TRUE, args)
-  width <- get_val('width', "700px", args)
-  height <- get_val('height', "700px", args)
-  title <- get_val('title', NULL, args)
-  legend <- get_val('legend', TRUE, args)
-  legend_max <- get_val('legend_max', 10, args)
-  selector <- get_val('selector', FALSE, args)
-  editor <- get_val('editor', FALSE, args)
-  highlight_downstream <- get_val('highlight_downstream', TRUE, args)
-  date_labels <- get_val('date_labels', "%d/%m/%Y", args)
-  collapse <- get_val('collapse', TRUE, args)
-  thin <- get_val('thin', TRUE, args)
-  font_size <- get_val('font_size', 15, args)
-  custom_parent_pos <- get_val('custom_parent_pos', NULL, args)
+  node_color <- get_val('node_color', def, args)
+  node_shape <- get_val('node_shape', def, args)
+  node_size <- get_val('node_size', def, args)
+  edge_color <- get_val('edge_color', def, args)
+  edge_width <- get_val('edge_width', def, args)
+  edge_linetype <- get_val('edge_linetype', def, args)
+  edge_label <- get_val('edge_label', def, args)
+  col_pal <- get_val('col_pal', def, args)
+  edge_col_pal <- get_val('edge_col_pal', def, args)
+  NA_col <- get_val('NA_col', def, args)
+  shapes <- get_val('shapes', def, args)
+  size_range <- get_val('size_range', def, args)
+  width_range <- get_val('width_range', def, args)
+  label <- get_val('label', def, args)
+  annot  <- get_val('annot', def, args)
+  width <- get_val('width', def, args)
+  height <- get_val('height', def, args)
+  title <- get_val('title', def, args)
+  legend <- get_val('legend', def, args)
+  legend_max <- get_val('legend_max', def, args)
+  selector <- get_val('selector', def, args)
+  editor <- get_val('editor', def, args)
+  highlight_downstream <- get_val('highlight_downstream', def, args)
+  date_labels <- get_val('date_labels', def, args)
+  collapse <- get_val('collapse', def, args)
+  thin <- get_val('thin', def, args)
+  font_size <- get_val('font_size', def, args)
+  custom_parent_pos <- get_val('custom_parent_pos', def, args)
 
   parent_pos <- match.arg(parent_pos)
 
@@ -182,6 +183,31 @@ vis_ggplot <- function(x,
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
 
+  ## Remove NAs in contacts
+  x <- x[j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
+  
+  ## check that x_axis is specified
+  if (is.null(x_axis)) {
+    stop("x_axis must be specified")
+  } else {
+    ## Remove NAs in x_axis
+    x <- x[!is.na(x$linelist[[x_axis]])]
+    ## Remove contacts that don't have both nodes in linelist
+    x <- thin(x, what = 'contacts')
+  }
+
+  ## Remove linelist elements that aren't in contacts if thin = TRUE
+  if(thin) {
+    x <- thin(x)
+  }
+  
+  ## Calculate R_i if needed
+  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
+    x$linelist$R_i <- vapply(x$linelist$id,
+                             function(i) sum(x$contacts$from == i, na.rm = TRUE),
+                             numeric(1))
+  }
+  
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 

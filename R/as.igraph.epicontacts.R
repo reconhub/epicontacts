@@ -45,7 +45,6 @@
 as.igraph.epicontacts <- function(x){
 
   ## Create vertex dataframe using combination of linelist and contacts
-
   all_ids <- data.frame(id = get_id(x, "all"), stringsAsFactors = FALSE)
   verts <- dplyr::full_join(x$linelist, all_ids, by = "id")
 

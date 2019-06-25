@@ -44,7 +44,7 @@ thin <- function(x, what = "linelist") {
     } else if (what == "contacts" || what == 2) {
       to_keep <- intersect(get_id(x, "linelist"),
                            get_id(x, "contacts"))
-        out <- x[j = to_keep, contacts = "both"]
+      out <- x[j = to_keep, contacts = "both"]
     } else {
         msg <- paste0("Wrong values for 'what'; accepted values are:\n",
                       "'linelist', 'contact', 1, 2")

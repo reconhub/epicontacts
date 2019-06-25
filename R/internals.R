@@ -550,7 +550,8 @@ get_coor <- function(x,
       stop("rank_contact is not found in linelist or contacts")
     }
 
-    if(!inherits(linelist[[rank_contact]], c("Date", "numeric", "integer", "POSIXct", "POSIXt"))) {
+    if(!inherits(linelist[[rank_contact]],
+                 c("Date", "numeric", "integer", "POSIXct", "POSIXt"))) {
       stop("rank_contact must indicate a Date, numeric or integer value")
     }
 
@@ -573,7 +574,7 @@ get_coor <- function(x,
   ## the scaffold tree using that infector)
   infector <- root <- rep(NA, N)
 
-  ## Clust size is the number of nodes downstream of a given node
+  ## Subtree size is the number of nodes downstream of a given node
   subtree_size <- rep(1, N)
 
   ## We remove cycles when building the scaffold tree. We do so by recursively
@@ -601,13 +602,15 @@ get_coor <- function(x,
                              reverse_rank_contact = reverse_rank_contact,
                              infector_keep = NULL,
                              root = NULL)
-    
-    depth[which(linelist$id == i)] <- treestat$depth
-    infector[which(linelist$id == i)] <- treestat$infector
-    root[which(linelist$id == i)] <- treestat$root
+
+    ind <- which(linelist$id == i) 
+    depth[ind] <- treestat$depth
+    infector[ind] <- treestat$infector
+    root[ind] <- treestat$root
     subtree_size <- treestat$subtree_size
   }
 
+  browser()
   ## Add cluster size to linelist so that it can be called in node_order /
   ## root_order This will overwrite a node attribute called size, if it exists
   ## (but only within this function)
@@ -1146,8 +1149,11 @@ get_adj_width <- function(x, n) {
 ## This function will return the value of var in args if present, otherwise
 ## returns the default value def.
 get_val <- function(var, def, args) {
-  return(ifelse(var %in% names(args), args[[var]], def[[var]]))
-  ##  if(var %in% names(args)) return(args[[var]]) else return(def[[]])
+  if(var %in% names(args)) {
+    return(args[[var]])
+  } else {
+    return(def[[var]])
+  }
 }
 
 ## Determine if character string is a color

@@ -126,7 +126,6 @@ vis_ttree <- function(x,
   ## this will assign the value specified in ... if present, otherwise use the
   ## specified default. A list based method using the assign function looks
   ## neater but causes global binding warnings in check.
-  browser()
   def <- as.list(args(vis_epicontacts))
   args <- list(...)
   node_color <- get_val('node_color', def, args)
@@ -191,7 +190,7 @@ vis_ttree <- function(x,
                              function(i) sum(x$contacts$from == i, na.rm = TRUE),
                              numeric(1))
   }
-  
+
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 

@@ -131,7 +131,7 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE,
                      adj_width = FALSE){
   x <- factor(x)
   lev <- levels(x)
-  if(adj_width) lev <- get_adj_width(lev, max(nchar(lev)))
+  leg_lab <- if(adj_width) get_adj_width(lev, max(nchar(lev))) else lev
   nlev <- length(lev)
   res <- rep(NA_col, length(x))
   if(inherits(pal, "list")) {
@@ -141,7 +141,7 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE,
     col <- pal(nlev)
     res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
     if (legend) {
-      res <- list(color = res, leg_col = col, leg_lab = lev)
+      res <- list(color = res, leg_col = col, leg_lab = leg_lab)
     }
   } else if(is.vector(pal, mode = "character") & !is.null(names(pal))) {
     if(!all(lev %in% names(pal))) {
@@ -154,7 +154,7 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE,
     }
     res[!is.na(x)] <- pal[x[!is.na(x)]]
     if (legend) {
-      res <- list(color = res, leg_col = unname(pal[lev]), leg_lab = lev)
+      res <- list(color = res, leg_col = unname(pal[lev]), leg_lab = leg_lab)
     }
   } else {
     stop("col_pal/edge_col_pal must be a function or named character vector/list")
