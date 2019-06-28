@@ -92,7 +92,8 @@
 #'
 #' @importFrom ggplot2 aes_string element_blank geom_point geom_segment ggplot
 #'   labs scale_color_gradient scale_color_viridis_d scale_fill_viridis_c
-#'   scale_fill_viridis_d scale_size scale_y_continuous theme theme_minimal unit
+#'   scale_fill_viridis_d scale_size scale_y_continuous scale_color_gradientn
+#'   theme theme_minimal unit
 #'
 #' 
 #' @examples
@@ -109,23 +110,14 @@
 #' \dontrun{
 #' plot(x)
 #' plot(x, node_color = "place_infect")
-#' # show transmission tree with time as the horizontal axis, showing all nodes
-#' vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
-#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
-#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
-#' plot(x, "place_infect", node_shape = "sex",
-#'      shapes = c(M = "male", F = "female"))
-#'
-#' plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
-#'      edge_label = "exposure", edge_color = "exposure")
 #' }
 #' }
 vis_ggplot <- function(x,
                        x_axis,
                        edge_alpha = NULL,
                        ttree_shape = 'branching',
-                       root_order = 'size',
-                       node_order = 'size',
+                       root_order = 'subtree_size',
+                       node_order = 'subtree_size',
                        reverse_root_order = FALSE,
                        reverse_node_order = FALSE,
                        null_node_color = 'black',
@@ -137,41 +129,28 @@ vis_ggplot <- function(x,
                        custom_parent_pos = NULL,
                        y_label = FALSE,
                        y_coor = NULL,
-                       igraph_type = NULL) {
-
+                       igraph_type = NULL,
+                       col_pal = NULL,
+                       edge_col_pal = NULL,
+                       ...) {
 
   ## this will assign the value specified in ... if present, otherwise use the
   ## specified default. A list based method using the assign function looks
   ## neater but causes global binding warnings in check.
   def <- as.list(args(vis_epicontacts))
+  def$node_size <- 5
+  def$edge_width <- 1
   args <- list(...)
   node_color <- get_val('node_color', def, args)
-  node_shape <- get_val('node_shape', def, args)
   node_size <- get_val('node_size', def, args)
   edge_color <- get_val('edge_color', def, args)
   edge_width <- get_val('edge_width', def, args)
   edge_linetype <- get_val('edge_linetype', def, args)
-  edge_label <- get_val('edge_label', def, args)
-  col_pal <- get_val('col_pal', def, args)
-  edge_col_pal <- get_val('edge_col_pal', def, args)
   NA_col <- get_val('NA_col', def, args)
-  shapes <- get_val('shapes', def, args)
   size_range <- get_val('size_range', def, args)
   width_range <- get_val('width_range', def, args)
-  label <- get_val('label', def, args)
-  annot  <- get_val('annot', def, args)
-  width <- get_val('width', def, args)
-  height <- get_val('height', def, args)
-  title <- get_val('title', def, args)
-  legend <- get_val('legend', def, args)
-  legend_max <- get_val('legend_max', def, args)
-  selector <- get_val('selector', def, args)
-  editor <- get_val('editor', def, args)
-  highlight_downstream <- get_val('highlight_downstream', def, args)
   date_labels <- get_val('date_labels', def, args)
-  collapse <- get_val('collapse', def, args)
   thin <- get_val('thin', def, args)
-  font_size <- get_val('font_size', def, args)
   custom_parent_pos <- get_val('custom_parent_pos', def, args)
 
   parent_pos <- match.arg(parent_pos)
@@ -202,7 +181,7 @@ vis_ggplot <- function(x,
   }
   
   ## Calculate R_i if needed
-  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
+  if('R_i' %in% c(node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- vapply(x$linelist$id,
                              function(i) sum(x$contacts$from == i, na.rm = TRUE),
                              numeric(1))
@@ -269,6 +248,8 @@ vis_ggplot <- function(x,
   nodes$x <- x$linelist[[x_axis]]
   nodes$subtree_size <- coor$subtree_size
 
+  browser()
+
   if(ttree_shape == 'rectangle') {
 
     ## Get vertical and horizontal edges with correct edge attributes
@@ -302,11 +283,17 @@ vis_ggplot <- function(x,
   }
 
   ## Specifying node color palette for different use cases
-  if(!is.null(node_color) & !missing(node_color)) {
+  if(!is.null(node_color)) {
 
+    ggplot_col <- c("#ccddff", "#79d2a6", "#ffb3b3",
+                    "#a4a4c1", "#ffcc00", "#ff9f80",
+                    "#ccff99", "#df9fbf", "#ffcc99",
+                    "#cdcdcd")
+    
     if(missing(col_pal) & inherits(nodes[[node_color]], c('factor', 'character'))) {
       
       col_pal <- scale_fill_viridis_d()
+      col_pal <- scale_color_gradientn(colors = ggplot_col)
       
       ## Annoying workaround to use viridis_color with dates
     } else if(inherits(nodes[[node_color]], 'Date')) {
@@ -366,11 +353,6 @@ vis_ggplot <- function(x,
     }
   } else {
     edge_col_pal <- NULL
-  }
-
-  ## ggplot default node_size is 3
-  if(missing(node_size) | is.null(node_size)) {
-    node_size <- 3
   }
 
   ## Check node size attribute
@@ -519,6 +501,8 @@ vis_ggplot <- function(x,
                    panel.grid.major.y = element_blank(),
                    panel.grid.minor.y = element_blank())
   }
+
+  browser()
 
   out <- ggplot(df) +
     seg +

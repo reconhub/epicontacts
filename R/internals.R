@@ -610,7 +610,6 @@ get_coor <- function(x,
     subtree_size <- treestat$subtree_size
   }
 
-  browser()
   ## Add cluster size to linelist so that it can be called in node_order /
   ## root_order This will overwrite a node attribute called size, if it exists
   ## (but only within this function)
@@ -1147,7 +1146,7 @@ get_adj_width <- function(x, n) {
 
 
 ## This function will return the value of var in args if present, otherwise
-## returns the default value def.
+## returns the default value in def.
 get_val <- function(var, def, args) {
   if(var %in% names(args)) {
     return(args[[var]])

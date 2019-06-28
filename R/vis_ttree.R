@@ -135,8 +135,8 @@ vis_ttree <- function(x,
   edge_width <- get_val('edge_width', def, args)
   edge_linetype <- get_val('edge_linetype', def, args)
   edge_label <- get_val('edge_label', def, args)
-  col_pal <- get_val('col_pal', def, args)
-  edge_col_pal <- get_val('edge_col_pal', def, args)
+  col_pal <- eval(get_val('col_pal', def, args))
+  edge_col_pal <- eval(get_val('edge_col_pal', def, args))
   NA_col <- get_val('NA_col', def, args)
   shapes <- get_val('shapes', def, args)
   size_range <- get_val('size_range', def, args)
@@ -565,7 +565,8 @@ vis_ttree <- function(x,
                               color = node_col_info$leg_col,
                               shape = "circle",
                               shadow = FALSE,
-                              font.size = 15)
+                              font.size = ifelse(is.null(font_size),
+                                                 14, font_size))
     } else {
       leg_nodes <- NULL
     }
@@ -574,7 +575,8 @@ vis_ttree <- function(x,
       leg_edges <- data.frame(label = edge_col_info$leg_lab,
                               color = edge_col_info$leg_col,
                               dashes = FALSE,
-                              font.size = 15,
+                              font.size = ifelse(is.null(font_size),
+                                                 14, font_size),
                               font.align = 'top')
     } else {
       leg_edges <- NULL
@@ -588,7 +590,8 @@ vis_ttree <- function(x,
         tmp <- data.frame(label = unq_linetype,
                           color = 'black',
                           dashes = c(FALSE, TRUE),
-                          font.size = 15,
+                          font.size = ifelse(is.null(font_size),
+                                             14, font_size),
                           font.align = 'top')
         leg_edges <- rbind(leg_edges, tmp)
       }

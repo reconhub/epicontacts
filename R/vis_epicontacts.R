@@ -174,7 +174,7 @@ vis_epicontacts <- function(x,
                             editor = FALSE,
                             highlight_downstream = FALSE,
                             collapse = TRUE,
-                            font_size,
+                            font_size = NULL,
                             ...){
   
   ## In the following, we pull the list of all plotted nodes (those from the
@@ -437,6 +437,12 @@ vis_epicontacts <- function(x,
                    sort = FALSE
                    )
   }
+
+  ## Change font size
+  if(!is.null(font_size)) {
+    edges$font.size <- font_size
+    nodes$font.size <- font_size
+  }
   
   ## build visNetwork output
 
@@ -459,7 +465,8 @@ vis_epicontacts <- function(x,
                               color = node_col_info$leg_col,
                               shape = "circle",
                               shadow = FALSE,
-                              font.size = 20)
+                              font.size = ifelse(is.null(font_size),
+                                                 14, font_size))
     } else {
       leg_nodes <- NULL
     }
@@ -468,7 +475,8 @@ vis_epicontacts <- function(x,
       leg_edges <- data.frame(label = edge_col_info$leg_lab,
                               color = edge_col_info$leg_col,
                               dashes = FALSE,
-                              font.size = 15,
+                              font.size = ifelse(is.null(font_size),
+                                                 14, font_size),
                               font.align = 'top')
     } else {
       leg_edges <- NULL
@@ -482,7 +490,8 @@ vis_epicontacts <- function(x,
         tmp <- data.frame(label = unq_linetype,
                           color = 'black',
                           dashes = c(FALSE, TRUE),
-                          font.size = 15,
+                          font.size = ifelse(is.null(font_size),
+                                             14, font_size),
                           font.align = 'top')
         leg_edges <- rbind(leg_edges, tmp)
       }
