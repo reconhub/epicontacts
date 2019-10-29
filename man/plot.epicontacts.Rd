@@ -4,11 +4,16 @@
 \alias{plot.epicontacts}
 \title{Plot epicontacts objects}
 \usage{
-\method{plot}{epicontacts}(x, method = c("visNetwork", "graph3D",
-  "ggplot", "ttree"), ...)
+\method{plot}{epicontacts}(x, node_color = "id",
+  method = c("visNetwork", "graph3D", "ggplot", "ttree"), ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
+
+\item{node_color}{An index or character string indicating which field of the
+linelist should be used to color the nodes. If node color = 'R_i', the
+individual reproductive number for each case (i.e. number of outgoing
+infection/contacts) will be calculated and used to specify the node colour.}
 
 \item{method}{A character string indicating the plotting method to be used;
 available values are "visNetwork" and "graph3D"; see details.}
@@ -28,6 +33,8 @@ the package, depending on the value of \code{method}:
 \item \code{visNetwork}: calls the function \code{\link{vis_epicontacts}}
 
 \item \code{graph3D}: calls the function \code{\link{graph3D}}
+
+\item \code{ttree}: calls the function \code{link{vis_ttree}}
 
 \item \code{ggplot}: calls the function \code{link{vis_ggplot}}
 

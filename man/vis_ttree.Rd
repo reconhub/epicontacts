@@ -8,9 +8,10 @@ vis_ttree(x, x_axis = NULL, ttree_shape = "branching",
   root_order = x_axis, node_order = x_axis,
   reverse_root_order = FALSE, reverse_node_order = FALSE,
   rank_contact = x_axis, reverse_rank_contact = FALSE,
-  unlinked_pos = "bottom", edge_flex = FALSE, position_dodge = FALSE,
-  parent_pos = c("middle", "top", "bottom"), n_breaks = 5,
-  axis_type = c("single", "double", "none"), igraph_type = NULL, ...)
+  unlinked_pos = c("bottom", "top", "middle"), edge_flex = FALSE,
+  position_dodge = FALSE, parent_pos = c("middle", "top", "bottom"),
+  n_breaks = 5, axis_type = c("single", "double", "none"),
+  igraph_type = NULL, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}

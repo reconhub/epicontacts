@@ -5,12 +5,13 @@
 \title{Plot epicontacts objects using ggplot}
 \usage{
 vis_ggplot(x, x_axis, edge_alpha = NULL, ttree_shape = "branching",
-  root_order = "size", node_order = "size",
+  root_order = "subtree_size", node_order = "subtree_size",
   reverse_root_order = FALSE, reverse_node_order = FALSE,
-  null_node_color = "black", null_edge_color = "black",
-  lineend = "butt", unlinked_pos = "bottom", position_dodge = FALSE,
-  parent_pos = "middle", custom_parent_pos = NULL, y_label = FALSE,
-  y_coor = NULL, igraph_type = NULL)
+  lineend = "butt", unlinked_pos = c("bottom", "top", "middle"),
+  position_dodge = FALSE, parent_pos = c("middle", "top", "bottom"),
+  custom_parent_pos = NULL, y_label = NULL, node_label = NULL,
+  y_coor = NULL, igraph_type = NULL, col_pal = cases_pal,
+  edge_col_pal = edges_pal, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -46,12 +47,6 @@ hsould be reversed. This argument is only called when type = 'ttree'.}
 \item{reverse_node_order}{A logical indicating if the ordering of the nodes
 should be reversed. This argument is only called when type = 'ttree'.}
 
-\item{null_node_color}{A character indicating the global node colour if
-node_color has not been specifed or has been specified as NULL.}
-
-\item{null_edge_color}{A character indicating the global edge colour if
-edge_color has not been specifed or has been specified as NULL.}
-
 \item{lineend}{Character indicating the lineend to be used for geom_segment.}
 
 \item{unlinked_pos}{A character string indicating where unlinked cases
@@ -73,9 +68,13 @@ a vector of length x, specifying the position of each child relative to the
 parent, where a x > 0 indicates above the parent, x < 0 indicates below the
 parent, and x = 0 indicates the same height as the parent.}
 
-\item{y_label}{A logical indicating if case IDs should be displayed on the
-y-axis labels. Only works when position_dodge = TRUE, otherwise
-y-coordinates are not unique.}
+\item{y_label}{A character string which element of the linelist should be
+displayed on the y-axis labels. If NULL, no y-axis labels are
+provided. Only works when position_dodge = TRUE, otherwise y-coordinates
+are not unique.}
+
+\item{node_label}{A character string which element of the linelist should be
+display node labels. If NULL, node labels are provided.}
 
 \item{y_coor}{Manual specification of y coordinates. Must be a vector with one
 y coordinate for each case between 0 and 1.}
@@ -84,7 +83,13 @@ y coordinate for each case between 0 and 1.}
 'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
 for Fruchterman-Reingold layout.}
 
-\item{...}{Further arguments to be passed to \code{ggplot}.}
+\item{col_pal}{A color palette for the nodes. Must be a function accepting a
+single number n and returning a vector of n colors.}
+
+\item{edge_col_pal}{A color palette for the edges. Must be a function accepting a
+single number n and returning a vector of n colors.}
+
+\item{...}{Additional arguments specified in \code{vis_epicontacts}.}
 }
 \value{
 The same output as \code{ggplot2}.
@@ -107,22 +112,12 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
                        directed=TRUE)
 
 \dontrun{
-plot(x)
-plot(x, node_color = "place_infect")
-# show transmission tree with time as the horizontal axis, showing all nodes
-vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
-plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
-plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
-plot(x, "place_infect", node_shape = "sex",
-     shapes = c(M = "male", F = "female"))
-
-plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
-     edge_label = "exposure", edge_color = "exposure")
+plot(x, method = 'ggplot', x_axis = 'dt_onset', node_color = 'sex')
 }
 }
 }
 \seealso{
-\code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+\code{\link[ggplot2]{ggplot}} in the package \code{ggplot2}.
   \code{\link{edges_pal}} and \code{\link{cases_pal}} for color palettes used
 }
 \author{

@@ -96,7 +96,8 @@
 #' @importFrom ggplot2 aes_string element_blank geom_point geom_segment ggplot
 #'   labs scale_color_gradient scale_color_viridis_d scale_fill_viridis_c
 #'   scale_fill_viridis_d scale_size scale_y_continuous scale_color_gradientn
-#'   scale_fill_gradientn theme theme_minimal unit
+#'   scale_fill_gradientn theme theme_minimal unit scale_fill_manual
+#'   scale_fill_continuous scale_color_manual scale_color_continuous geom_text
 #'
 #' 
 #' @examples
