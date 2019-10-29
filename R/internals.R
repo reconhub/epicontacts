@@ -328,6 +328,10 @@ assert_custom_parent_pos <- function(custom_parent_pos) {
     if (length(methods::formalArgs(custom_parent_pos)) != 1L) {
       stop("'custom_parent_pos' must have only one argument")
     }
+    if (length(custom_parent_pos(10)) != 10) {
+      stop(paste0("custom_parent_pos must be a function of n",
+                  " returning a numeric vector of length n"))
+    }
   }
 
   return(custom_parent_pos)
@@ -804,7 +808,7 @@ get_coor <- function(x,
     }
 
   }
-  
+
   ## This orders the cases and adds two positions at the top and bottom to
   ## provide space for the axes - only do this for method == 'ttree', otherwise
   ## we will have additional nodes in the ggplot
@@ -822,7 +826,7 @@ get_coor <- function(x,
     }
   } else {
     y_pos <- match(val, sort(unique(val)))
-    y_pos = rescale(y_pos, 0, 1)
+    y_pos <- rescale(y_pos, 0, 1)
   }
 
   ## Also return infector because we need scaffold tree for later
@@ -873,20 +877,11 @@ get_v_rect <- function(linelist, contacts) {
                            stringsAsFactors = FALSE)
 
     tpair <- contacts[to_keep, c("from", "to")]
-#    tpair <- cbind(contacts$from[match(new_edge$to, contacts$to)],
-#                   new_edge$to)
-
-    ## Currently just select the first edge if there are more than one edge
-    ## between two cases
-    ##match_ind <- apply(tpair, 1, function(x) which(x[[1]] == contacts$from &
-    ##x[[2]] == contacts$to)[1])
 
     new_edge <- cbind(new_edge, contacts[to_keep, !names(contacts) %in% c("from", "to")])
     names(new_edge) <- names(contacts)
 
     ## Group into cases with shared ancestor
-    ##    splt <- split(new_edge$from, contacts$from[match(new_edge$to, contacts$to)])
-
     splt <- split(new_edge$from, contacts$from[to_keep])
 
     nm <- names(splt)
@@ -927,39 +922,6 @@ get_v_rect <- function(linelist, contacts) {
                           to = id_below_order)
         vert_nodes <- rbind(vert_nodes, tmp)
       }
-      
-      ## if(length(y_above) != 0) {
-      ##   node_up <- ids[which(d_y == min(y_above))]
-      ##   vert_nodes <- rbind(vert_nodes,
-      ##                       data.frame(from = anchor, to = node_up))
-      ## }
-      
-      ## if(length(y_below) != 0) {
-      ##   node_down <- ids[which(d_y == max(y_below))]
-      ##   vert_nodes <- rbind(vert_nodes,
-      ##                       data.frame(from = anchor, to = node_down))
-      ## }
-      
-      ## while(nrow(vert_nodes) < length(ids)) {
-      ##   if(length(y_above != 0)) {
-      ##     y_above <- d_y[d_y > d_y[which(ids == node_up)]]
-      ##   }
-      ##   if(length(y_below != 0)) {
-      ##     y_below <- d_y[d_y < d_y[which(ids == node_down)]]
-      ##   }
-      ##   if(length(y_above) != 0) {
-      ##     next_node_up <- ids[which(d_y == min(y_above))][1]
-      ##     vert_nodes <- rbind(vert_nodes,
-      ##                         data.frame(from = node_up, to = next_node_up))
-      ##     node_up <- next_node_up
-      ##   }
-      ##   if(length(y_below) != 0) {
-      ##     next_node_down <- ids[which(d_y == max(y_below))][1]
-      ##     vert_nodes <- rbind(vert_nodes,
-      ##                         data.frame(from = node_down, to = next_node_down))
-      ##     node_down <- next_node_down
-      ##   }
-      ## }
 
       ## cbind additional edge data
       vert_nodes <- cbind(vert_nodes,
@@ -973,7 +935,6 @@ get_v_rect <- function(linelist, contacts) {
 
     nodes <- rbind(linelist, new_node)
 
-    ##    old_edge <- contacts[-match(linelist$id[to_keep], contacts$to),]
     old_edge <- contacts[-to_keep,]
 
     if(nrow(old_edge) > 0) {
@@ -1015,9 +976,9 @@ get_g_rect <- function(linelist, contacts) {
                    y_i = linelist$y[to_ind],
                    x_inf = linelist$x[from_ind],
                    x_i = linelist$x[to_ind])
-  
+
   ## Cases which are not on the same height as their infector will require a new node
-  new_node_ind <- which(apply(df[,1:2], 1, function(i) i[1] != i[2]))
+  new_node_ind <- which(df[,1] != df[,2])
 
   ## These nodes are all hidden - to give matching df size, recycle linelist elements
   new_node <- linelist[rep(1, length(new_node_ind)),]
@@ -1032,7 +993,8 @@ get_g_rect <- function(linelist, contacts) {
   new_node$y <- df$y_i[new_node_ind]
 
   ## Group into cases with shared ancestor
-  splt <- split(contacts$to[new_node_ind], contacts$from[new_node_ind])
+  splt <- split(contacts$to[new_node_ind],
+                contacts$from[new_node_ind])
   nm <- names(splt)
   out <- NULL
 
@@ -1092,7 +1054,6 @@ get_g_rect <- function(linelist, contacts) {
       }
     }
 
-    
     ## Construct coordinates from these nodes
     tmp <- data.frame(y = linelist$y[match(vert_nodes$from, linelist$id)],
                       yend = linelist$y[match(vert_nodes$to, linelist$id)])
@@ -1100,11 +1061,13 @@ get_g_rect <- function(linelist, contacts) {
 
     ## Find edge attributes going from anchor -> each leaf
     vert_nodes$from <- anchor
-    ind <- apply(vert_nodes, 1, function(x) which(x[[1]] == contacts$from &
-                                                  x[[2]] == contacts$to))
+    ind <- apply(vert_nodes, 1,
+                 function(x) which(x[[1]] == contacts$from &
+                                   x[[2]] == contacts$to))
 
     ## cbind edge attributes - choose the first one if there are multiple
-    tmp <- cbind(tmp, contacts[sapply(ind, "[", 1), !names(contacts) %in% c("from", "to")])
+    tmp <- cbind(tmp, contacts[vapply(ind, "[", 1, 1),
+                               !names(contacts) %in% c("from", "to")])
     
     out <- rbind(out, tmp)
 
@@ -1132,8 +1095,10 @@ extr_num <- function(x) {
 
 ## Rescale a vector of numerics to min and max
 rescale <- function(x, min_val = 0, max_val = 1) {
-  out <- (x - min(x))/(diff(range(x)))*(max_val - min_val)
+  if(length(unique(x)) == 1L) return(x)
+  out <- (x - min(x, na.rm = TRUE))/(diff(range(x, na.rm = TRUE)))*(max_val - min_val)
   out <- out + min_val
+  return(out)
 }
 
 
@@ -1149,9 +1114,9 @@ get_adj_width <- function(x, n) {
 ## returns the default value in def.
 get_val <- function(var, def, args) {
   if(var %in% names(args)) {
-    return(args[[var]])
+    return(eval(args[[var]]))
   } else {
-    return(def[[var]])
+    return(eval(def[[var]]))
   }
 }
 

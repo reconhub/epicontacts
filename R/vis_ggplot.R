@@ -44,12 +44,6 @@
 #' @param reverse_node_order A logical indicating if the ordering of the nodes
 #'   should be reversed. This argument is only called when type = 'ttree'.
 #'
-#' @param null_node_color A character indicating the global node colour if
-#'   node_color has not been specifed or has been specified as NULL.
-#'
-#' @param null_edge_color A character indicating the global edge colour if
-#'   edge_color has not been specifed or has been specified as NULL.
-#'
 #' @param lineend Character indicating the lineend to be used for geom_segment.
 #' 
 #' @param unlinked_pos A character string indicating where unlinked cases
@@ -71,9 +65,13 @@
 #'   parent, where a x > 0 indicates above the parent, x < 0 indicates below the
 #'   parent, and x = 0 indicates the same height as the parent.
 #'
-#' @param y_label A logical indicating if case IDs should be displayed on the
-#'   y-axis labels. Only works when position_dodge = TRUE, otherwise
-#'   y-coordinates are not unique.
+#' @param y_label A character string which element of the linelist should be
+#'   displayed on the y-axis labels. If NULL, no y-axis labels are
+#'   provided. Only works when position_dodge = TRUE, otherwise y-coordinates
+#'   are not unique.
+#'
+#' @param node_label A character string which element of the linelist should be
+#'   display node labels. If NULL, node labels are provided.
 #'
 #' @param y_coor Manual specification of y coordinates. Must be a vector with one
 #'   y coordinate for each case between 0 and 1.
@@ -82,18 +80,23 @@
 #'   'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
 #'   for Fruchterman-Reingold layout.
 #'
+#' @param col_pal A color palette for the nodes. Must be a function accepting a
+#'   single number n and returning a vector of n colors.
 #'
-#' @param ... Further arguments to be passed to \code{ggplot}.
+#' @param edge_col_pal A color palette for the edges. Must be a function accepting a
+#'   single number n and returning a vector of n colors.
+#'
+#' @param ... Additional arguments specified in \code{vis_epicontacts}.
 #'
 #' @return The same output as \code{ggplot2}.
 #'
-#' @seealso \code{\link[visNetwork]{visNetwork}} in the package \code{visNetwork}.
+#' @seealso \code{\link[ggplot2]{ggplot}} in the package \code{ggplot2}.
 #'   \code{\link{edges_pal}} and \code{\link{cases_pal}} for color palettes used
 #'
 #' @importFrom ggplot2 aes_string element_blank geom_point geom_segment ggplot
 #'   labs scale_color_gradient scale_color_viridis_d scale_fill_viridis_c
 #'   scale_fill_viridis_d scale_size scale_y_continuous scale_color_gradientn
-#'   theme theme_minimal unit
+#'   scale_fill_gradientn theme theme_minimal unit
 #'
 #' 
 #' @examples
@@ -108,8 +111,7 @@
 #'                        directed=TRUE)
 #'
 #' \dontrun{
-#' plot(x)
-#' plot(x, node_color = "place_infect")
+#' plot(x, method = 'ggplot', x_axis = 'dt_onset', node_color = 'sex')
 #' }
 #' }
 vis_ggplot <- function(x,
@@ -120,26 +122,29 @@ vis_ggplot <- function(x,
                        node_order = 'subtree_size',
                        reverse_root_order = FALSE,
                        reverse_node_order = FALSE,
-                       null_node_color = 'black',
-                       null_edge_color = 'black',
                        lineend = 'butt',
-                       unlinked_pos = 'bottom',
+                       unlinked_pos = c('bottom', 'top', 'middle'),
                        position_dodge = FALSE,
-                       parent_pos = 'middle',
+                       parent_pos = c('middle', 'top', 'bottom'),
                        custom_parent_pos = NULL,
-                       y_label = FALSE,
+                       y_label = NULL,
+                       node_label = NULL,
                        y_coor = NULL,
                        igraph_type = NULL,
-                       col_pal = NULL,
-                       edge_col_pal = NULL,
+                       col_pal = cases_pal,
+                       edge_col_pal = edges_pal,
                        ...) {
 
   ## this will assign the value specified in ... if present, otherwise use the
   ## specified default. A list based method using the assign function looks
   ## neater but causes global binding warnings in check.
   def <- as.list(args(vis_epicontacts))
+
+  ## specify alternative defaults for ggplot vs visnetwork
   def$node_size <- 5
   def$edge_width <- 1
+
+  ## modify defaults
   args <- list(...)
   node_color <- get_val('node_color', def, args)
   node_size <- get_val('node_size', def, args)
@@ -149,21 +154,16 @@ vis_ggplot <- function(x,
   NA_col <- get_val('NA_col', def, args)
   size_range <- get_val('size_range', def, args)
   width_range <- get_val('width_range', def, args)
-  date_labels <- get_val('date_labels', def, args)
   thin <- get_val('thin', def, args)
   custom_parent_pos <- get_val('custom_parent_pos', def, args)
+  legend_max <- get_val('legend_max', def, args)
 
   parent_pos <- match.arg(parent_pos)
+  unlinked_pos <- match.arg(unlinked_pos)
 
-  
-  ## In the following, we pull the list of all plotted nodes (those from the
-  ## linelist, and from the contacts data.frame, and then derive node attributes
-  ## for the whole lot. These attributes are in turn used for plotting: as color
-  ## ('group' in visNetwork terminology) or as annotations (converted to html
-  ## code).
-
-  ## Remove NAs in contacts
-  x <- x[j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
+  ## Remove NAs in contacts and linelist
+  x <- x[i = !is.na(x$linelist$id),
+         j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
   
   ## check that x_axis is specified
   if (is.null(x_axis)) {
@@ -178,13 +178,6 @@ vis_ggplot <- function(x,
   ## Remove linelist elements that aren't in contacts if thin = TRUE
   if(thin) {
     x <- thin(x)
-  }
-  
-  ## Calculate R_i if needed
-  if('R_i' %in% c(node_color, node_size, node_order, root_order)) {
-    x$linelist$R_i <- vapply(x$linelist$id,
-                             function(i) sum(x$contacts$from == i, na.rm = TRUE),
-                             numeric(1))
   }
   
   ## check node_color (node attribute used for color)
@@ -202,24 +195,31 @@ vis_ggplot <- function(x,
   ## check edge_alpha (edge attribute used for alpha)
   edge_alpha <- assert_edge_alpha(x, edge_alpha)
 
-  ## If label = TRUE, position_dodge must also be
-  if(y_label & !position_dodge) {
-    stop("position_dodge must be TRUE if y_label is TRUE")
+  ## edge width can only be numeric in vis_ggplot
+  if(length(edge_width) > 1 | !inherits(edge_width, c("numeric", "integer"))) {
+    msg <- paste("edge width must be a single number in vis_ggplot (cannot be",
+                "mapped to a variable because scale_size is reserved for node_size)")
+    stop(msg)
   }
 
-  ## Remove NAs in contacts
-  x$contacts <- subset(x$contacts, !is.na(x$contacts$from) & !is.na(x$contacts$to))
+  ## check y_label
+  if(!is.null(y_label)) {
+    if(!y_label %in% names(x$linelist)) {
+      stop("y_label does not exist in linelist")
+    }
+    if(!position_dodge) {
+      stop("position_dodge must be TRUE if y-axis labels are specifed")
+    }
+    if(!is.null(igraph_type)) {
+      stop("igraph_type cannot be specified with y-axis labels")
+    }
+  }
   
   ## Calculate R_i if needed
   if('R_i' %in% c(node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- vapply(x$linelist$id,
                              function(i) sum(x$contacts$from == i, na.rm = TRUE),
-                             1)
-  }
-  
-  ## check that x_axis is specified
-  if (is.null(x_axis)) {
-    stop("x_axis must be specified if type = 'ttree'")
+                             numeric(1))
   }
 
   nodes <- x$linelist
@@ -247,8 +247,6 @@ vis_ggplot <- function(x,
   
   nodes$x <- x$linelist[[x_axis]]
   nodes$subtree_size <- coor$subtree_size
-
-  browser()
 
   if(ttree_shape == 'rectangle') {
 
@@ -280,99 +278,117 @@ vis_ggplot <- function(x,
     df <- cbind(df, edges[!names(edges) %in% c("from", "to")])
     df <- df[apply(df[,1:4], 1, function(xx) !any(is.na(xx))),]
 
+    to_node <- rep(TRUE, nrow(df))
+
   }
 
   ## Specifying node color palette for different use cases
   if(!is.null(node_color)) {
 
-    ggplot_col <- c("#ccddff", "#79d2a6", "#ffb3b3",
-                    "#a4a4c1", "#ffcc00", "#ff9f80",
-                    "#ccff99", "#df9fbf", "#ffcc99",
-                    "#cdcdcd")
-    
-    if(missing(col_pal) & inherits(nodes[[node_color]], c('factor', 'character'))) {
+    if(inherits(nodes[[node_color]], c('factor', 'character'))) {
       
-      col_pal <- scale_fill_viridis_d()
-      col_pal <- scale_color_gradientn(colors = ggplot_col)
+      cols <- fac2col(factor(nodes[, node_color]), col_pal, NA_col, TRUE)
+
+      vals <- cols$leg_col
+      names(vals) <- cols$leg_lab
       
-      ## Annoying workaround to use viridis_color with dates
+      col_pal <- scale_fill_manual(values = vals, na.value = NA_col)
+
+      ## annoying workaround to specify colors for dates
     } else if(inherits(nodes[[node_color]], 'Date')) {
-      
+
       dates <- pretty(nodes[[node_color]])
       numeric_node_color <- as.numeric(nodes[[node_color]])
       node_color <- paste0(node_color, '_')
       nodes[[node_color]] <- numeric_node_color
 
       if(missing(col_pal)) {
-        col_pal <- scale_fill_viridis_c(breaks = as.numeric(dates), labels = dates)
+        col_pal <- scale_fill_continuous(breaks = as.numeric(dates),
+                                         labels = dates)
       } else {
-        col_pal <- col_pal(breaks = as.numeric(dates), labels = dates)
+        cols <- col_pal(10)
+        col_pal <- scale_fill_gradientn(colors = cols,
+                                        breaks = as.numeric(dates),
+                                        labels = dates)
+      }
+      
+    } else if(inherits(nodes[[node_color]], c('numeric', 'integer'))) {
+      
+      if(missing(col_pal)) {
+        col_pal <- scale_fill_continuous()
+      } else {
+        cols <- col_pal(10)
+        col_pal <- scale_fill_gradientn(colors = cols)
       }
 
-      ## Continous colour scales
-    } else {
-      if(missing(col_pal)) {
-        col_pal <- scale_fill_viridis_c()
-      } else {
-        col_pal <- col_pal()
-      }
     }
+
   } else {
+
     col_pal <- NULL
+    
   }
 
   ## Specifying edge color palette for different use cases
   if(!is.null(edge_color)) {
-    
-    if(missing(edge_col_pal) & inherits(edges[[edge_color]], c('factor', 'character'))) {
+
+    if(inherits(edges[[edge_color]], c('factor', 'character'))) {
       
-      edge_col_pal <- scale_color_viridis_d()
+      cols <- fac2col(factor(edges[, edge_color]), edge_col_pal, NA_col, TRUE)
+
+      vals <- cols$leg_col
+      names(vals) <- cols$leg_lab
       
-      ## Annoying workaround to use colour scale with dates
+      edge_col_pal <- scale_color_manual(values = vals, na.value = NA_col)
+      
+      ## annoying workaround to specify colors for dates
+      ## creates additional column called paste0(edge_color, "_")
     } else if(inherits(edges[[edge_color]], 'Date')) {
-      
+
       dates <- pretty(edges[[edge_color]])
-      numeric_edge_color <- as.numeric(df[[edge_color]])
+      numeric_edge_color <- as.numeric(edges[[edge_color]])
       edge_color <- paste0(edge_color, '_')
-      df[[edge_color]] <- numeric_edge_color
+      edges[[edge_color]] <- numeric_edge_color
 
       if(missing(edge_col_pal)) {
-        edge_col_pal <- scale_color_gradient(low = 'black', high = 'red',
-                                             breaks = as.numeric(dates),
-                                             labels = dates)
+        edge_col_pal <- scale_color_continuous(breaks = as.numeric(dates),
+                                               labels = dates,
+                                               na.value = NA_col)
       } else {
-        edge_col_pal <- edge_col_pal(breaks = as.numeric(dates), labels = dates)
+        cols <- edge_col_pal(10)
+        edge_col_pal <- scale_color_gradientn(colors = cols,
+                                              breaks = as.numeric(dates),
+                                              labels = dates,
+                                              na.value = NA_col)
       }
       
-    } else {
+    } else if(inherits(edges[[edge_color]], c('numeric', 'integer'))) {
+      
       if(missing(edge_col_pal)) {
-        edge_col_pal <- scale_color_gradient(low = 'black', high = 'red')
+        edge_col_pal <- scale_color_continuous(na.value = NA_col)
       } else {
-        edge_col_pal <- edge_col_pal()
+        cols <- edge_col_pal(10)
+        edge_col_pal <- scale_color_gradientn(colors = cols,
+                                             na.value = NA_col)
       }
+
     }
+
   } else {
+
     edge_col_pal <- NULL
+    
   }
 
   ## Check node size attribute
   if(inherits(node_size, c("numeric", "integer"))) {
 
-    if(is.null(node_color) | missing(node_color)) {
-      point <- geom_point(data = nodes,
-                          aes_string(x = "x",
-                                     y = "y"),
-                          fill = null_node_color,
-                          size = node_size,
-                          shape = 21)
-    } else {
-      point <- geom_point(data = nodes,
-                          aes_string(x = "x",
-                                     y = "y",
-                                     fill = node_color),
-                          size = node_size,
-                          shape = 21)
-    }
+    point <- geom_point(data = nodes,
+                        aes_string(x = "x",
+                                   y = "y",
+                                   fill = node_color),
+                        size = node_size,
+                        shape = 21)
     
     size_pal <- NULL
 
@@ -380,7 +396,7 @@ vis_ggplot <- function(x,
 
     if(inherits(nodes[[node_size]], 'character')) {
       
-      stop("Character class cannot be mapped to size; convert to factor if necessary.")
+      stop("node_size cannot be mapped to character variable")
       
     } else if(inherits(nodes[[node_size]], 'Date')) {
       
@@ -397,6 +413,7 @@ vis_ggplot <- function(x,
       warning("Mapping factor to size; converting factors to integers.")
       lev <- levels(nodes[[node_size]])
       ind <- as.integer(nodes[[node_size]])
+      node_size <- paste0(node_size, '_')
       nodes[[node_size]] <- ind
       size_pal <- scale_size(range = c(size_range[1], size_range[2]),
                              breaks = scales::pretty_breaks(sort(unique(ind))),
@@ -406,113 +423,104 @@ vis_ggplot <- function(x,
                              breaks = scales::pretty_breaks())
     }
 
-    if(is.null(node_color) | missing(node_color)) {
-      point <- geom_point(data = nodes,
-                          aes_string(x = "x",
-                                     y = "y",
-                                     size = node_size),
-                          fill = null_node_color,
-                          shape = 21)
-    } else {
-      point <- geom_point(data = nodes,
-                          aes_string(x = "x",
-                                     y = "y",
-                                     size = node_size,
-                                     fill = node_color),
-                          shape = 21)
-    }
+    point <- geom_point(data = nodes,
+                        aes_string(x = "x",
+                                   y = "y",
+                                   size = node_size,
+                                   fill = node_color),
+                        shape = 21)
     
   }
 
   if(x$directed) {
-    arrow <- arrow(length = unit(0.015, "npc"), type = 'closed', ends = 'last')
+    arrow <- arrow(length = unit(0.015, "npc"),
+                   type = 'closed',
+                   ends = 'last')
   } else {
     arrow <- NULL
   }
-  
+
   ## If edge_alpha is numeric, use as alpha specification for all edges
   if(inherits(edge_alpha, c("numeric", "integer"))) {
-    if(is.null(edge_color) | missing(edge_color)) {
-      seg <- geom_segment(aes_string(x = "x",
-                                     xend = "xend",
-                                     y = "y",
-                                     yend = "yend",
-                                     linetype = edge_linetype),
-                          color = null_edge_color,
-                          arrow = arrow,
-                          alpha = edge_alpha,
-                          lineend = lineend,
-                          size = edge_width)
-    } else {
-      seg <- geom_segment(aes_string(x = "x",
-                                     xend = "xend",
-                                     y = "y",
-                                     yend = "yend",
-                                     color = edge_color,
-                                     linetype = edge_linetype),
-                          arrow = arrow,
-                          alpha = edge_alpha,
-                          lineend = lineend,
-                          size = edge_width)
-
-    }
+    segment <- geom_segment(aes_string(x = "x",
+                                       xend = "xend",
+                                       y = "y",
+                                       yend = "yend",
+                                       color = edge_color,
+                                       linetype = edge_linetype),
+                            arrow = arrow,
+                            alpha = edge_alpha,
+                            lineend = lineend,
+                            size = edge_width)
   } else {
-
-    if(is.null(edge_color) | missing(edge_color)) {
-
-      seg <- geom_segment(aes_string(x = "x",
-                                     xend = "xend",
-                                     y = "y",
-                                     yend = "yend",
-                                     linetype = edge_linetype,
-                                     alpha = edge_alpha),
-                          color = null_edge_color,
-                          lineend = lineend,
-                          arrow = arrow,
-                          size = edge_width)
-    } else {
-      seg <- geom_segment(aes_string(x = "x",
-                                     xend = "xend",
-                                     y = "y",
-                                     yend = "yend",
-                                     color = edge_color,
-                                     linetype = edge_linetype,
-                                     alpha = edge_alpha),
-                          lineend = lineend,
-                          arrow = arrow,
-                          size = edge_width)
-    }
+    segment1 <- geom_segment(aes_string(x = "xmid",
+                                        xend = "xend",
+                                        y = "ymid",
+                                        yend = "yend",
+                                        color = edge_color,
+                                        linetype = edge_linetype,
+                                        alpha = edge_alpha),
+                             lineend = lineend,
+                             size = edge_width)
+    segment2 <- geom_segment(aes_string(x = "x",
+                                        xend = "xmid",
+                                        y = "y",
+                                        yend = "ymid",
+                                        color = edge_color,
+                                        linetype = edge_linetype,
+                                        alpha = edge_alpha),
+                             lineend = lineend,
+                             arrow = arrow,
+                             size = edge_width)
   }
 
-  if(y_label) {
+  if(!is.null(node_label)) {
+    nodes$y <- nodes$y
+    lab <- geom_text(data = nodes,
+                     aes_string('x', 'y', label = node_label),
+                     color = 'black',
+                     size = 2)
+  } else {
+    lab <- NULL
+  }
+
+  if(!is.null(y_label)) {
     y_scale <- scale_y_continuous(name = NULL,
                                   breaks = sort(coor$y),
                                   minor_breaks = NULL,
-                                  labels = x$linelist[[label]][order(coor$y)],
+                                  labels = x$linelist[[y_label]][order(coor$y)],
                                   expand = c(0.01, 0.01))
-    ttheme <- theme(axis.ticks.y = element_blank(),
-                    axis.title.y = element_blank(),
-                    panel.grid.minor.y = element_blank())
+    gg_theme <- theme(axis.ticks.y = element_blank(),
+                      axis.title.y = element_blank(),
+                      panel.grid.minor.y = element_blank())
   } else {
     y_scale <- NULL
-    ttheme <-theme(axis.text.y = element_blank(),
-                   axis.ticks.y = element_blank(),
-                   axis.title.y = element_blank(),
-                   panel.grid.major.y = element_blank(),
-                   panel.grid.minor.y = element_blank())
+    gg_theme <-theme(axis.text.y = element_blank(),
+                     axis.ticks.y = element_blank(),
+                     axis.title.y = element_blank(),
+                     panel.grid.major.y = element_blank(),
+                     panel.grid.minor.y = element_blank())
   }
 
-  browser()
-
+  if(inherits(df$x, 'Date')) {
+    df$xmid <- as.Date((as.numeric(df$x) + as.numeric(df$xend))/2,
+                       origin = "1970-01-01")
+  } else {
+    df$xmid <- (df$x + df$xend)/2
+  }
+  df$ymid <- (df$y + df$yend)/2
+  
   out <- ggplot(df) +
-    seg +
+    segment1 +
+    segment2 +
     point +
+    lab +
     col_pal +
     edge_col_pal +
     size_pal +
     y_scale +
     theme_minimal() +
-    ttheme +
+    gg_theme +
     labs(x = x_axis)
     
   return(out)

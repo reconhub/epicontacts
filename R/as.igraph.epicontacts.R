@@ -61,7 +61,6 @@ as.igraph.epicontacts <- function(x){
     verts[nrow(verts) + 1, 1] <- NA
   }
   ## Creating igraph object
-
   net <- igraph::graph_from_data_frame(x$contacts, vertices = verts,
                                        directed = x$directed)
 

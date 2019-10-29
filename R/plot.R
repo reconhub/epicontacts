@@ -7,6 +7,11 @@
 #'
 #' @param x An \code{\link{epicontacts}} object
 #'
+#' @param node_color An index or character string indicating which field of the
+#'   linelist should be used to color the nodes. If node color = 'R_i', the
+#'   individual reproductive number for each case (i.e. number of outgoing
+#'   infection/contacts) will be calculated and used to specify the node colour.
+#'
 #' @param method A character string indicating the plotting method to be used;
 #' available values are "visNetwork" and "graph3D"; see details.
 #'
@@ -23,8 +28,10 @@
 #'
 #' \item \code{graph3D}: calls the function \code{\link{graph3D}}
 #'
-#' \item \code{ggplot}: calls the function \code{link{vis_ggplot}}
+#' \item \code{ttree}: calls the function \code{link{vis_ttree}}
 #'
+#' \item \code{ggplot}: calls the function \code{link{vis_ggplot}}
+#' 
 #' }
 #'
 #' @importFrom graphics plot
@@ -53,6 +60,7 @@
 #' }
 #' }
 plot.epicontacts <- function(x,
+                             node_color = "id",
                              method = c("visNetwork", "graph3D", "ggplot", "ttree"),
                              ...){
   
@@ -63,7 +71,7 @@ plot.epicontacts <- function(x,
               ggplot = vis_ggplot,
               ttree = vis_ttree)
 
-  out <- lst[[method]](x, ...)
+  out <- lst[[method]](x, node_color = node_color, ...)
 
   return(out)
   

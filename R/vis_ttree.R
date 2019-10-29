@@ -114,7 +114,7 @@ vis_ttree <- function(x,
                       reverse_node_order = FALSE,
                       rank_contact = x_axis,
                       reverse_rank_contact = FALSE,
-                      unlinked_pos = 'bottom',
+                      unlinked_pos = c('bottom', 'top', 'middle'),
                       edge_flex = FALSE,
                       position_dodge = FALSE,
                       parent_pos = c('middle', 'top', 'bottom'),
@@ -135,8 +135,8 @@ vis_ttree <- function(x,
   edge_width <- get_val('edge_width', def, args)
   edge_linetype <- get_val('edge_linetype', def, args)
   edge_label <- get_val('edge_label', def, args)
-  col_pal <- eval(get_val('col_pal', def, args))
-  edge_col_pal <- eval(get_val('edge_col_pal', def, args))
+  col_pal <- get_val('col_pal', def, args)
+  edge_col_pal <- get_val('edge_col_pal', def, args)
   NA_col <- get_val('NA_col', def, args)
   shapes <- get_val('shapes', def, args)
   size_range <- get_val('size_range', def, args)
@@ -158,6 +158,7 @@ vis_ttree <- function(x,
   custom_parent_pos <- get_val('custom_parent_pos', def, args)
 
   parent_pos <- match.arg(parent_pos)
+  unlinked_pos <- match.arg(unlinked_pos)
   axis_type <- match.arg(axis_type)
 
   ## In the following, we pull the list of all plotted nodes (those from the
@@ -166,8 +167,9 @@ vis_ttree <- function(x,
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
 
-  ## Remove NAs in contacts
-  x <- x[j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
+  ## Remove NAs in contacts and linelist
+  x <- x[i = !is.na(x$linelist$id),
+         j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
   
   ## check that x_axis is specified
   if (is.null(x_axis)) {
@@ -227,18 +229,11 @@ vis_ttree <- function(x,
   ## check root_order (node attribute used for vertical root ordering)
   custom_parent_pos <- assert_custom_parent_pos(custom_parent_pos)
 
-  ## make a list of all nodes, and generate a data.frame of node attributes
-  all_nodes <- get_id(x, which = "all", na.rm = TRUE)
-
-  ## find out which nodes are unconnected to any other nodes
-  ## This is only relevant when `thin = TRUE`
-  nodes <- data.frame(id = all_nodes,
-                      stringsAsFactors = FALSE)
-
+  ## assign nodes and edges
   nodes <- x$linelist
   edges <- x$contacts
 
-  ## Get x and y coordinates
+  ## Get y coordinates and tree properties
   coor <- get_coor(x,
                    x_axis = x_axis,
                    position_dodge = position_dodge,
@@ -254,11 +249,14 @@ vis_ttree <- function(x,
                    custom_parent_pos = custom_parent_pos,
                    igraph_type = igraph_type)
 
+  ## Get x coordinates
   nodes$x <- x$linelist[[x_axis]]
+
+  ## Get subtree size for potential later use
   nodes$subtree_size <- coor$subtree_size
-  x_axis_lab <- pretty(nodes[[x_axis]], n = n_breaks)
   
   ## Date -> numeric as visnetwork doesn't support dates
+  x_axis_lab <- pretty(nodes[[x_axis]], n = n_breaks)
   if(inherits(nodes$x, c('Date', 'POSIXct'))) {
     nodes$x <- as.numeric(nodes$x)
   }
@@ -266,7 +264,6 @@ vis_ttree <- function(x,
   ## Rescale coordinates to 0-1, flip y coordinates
   ## Make sure x rescaling accounts for x-axis nodes
   resc_x <- rescale(c(nodes$x, x_axis_lab), 0, 1)
-
   coor$y <- 1 - coor$y
   
   ## If percent specification, scale to 150x1840px (ie 100% dimension)
@@ -352,10 +349,11 @@ vis_ttree <- function(x,
       if(is.character(node_size_values)) {
         stop("node_size cannot be mapped to character variable")
       }
-      nodes$size <- rescale(as.numeric(node_size_values), size_range[1], size_range[2])
+      nodes$size <- rescale(as.numeric(node_size_values),
+                            size_range[1],
+                            size_range[2])
     }
   }
-
   
   ## add shape info
   if (!is.null(node_shape)) {
@@ -396,6 +394,7 @@ vis_ttree <- function(x,
     }
   }
 
+  ## no arrows for intermediate edges
   if (x$directed) {
     edges$arrows <- ifelse(edges$to_node, 'to', NA)
   }
@@ -422,14 +421,15 @@ vis_ttree <- function(x,
   if(!is.null(edge_linetype)) {
     unq_linetype <- unique(edges[[edge_linetype]])
     if(length(stats::na.omit(unq_linetype)) > 2) {
-      stop("visNetwork only supports two linetypes; use binary variable or set method = 'ggplot'.")
+      msg <- paste0("visNetwork only supports two linetypes; ",
+                    "use binary variable or set method = 'ggplot'.")
+      stop(msg)
     }
-    ## Uses alphabetical order / factor order
+    ## use alphabetical order / factor order
     edges$dashes <- edges[[edge_linetype]] != sort(unq_linetype)[1]
   }
 
-  ## set up nodes and edges if x_axis is specified
-  
+  ## check x_axis
   if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer", "POSIXct"))) {
     stop("Data used to specify x axis must be a date or number")
   }
@@ -488,10 +488,14 @@ vis_ttree <- function(x,
     }
     ddnodes$size <- 0.1
     ddnodes$borderWidth <- 0.1
-    ddnodes$x <- utils::tail(resc_x, length(pretty(x$linelist[[x_axis]], n = n_breaks)))
+    ddnodes$x <- utils::tail(resc_x,
+                             length(pretty(x$linelist[[x_axis]],
+                                           n = n_breaks)))
     ddnodes$y <- coor$y[1]
     ddnodes$level <- 1
-    if(ttree_shape == 'rectangle') ddnodes$hidden <- FALSE
+    if(ttree_shape == 'rectangle') {
+      ddnodes$hidden <- FALSE
+    }
 
     if(axis_type == 'double') {
 
