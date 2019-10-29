@@ -27,4 +27,12 @@ test_that("Thin ouputs are correct", {
     expect_true(all(get_id(thin(x,2), "contacts") %in%
                     get_id(x)))
 
+    ## check with numerical ids
+    y <- make_epicontacts(data.frame(id = 20:40),
+                          data.frame(from = 21:30,
+                                     to = 31:40))
+
+    expect_true(all(get_id(thin(y)) %in% get_id(y, "contacts")))
+    expect_true(all(get_id(thin(y, 2), "contacts") %in% get_id(y)))
+
 })
