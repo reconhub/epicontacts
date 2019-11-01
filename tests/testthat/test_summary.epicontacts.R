@@ -1,24 +1,25 @@
 context("Printing of epicontacts summary objects")
 
 test_that("Printing summaries", {
-    skip_on_cran()
+  
+  skip_on_cran()
 
-    x <- make_epicontacts(mers_korea_2015$linelist, mers_korea_2015$contacts,
-                          id = "id",
-                          to = "to", from = "from",
-                          directed=FALSE)
+  x <- make_epicontacts(mers_korea_2015$linelist, mers_korea_2015$contacts,
+                        id = "id",
+                        to = "to", from = "from",
+                        directed=FALSE)
 
-    res <- summary(x)
+  res <- summary(x)
 
-    expect_equal_to_reference(capture.output(print(res)),
-                              file = "rds/print2.rds")
+  expect_equal_to_reference(capture.output(print(res)),
+                            file = "rds/print2.rds")
 
-    y <- x
-    y$contacts <- y$contacts[1:10, ]
-    y <- thin(y)
-    y$contacts$from[6:9] <- NA
-    y$contacts$to[1]     <- NA
-   expect_output(print(summary(y)), "number missing 'from': 4") 
-   expect_output(print(summary(y)), "number missing 'to': 1") 
-    
+  y <- x
+  y$contacts <- y$contacts[1:10, ]
+  y <- thin(y)
+  y$contacts$from[6:9] <- NA
+  y$contacts$to[1] <- NA
+  expect_output(print(summary(y)), "number missing 'from': 4") 
+  expect_output(print(summary(y)), "number missing 'to': 1") 
+  
 })

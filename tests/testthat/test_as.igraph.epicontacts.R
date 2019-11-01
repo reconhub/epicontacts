@@ -21,7 +21,8 @@ test_that("Name column check behaves as expected", {
 })
 
 
-test_that("missing data will e added to the linelist", {
+test_that("missing data will be added to the linelist", {
+  
   skip_on_cran()
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                         id = "case_id",

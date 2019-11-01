@@ -95,8 +95,8 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
   }
 
   if (is.vector(linelist) &&
-        length(linelist) == 1L &&
-        is.na(linelist)) {
+      length(linelist) == 1L &&
+      is.na(linelist)) {
     stop("linelist is NA")
   }
 
@@ -119,8 +119,10 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
   linelist <- subset(linelist,
                      select = c(id, setdiff(seq_len(ncol(linelist)), id)))
 
-  ## convert factors to characters
-  if (is.factor(linelist$id)) linelist$id <- as.character(linelist$id)
+  ## convert factors and dates to characters
+  if (inherits(linelist$id, c("Date", "factor"))) {
+    linelist$id <- as.character(linelist$id)
+  }
 
 
   ## process contacts ##
@@ -131,8 +133,8 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
   }
 
   if (is.vector(contacts) &&
-        length(contacts) == 1L &&
-        is.na(contacts)) {
+      length(contacts) == 1L &&
+      is.na(contacts)) {
     stop("contacts is NA")
   }
 
@@ -141,7 +143,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
   if(nrow(contacts) < 1L) {
     stop("contacts should have at least one row")
   }
-  if (ncol(contacts) < 2L) {
+  if(ncol(contacts) < 2L) {
     stop("contacts should have at least two columns")
   }
 
@@ -159,8 +161,8 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
 
   ## ensure all IDs are stored as characters if one is
   if (is.character(linelist$id) ||
-        is.character(contacts$from) ||
-        is.character(contacts$to)) {
+      is.character(contacts$from) ||
+      is.character(contacts$to)) {
     linelist$id <- as.character(linelist$id)
     contacts$from <- as.character(contacts$from)
     contacts$to <- as.character(contacts$to)

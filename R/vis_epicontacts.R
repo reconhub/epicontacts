@@ -14,7 +14,8 @@
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #' 
-#' @param thin A logical indicating if the data should be thinned with \code{\link{thin}} so that only cases with contacts should be plotted.
+#' @param thin A logical indicating if the data should be thinned with
+#'   \code{\link{thin}} so that only cases with contacts should be plotted.
 #'
 #' @param node_color An index or character string indicating which field of the
 #'     linelist should be used to color the nodes.
@@ -216,20 +217,16 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
     if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
       stop("Data used to specify x axis must be a date or number")
     }
-    drange      <- range(nodes[[x_axis]], na.rm = TRUE)
+    drange <- range(nodes[[x_axis]], na.rm = TRUE)
     nodes$level <- nodes[[x_axis]] - drange[1] + 1L
-    drange      <- seq(drange[1], drange[2], by = 1L)
-    dnodes      <- data.frame(
-                              id = as.character(drange),
-                              level = drange - drange[1] + 1L,
-                              stringsAsFactors = FALSE
-                             )
-    dedges      <- data.frame(
-                              from = dnodes$id[-nrow(dnodes)],
-                              to   = dnodes$id[-1]
-                             )
-    nmerge      <- c("id", "level")
-    emerge      <- c("from", "to")
+    drange <- seq(drange[1], drange[2], by = 1L)
+    dnodes <- data.frame(id = as.character(drange),
+                         level = drange - drange[1] + 1L,
+                         stringsAsFactors = FALSE)
+    dedges <- data.frame(from = dnodes$id[-nrow(dnodes)],
+                         to = dnodes$id[-1])
+    nmerge <- c("id", "level")
+    emerge <- c("from", "to")
     if (!is.null(label)) {
       dnodes$label <- dnodes$id
       nmerge <- c(nmerge, "label")
@@ -343,4 +340,3 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   
   return(out)
 }
-

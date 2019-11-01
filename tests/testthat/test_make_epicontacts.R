@@ -117,7 +117,7 @@ test_that("Constructor works with factors", {
                           ebola_sim$contacts)
 
   x <-  make_epicontacts(ebola_sim$linelist,
-                          contacts)
+                         contacts)
 
   expect_identical(ref, x)
 

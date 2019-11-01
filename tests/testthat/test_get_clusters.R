@@ -36,19 +36,47 @@ test_that("construction of net nodes works", {
   net <- as.igraph.epicontacts(x)
   cs <- igraph::clusters(net)
   cs_size <- data.frame(cluster_member = seq_along(cs$csize),
-    cluster_size = cs$csize)
+                        cluster_size = cs$csize)
 
-  net_nodes <- data.frame(id =igraph::V(net)$id,
-    cluster_member = cs$membership,
-    stringsAsFactors = FALSE)
+  net_nodes <- data.frame(id = igraph::V(net)$id,
+                          cluster_member = cs$membership,
+                          stringsAsFactors = FALSE)
 
-  net_nodes <- dplyr::left_join(net_nodes, cs_size, by = "cluster_member")
+  net_nodes <- merge(net_nodes, cs_size, by.x = "cluster_member")
 
   expect_named(net_nodes,
-               c("id", "cluster_member","cluster_size"),
+               c("id", "cluster_member", "cluster_size"),
                ignore.order = TRUE)
 
 })
+
+
+
+
+
+
+test_that("clusters are identified correctly", {
+
+  skip_on_cran()
+
+  ## make clusters of different sizes
+  cs_size <- c(5, 10, 17, 3, 5)
+  contacts <- data.frame(from = 1:(sum(cs_size)-1), to = 2:sum(cs_size))
+  contacts <- contacts[-head(cumsum(cs_size), -1),]
+  linelist <- data.frame(id = 1:sum(cs_size))
+  
+  x <- make_epicontacts(linelist, contacts)  
+  clust <- get_clusters(x, 'data.frame')
+  
+  expect_equal(rep(cs_size, times = cs_size),
+               clust$cluster_size)
+  expect_equal(rep(seq_along(cs_size), times = cs_size),
+               as.numeric(clust$cluster_member))
+
+})
+
+
+
 
 
 
@@ -108,13 +136,16 @@ test_that("get_clusters errors as expected", {
   # add bogus cluster info
   x$linelist$cluster_member <- sample(LETTERS, nrow(x$linelist), replace = TRUE)
 
-  msg <- "'cluster_member' is already in the linelist. Set 'override = TRUE' to write over it, else assign a different member_col name."
+  msg <- paste0("'cluster_member' is already in the linelist. Set 'override =",
+                " TRUE' to write over it, else assign a different member_col name.")
   expect_error(get_clusters(x), msg)
 
   # more bogus cluster info
   x$linelist$cluster_size <- 1:nrow(x$linelist)
 
-  msg <- "'cluster_member' and 'cluster_size' are already in the linelist. Set 'override = TRUE' to write over them, else assign different cluster column names."
+  msg <- paste0("'cluster_member' and 'cluster_size' are already in the linelist. ",
+                "Set 'override = TRUE' to write over them, else assign different ",
+                "cluster column names.")
   expect_error(get_clusters(x), msg)
 
 })

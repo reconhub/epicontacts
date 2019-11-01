@@ -94,78 +94,86 @@
 #' plot(y)
 #' }
 "[.epicontacts" <- function(x, i, j,
-                             k = TRUE, l = TRUE,
-                             contacts = c("both", "either", "from", "to"),
-                             ...) {
-    ## In all the following, i is used to subset the linelist, j to subset
-    ## contacts. The behaviour is as follows:
+                            k = TRUE, l = TRUE,
+                            contacts = c("both", "either", "from", "to"),
+                            ...) {
+  ## In all the following, i is used to subset the linelist, j to subset
+  ## contacts. The behaviour is as follows:
 
-    ## i: if i is character, keep rows for which 'id' is in 'i'; if logical /
-    ## numeric / integer, subset the rows of $linelist
+  ## i: if i is character, keep rows for which 'id' is in 'i'; if logical /
+  ## numeric / integer, subset the rows of $linelist
 
-    ## j: if j is character, keep rows for which 'from/to' are in 'j'; the
-    ## argument 'contacts' specify if either, both, and one of the nodes should
-    ## be i 'j'; if logical / numeric / integer, subset the rows of $linelist
+  ## j: if j is character, keep rows for which 'from/to' are in 'j'; the
+  ## argument 'contacts' specify if either, both, and one of the nodes should
+  ## be i 'j'; if logical / numeric / integer, subset the rows of $linelist
 
-    ## 'k' and 'l' are used to subset the columns of attributes in x$linelist
-    ## and x$contacts, respectively; any usual subsetting is fine for these ones
-    ## (index, logical, name), although the 'id', 'from' and 'to' columns are
-    ## discarded from the subsetting. That is:
+  ## 'k' and 'l' are used to subset the columns of attributes in x$linelist
+  ## and x$contacts, respectively; any usual subsetting is fine for these ones
+  ## (index, logical, name), although the 'id', 'from' and 'to' columns are
+  ## discarded from the subsetting. That is:
 
-    ## - in x$linelist: k=1 will refer to the 2nd column (i.e. after 'id')
+  ## - in x$linelist: k=1 will refer to the 2nd column (i.e. after 'id')
 
-    ## - in x$contacts: l=1 will refer to the 3nd column (i.e. after 'from' and
-    ## 'to')
+  ## - in x$contacts: l=1 will refer to the 3nd column (i.e. after 'from' and
+  ## 'to')
 
-    ## subset $linelist
-    if (missing(i)) {
-        i <- TRUE
+  ## subset $linelist
+  if (missing(i)) {
+    i <- TRUE
+  }
+  if (inherits(i, 'Date')) {
+    stop("Cannot subset by date")
+  }
+  if (is.character(i)) {
+    i <- x$linelist$id %in% i
+  }
+  
+
+  x$linelist <- x$linelist[i, , drop=FALSE]
+
+  ## make sure 'id' is the first column, keep columns 'k'
+  if (ncol(x$linelist) > 1) {
+    x$linelist <- data.frame(c(x$linelist[1],
+                               x$linelist[-1][k]),
+                             stringsAsFactors = FALSE)
+  }
+
+
+  ## subset $contacts
+  if (missing(j)) {
+    j <- TRUE
+  }
+
+  ## subsetting based on node ids
+  if (is.character(j)) {
+    contacts <- match.arg(contacts)
+    if (contacts == "both") {
+      j <- (x$contacts$from %in% j) & (x$contacts$to %in% j)
     }
-    if (is.character(i)) {
-        i <- x$linelist$id %in% i
+    if (contacts == "either") {
+      j <- (x$contacts$from %in% j) | (x$contacts$to %in% j)
     }
-
-    x$linelist <- x$linelist[i, , drop=FALSE]
-
-    ## make sure 'id' is the first column, keep columns 'k'
-    if (ncol(x$linelist) > 1) {
-        x$linelist <- data.frame(c(x$linelist[1],
-                                   x$linelist[-1][k]),
-                                 stringsAsFactors = FALSE)
+    if (contacts == "from") {
+      j <- x$contacts$from %in% j
     }
-
-
-    ## subset $contacts
-    if (missing(j)) {
-        j <- TRUE
+    if (contacts == "to") {
+      j <- x$contacts$to %in% j
     }
+  }
+  if (inherits(j, 'Date')) {
+    stop("Cannot subset by date")
+  }
 
-    ## subsetting based on node ids
-    if (is.character(j)) {
-        contacts <- match.arg(contacts)
-        if (contacts == "both") {
-            j <- (x$contacts$from %in% j) & (x$contacts$to %in% j)
-        }
-        if (contacts == "either") {
-            j <- (x$contacts$from %in% j) | (x$contacts$to %in% j)
-        }
-        if (contacts == "from") {
-            j <- x$contacts$from %in% j
-        }
-        if (contacts == "to") {
-            j <- x$contacts$to %in% j
-        }
-    }
 
-    x$contacts <- x$contacts[j, , drop=FALSE]
+  x$contacts <- x$contacts[j, , drop=FALSE]
 
-    ## make sure from/to are the first 2 columns, keep columns 'l'
-    if (ncol(x$contacts) > 2) {
-        x$contacts <- data.frame(c(x$contacts[1:2],
-                                   x$contacts[-c(1:2)][l]),
-                                 stringsAsFactors = FALSE)
+  ## make sure from/to are the first 2 columns, keep columns 'l'
+  if (ncol(x$contacts) > 2) {
+    x$contacts <- data.frame(c(x$contacts[1:2],
+                               x$contacts[-c(1:2)][l]),
+                             stringsAsFactors = FALSE)
 
-    }
+  }
 
-    return(x)
+  return(x)
 }

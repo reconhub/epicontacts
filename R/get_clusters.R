@@ -65,15 +65,20 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
   cond <- cluster_cols %in% names(x$linelist)
   if ((sum(cond) > 0) & !override) {
     if (sum(cond) == 1) {
-      msg <- sprintf("'%s' is already in the linelist. Set 'override = TRUE' to write over it, else assign a different %s name.", cluster_cols[cond], cluster_var[cond])
+      msg <- sprintf(paste0("'%s' is already in the linelist. Set 'override",
+                            " = TRUE' to write over it, else assign a ",
+                            "different %s name."),
+                     cluster_cols[cond], cluster_var[cond])
       stop(msg)
     }
     if (sum(cond) == 2) {
-      msg <- sprintf("'%s' and '%s' are already in the linelist. Set 'override = TRUE' to write over them, else assign different cluster column names.", cluster_cols[1], cluster_cols[2])
+      msg <- sprintf(paste0("'%s' and '%s' are already in the linelist. ",
+                            "Set 'override = TRUE' to write over them, ",
+                            "else assign different cluster column names."),
+                     cluster_cols[1], cluster_cols[2])
       stop(msg)
     }
   }
-
 
   output <- match.arg(output)
   net <- as.igraph.epicontacts(x)
@@ -93,15 +98,17 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
                                    stringsAsFactors = FALSE),
                         c("id", member_col))
 
-  net_nodes <- dplyr::left_join(net_nodes, cs_size, by = member_col)
+  net_nodes <- merge(net_nodes, cs_size, by.x = member_col)
+
   if(output == "epicontacts") {
-    x$linelist <- dplyr::full_join(x$linelist, net_nodes, by = "id")
+    x$linelist <- merge(x$linelist, net_nodes, all = TRUE, by = "id")
     x$linelist[ member_col ] <- as.factor(x$linelist[[ member_col ]])
     return(x)
   } else {
     net_nodes[ member_col ] <- as.factor(net_nodes[[ member_col ]])
     return(net_nodes)
   }
+  
 }
 
 

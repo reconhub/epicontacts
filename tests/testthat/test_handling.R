@@ -58,6 +58,9 @@ test_that("Errors / warnings happen when they should", {
 
     expect_error(x[j = get_id(x)[1:100], contacts="tamere"],
                  ".*should be one of.*")
+    expect_error(x[i = as.Date("2000-01-01")],
+                 "Cannot subset by date")
+    
 })
 
 

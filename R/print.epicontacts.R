@@ -17,14 +17,14 @@ print.epicontacts <- function(x, ...){
     cat("\n  //", format(nrow(x$linelist),big.mark=","),
         "cases in linelist;",
         format(nrow(x$contacts), big.mark=","),
-        "contacts; ", ifelse(x$directed, "directed", "non directed"),
+        "contacts;", ifelse(x$directed, "directed", "non directed"),
         "\n")
 
     cat("\n  // linelist\n\n")
-    print(dplyr::tbl_df(x$linelist))
+    print(tibble::as_tibble(x$linelist))
 
     cat("\n  // contacts\n\n")
-    print(dplyr::tbl_df(x$contacts))
+    print(tibble::as_tibble(x$contacts))
 
     cat("\n")
 }

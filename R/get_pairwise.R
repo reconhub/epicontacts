@@ -80,7 +80,7 @@ get_pairwise <- function(x, attribute, f=NULL, hard_NA=TRUE){
             }
         } else if (is.numeric(values)) {
             f <- function(a, b) {
-                abs(a-b)
+                as.numeric(abs(a-b))
             }
         } else {
             f <- function(a, b){

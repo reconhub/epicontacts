@@ -13,8 +13,8 @@ subset_clusters_by_id(x, id)
 attached to these cases will be retained in the output object.}
 }
 \value{
-An \code{\link{epicontacts}} object whose contact dataframe
-    corresponds to all clusters containing specified case id.
+An \code{\link{epicontacts}} object whose linelist and contacts
+  dataframes correspond to all clusters containing the specified case ids.
 }
 \description{
 This function subsets an \code{\link{epicontacts}} object by identifying

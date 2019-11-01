@@ -15,8 +15,9 @@
 #'     linelist should be used to color the nodes. Default is \code{id}
 #'
 #' @param annot An index, logical, or character string indicating which fields
-#' of the linelist should be used for annotating the nodes upon mouseover. The default
-#' \code{TRUE} shows the 'id' and 'node_color' (if the grouping column is different from 'id').
+#'   of the linelist should be used for annotating the nodes upon mouseover. The
+#'   default \code{TRUE} shows the 'id' and 'node_color' (if the grouping column
+#'   is different from 'id').
 #'
 #' @param col_pal A color palette for the node_colors.
 #'
@@ -33,14 +34,14 @@
 #' @param edge_size The width of graph edges.
 #'
 #' @note All colors must be specified as color names like "red", "blue", etc. or
-#' as hexadecimal color values without opacity channel, for example "#FF0000", "#0a3e55"
-#' (upper or lower case hex digits are allowed).
+#'   as hexadecimal color values without opacity channel, for example "#FF0000",
+#'   "#0a3e55" (upper or lower case hex digits are allowed).
 #'
 #' Double-click or tap on the plot to reset the view.
 #'
-#' @return
-#' An htmlwidget object that is displayed using the object's show or print method.
-#' (If you don't see your widget plot, try printing it with the \code{print} function.)
+#' @return An htmlwidget object that is displayed using the object's show or
+#'   print method.  (If you don't see your widget plot, try printing it with the
+#'   \code{print} function.)
 #'
 #' @references
 #'
@@ -131,12 +132,13 @@ graph3D <- function(x,
     ## Get vertex attributes and prepare as input for graph
     nodes <- data.frame(id = unique(c(x$linelist$id,
                                       x$contacts$from,
-                                      x$contacts$to)))
+                                      x$contacts$to)),
+                        stringsAsFactors = FALSE)
 
 
     ## join back to linelist to retrieve attributes for grouping
     nodes <- suppressMessages(
-        suppressWarnings(dplyr::left_join(nodes, x$linelist)))
+        suppressWarnings(merge(nodes, x$linelist, all.x = TRUE)))
 
 
 

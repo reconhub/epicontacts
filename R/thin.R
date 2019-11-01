@@ -32,6 +32,7 @@
 #'
 #' }
 thin <- function(x, what = "linelist") {
+  
     if (!inherits(x, "epicontacts")) {
         stop("x is not an epicontacts object")
     }
@@ -47,7 +48,7 @@ thin <- function(x, what = "linelist") {
         out <- x[j = as.character(to_keep), contacts = "both"]
     } else {
         msg <- paste0("Wrong values for 'what'; accepted values are:\n",
-                      "'linelist', 'contact', 1, 2")
+                      "'linelist', 'contacts', 1, 2")
         stop(msg)
     }
 

@@ -35,17 +35,17 @@ test_that("Returns clusters with the correct size", {
     clusters <- igraph::clusters(net)
     expect_true(all(clusters$csize <= 10))
 
-    y <- subset_clusters_by_size(x,cs_min=5)
+    y <- subset_clusters_by_size(x, cs_min = 5)
     net <- as.igraph.epicontacts(y)
     clusters <- igraph::clusters(net)
     expect_true(all(clusters$csize >= 5))
 
-    y <- subset_clusters_by_size(x, cs=5)
+    y <- subset_clusters_by_size(x, cs = 5)
     net <- as.igraph.epicontacts(y)
     clusters <- igraph::clusters(net)
     expect_true(all(clusters$csize == 5))
 
-    y <- subset_clusters_by_size(x, cs=5, cs_min=8, cs_max=15)
+    y <- subset_clusters_by_size(x, cs = 5, cs_min = 8, cs_max = 15)
     net <- as.igraph.epicontacts(y)
     clusters <- igraph::clusters(net)
     expect_true(all(clusters$csize >= 8))

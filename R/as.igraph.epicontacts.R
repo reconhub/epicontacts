@@ -47,7 +47,7 @@ as.igraph.epicontacts <- function(x){
   ## Create vertex dataframe using combination of linelist and contacts
 
   all_ids <- data.frame(id = get_id(x, "all"), stringsAsFactors = FALSE)
-  verts <- dplyr::full_join(x$linelist, all_ids, by = "id")
+  verts <- merge(x$linelist, all_ids, by = 'id', all = TRUE)
 
 
   ## Checking if a "name" column exists
@@ -69,13 +69,5 @@ as.igraph.epicontacts <- function(x){
   igraph::vertex_attr(net)$id <- igraph::vertex_attr(net)$name
 
   return(net)
+  
 }
-
-
-
-
-
-
-
-
-

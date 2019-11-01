@@ -65,3 +65,25 @@ test_that("different types of attributes", {
     expect_equal(min(pair.gen, na.rm = TRUE), 1)
 
 })
+
+
+
+
+test_that("test get pairwise values", {
+    skip_on_cran()
+
+    x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
+                           id = "case_id", to = "case_id", from = "infector",
+                           directed = TRUE)
+
+    val1 <- get_pairwise(x, 'lat')
+    man1 <- abs(x$linelist$lat[match(x$contacts$from, x$linelist$id)] -
+                x$linelist$lat[match(x$contacts$to, x$linelist$id)])
+    expect_equal(val, man)
+
+    val2 <- get_pairwise(x, 'date_of_infection')
+    man2 <- abs(x$linelist$date_of_infection[match(x$contacts$from, x$linelist$id)] -
+                x$linelist$date_of_infection[match(x$contacts$to, x$linelist$id)])
+    expect_equal(val, as.integer(man))
+
+})
