@@ -343,6 +343,31 @@ assert_custom_parent_pos <- function(custom_parent_pos) {
 
 
 
+assert_x_axis <- function(x, x_axis) {
+
+  if (length(x_axis) > 1L) {
+    stop("'x_axis' must indicate a single node attribute")
+  }
+  if (!is.null(x_axis)) {
+    if (is.numeric(x_axis)) {
+      x_axis <- names(x$linelist)[x_axis]
+    }
+
+    if (!x_axis %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
+      msg <- sprintf("'%s' is not in the linelist", x_axis)
+      stop(msg)
+    }
+  }
+
+  return(x_axis)
+  
+}
+
+
+
+
+
+
 ## Recursive function to identify how many layers deep a case is and who its
 ## root is. Leaf indicates the node you start with. With multiple infectors,
 ## choose the link with the maximum value in 'rank_contact', which is either an

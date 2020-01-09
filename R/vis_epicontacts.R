@@ -514,7 +514,7 @@ vis_epicontacts <- function(x,
     out <- visNetwork::visHierarchicalLayout(out,
                                              direction = 'LR')
     
-                                        # only display ids of "real" (i.e. case or linelist) nodes in select list
+    ## only display ids of "real" (i.e. case or linelist) nodes in select list
     selectvals <- setdiff(nodes$id, dnodes$id)
     out <- visNetwork::visOptions(out, 
                                   nodesIdSelection = list(values = selectvals),

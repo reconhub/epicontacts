@@ -38,8 +38,8 @@
 #'
 #' @param rank_contact If more than one incoming contact is provided for a given
 #'   case, which attribute in the contact list should be used to rank the
-#'   contacts and choose the top value. This contact forms the 'backbone' of the
-#'   transmission tree and determines the y-position of the case. If a node
+#'   contacts and choose the top value. These contacts forms the 'scaffold' of the
+#'   transmission tree and determine the y-position of each node. If a node
 #'   attribute is provided, the pairwise difference in node attributes will be
 #'   taken to rank the contacts.
 #'
@@ -107,7 +107,7 @@
 #' }
 vis_ttree <- function(x,
                       x_axis = NULL,
-                      ttree_shape = 'branching',
+                      ttree_shape = c('branching', 'rectangle'),
                       root_order = x_axis,
                       node_order = x_axis,
                       reverse_root_order = FALSE,
@@ -157,10 +157,19 @@ vis_ttree <- function(x,
   font_size <- get_val('font_size', def, args)
   custom_parent_pos <- get_val('custom_parent_pos', def, args)
 
+  ttree_shape <- match.arg(ttree_shape)
   parent_pos <- match.arg(parent_pos)
   unlinked_pos <- match.arg(unlinked_pos)
   axis_type <- match.arg(axis_type)
+  
+  ## Calculate R_i if needed
+  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
+    x$linelist$R_i <- vapply(x$linelist$id,
+                             function(i) sum(x$contacts$from == i, na.rm = TRUE),
+                             numeric(1))
+  }
 
+  
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
   ## for the whole lot. These attributes are in turn used for plotting: as color
@@ -175,6 +184,8 @@ vis_ttree <- function(x,
   if (is.null(x_axis)) {
     stop("x_axis must be specified")
   } else {
+    ## test x_axis
+    x_axis <- assert_x_axis(x, x_axis)
     ## Remove NAs in x_axis
     x <- x[!is.na(x$linelist[[x_axis]])]
     ## Remove contacts that don't have both nodes in linelist
@@ -184,13 +195,6 @@ vis_ttree <- function(x,
   ## Remove linelist elements that aren't in contacts if thin = TRUE
   if(thin) {
     x <- thin(x)
-  }
-  
-  ## Calculate R_i if needed
-  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
-    x$linelist$R_i <- vapply(x$linelist$id,
-                             function(i) sum(x$contacts$from == i, na.rm = TRUE),
-                             numeric(1))
   }
 
   ## check node_color (node attribute used for color)

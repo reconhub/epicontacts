@@ -6,8 +6,8 @@ test_that("Testing get_coor", {
   skip_on_cran()
 
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id = "case_id", to = "case_id", from = "infector",
-    directed = FALSE)
+                        id = "case_id", to = "case_id", from = "infector",
+                        directed = FALSE)
   x <- thin(x[1:300], 2)
 
   n <- nrow(x$linelist)
@@ -161,29 +161,29 @@ test_that("Testing vis_ggplot", {
     for(i in c('id', 'date_of_onset', 'gender', 'generation')) {
       for(j in c('from', 'date', 'source', 'duration')) {
         expect_error(vis_ggplot(z,
-                               x_axis = 'date_of_onset',
-                               node_color = i,
-                               node_order = i,
-                               root_order = i,
-                               edge_color = j,
-                               edge_label = j),
+                                x_axis = 'date_of_onset',
+                                node_color = i,
+                                node_order = i,
+                                root_order = i,
+                                edge_color = j,
+                                edge_label = j),
                      NA)
       }
     }
 
     ## error when mapping node_size to character
     expect_error(vis_ggplot(z,
-                           x_axis = 'date_of_onset',
-                           node_size = 'hospital',
-                           node_color = 'hospital',
-                           node_order = 'hospital',
-                           root_order = 'hospital'),
+                            x_axis = 'date_of_onset',
+                            node_size = 'hospital',
+                            node_color = 'hospital',
+                            node_order = 'hospital',
+                            root_order = 'hospital'),
                  'node_size cannot be mapped to character variable')
 
     ## error when mapping edge_linetype to character
     expect_error(vis_ggplot(z,
-                           x_axis = 'date_of_onset',
-                           edge_linetype = 'letter'),
+                            x_axis = 'date_of_onset',
+                            edge_linetype = 'letter'),
                  paste0("visNetwork only supports two linetypes; ",
                         "use binary variable or set method = 'ggplot'."))
 

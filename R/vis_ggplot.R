@@ -20,43 +20,41 @@
 #'   the edges, or a character string indicating which field of the contacts data
 #'   should be used to indicate the edge transparency.
 #' 
-#' @param ttree_shape 'branching' will create a branching transmission
-#'   tree. 'rectangle' will create a rectangular shaped plot similar to a
-#'   phylogeny that avoids overlapping edges. This argument is only called when
-#'   type = 'ttree'.
+#' @param ttree_shape "branching" will create a branching transmission
+#'   tree. "rectangle" will create a rectangular shaped plot similar to a
+#'   phylogeny that avoids overlapping edges.
 #'
 #' @param root_order A character string indicating which field of the linelist
 #'   data is used to vertically order index cases of individual transmission
-#'   chains (i.e. the 'roots' of the transmission trees). If root_order =
-#'   'size', index cases will be ordered by the size of the downstream
-#'   transmission chains they generate. This argument is only called when type =
-#'   'ttree'.
+#'   chains (i.e. the "roots" of the transmission trees). If root_order =
+#'   "size", index cases will be ordered by the size of the downstream
+#'   transmission chains they generate.
 #'
 #' @param node_order A character string indicating which field of the linelist
-#'   data is used to vertically order nodes in the transmission tree (i.e. the
-#'   'roots' of the transmission trees). If node_order = 'size', nodes will be
-#'   ordered by the size of the downstream transmission chains they generate.
-#'   This argument is only called when type = 'ttree'.
+#'   data is used to vertically order nodes in the transmission tree. If
+#'   node_order = "size", nodes will be ordered by the size of the downstream
+#'   transmission chains they generate.
 #'
 #' @param reverse_root_order A logical indicating if the ordering of the roots
-#'   hsould be reversed. This argument is only called when type = 'ttree'.
+#'   hsould be reversed. This argument is only called when type = "ttree".
 #'
 #' @param reverse_node_order A logical indicating if the ordering of the nodes
-#'   should be reversed. This argument is only called when type = 'ttree'.
+#'   should be reversed. This argument is only called when type = "ttree".
 #'
-#' @param lineend Character indicating the lineend to be used for geom_segment.
+#' @param lineend Character indicating the lineend to be used for
+#'   geom_segment. One of "round", "butt" or "square".
 #' 
 #' @param unlinked_pos A character string indicating where unlinked cases
-#'   should be placed. Valid options are 'top', 'bottom' and 'middle', where
-#'   'middle' will place unlinked cases according to root_order. This argument
-#'   is only called when type = 'ttree'.
+#'   should be placed. Valid options are "top", "bottom" and "middle", where
+#'   "middle" will place unlinked cases according to root_order. This argument
+#'   is only called when type = "ttree".
 #'
 #' @param position_dodge A logical indicating if two cases can occupy the same y
-#'   coordinate or 'dodge' each other. This argument is only called when type =
-#'   'ttree'.
+#'   coordinate or "dodge" each other. This argument is only called when type =
+#'   "ttree".
 #'
 #' @param parent_pos Specify the position of the parent node relative to its
-#'   children. Can be one of 'middle', 'top' or 'bottom'.
+#'   children. Can be one of "middle", "top" or "bottom".
 #'
 #' @param custom_parent_pos A function specifying the position of children nodes
 #'   relative to their parent. This function must accept a single integer `x` as
@@ -77,7 +75,7 @@
 #'   y coordinate for each case between 0 and 1.
 #'
 #' @param igraph_type Alternate tree layouts provided by igraph. Must be one of
-#'   'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
+#'   "rt" for Reingold-Tilford layout, "sugiyama" for Sugiyama layout or "fr"
 #'   for Fruchterman-Reingold layout.
 #'
 #' @param col_pal A color palette for the nodes. Must be a function accepting a
@@ -112,21 +110,21 @@
 #'                        directed=TRUE)
 #'
 #' \dontrun{
-#' plot(x, method = 'ggplot', x_axis = 'dt_onset', node_color = 'sex')
+#' plot(x, method = "ggplot", x_axis = "dt_onset", node_color = "sex")
 #' }
 #' }
 vis_ggplot <- function(x,
                        x_axis,
                        edge_alpha = NULL,
-                       ttree_shape = 'branching',
-                       root_order = 'subtree_size',
-                       node_order = 'subtree_size',
+                       ttree_shape = "branching",
+                       root_order = "subtree_size",
+                       node_order = "subtree_size",
                        reverse_root_order = FALSE,
                        reverse_node_order = FALSE,
-                       lineend = 'butt',
-                       unlinked_pos = c('bottom', 'top', 'middle'),
+                       lineend = c("butt", "round", "square"),
+                       unlinked_pos = c("bottom", "top", "middle"),
                        position_dodge = FALSE,
-                       parent_pos = c('middle', 'top', 'bottom'),
+                       parent_pos = c("middle", "top", "bottom"),
                        custom_parent_pos = NULL,
                        y_label = NULL,
                        node_label = NULL,
@@ -144,23 +142,25 @@ vis_ggplot <- function(x,
   ## specify alternative defaults for ggplot vs visnetwork
   def$node_size <- 5
   def$edge_width <- 1
+  def$size_range <- c(3, 10)
 
   ## modify defaults
   args <- list(...)
-  node_color <- get_val('node_color', def, args)
-  node_size <- get_val('node_size', def, args)
-  edge_color <- get_val('edge_color', def, args)
-  edge_width <- get_val('edge_width', def, args)
-  edge_linetype <- get_val('edge_linetype', def, args)
-  NA_col <- get_val('NA_col', def, args)
-  size_range <- get_val('size_range', def, args)
-  width_range <- get_val('width_range', def, args)
-  thin <- get_val('thin', def, args)
-  custom_parent_pos <- get_val('custom_parent_pos', def, args)
-  legend_max <- get_val('legend_max', def, args)
+  node_color <- get_val("node_color", def, args)
+  node_size <- get_val("node_size", def, args)
+  edge_color <- get_val("edge_color", def, args)
+  edge_width <- get_val("edge_width", def, args)
+  edge_linetype <- get_val("edge_linetype", def, args)
+  NA_col <- get_val("NA_col", def, args)
+  size_range <- get_val("size_range", def, args)
+  width_range <- get_val("width_range", def, args)
+  thin <- get_val("thin", def, args)
+  custom_parent_pos <- get_val("custom_parent_pos", def, args)
+  legend_max <- get_val("legend_max", def, args)
 
   parent_pos <- match.arg(parent_pos)
   unlinked_pos <- match.arg(unlinked_pos)
+  lineend <- match.arg(lineend)
 
   ## Remove NAs in contacts and linelist
   x <- x[i = !is.na(x$linelist$id),
@@ -173,7 +173,7 @@ vis_ggplot <- function(x,
     ## Remove NAs in x_axis
     x <- x[!is.na(x$linelist[[x_axis]])]
     ## Remove contacts that don't have both nodes in linelist
-    x <- thin(x, what = 'contacts')
+    x <- thin(x, what = "contacts")
   }
 
   ## Remove linelist elements that aren't in contacts if thin = TRUE
@@ -217,7 +217,7 @@ vis_ggplot <- function(x,
   }
   
   ## Calculate R_i if needed
-  if('R_i' %in% c(node_color, node_size, node_order, root_order)) {
+  if("R_i" %in% c(node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- vapply(x$linelist$id,
                              function(i) sum(x$contacts$from == i, na.rm = TRUE),
                              numeric(1))
@@ -236,10 +236,10 @@ vis_ggplot <- function(x,
                      node_order = node_order,
                      reverse_node_order = reverse_node_order,
                      unlinked_pos = unlinked_pos,
-                     axis_type = 'none',
+                     axis_type = "none",
                      parent_pos = parent_pos,
                      custom_parent_pos = custom_parent_pos,
-                     method = 'ggplot',
+                     method = "ggplot",
                      igraph_type = igraph_type)
     nodes$y <- coor$y
   } else {
@@ -249,11 +249,12 @@ vis_ggplot <- function(x,
   nodes$x <- x$linelist[[x_axis]]
   nodes$subtree_size <- coor$subtree_size
 
-  if(ttree_shape == 'rectangle') {
+  if(ttree_shape == "rectangle") {
 
     ## Get vertical and horizontal edges with correct edge attributes
     df <- get_g_rect(nodes, edges)
 
+    ## Get case and parent indices
     i_ind <- match(edges$to, nodes$id)
     inf_ind <- match(edges$from, nodes$id)
 
@@ -263,11 +264,13 @@ vis_ggplot <- function(x,
                       x = nodes$x[inf_ind],
                       xend = nodes$x[i_ind])
     df1 <- cbind(df1, edges[!names(edges) %in% c("from", "to")])
-    df <- df[apply(df[,1:4], 1, function(xx) !any(is.na(xx))),]
+    if(!is.null(df)) {
+      df <- df[apply(df[,1:4], 1, function(xx) !any(is.na(xx))),]
+    }
     
     df <- rbind(df, df1)
 
-  } else if(ttree_shape == 'branching') {
+  } else if(ttree_shape == "branching") {
 
     i_ind <- match(edges$to, nodes$id)
     inf_ind <- match(edges$from, nodes$id)
@@ -286,7 +289,7 @@ vis_ggplot <- function(x,
   ## Specifying node color palette for different use cases
   if(!is.null(node_color)) {
 
-    if(inherits(nodes[[node_color]], c('factor', 'character'))) {
+    if(inherits(nodes[[node_color]], c("factor", "character"))) {
       
       cols <- fac2col(factor(nodes[, node_color]), col_pal, NA_col, TRUE)
 
@@ -296,11 +299,11 @@ vis_ggplot <- function(x,
       col_pal <- scale_fill_manual(values = vals, na.value = NA_col)
 
       ## annoying workaround to specify colors for dates
-    } else if(inherits(nodes[[node_color]], 'Date')) {
+    } else if(inherits(nodes[[node_color]], "Date")) {
 
       dates <- pretty(nodes[[node_color]])
       numeric_node_color <- as.numeric(nodes[[node_color]])
-      node_color <- paste0(node_color, '_')
+      node_color <- paste0(node_color, "_")
       nodes[[node_color]] <- numeric_node_color
 
       if(missing(col_pal)) {
@@ -313,7 +316,7 @@ vis_ggplot <- function(x,
                                         labels = dates)
       }
       
-    } else if(inherits(nodes[[node_color]], c('numeric', 'integer'))) {
+    } else if(inherits(nodes[[node_color]], c("numeric", "integer"))) {
       
       if(missing(col_pal)) {
         col_pal <- scale_fill_continuous()
@@ -333,7 +336,7 @@ vis_ggplot <- function(x,
   ## Specifying edge color palette for different use cases
   if(!is.null(edge_color)) {
 
-    if(inherits(edges[[edge_color]], c('factor', 'character'))) {
+    if(inherits(edges[[edge_color]], c("factor", "character"))) {
       
       cols <- fac2col(factor(edges[, edge_color]), edge_col_pal, NA_col, TRUE)
 
@@ -344,11 +347,11 @@ vis_ggplot <- function(x,
       
       ## annoying workaround to specify colors for dates
       ## creates additional column called paste0(edge_color, "_")
-    } else if(inherits(edges[[edge_color]], 'Date')) {
+    } else if(inherits(edges[[edge_color]], "Date")) {
 
       dates <- pretty(edges[[edge_color]])
       numeric_edge_color <- as.numeric(edges[[edge_color]])
-      edge_color <- paste0(edge_color, '_')
+      edge_color <- paste0(edge_color, "_")
       edges[[edge_color]] <- numeric_edge_color
 
       if(missing(edge_col_pal)) {
@@ -363,7 +366,7 @@ vis_ggplot <- function(x,
                                               na.value = NA_col)
       }
       
-    } else if(inherits(edges[[edge_color]], c('numeric', 'integer'))) {
+    } else if(inherits(edges[[edge_color]], c("numeric", "integer"))) {
       
       if(missing(edge_col_pal)) {
         edge_col_pal <- scale_color_continuous(na.value = NA_col)
@@ -395,26 +398,26 @@ vis_ggplot <- function(x,
 
   } else {
 
-    if(inherits(nodes[[node_size]], 'character')) {
+    if(inherits(nodes[[node_size]], "character")) {
       
       stop("node_size cannot be mapped to character variable")
       
-    } else if(inherits(nodes[[node_size]], 'Date')) {
+    } else if(inherits(nodes[[node_size]], "Date")) {
       
       dates <- pretty(nodes[[node_size]])
       numeric_node_size <- as.numeric(nodes[[node_size]])
-      node_size <- paste0(node_size, '_')
+      node_size <- paste0(node_size, "_")
       nodes[[node_size]] <- numeric_node_size
       size_pal <- scale_size(range = c(size_range[1], size_range[2]),
                              breaks = scales::pretty_breaks(as.numeric(dates)),
                              labels = dates)
       
-    } else if(inherits(nodes[[node_size]], 'factor')) {
+    } else if(inherits(nodes[[node_size]], "factor")) {
       
       warning("Mapping factor to size; converting factors to integers.")
       lev <- levels(nodes[[node_size]])
       ind <- as.integer(nodes[[node_size]])
-      node_size <- paste0(node_size, '_')
+      node_size <- paste0(node_size, "_")
       nodes[[node_size]] <- ind
       size_pal <- scale_size(range = c(size_range[1], size_range[2]),
                              breaks = scales::pretty_breaks(sort(unique(ind))),
@@ -435,8 +438,8 @@ vis_ggplot <- function(x,
 
   if(x$directed) {
     arrow <- arrow(length = unit(0.015, "npc"),
-                   type = 'closed',
-                   ends = 'last')
+                   type = "closed",
+                   ends = "last")
   } else {
     arrow <- NULL
   }
@@ -478,8 +481,8 @@ vis_ggplot <- function(x,
   if(!is.null(node_label)) {
     nodes$y <- nodes$y
     lab <- geom_text(data = nodes,
-                     aes_string('x', 'y', label = node_label),
-                     color = 'black',
+                     aes_string("x", "y", label = node_label),
+                     color = "black",
                      size = 2)
   } else {
     lab <- NULL
@@ -503,7 +506,7 @@ vis_ggplot <- function(x,
                      panel.grid.minor.y = element_blank())
   }
 
-  if(inherits(df$x, 'Date')) {
+  if(inherits(df$x, "Date")) {
     df$xmid <- as.Date((as.numeric(df$x) + as.numeric(df$xend))/2,
                        origin = "1970-01-01")
   } else {
