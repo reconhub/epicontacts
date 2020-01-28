@@ -219,7 +219,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
         warning("1 NA ID in the contacts has renamed to NA_", sum(linelist_na) + 1)
       }
       ## index for numbering NAs by row
-      ind <- which(t(contacts_na), TRUE)[,c(2, 1)]
+      ind <- which(t(contacts_na), TRUE)[, c(2, 1), drop = FALSE]
       num <- seq(sum(linelist_na) + 1, length = nrow(ind))
       contacts[c("from", "to")][ind] <- paste0("NA_", num)
     }

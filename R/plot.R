@@ -59,27 +59,27 @@
 plot.epicontacts <- function(x, node_color = "id",
                              method = c("visNetwork", "graph3D"),
                              thin = TRUE, ...){
-    ## checks
+  ## checks
 
-    if (thin) {
-        x <- thin(x)
-    }
+  if (thin) {
+    x <- thin(x)
+  }
 
-    method <- match.arg(method)
+  method <- match.arg(method)
 
-    if (is.numeric(node_color) && length(node_color) > 0L) {
-        node_color <- names(x$linelist)[node_color][1L]
-    }
+  if (is.numeric(node_color) && length(node_color) > 0L) {
+    node_color <- names(x$linelist)[node_color][1L]
+  }
 
 
-    ## make plots
+  ## make plots
 
-    if (method == "visNetwork") {
-        return(vis_epicontacts(x, node_color = node_color, ...))
-    }
+  if (method == "visNetwork") {
+    return(vis_epicontacts(x, node_color = node_color, thin = thin, ...))
+  }
 
-    if (method == "graph3D") {
-        return(graph3D(x, node_color = node_color, ...))
-    }
+  if (method == "graph3D") {
+    return(graph3D(x, node_color = node_color, ...))
+  }
 
 }
