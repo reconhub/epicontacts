@@ -12,6 +12,18 @@ test_that("Returns clusters with the correct ids", {
 
     y <- subset_clusters_by_id(x,id = test.ids)
 
-    expect_equal(sum(y$linelist$id %in% test.ids),1000)
+    expect_equal(sum(y$linelist$id %in% test.ids), 1000)
+
+  ## make 10 clusters of size 10
+  ids <- 1:100
+  linelist <- data.frame(ids = ids)
+  contacts <- data.frame(from = ids[ids %% 10 != 0],
+                         to = ids[ids %% 10 != 1])
+  x <- make_epicontacts(linelist, contacts)
+
+  ## test clusters are correctly identified
+  y <- subset_clusters_by_id(x, c(1, 51))
+  expect_equal(get_id(y, 'linelist'), c(1:10, 51:60))
+  expect_equal(sort(get_id(y, 'contacts')), c(1:10, 51:60))
 
 })

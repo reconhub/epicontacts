@@ -4,7 +4,7 @@
 \alias{vis_ttree}
 \title{Plot epicontacts objects using visNetwork}
 \usage{
-vis_ttree(x, x_axis = NULL, ttree_shape = "branching",
+vis_ttree(x, x_axis = NULL, ttree_shape = c("branching", "rectangle"),
   root_order = x_axis, node_order = x_axis,
   reverse_root_order = FALSE, reverse_node_order = FALSE,
   rank_contact = x_axis, reverse_rank_contact = FALSE,
@@ -42,8 +42,8 @@ should be reversed.}
 
 \item{rank_contact}{If more than one incoming contact is provided for a given
 case, which attribute in the contact list should be used to rank the
-contacts and choose the top value. This contact forms the 'backbone' of the
-transmission tree and determines the y-position of the case. If a node
+contacts and choose the top value. These contacts forms the 'scaffold' of the
+transmission tree and determine the y-position of each node. If a node
 attribute is provided, the pairwise difference in node attributes will be
 taken to rank the contacts.}
 

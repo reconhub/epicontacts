@@ -144,7 +144,7 @@ subset.epicontacts <- function(x, node_attribute = NULL, edge_attribute = NULL,
     ## A function to subset a dataset (x$linelist or x$contacts) by a node or
     ## edge attribute
 
-    find_id_to_keep <- function(name_attribute,list_attributes,dataset) {
+    find_id_to_keep <- function(name_attribute, list_attributes, dataset) {
 
         attribute <- list_attributes[[name_attribute]]
         data <- dataset[[name_attribute]]
@@ -196,20 +196,20 @@ subset.epicontacts <- function(x, node_attribute = NULL, edge_attribute = NULL,
     ## Apply the subs function across all attributes provided in node_attribute
     if (!(is.null(node_attribute))) {
         for (name_attribute in names_na) {
-            to.keep <- find_id_to_keep(name_attribute,
+            to_keep <- find_id_to_keep(name_attribute,
                                        node_attribute,
                                        x$linelist)
-            x <- x[i = to.keep]
+            x <- x[i = to_keep]
         }
     }
 
     ## Apply the subs function across all attributes provided in edge_attribute
     if (!(is.null(edge_attribute))){
         for (name_attribute in names_ea) {
-            to.keep <- find_id_to_keep(name_attribute,
+            to_keep <- find_id_to_keep(name_attribute,
                                        edge_attribute,
                                        x$contacts)
-            x <- x[j = to.keep]
+            x <- x[j = to_keep]
         }
     }
 

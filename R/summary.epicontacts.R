@@ -19,13 +19,13 @@ summary.epicontacts <- function(object, ...){
     res <- list()
 
     res$n_id_linelist <- length(get_id(x, "linelist"))
-    res$n_id_contacts <- length(get_id(x,"contacts"))
+    res$n_id_contacts <- length(get_id(x, "contacts"))
     res$n_id_common   <- length(get_id(x, "common"))
 
-    na_from     <- sum(is.na(x$contacts$from))
+    na_from <- sum(grepl("NA_", x$contacts$from), na.rm = TRUE)
     res$na_from <- if (na_from == 0) NULL else na_from
-    na_to       <- sum(is.na(x$contacts$to))
-    res$na_to   <- if (na_to == 0) NULL else na_to
+    na_to <- sum(grepl("NA_", x$contacts$to), na.rm = TRUE)
+    res$na_to <- if (na_to == 0) NULL else na_to
 
     res$n_contacts <- nrow(x$contacts)
 

@@ -7,11 +7,11 @@
 vis_ggplot(x, x_axis, edge_alpha = NULL, ttree_shape = "branching",
   root_order = "subtree_size", node_order = "subtree_size",
   reverse_root_order = FALSE, reverse_node_order = FALSE,
-  lineend = "butt", unlinked_pos = c("bottom", "top", "middle"),
-  position_dodge = FALSE, parent_pos = c("middle", "top", "bottom"),
-  custom_parent_pos = NULL, y_label = NULL, node_label = NULL,
-  y_coor = NULL, igraph_type = NULL, col_pal = cases_pal,
-  edge_col_pal = edges_pal, ...)
+  lineend = c("butt", "round", "square"), unlinked_pos = c("bottom",
+  "top", "middle"), position_dodge = FALSE, parent_pos = c("middle",
+  "top", "bottom"), custom_parent_pos = NULL, y_label = NULL,
+  node_label = NULL, y_coor = NULL, igraph_type = NULL,
+  col_pal = cases_pal, edge_col_pal = edges_pal, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -23,43 +23,41 @@ should be used to specify the x axis position (must be numeric or Date).}
 the edges, or a character string indicating which field of the contacts data
 should be used to indicate the edge transparency.}
 
-\item{ttree_shape}{'branching' will create a branching transmission
-tree. 'rectangle' will create a rectangular shaped plot similar to a
-phylogeny that avoids overlapping edges. This argument is only called when
-type = 'ttree'.}
+\item{ttree_shape}{"branching" will create a branching transmission
+tree. "rectangle" will create a rectangular shaped plot similar to a
+phylogeny that avoids overlapping edges.}
 
 \item{root_order}{A character string indicating which field of the linelist
 data is used to vertically order index cases of individual transmission
-chains (i.e. the 'roots' of the transmission trees). If root_order =
-'size', index cases will be ordered by the size of the downstream
-transmission chains they generate. This argument is only called when type =
-'ttree'.}
+chains (i.e. the "roots" of the transmission trees). If root_order =
+"size", index cases will be ordered by the size of the downstream
+transmission chains they generate.}
 
 \item{node_order}{A character string indicating which field of the linelist
-data is used to vertically order nodes in the transmission tree (i.e. the
-'roots' of the transmission trees). If node_order = 'size', nodes will be
-ordered by the size of the downstream transmission chains they generate.
-This argument is only called when type = 'ttree'.}
+data is used to vertically order nodes in the transmission tree. If
+node_order = "size", nodes will be ordered by the size of the downstream
+transmission chains they generate.}
 
 \item{reverse_root_order}{A logical indicating if the ordering of the roots
-hsould be reversed. This argument is only called when type = 'ttree'.}
+hsould be reversed. This argument is only called when type = "ttree".}
 
 \item{reverse_node_order}{A logical indicating if the ordering of the nodes
-should be reversed. This argument is only called when type = 'ttree'.}
+should be reversed. This argument is only called when type = "ttree".}
 
-\item{lineend}{Character indicating the lineend to be used for geom_segment.}
+\item{lineend}{Character indicating the lineend to be used for
+geom_segment. One of "round", "butt" or "square".}
 
 \item{unlinked_pos}{A character string indicating where unlinked cases
-should be placed. Valid options are 'top', 'bottom' and 'middle', where
-'middle' will place unlinked cases according to root_order. This argument
-is only called when type = 'ttree'.}
+should be placed. Valid options are "top", "bottom" and "middle", where
+"middle" will place unlinked cases according to root_order. This argument
+is only called when type = "ttree".}
 
 \item{position_dodge}{A logical indicating if two cases can occupy the same y
-coordinate or 'dodge' each other. This argument is only called when type =
-'ttree'.}
+coordinate or "dodge" each other. This argument is only called when type =
+"ttree".}
 
 \item{parent_pos}{Specify the position of the parent node relative to its
-children. Can be one of 'middle', 'top' or 'bottom'.}
+children. Can be one of "middle", "top" or "bottom".}
 
 \item{custom_parent_pos}{A function specifying the position of children nodes
 relative to their parent. This function must accept a single integer `x` as
@@ -80,7 +78,7 @@ display node labels. If NULL, node labels are provided.}
 y coordinate for each case between 0 and 1.}
 
 \item{igraph_type}{Alternate tree layouts provided by igraph. Must be one of
-'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
+"rt" for Reingold-Tilford layout, "sugiyama" for Sugiyama layout or "fr"
 for Fruchterman-Reingold layout.}
 
 \item{col_pal}{A color palette for the nodes. Must be a function accepting a
@@ -112,7 +110,7 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
                        directed=TRUE)
 
 \dontrun{
-plot(x, method = 'ggplot', x_axis = 'dt_onset', node_color = 'sex')
+plot(x, method = "ggplot", x_axis = "dt_onset", node_color = "sex")
 }
 }
 }

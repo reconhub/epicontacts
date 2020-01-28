@@ -16,8 +16,9 @@ graph3D(x, node_color = "id", annot = TRUE, col_pal = cases_pal,
 linelist should be used to color the nodes. Default is \code{id}}
 
 \item{annot}{An index, logical, or character string indicating which fields
-of the linelist should be used for annotating the nodes upon mouseover. The default
-\code{TRUE} shows the 'id' and 'node_color' (if the grouping column is different from 'id').}
+of the linelist should be used for annotating the nodes upon mouseover. The
+default \code{TRUE} shows the 'id' and 'node_color' (if the grouping column
+is different from 'id').}
 
 \item{col_pal}{A color palette for the node_colors.}
 
@@ -37,16 +38,17 @@ of the linelist should be used for annotating the nodes upon mouseover. The defa
 \code{\link{thin}} so that only cases with contacts should be plotted.}
 }
 \value{
-An htmlwidget object that is displayed using the object's show or print method.
-(If you don't see your widget plot, try printing it with the \code{print} function.)
+An htmlwidget object that is displayed using the object's show or
+  print method.  (If you don't see your widget plot, try printing it with the
+  \code{print} function.)
 }
 \description{
 This function creates a 3D graph from an epicontacts object
 }
 \note{
 All colors must be specified as color names like "red", "blue", etc. or
-as hexadecimal color values without opacity channel, for example "#FF0000", "#0a3e55"
-(upper or lower case hex digits are allowed).
+  as hexadecimal color values without opacity channel, for example "#FF0000",
+  "#0a3e55" (upper or lower case hex digits are allowed).
 
 Double-click or tap on the plot to reset the view.
 }

@@ -21,7 +21,8 @@ test_that("Name column check behaves as expected", {
 })
 
 
-test_that("missing data will e added to the linelist", {
+test_that("missing data will be added to the linelist", {
+  
   skip_on_cran()
   x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                         id = "case_id",
@@ -33,6 +34,7 @@ test_that("missing data will e added to the linelist", {
   x$contacts[6:9, ] <- NA
   expect_warning(net <- as.igraph.epicontacts(x), "NA")
   expect_is(net, "igraph")
-  expect_identical(igraph::vertex_attr(net)$id, c(get_id(x, "linelist"), "NA"))
+  expect_identical(sort(igraph::vertex_attr(net)$id),
+                   sort(c(get_id(x, "linelist"), "NA")))
 
 })

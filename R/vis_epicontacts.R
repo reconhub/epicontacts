@@ -384,27 +384,21 @@ vis_epicontacts <- function(x,
     if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
       stop("Data used to specify x axis must be a date or number")
     }
-    drange      <- range(nodes[[x_axis]], na.rm = TRUE)
+    drange <- range(nodes[[x_axis]], na.rm = TRUE)
     nodes$level <- nodes[[x_axis]] - drange[1] + 1L
-    drange      <- seq(drange[1], drange[2], by = 1L)
-
+    drange <- seq(drange[1], drange[2], by = 1L)
     if(inherits(drange, "Date")) {
       drange_id <- format(drange, date_labels)
     } else {
       drange_id <- drange
     }
-    
-    dnodes      <- data.frame(
-      id = as.character(drange_id),
-      level = drange - drange[1] + 1L,
-      stringsAsFactors = FALSE
-    )
-    dedges      <- data.frame(
-      from = dnodes$id[-nrow(dnodes)],
-      to   = dnodes$id[-1]
-    )
-    nmerge      <- c("id", "level")
-    emerge      <- c("from", "to")
+    dnodes <- data.frame(id = as.character(drange_id),
+                         level = drange - drange[1] + 1L,
+                         stringsAsFactors = FALSE)
+    dedges <- data.frame(from = dnodes$id[-nrow(dnodes)],
+                         to = dnodes$id[-1])
+    nmerge <- c("id", "level")
+    emerge <- c("from", "to")
     if (!is.null(label)) {
       dnodes$label <- dnodes$id
       nmerge <- c(nmerge, "label")

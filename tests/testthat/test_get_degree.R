@@ -35,7 +35,7 @@ test_that("get_degree is producing a named vector that is not null", {
 
 })
 
-test_that("degree computed only in line list is working as expected", {
+test_that("degrees computed correctly", {
 
   skip_on_cran()
 
@@ -44,7 +44,24 @@ test_that("degree computed only in line list is working as expected", {
     directed=TRUE)
 
   deg_in_ll <- get_degree(x, "in", only_linelist = T)
+  deg_in_all <- get_degree(x, "in", only_linelist = F)
+  deg_out_ll <- get_degree(x, "out", only_linelist = T)
+  deg_out_all <- get_degree(x, "out", only_linelist = F)
 
-  expect_equal(names(deg_in_ll), x$linelist$id)
+  expect_equal(names(deg_in_ll), get_id(x, "linelist"))
+  expect_equal(names(deg_in_all), get_id(x, "all"))
+  expect_equal(names(deg_out_ll), get_id(x, "linelist"))
+  expect_equal(names(deg_out_all), get_id(x, "all"))
+
+  ## Manual degree calculations
+  man_in_ll <- table(factor(x$contacts$to, levels = get_id(x, "linelist")))
+  man_in_all <- table(factor(x$contacts$to, levels = get_id(x, "all")))
+  man_out_ll <- table(factor(x$contacts$from, levels = get_id(x, "linelist")))
+  man_out_all <- table(factor(x$contacts$from, levels = get_id(x, "all")))
+
+  expect_equal(as.numeric(man_in_ll), as.numeric(deg_in_ll))
+  expect_equal(as.numeric(man_in_all), as.numeric(deg_in_all))
+  expect_equal(as.numeric(man_out_ll), as.numeric(deg_out_ll))
+  expect_equal(as.numeric(man_out_all), as.numeric(deg_out_all))    
 
 })

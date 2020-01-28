@@ -12,8 +12,8 @@
 #' @param id a character vector of case identifiers; the connected components
 #'     attached to these cases will be retained in the output object.
 #'
-#' @return An \code{\link{epicontacts}} object whose contact dataframe
-#'     corresponds to all clusters containing specified case id.
+#' @return An \code{\link{epicontacts}} object whose linelist and contacts
+#'   dataframes correspond to all clusters containing the specified case ids.
 #'
 #' @examples
 #' if (require(outbreaks)) {
@@ -34,11 +34,11 @@
 subset_clusters_by_id <- function(x, id){
 
   ## Convert epicontacts object to igraph and get linelist + contacts dataframes
-  net <- as.igraph.epicontacts(x)
+  net <- as.igraph.epicontacts(x, na_rm = TRUE)
 
   ## Get cluster information for each node/case
   cs <- igraph::clusters(net)
-  net_nodes <- data.frame(nodes =igraph::V(net)$id,
+  net_nodes <- data.frame(nodes = igraph::V(net)$id,
                           cs_member = cs$membership,
                           stringsAsFactors = FALSE)
 
@@ -46,7 +46,7 @@ subset_clusters_by_id <- function(x, id){
   cluster_to_subset <- unique(net_nodes$cs_member[which(net_nodes$nodes %in% id)])
 
   ## Identify members of cluster belonging to nodes/cases of interest
-  id_to_subset <- net_nodes$nodes[ which(net_nodes$cs_member %in% cluster_to_subset)]
+  id_to_subset <- net_nodes$nodes[which(net_nodes$cs_member %in% cluster_to_subset)]
 
   ## Subset linelist and contacts by ids - use 'either' so that all contacts of
   ## interest are returned, these can be removed using thin if need be later

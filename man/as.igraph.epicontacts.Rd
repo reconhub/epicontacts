@@ -4,10 +4,14 @@
 \alias{as.igraph.epicontacts}
 \title{Create igraph object from contact data}
 \usage{
-\method{as.igraph}{epicontacts}(x)
+\method{as.igraph}{epicontacts}(x, na_rm = FALSE)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
+
+\item{na_rm}{A logical indicating whether linelist and contacts elements with
+NA values for case IDs should be removed. If these elements are kept, NAs
+are coerced to character and assumed to represent a single case.}
 }
 \value{
 An \code{igraph} object (from the \code{igraph} package).  Note: any

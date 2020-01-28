@@ -36,19 +36,49 @@ test_that("construction of net nodes works", {
   net <- as.igraph.epicontacts(x)
   cs <- igraph::clusters(net)
   cs_size <- data.frame(cluster_member = seq_along(cs$csize),
-    cluster_size = cs$csize)
+                        cluster_size = cs$csize)
 
-  net_nodes <- data.frame(id =igraph::V(net)$id,
-    cluster_member = cs$membership,
-    stringsAsFactors = FALSE)
+  net_nodes <- data.frame(id = igraph::V(net)$id,
+                          cluster_member = cs$membership,
+                          stringsAsFactors = FALSE)
 
-  net_nodes <- dplyr::left_join(net_nodes, cs_size, by = "cluster_member")
+  net_nodes <- merge(net_nodes, cs_size, by.x = "cluster_member")
 
   expect_named(net_nodes,
-               c("id", "cluster_member","cluster_size"),
+               c("id", "cluster_member", "cluster_size"),
                ignore.order = TRUE)
 
 })
+
+
+
+
+
+
+test_that("clusters are identified correctly", {
+
+  skip_on_cran()
+
+  ## make clusters of different sizes
+  cs_size <- c(5, 10, 17, 3, 5)
+  contacts <- data.frame(from = seq_len(sum(cs_size)-1),
+                         to = seq(2, sum(cs_size)))
+  contacts <- contacts[-head(cumsum(cs_size), -1),]
+  linelist <- data.frame(id = seq_len(sum(cs_size)))
+  
+  x <- make_epicontacts(linelist, contacts)  
+  clust <- get_clusters(x, 'data.frame')
+
+  ## check that cluster size and membership are correct
+  expect_equal(rep(cs_size, times = cs_size),
+               clust$cluster_size)
+  expect_equal(rep(seq_along(cs_size), times = cs_size),
+               as.numeric(clust$cluster_member))
+
+})
+
+
+
 
 
 
@@ -69,6 +99,7 @@ test_that("get_clusters returns epicontacts object", {
   y <- get_clusters(x)
 
   expect_is(y, "epicontacts")
+  
 })
 
 
@@ -108,13 +139,16 @@ test_that("get_clusters errors as expected", {
   # add bogus cluster info
   x$linelist$cluster_member <- sample(LETTERS, nrow(x$linelist), replace = TRUE)
 
-  msg <- "'cluster_member' is already in the linelist. Set 'override = TRUE' to write over it, else assign a different member_col name."
+  msg <- paste0("'cluster_member' is already in the linelist. Set 'override =",
+                " TRUE' to write over it, else assign a different member_col name.")
   expect_error(get_clusters(x), msg)
 
   # more bogus cluster info
   x$linelist$cluster_size <- 1:nrow(x$linelist)
 
-  msg <- "'cluster_member' and 'cluster_size' are already in the linelist. Set 'override = TRUE' to write over them, else assign different cluster column names."
+  msg <- paste0("'cluster_member' and 'cluster_size' are already in the linelist. ",
+                "Set 'override = TRUE' to write over them, else assign different ",
+                "cluster column names.")
   expect_error(get_clusters(x), msg)
 
 })
@@ -151,42 +185,28 @@ test_that("get_clusters works on different classes", {
   ## causing errors when this information was merged with integer case ids in
   ## the linelist. the fix coerces cluster case id to the same class as the
   ## linelist case ids.
-  
-  ## all integer
-  ll <- data.frame(1:100)
-  co <- data.frame(from = sample.int(100, 50, TRUE),
-                   to = sample.int(100, 50, TRUE))
-  epic_int <- make_epicontacts(ll, co)
-  expect_error(get_clusters(epic_int), NA)
 
-  ## integer + factor
-  ll <- data.frame(1:100)
-  co <- data.frame(from = as.character(sample(100, 50, TRUE)),
-                   to = as.character(sample(100, 50, TRUE)))
-  epic_int <- make_epicontacts(ll, co)
-  expect_error(get_clusters(epic_int), NA)
+  ## load data
+  linelist <- readRDS("rds/test_linelist.rds")
+  contacts <- readRDS("rds/test_contacts.rds")
 
-  ## factor + integer
-  ll <- data.frame(as.character(1:100))
-  co <- data.frame(from = sample.int(100, 50, TRUE),
-                   to = sample.int(100, 50, TRUE))
-  epic_int <- make_epicontacts(ll, co)
-  expect_error(get_clusters(epic_int), NA)
+  ## possible classes
+  classes <- c("factor", "integer", "numeric", "date", "character")
+  comb <- expand.grid(id = classes,
+                      from = paste0(classes, "_from"),
+                      to = paste0(classes, "_to"),
+                      stringsAsFactors = FALSE)
 
-  ## integer + character
-  ll <- data.frame(1:100)
-  co <- data.frame(from = as.character(sample(100, 50, TRUE)),
-                   to = as.character(sample(100, 50, TRUE)),
-                   stringsAsFactors = FALSE)
-  epic_int <- make_epicontacts(ll, co)
-  expect_error(get_clusters(epic_int), NA)
+  ## test that get_cluster doesn't errors for any combination of classes
+  ## for 'id', 'from' and 'to' - expect warning about NA IDs in constructor
+  test_get_cluster <- function(id, from, to, linelist, contacts) {
+    net <- expect_warning(make_epicontacts(linelist, contacts, id, from, to),
+                          "NA")
+    expect_error(get_clusters(net), NA)
+  }
 
-  ## character + integer
-  ll <- data.frame(as.character(1:100),
-                   stringsAsFactors = FALSE)
-  co <- data.frame(from = sample.int(100, 50, TRUE),
-                   to = sample.int(100, 50, TRUE))
-  epic_int <- make_epicontacts(ll, co)
-  expect_error(get_clusters(epic_int), NA)
+  ## test whether get_cluster throws any errors
+  mapply(test_get_cluster, comb$id, comb$from, comb$to,
+         MoreArgs = list(linelist, contacts))
   
 })

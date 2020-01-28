@@ -6,7 +6,7 @@
 \title{Read linelist and contact data}
 \usage{
 make_epicontacts(linelist, contacts, id = 1L, from = 1L, to = 2L,
-  directed = FALSE)
+  directed = FALSE, na_rm_linelist = FALSE, na_rm_contacts = FALSE)
 }
 \arguments{
 \item{linelist}{a \link{data.frame} with at least one column providing unique
@@ -29,6 +29,12 @@ contains the second case of a contact}
 \item{directed}{a logical indicating if contacts are directed or not; default
 is \code{FALSE} but note that contacts will be indicated as 'from' and
 'to' even in non-directed contacts}
+
+\item{na_rm_linelist}{a logical indicating whether linelist elements with
+NA IDs should be kept}
+
+\item{na_rm_contacts}{a logical indicating whether contacts with
+NA IDs should be kept}
 }
 \value{
 An \code{epicontacts} object in list format with three elements:

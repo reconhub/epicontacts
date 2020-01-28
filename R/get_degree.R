@@ -38,13 +38,14 @@
 #'
 get_degree <- function(x, type = c("in", "out", "both"),
                        only_linelist = FALSE) {
+  
     ## checks
     if (!inherits(x, "epicontacts")) {
         stop("x is not an 'epicontacts' object")
     }
     type <- match.arg(type)
 
-    what      <- if (only_linelist) "linelist" else "contacts"
+    what <- if (only_linelist) "linelist" else "all"
     all_nodes <- get_id(x, which = what, na.rm = TRUE)
 
     if (!x$directed) {
@@ -70,7 +71,6 @@ get_degree <- function(x, type = c("in", "out", "both"),
                         sum(e == c(x$contacts$from, x$contacts$to), na.rm = TRUE),
                       FUN.VALUE = 0L)
     }
-
 
     ## name, shape and return
     names(out) <- all_nodes
