@@ -126,7 +126,7 @@ graph3D <- function(x,
     ## Subset those ids which have at least one edge with another id
     ##    (to mimic visNetwork plot, else loner nodes are also printed)
     x <- subset_clusters_by_size(x, cs_min = 2)
-    g <- as.igraph.epicontacts(x)
+    g <- as.igraph.epicontacts(x, TRUE)
 
 
     ## Get vertex attributes and prepare as input for graph

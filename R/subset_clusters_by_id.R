@@ -34,7 +34,7 @@
 subset_clusters_by_id <- function(x, id){
 
   ## Convert epicontacts object to igraph and get linelist + contacts dataframes
-  net <- as.igraph.epicontacts(x)
+  net <- as.igraph.epicontacts(x, na_rm = TRUE)
 
   ## Get cluster information for each node/case
   cs <- igraph::clusters(net)

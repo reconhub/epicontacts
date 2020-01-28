@@ -53,7 +53,7 @@ subset_clusters_by_size <- function(x, cs = NULL, cs_min = NULL, cs_max = NULL){
     stop("You must enter either cs, cs_min, or cs_max")
   }
 
-  net <- as.igraph.epicontacts(x)
+  net <- as.igraph.epicontacts(x, na_rm = TRUE)
   clusters <- igraph::clusters(net)
 
 

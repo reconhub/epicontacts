@@ -32,6 +32,12 @@
 #'     is \code{FALSE} but note that contacts will be indicated as 'from' and
 #'     'to' even in non-directed contacts
 #'
+#' @param na_rm_linelist a logical indicating whether linelist elements with
+#'   NA IDs should be kept
+#'
+#' @param na_rm_contacts a logical indicating whether contacts with
+#'   NA IDs should be kept
+#'
 #' @return An \code{epicontacts} object in list format with three elements:
 #'
 #' \itemize{
@@ -79,7 +85,9 @@
 #' head(x$contacts)
 #' }
 make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
-                             directed = FALSE) {
+                             directed = FALSE,
+                             na_rm_linelist = TRUE,
+                             na_rm_contacts = TRUE) {
   ## We read data from linelist, which needs to contain at least one case, and
   ## contacts. Sanity checks will include standard class
   ## and dimensionality checks, as well as uniqueness of IDs in the line list,
@@ -109,10 +117,6 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
   if (is.character(id)) {
     id <- match(id, names(linelist))
   }
-  if (sum(temp <- duplicated(linelist[,id])) > 0) {
-    msg <- paste(linelist[temp, id], collapse = " ")
-    stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
-  }
 
   ## reordering of variables
   names(linelist)[id] <- "id"
@@ -124,6 +128,29 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     linelist$id <- as.character(linelist$id)
   }
 
+  ## remove linelist elements with NA ids
+  linelist_na <- is.na(linelist$id)
+  if (any(linelist_na)) {
+    if (na_rm_linelist) {
+      warning("Removed ", sum(linelist_na), " linelist element(s) with NA IDs; ",
+              "to keep these elements, set na_rm_linelist = FALSE")
+      linelist <- subset(linelist, !linelist_na)
+    } else {
+      if (sum(linelist_na) > 1) {
+        warning(sum(linelist_na), " NA IDs in the linelist have been renamed ",
+                "NA_1 to NA_", sum(linelist_na))
+      } else {
+        warning("1 NA ID in the linelist has renamed to NA_1")
+      }
+      linelist$id[linelist_na] <- paste0("NA_", seq_len(sum(linelist_na)))
+    }
+  }
+
+  ## test for duplicates
+  if (sum(temp <- duplicated(linelist$id)) > 0) {
+    msg <- paste(linelist$id[temp], collapse = " ")
+    stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
+  }
 
   ## process contacts ##
   ## checks
@@ -159,18 +186,79 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
                            to,
                            setdiff(seq_len(ncol(contacts)), c(from,to)))]
 
-  ## ensure all IDs are stored as characters if one is
-  if (is.character(linelist$id) ||
-      is.character(contacts$from) ||
-      is.character(contacts$to)) {
+  ## ensure identical ID classes across linelist and contacts
+  ## unless all IDs numeric or integer, convert to character
+  ## if all numeric or integer then, unless all integer, convert to numeric
+  if (!(inherits(linelist$id, c("numeric", "integer")) &&
+        inherits(contacts$from, c("numeric", "integer")) &&
+        inherits(contacts$to, c("numeric", "integer")))) {
     linelist$id <- as.character(linelist$id)
     contacts$from <- as.character(contacts$from)
     contacts$to <- as.character(contacts$to)
+  } else if (!(inherits(linelist$id, c("integer")) &&
+               inherits(contacts$from, c("integer")) &&
+               inherits(contacts$to, c("integer")))) {
+    linelist$id <- as.numeric(linelist$id)
+    contacts$from <- as.numeric(contacts$from)
+    contacts$to <- as.numeric(contacts$to)
   }
 
+  ## remove contact elements with NA ids
+  contacts_na <- is.na(contacts[c("from", "to")])
+  if (any(contacts_na)) {
+    if(na_rm_contacts) {
+      warning("Removed ", sum(contacts_na), " contact(s) with NA IDs; ",
+              "to keep these contacts, set na_rm_contacts = FALSE")
+      contacts <- contacts[!apply(contacts_na, 1, any),]
+    } else {
+      if (sum(contacts_na) > 1) {
+        warning(sum(contacts_na), " NA IDs in the contacts have been renamed ",
+                "NA_", sum(linelist_na) + 1, " to NA_",
+                sum(contacts_na) + sum(linelist_na) + 1)
+      } else {
+        warning("1 NA ID in the contacts has renamed to NA_", sum(linelist_na) + 1)
+      }
+      ## index for numbering NAs by row
+      ind <- which(t(contacts_na), TRUE)[,c(2, 1)]
+      num <- seq(sum(linelist_na) + 1, length = nrow(ind))
+      contacts[c("from", "to")][ind] <- paste0("NA_", num)
+    }
+  }
+
+  ## warn of duplicated contacts
+  contacts_dupl <- duplicated(contacts[1:2])
+  if (any(contacts_dupl)) {
+    warning("The contact(s) listed on row(s) ",
+            paste(which(contacts_dupl), collapse = ", "),
+            " are duplicates: this may be unwanted")
+  }
+
+  ## warn of self-contacts
+  contacts_self <- contacts$from == contacts$to
+  if(any(contacts_self, na.rm = TRUE)) {
+    warning("The contact(s) listed on row(s) ",
+            paste(which(contacts_self), collapse = ", "),
+            " are between a case and itself: this may be unwanted")
+  }
+  
   ## Build final output
   out <- list(linelist = linelist, contacts = contacts, directed = directed)
-
   class(out) <- c("epicontacts")
+
+  ## Check for loops (A -> B and B -> A)
+  unq <- unique(contacts[1:2])
+  unq <- subset(unq, unq$from != unq$to)
+  unq <- rbind(unq, setNames(rev(unq), names(unq)))
+  loop_found <- any(duplicated(unq))
+
+  ## Check for cycles (A -> B -> C -> A)
+  out_i <- as.igraph.epicontacts(out, na_rm = TRUE)
+  cycle_found <- igraph::girth(out_i)$girth > 0
+
+  ## Throw warning if found
+  if(loop_found | cycle_found) {
+    warning("Cycle(s) detected in the contact network: this may be unwanted")
+  }
+  
   return(out)
 }

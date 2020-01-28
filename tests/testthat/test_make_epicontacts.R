@@ -73,6 +73,55 @@ test_that("Errors happen when they should", {
 
 
 
+test_that("Warnings happen when they should", {
+  
+  skip_on_cran()
+
+  linelist <- data.frame(id = c(1, 2, NA, 3))
+  contacts <- data.frame(from = c(1, 1), to = c(2, 3))
+  msg <- paste0("Removed 1 linelist element(s) with NA IDs; ",
+                "to keep these elements, set rm_na_linelist = FALSE")
+  expect_warning(x <- make_epicontacts(linelist, contacts, rm_na_linelist = TRUE),
+                 msg, fixed = TRUE)
+  expect_false(any(is.na(unlist(x$linelist$id))))
+  
+  linelist <- data.frame(id = 1:4)
+  contacts <- data.frame(from = 1, to = 1)
+  msg <- paste0("The contact(s) listed on row(s) 1 are between ",
+                "a case and itself: this may be unwanted")
+  expect_warning(make_epicontacts(linelist, contacts), msg, fixed = TRUE)
+
+  linelist <- data.frame(id = 1:4)
+  contacts <- data.frame(from = c(1, 1), to = c(2, 2))
+  msg <- paste0("The contact(s) listed on row(s) 2 are duplicates: ",
+                "this may be unwanted")
+  expect_warning(make_epicontacts(linelist, contacts), msg, fixed = TRUE)
+
+  linelist <- data.frame(id = 1:4)
+  contacts <- data.frame(from = c(1, 1), to = c(2, NA))
+  msg <- paste0("Removed 1 contact(s) with NA IDs; ",
+                "to keep these contacts, set rm_na_contacts = FALSE")
+  expect_warning(x <- make_epicontacts(linelist, contacts, rm_na_contacts = TRUE),
+                 msg, fixed = TRUE)
+  expect_false(any(is.na(unlist(x$contacts))))
+
+  linelist <- data.frame(id = 1:4)
+  contacts <- data.frame(from = c(1, 2), to = c(2, 1))
+  msg <- paste0("Cycle(s) detected in the contact network: this may be unwanted")
+  expect_warning(make_epicontacts(linelist, contacts), msg, fixed = TRUE)
+
+  linelist <- data.frame(id = 1:4)
+  contacts <- data.frame(from = c(1, 2, 3), to = c(2, 3, 1))
+  msg <- paste0("Cycle(s) detected in the contact network: this may be unwanted")
+  expect_warning(make_epicontacts(linelist, contacts), msg, fixed = TRUE)
+
+})
+
+
+
+
+
+
 test_that("Reordering of columns works", {
   ## reverse data order
 
@@ -120,5 +169,41 @@ test_that("Constructor works with factors", {
                          contacts)
 
   expect_identical(ref, x)
+
+})
+
+
+
+
+
+
+test_that("ID classes are identical between linelist and contacts", {
+
+  skip_on_cran()
+
+  ## load data
+  linelist <- readRDS("rds/test_linelist.rds")
+  contacts <- readRDS("rds/test_contacts.rds")
+
+  ## possible classes
+  classes <- c("factor", "integer", "numeric", "date", "character")
+  comb <- expand.grid(id = classes,
+                      from = paste0(classes, "_from"),
+                      to = paste0(classes, "_to"),
+                      stringsAsFactors = FALSE)
+
+  ## try all combinations of classes for 'id', 'from' and 'to' and test that all
+  ## IDs in the epicontacts object share the same class
+  test_class <- function(id, from, to, linelist, contacts) {
+    net <- make_epicontacts(linelist, contacts, id, from, to)
+    all_classes <- c(class(net$linelist$id),
+                     class(net$contacts$from),
+                     class(net$contacts$to))
+    expect_length(unique(all_classes), 1L)
+  }
+
+  ## test whether all IDs share the same class
+  mapply(test_class, comb$id, comb$from, comb$to,
+         MoreArgs = list(linelist, contacts))
 
 })

@@ -20,7 +20,7 @@ test_that("Plots as expected", {
   plot6 <- plot(x, "hospital", method = "graph3D",
                 node_size = 3, edge_size = 2)
 
-  ## Expect_equal_to_reference(plot1, file = "rds/plot1.rds")
+  ## expect_equal_to_reference(plot1, file = "rds/plot1.rds")
   ## expect_equal_to_reference(plot2, file = "rds/plot2.rds")
   ## expect_equal_to_reference(plot3, file = "rds/plot3.rds")
   ## expect_equal_to_reference(plot3bis, file = "rds/plot3.rds")

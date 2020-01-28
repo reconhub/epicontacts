@@ -4,10 +4,13 @@ test_that("Printing summaries", {
   
   skip_on_cran()
 
-  x <- make_epicontacts(mers_korea_2015$linelist, mers_korea_2015$contacts,
-                        id = "id",
-                        to = "to", from = "from",
-                        directed=FALSE)
+  expect_warning(
+  {x <- make_epicontacts(mers_korea_2015$linelist, mers_korea_2015$contacts,
+                          id = "id",
+                          to = "to", from = "from",
+                         directed=FALSE)},
+  "Cycle(s) detected in the contact network: this may be unwanted",
+  fixed = TRUE)
 
   res <- summary(x)
 
