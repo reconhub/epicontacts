@@ -86,8 +86,8 @@
 #' }
 make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
                              directed = FALSE,
-                             na_rm_linelist = TRUE,
-                             na_rm_contacts = TRUE) {
+                             na_rm_linelist = FALSE,
+                             na_rm_contacts = FALSE) {
   ## We read data from linelist, which needs to contain at least one case, and
   ## contacts. Sanity checks will include standard class
   ## and dimensionality checks, as well as uniqueness of IDs in the line list,
@@ -128,14 +128,14 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     linelist$id <- as.character(linelist$id)
   }
 
-  ## remove linelist elements with NA ids
+  ## either remove NA rows or coerce IDs to character and rename NA_1...NA_x
   linelist_na <- is.na(linelist$id)
   if (any(linelist_na)) {
     if (na_rm_linelist) {
-      warning("Removed ", sum(linelist_na), " linelist element(s) with NA IDs; ",
-              "to keep these elements, set na_rm_linelist = FALSE")
+      warning("Removed ", sum(linelist_na), " linelist element(s) with NA IDs")
       linelist <- subset(linelist, !linelist_na)
     } else {
+      linelist$id <- as.character(linelist$id)
       if (sum(linelist_na) > 1) {
         warning(sum(linelist_na), " NA IDs in the linelist have been renamed ",
                 "NA_1 to NA_", sum(linelist_na))
@@ -186,6 +186,29 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
                            to,
                            setdiff(seq_len(ncol(contacts)), c(from,to)))]
 
+  ## either remove NA elements or coerce to character and rename NA_1 ... NA_x
+  contacts_na <- is.na(contacts[1:2])
+  if (any(contacts_na)) {
+    if(na_rm_contacts) {
+      warning("Removed ", sum(contacts_na), " contact(s) with NA IDs")
+      contacts <- contacts[!apply(contacts_na, 1, any),]
+    } else {
+      contacts$from <- as.character(contacts$from)
+      contacts$to <- as.character(contacts$to)
+      if (sum(contacts_na) > 1) {
+        warning(sum(contacts_na), " NA IDs in the contacts have been renamed ",
+                "NA_", sum(linelist_na) + 1, " to NA_",
+                sum(contacts_na) + sum(linelist_na) + 1)
+      } else {
+        warning("1 NA ID in the contacts has renamed to NA_", sum(linelist_na) + 1)
+      }
+      ## index for numbering NAs by row
+      ind <- which(t(contacts_na), TRUE)[, c(2, 1), drop = FALSE]
+      num <- seq(sum(linelist_na) + 1, length = nrow(ind))
+      contacts[1:2][ind] <- paste0("NA_", num)
+    }
+  }
+
   ## ensure identical ID classes across linelist and contacts
   ## unless all IDs numeric or integer, convert to character
   ## if all numeric or integer then, unless all integer, convert to numeric
@@ -201,28 +224,6 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     linelist$id <- as.numeric(linelist$id)
     contacts$from <- as.numeric(contacts$from)
     contacts$to <- as.numeric(contacts$to)
-  }
-
-  ## remove contact elements with NA ids
-  contacts_na <- is.na(contacts[c("from", "to")])
-  if (any(contacts_na)) {
-    if(na_rm_contacts) {
-      warning("Removed ", sum(contacts_na), " contact(s) with NA IDs; ",
-              "to keep these contacts, set na_rm_contacts = FALSE")
-      contacts <- contacts[!apply(contacts_na, 1, any),]
-    } else {
-      if (sum(contacts_na) > 1) {
-        warning(sum(contacts_na), " NA IDs in the contacts have been renamed ",
-                "NA_", sum(linelist_na) + 1, " to NA_",
-                sum(contacts_na) + sum(linelist_na) + 1)
-      } else {
-        warning("1 NA ID in the contacts has renamed to NA_", sum(linelist_na) + 1)
-      }
-      ## index for numbering NAs by row
-      ind <- which(t(contacts_na), TRUE)[, c(2, 1), drop = FALSE]
-      num <- seq(sum(linelist_na) + 1, length = nrow(ind))
-      contacts[c("from", "to")][ind] <- paste0("NA_", num)
-    }
   }
 
   ## warn of duplicated contacts

@@ -198,9 +198,10 @@ test_that("get_clusters works on different classes", {
                       stringsAsFactors = FALSE)
 
   ## test that get_cluster doesn't errors for any combination of classes
-  ## for 'id', 'from' and 'to'
+  ## for 'id', 'from' and 'to' - expect warning about NA IDs in constructor
   test_get_cluster <- function(id, from, to, linelist, contacts) {
-    net <- make_epicontacts(linelist, contacts, id, from, to)
+    net <- expect_warning(make_epicontacts(linelist, contacts, id, from, to),
+                          "NA")
     expect_error(get_clusters(net), NA)
   }
 

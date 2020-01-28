@@ -77,39 +77,55 @@ test_that("Warnings happen when they should", {
   
   skip_on_cran()
 
+  ## test NAs in linelist IDs
   linelist <- data.frame(id = c(1, 2, NA, 3))
   contacts <- data.frame(from = c(1, 1), to = c(2, 3))
-  msg <- paste0("Removed 1 linelist element(s) with NA IDs; ",
-                "to keep these elements, set rm_na_linelist = FALSE")
-  expect_warning(x <- make_epicontacts(linelist, contacts, rm_na_linelist = TRUE),
+  ## remove NAs
+  msg <- "Removed 1 linelist element(s) with NA IDs"
+  expect_warning(x <- make_epicontacts(linelist, contacts, na_rm_linelist = TRUE),
                  msg, fixed = TRUE)
   expect_false(any(is.na(unlist(x$linelist$id))))
+  ## keep NAs
+  msg <- "1 NA ID in the linelist has renamed to NA_1"
+  expect_warning(x <- make_epicontacts(linelist, contacts, na_rm_linelist = FALSE),
+                 msg, fixed = TRUE)
+  expect_false(any(is.na(unlist(x$linelist$id))))
+
+  ## test NAs in contact IDs
+  linelist <- data.frame(id = 1:4)
+  contacts <- data.frame(from = c(1, 1), to = c(2, NA))
+  ## remove NAs
+  msg <- "Removed 1 contact(s) with NA IDs"
+  expect_warning(x <- make_epicontacts(linelist, contacts, na_rm_contacts = TRUE),
+                 msg, fixed = TRUE)
+  expect_false(any(is.na(unlist(x$contacts))))
+  ## keep NAs
+  msg <- "1 NA ID in the contacts has renamed to NA_1"
+  expect_warning(x <- make_epicontacts(linelist, contacts, na_rm_contacts = FALSE),
+                 msg, fixed = TRUE)
+  expect_false(any(is.na(unlist(x$contacts))))
   
+  ## test self-contacts
   linelist <- data.frame(id = 1:4)
   contacts <- data.frame(from = 1, to = 1)
   msg <- paste0("The contact(s) listed on row(s) 1 are between ",
                 "a case and itself: this may be unwanted")
   expect_warning(make_epicontacts(linelist, contacts), msg, fixed = TRUE)
 
+  ## test duplicated contacts
   linelist <- data.frame(id = 1:4)
   contacts <- data.frame(from = c(1, 1), to = c(2, 2))
   msg <- paste0("The contact(s) listed on row(s) 2 are duplicates: ",
                 "this may be unwanted")
   expect_warning(make_epicontacts(linelist, contacts), msg, fixed = TRUE)
 
-  linelist <- data.frame(id = 1:4)
-  contacts <- data.frame(from = c(1, 1), to = c(2, NA))
-  msg <- paste0("Removed 1 contact(s) with NA IDs; ",
-                "to keep these contacts, set rm_na_contacts = FALSE")
-  expect_warning(x <- make_epicontacts(linelist, contacts, rm_na_contacts = TRUE),
-                 msg, fixed = TRUE)
-  expect_false(any(is.na(unlist(x$contacts))))
-
+  ## test loops
   linelist <- data.frame(id = 1:4)
   contacts <- data.frame(from = c(1, 2), to = c(2, 1))
   msg <- paste0("Cycle(s) detected in the contact network: this may be unwanted")
   expect_warning(make_epicontacts(linelist, contacts), msg, fixed = TRUE)
 
+  ## test cycles
   linelist <- data.frame(id = 1:4)
   contacts <- data.frame(from = c(1, 2, 3), to = c(2, 3, 1))
   msg <- paste0("Cycle(s) detected in the contact network: this may be unwanted")
@@ -193,9 +209,11 @@ test_that("ID classes are identical between linelist and contacts", {
                       stringsAsFactors = FALSE)
 
   ## try all combinations of classes for 'id', 'from' and 'to' and test that all
-  ## IDs in the epicontacts object share the same class
+  ## IDs in the epicontacts object share the same class - expect warning
+  ## regarding NA IDs in constructor
   test_class <- function(id, from, to, linelist, contacts) {
-    net <- make_epicontacts(linelist, contacts, id, from, to)
+    net <- expect_warning(make_epicontacts(linelist, contacts, id, from, to),
+                          "NA")
     all_classes <- c(class(net$linelist$id),
                      class(net$contacts$from),
                      class(net$contacts$to))

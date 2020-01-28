@@ -6,9 +6,23 @@ test_that("Printing objects works", {
 
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id="case_id", to="case_id", from="infector",
-                           directed = FALSE)
+                          directed = FALSE)
+    y <- testthat::capture_output(print(x))
 
-    # nb rds/print.rds was created with the following:
-    # saveRDS(testthat::capture_output(print(x)), file = "rds/print.rds")
-    expect_equal(capture_output(print(x)), readRDS("rds/print.rds"))
+    ## strings to test for in output
+    tst <- c("non directed",
+             "epicontacts",
+             "linelist",
+             "contacts",
+             as.character(x$linelist$date_of_onset[1]),
+             as.character(x$linelist$date_of_hospitalisation[1]),
+             x$contacts$from[1],
+             x$contacts$to[1],
+             format(nrow(x$linelist), big.mark = ","),
+             format(nrow(x$contacts), big.mark = ","))
+
+    for(val in tst) {
+      expect_output(print(x), val)
+    }
+    
 })
