@@ -7,7 +7,6 @@ test_that("Printing objects works", {
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id="case_id", to="case_id", from="infector",
                           directed = FALSE)
-    y <- testthat::capture_output(print(x))
 
     ## strings to test for in output
     tst <- c("non directed",
