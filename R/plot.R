@@ -13,7 +13,11 @@
 #'   infection/contacts) will be calculated and used to specify the node colour.
 #'
 #' @param method A character string indicating the plotting method to be used;
-#' available values are "visNetwork" and "graph3D"; see details.
+#' available values are "visNetwork", "graph3D" and "temporal"; see details.
+#'
+#' @param output A character string indicating whether the output should be
+#'   "interactive" (using visNetwork) or "static" (using ggplot). This argument
+#'   is only available if \code{method} is set to "temporal".
 #'
 #' @param ... Further arguments passed to the plotting methods.
 #'
@@ -28,9 +32,9 @@
 #'
 #' \item \code{graph3D}: calls the function \code{\link{graph3D}}
 #'
-#' \item \code{ttree}: calls the function \code{link{vis_ttree}}
-#'
-#' \item \code{ggplot}: calls the function \code{link{vis_ggplot}}
+#' \item \code{temporal}: calls the function
+#' \code{link{vis_temporal_interactive}} or \code{link{vis_temporal_static}}
+#' depending on what argument is provide to \code{method}.
 #' 
 #' }
 #'
@@ -61,15 +65,21 @@
 #' }
 plot.epicontacts <- function(x,
                              node_color = "id",
-                             method = c("visNetwork", "graph3D", "ggplot", "ttree"),
+                             method = c("visNetwork", "graph3D", "temporal"),
+                             output = c("interactive", "static"),
                              ...){
   
   method <- match.arg(method)
 
+  if(!missing(output) && method != "temporal") {
+    warning("The 'output' argument is only used if method = 'temporal'")
+  }
+    
   lst <- list(visNetwork = vis_epicontacts,
               graph3D = graph3D,
-              ggplot = vis_ggplot,
-              ttree = vis_ttree)
+              temporal = ifelse(output == "interactive",
+                                vis_temporal_interactive,
+                                vis_temporal_static))
 
   out <- lst[[method]](x, node_color = node_color, ...)
 

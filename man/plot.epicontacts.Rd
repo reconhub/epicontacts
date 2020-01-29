@@ -5,7 +5,8 @@
 \title{Plot epicontacts objects}
 \usage{
 \method{plot}{epicontacts}(x, node_color = "id",
-  method = c("visNetwork", "graph3D", "ggplot", "ttree"), ...)
+  method = c("visNetwork", "graph3D", "temporal"),
+  output = c("interactive", "static"), ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
@@ -16,7 +17,11 @@ individual reproductive number for each case (i.e. number of outgoing
 infection/contacts) will be calculated and used to specify the node colour.}
 
 \item{method}{A character string indicating the plotting method to be used;
-available values are "visNetwork" and "graph3D"; see details.}
+available values are "visNetwork", "graph3D" and "temporal"; see details.}
+
+\item{output}{A character string indicating whether the output should be
+"interactive" (using visNetwork) or "static" (using ggplot). This argument
+is only available if \code{method} is set to "temporal".}
 
 \item{...}{Further arguments passed to the plotting methods.}
 }
@@ -34,9 +39,9 @@ the package, depending on the value of \code{method}:
 
 \item \code{graph3D}: calls the function \code{\link{graph3D}}
 
-\item \code{ttree}: calls the function \code{link{vis_ttree}}
-
-\item \code{ggplot}: calls the function \code{link{vis_ggplot}}
+\item \code{temporal}: calls the function
+\code{link{vis_temporal_interactive}} or \code{link{vis_temporal_static}}
+depending on what argument is provide to \code{method}.
 
 }
 }

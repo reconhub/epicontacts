@@ -993,7 +993,7 @@ get_v_rect <- function(linelist, contacts) {
 
 
 
-## Get coordinates for for ggplot geom_segments when ttree_shape =
+## Get coordinates for for ggplot geom_segments when network_shape =
 ## 'rectangle'. Corresponding node and edge attributes are passed on.
 get_g_rect <- function(linelist, contacts) {
 

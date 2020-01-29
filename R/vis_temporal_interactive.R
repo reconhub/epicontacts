@@ -14,7 +14,7 @@
 #' @param x_axis A character string indicating which field of the linelist data
 #'   should be used to specify the x axis position (must be numeric or Date).
 #'
-#' @param ttree_shape 'branching' will create a branching transmission
+#' @param network_shape 'branching' will create a branching transmission
 #'   tree. 'rectangle' will create a rectangular shaped plot similar to a
 #'   phylogeny that avoids overlapping edges.
 #'
@@ -87,9 +87,9 @@
 #'
 #' \dontrun{
 #' plot(x,
-#' method = 'ttree',
+#' method = 'temporal',
 #' x_axis = 'dt_onset',
-#' ttree_shape = 'rectangle',
+#' network_shape = 'rectangle',
 #' node_size = 'R_i',
 #' edge_label = 'exposure',
 #' node_colour = 'sex',
@@ -104,23 +104,23 @@
 #' width = 1500)
 #' }
 #' }
-vis_ttree <- function(x,
-                      x_axis = NULL,
-                      ttree_shape = c('branching', 'rectangle'),
-                      root_order = x_axis,
-                      node_order = x_axis,
-                      reverse_root_order = FALSE,
-                      reverse_node_order = FALSE,
-                      rank_contact = x_axis,
-                      reverse_rank_contact = FALSE,
-                      unlinked_pos = c('bottom', 'top', 'middle'),
-                      edge_flex = FALSE,
-                      position_dodge = FALSE,
-                      parent_pos = c('middle', 'top', 'bottom'),
-                      n_breaks = 5,
-                      axis_type = c("single", "double", "none"),
-                      igraph_type = NULL,
-                      ...) {
+vis_temporal_interactive <- function(x,
+                                     x_axis = NULL,
+                                     network_shape = c('branching', 'rectangle'),
+                                     root_order = x_axis,
+                                     node_order = x_axis,
+                                     reverse_root_order = FALSE,
+                                     reverse_node_order = FALSE,
+                                     rank_contact = x_axis,
+                                     reverse_rank_contact = FALSE,
+                                     unlinked_pos = c('bottom', 'top', 'middle'),
+                                     edge_flex = FALSE,
+                                     position_dodge = FALSE,
+                                     parent_pos = c('middle', 'top', 'bottom'),
+                                     n_breaks = 5,
+                                     axis_type = c("single", "double", "none"),
+                                     igraph_type = NULL,
+                                     ...) {
 
   ## this will assign the value specified in ... if present, otherwise use the
   ## specified default. A list based method using the assign function looks
@@ -156,7 +156,7 @@ vis_ttree <- function(x,
   font_size <- get_val('font_size', def, args)
   custom_parent_pos <- get_val('custom_parent_pos', def, args)
 
-  ttree_shape <- match.arg(ttree_shape)
+  network_shape <- match.arg(network_shape)
   parent_pos <- match.arg(parent_pos)
   unlinked_pos <- match.arg(unlinked_pos)
   axis_type <- match.arg(axis_type)
@@ -291,7 +291,7 @@ vis_ttree <- function(x,
   }
   
   ## Get nodes and edges for rectangle shape
-  if(ttree_shape == 'rectangle') {
+  if(network_shape == 'rectangle') {
 
     rect <- get_v_rect(nodes, edges)
     nodes <- rect$nodes
@@ -299,7 +299,7 @@ vis_ttree <- function(x,
     hidden <- nodes$hidden
     
     ## No hidden nodes if shape is branching
-  } else if(ttree_shape == 'branching') {
+  } else if(network_shape == 'branching') {
     hidden <- NULL
     if(nrow(edges) > 0) edges$to_node <- TRUE
   }
@@ -496,7 +496,7 @@ vis_ttree <- function(x,
                                            n = n_breaks)))
     ddnodes$y <- coor$y[1]
     ddnodes$level <- 1
-    if(ttree_shape == 'rectangle') {
+    if(network_shape == 'rectangle') {
       ddnodes$hidden <- FALSE
     }
 

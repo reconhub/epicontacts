@@ -20,7 +20,7 @@
 #'   the edges, or a character string indicating which field of the contacts data
 #'   should be used to indicate the edge transparency.
 #' 
-#' @param ttree_shape "branching" will create a branching transmission
+#' @param network_shape "branching" will create a branching transmission
 #'   tree. "rectangle" will create a rectangular shaped plot similar to a
 #'   phylogeny that avoids overlapping edges.
 #'
@@ -36,7 +36,7 @@
 #'   transmission chains they generate.
 #'
 #' @param reverse_root_order A logical indicating if the ordering of the roots
-#'   hsould be reversed. This argument is only called when type = "ttree".
+#'   should be reversed. This argument is only called when type = "ttree".
 #'
 #' @param reverse_node_order A logical indicating if the ordering of the nodes
 #'   should be reversed. This argument is only called when type = "ttree".
@@ -114,10 +114,10 @@
 #' plot(x, method = "ggplot", x_axis = "dt_onset", node_color = "sex")
 #' }
 #' }
-vis_ggplot <- function(x,
+vis_temporal_static <- function(x,
                        x_axis,
                        edge_alpha = NULL,
-                       ttree_shape = "branching",
+                       network_shape = "branching",
                        root_order = "subtree_size",
                        node_order = "subtree_size",
                        reverse_root_order = FALSE,
@@ -199,10 +199,10 @@ vis_ggplot <- function(x,
   ## check edge_alpha (edge attribute used for alpha)
   edge_alpha <- assert_edge_alpha(x, edge_alpha)
 
-  ## edge width can only be numeric in vis_ggplot
+  ## edge width can only be numeric in vis_temporal_static
   if(length(edge_width) > 1 | !inherits(edge_width, c("numeric", "integer"))) {
-    msg <- paste("edge width must be a single number in vis_ggplot (cannot be",
-                "mapped to a variable because scale_size is reserved for node_size)")
+    msg <- paste("edge width must be a single number in vis_temporal_static (cannot be",
+                 "mapped to a variable because scale_size is reserved for node_size)")
     stop(msg)
   }
 
@@ -252,7 +252,7 @@ vis_ggplot <- function(x,
   nodes$x <- x$linelist[[x_axis]]
   nodes$subtree_size <- coor$subtree_size
 
-  if(ttree_shape == "rectangle") {
+  if(network_shape == "rectangle") {
 
     ## Get vertical and horizontal edges with correct edge attributes
     df <- get_g_rect(nodes, edges)
@@ -273,7 +273,7 @@ vis_ggplot <- function(x,
     
     df <- rbind(df, df1)
 
-  } else if(ttree_shape == "branching") {
+  } else if(network_shape == "branching") {
 
     i_ind <- match(edges$to, nodes$id)
     inf_ind <- match(edges$from, nodes$id)

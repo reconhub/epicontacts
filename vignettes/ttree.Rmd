@@ -33,10 +33,10 @@ library(epicontacts)
 data(package = 'epicontacts')
 sim$directed <- TRUE
 plot(sim,
-     method = 'ttree',
+     method = 'temporal',
      x_axis = 'onset',
 #     legend = FALSE,
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'subtree_size',
      node_order = 'onset',
      node_size = 'R_i',
@@ -87,7 +87,7 @@ for the x-axis (in this case, the date of symptom onset).
 
 ```{r}
 plot(sim,
-     method = 'ttree',
+     method = 'temporal',
      x_axis = 'onset')
 ```
 
@@ -102,7 +102,7 @@ cluster with that case as an ancestor). For example:
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
@@ -118,7 +118,7 @@ For example:
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
@@ -131,7 +131,7 @@ plot(sim,
 
 ## Specifying transmission tree shape
 
-There are two main shapes that the transmission tree can assume, specified using the `ttree_shape`
+There are two main shapes that the transmission tree can assume, specified using the `network_shape`
 argument. The first is a `branching` shape as shown above, where a straight edge connects 
 any two nodes. This is the most intuitive representation, however can result in overlapping edges
 in a densely connected network. The second shape is `rectangle`, which produces a tree resembling
@@ -139,9 +139,9 @@ a phylogeny. For example:
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
@@ -159,9 +159,9 @@ roots of each transmission chain (i.e. the index case of each chain) is specifie
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -179,9 +179,9 @@ reported contacts) is specified using the `unlinked_pos` argument.
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -202,9 +202,9 @@ parent node in the middle, however it can be placed at the bottom (`parent_pos =
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -227,7 +227,7 @@ though.
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
@@ -246,9 +246,9 @@ the standard codes defined in `strftime()`.
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -267,14 +267,14 @@ plot(sim,
 ## Collapsing nodes
 The option to collapse nodes up double-clicking them is toggled using the
 `collapse` argument. Note that this currently only works properly for
-`ttree_shape = 'branching'` due to a bug within `visNetwork`. Try double
+`network_shape = 'branching'` due to a bug within `visNetwork`. Try double
 clicking on a node below. 
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'branching',
+     network_shape = 'branching',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -296,9 +296,9 @@ A title can be added to the plot as follows:
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'branching',
+     network_shape = 'branching',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -326,9 +326,9 @@ free up some space to label the edges using the `edge_label` argument.
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -349,9 +349,9 @@ The `height` and `width` of the figure can be specified in pixels.
 
 ```{r}
 plot(sim, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -384,9 +384,9 @@ si <- get_pairwise(sim_2, 'onset', function(x, y) y - x)
 sim_2$contacts$suspicious <- si < min_si | si > max_si
 
 plot(sim_2, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -411,9 +411,9 @@ sim_2_clean <- sim_2
 sim_2_clean$contacts <- sim_2$contacts[!sim_2$contacts$suspicious,]
   
 plot(sim_2_clean, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -456,9 +456,9 @@ sim_3$contacts <- rbind(sim_3$contacts, contacts_3)
 sim_3 $directed <- TRUE
 col_pal <- colorRampPalette(c("#427A82", "#AA6F39"))
 plot(sim_3, 
-     method = 'ttree', 
+     method = 'temporal', 
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
@@ -483,9 +483,10 @@ below in renaming the legend labels, for example.
 ```{r, fig.width = 7, fig.height = 8}
 sim_3$directed <- FALSE
 plot(sim_3, 
-     method = 'ggplot',
+     method = 'temporal',
+     output = 'static',
      x_axis = 'onset',
-     ttree_shape = 'rectangle',
+     network_shape = 'rectangle',
      root_order = 'onset',
      node_order = 'subtree_size',
      reverse_node_order = FALSE,
