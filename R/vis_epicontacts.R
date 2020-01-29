@@ -236,7 +236,7 @@ vis_epicontacts <- function(x,
   nodes <- data.frame(id = unique(c(list_nodes, cont_nodes)),
                       stringsAsFactors = FALSE)
 
-  nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
+  nodes <- merge(nodes, x$linelist, by = "id", all = TRUE, sort = FALSE)
 
   edges <- x$contacts
   

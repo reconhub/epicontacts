@@ -112,26 +112,21 @@ graph3D <- function(x,
     }
   }
 
+  ## Subset those ids which have at least one edge with another id
+  ##    (to mimic visNetwork plot, else loner nodes are also printed)
+  x <- subset_clusters_by_size(x, cs_min = 2)
+  g <- as.igraph.epicontacts(x, TRUE)
 
+  ## Get vertex attributes and prepare as input for graph
+  nodes <- data.frame(id = unique(c(x$linelist$id,
+                                    x$contacts$from,
+                                    x$contacts$to)),
+                      stringsAsFactors = FALSE)
 
-    ## Subset those ids which have at least one edge with another id
-    ##    (to mimic visNetwork plot, else loner nodes are also printed)
-    x <- subset_clusters_by_size(x, cs_min = 2)
-    g <- as.igraph.epicontacts(x, TRUE)
-
-
-    ## Get vertex attributes and prepare as input for graph
-    nodes <- data.frame(id = unique(c(x$linelist$id,
-                                      x$contacts$from,
-                                      x$contacts$to)),
-                        stringsAsFactors = FALSE)
-
-
-    ## join back to linelist to retrieve attributes for grouping
-    nodes <- suppressMessages(
-        suppressWarnings(merge(nodes, x$linelist, all.x = TRUE)))
-
-
+  ## join back to linelist to retrieve attributes for grouping
+  nodes <- suppressMessages(
+    suppressWarnings(merge(nodes, x$linelist, all.x = TRUE, sort = FALSE))
+  )
 
   ## generate annotations ('label' in threejs terms)
   if (!is.null(annot)) {
@@ -141,15 +136,12 @@ graph3D <- function(x,
                          apply(temp, 1, paste0, collapse = "<br>"), "</p>")
   } else nodes$label <- ""
 
-
-
-                                        # attribute for grouping
+  ## attribute for grouping
   if (!is.null(node_color)) {
     nodes$group <- as.character(nodes[, node_color])
     nodes$group[is.na(nodes$group)] <- "NA"
     nodes$group <- factor(nodes$group)
   }
-
 
   ## Set node attributes
   ## node color
@@ -159,7 +151,7 @@ graph3D <- function(x,
     grp.col[levels(nodes$group)=="NA"] <- NA_col
     nodes$color <- grp.col[factor(nodes$group)]
   } else {
-                                        # setting to match default visNetwork color
+    ## setting to match default visNetwork color
     nodes$color <- "#97C2FC"
   }
 
@@ -170,7 +162,8 @@ graph3D <- function(x,
   igraph::E(g)$size <- edge_size
   igraph::E(g)$color <- "lightgray"
 
-                                        # Create 3D graph (note fg not supported, but may be in the future)
+  ## Create 3D graph (note fg not supported, but may be in the future)
   threejs::graphjs(g, main = g_title, fg = label_col, bg = bg_col,
                    vertex.color = nodes$color, vertex.size = node_size)
+  
 }
