@@ -79,109 +79,97 @@ graph3D <- function(x,
                     node_size = 1,
                     edge_size = .5) {
 
-
-
-    ## check node_color (node attribute used for color)
-    if (length(node_color) > 1L) {
-        stop("'node_color' must indicate a single node attribute")
+  ## check node_color (node attribute used for color)
+  if (length(node_color) > 1L) {
+    stop("'node_color' must indicate a single node attribute")
+  }
+  if (is.logical(node_color) && !node_color) {
+    node_color <- NULL
+  }
+  if (!is.null(node_color)) {
+    if (is.numeric(node_color)) {
+      node_color <- names(x$linelist)[node_color]
     }
-    if (is.logical(node_color) && !node_color) {
-        node_color <- NULL
+    if (!node_color %in% names(x$linelist)) {
+      msg <- sprintf("node_color '%s' is not in the linelist", node_color)
+      stop(msg)
     }
-    if (!is.null(node_color)) {
-        if (is.numeric(node_color)) {
-            node_color <- names(x$linelist)[node_color]
-        }
+  }
 
-        if (!node_color %in% names(x$linelist)) {
-            msg <- sprintf("node_color '%s' is not in the linelist", node_color)
-            stop(msg)
-        }
-    }
-
-
-    ## check annot (txt displayed when clicking on node)
-    if (is.logical(annot) && sum(annot) == 0L) {
-        annot <- NULL
-    }
-    if (!is.null(annot)) {
-        if (is.numeric(annot)) {
-            annot <- names(x$linelist)[annot]
-        } else {
-            if (is.logical(annot)) {
-                annot = unique(c("id", node_color))
-            }
-        }
-
-        if (!all(annot %in% names(x$linelist))) {
-            culprits <- annot[!annot %in% names(x$linelist)]
-            culprits <- paste(culprits, collapse = ", ")
-            msg <- sprintf("Annot '%s' is not in the linelist", culprits)
-            stop(msg)
-        }
-    }
-
-
-
-    ## Subset those ids which have at least one edge with another id
-    ##    (to mimic visNetwork plot, else loner nodes are also printed)
-    x <- subset_clusters_by_size(x, cs_min = 2)
-    g <- as.igraph.epicontacts(x, TRUE)
-
-
-    ## Get vertex attributes and prepare as input for graph
-    nodes <- data.frame(id = unique(c(x$linelist$id,
-                                      x$contacts$from,
-                                      x$contacts$to)),
-                        stringsAsFactors = FALSE)
-
-
-    ## join back to linelist to retrieve attributes for grouping
-    nodes <- suppressMessages(
-        suppressWarnings(merge(nodes, x$linelist, all.x = TRUE)))
-
-
-
-    ## generate annotations ('label' in threejs terms)
-    if (!is.null(annot)) {
-        temp <- nodes[, annot, drop = FALSE]
-        temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
-        nodes$label <- paste(g_title, "<p>",
-                             apply(temp, 1, paste0, collapse = "<br>"), "</p>")
-    } else nodes$label <- ""
-
-
-
-    # attribute for grouping
-    if (!is.null(node_color)) {
-        nodes$group <- as.character(nodes[, node_color])
-        nodes$group[is.na(nodes$group)] <- "NA"
-        nodes$group <- factor(nodes$group)
-    }
-
-
-    ## Set node attributes
-    ## node color
-    if (!is.null(node_color)) {
-        K <- length(unique(nodes$group))
-        grp.col <- col_pal(K)
-        grp.col[levels(nodes$group)=="NA"] <- NA_col
-        nodes$color <- grp.col[factor(nodes$group)]
+  ## check annot (txt displayed when clicking on node)
+  if (is.logical(annot) && sum(annot) == 0L) {
+    annot <- NULL
+  }
+  if (!is.null(annot)) {
+    if (is.numeric(annot)) {
+      annot <- names(x$linelist)[annot]
     } else {
-      # setting to match default visNetwork color
-      nodes$color <- "#97C2FC"
+      if (is.logical(annot)) {
+        annot = unique(c("id", node_color))
+      }
     }
+    if (!all(annot %in% names(x$linelist))) {
+      culprits <- annot[!annot %in% names(x$linelist)]
+      culprits <- paste(culprits, collapse = ", ")
+      msg <- sprintf("Annot '%s' is not in the linelist", culprits)
+      stop(msg)
+    }
+  }
 
-    igraph::V(g)$color <- nodes$color
-    igraph::V(g)$label <- nodes$label
+  ## Subset those ids which have at least one edge with another id
+  ##    (to mimic visNetwork plot, else loner nodes are also printed)
+  x <- subset_clusters_by_size(x, cs_min = 2)
+  g <- as.igraph.epicontacts(x, TRUE)
 
-    ## Set edge attributes
-    igraph::E(g)$size <- edge_size
-    igraph::E(g)$color <- "lightgray"
+  ## Get vertex attributes and prepare as input for graph
+  nodes <- data.frame(id = unique(c(x$linelist$id,
+                                    x$contacts$from,
+                                    x$contacts$to)),
+                      stringsAsFactors = FALSE)
 
-    # Create 3D graph (note fg not supported, but may be in the future)
-    threejs::graphjs(g, main = g_title, fg = label_col, bg = bg_col,
-                     vertex.color = nodes$color, vertex.size = node_size)
+  ## join back to linelist to retrieve attributes for grouping
+  nodes <- suppressMessages(
+    suppressWarnings(merge(nodes, x$linelist, all.x = TRUE, sort = FALSE))
+  )
+
+  ## generate annotations ('label' in threejs terms)
+  if (!is.null(annot)) {
+    temp <- nodes[, annot, drop = FALSE]
+    temp <- sapply(names(temp), function(e) paste(e, temp[, e], sep = ": "))
+    nodes$label <- paste(g_title, "<p>",
+                         apply(temp, 1, paste0, collapse = "<br>"), "</p>")
+  } else nodes$label <- ""
+
+  ## attribute for grouping
+  if (!is.null(node_color)) {
+    nodes$group <- as.character(nodes[, node_color])
+    nodes$group[is.na(nodes$group)] <- "NA"
+    nodes$group <- factor(nodes$group)
+  }
+
+  ## Set node attributes
+  ## node color
+  if (!is.null(node_color)) {
+    K <- length(unique(nodes$group))
+    grp.col <- col_pal(K)
+    grp.col[levels(nodes$group)=="NA"] <- NA_col
+    nodes$color <- grp.col[factor(nodes$group)]
+  } else {
+    ## setting to match default visNetwork color
+    nodes$color <- "#97C2FC"
+  }
+
+  igraph::V(g)$color <- nodes$color
+  igraph::V(g)$label <- nodes$label
+
+  ## Set edge attributes
+  igraph::E(g)$size <- edge_size
+  igraph::E(g)$color <- "lightgray"
+
+  ## Create 3D graph (note fg not supported, but may be in the future)
+  threejs::graphjs(g, main = g_title, fg = label_col, bg = bg_col,
+                   vertex.color = nodes$color, vertex.size = node_size)
+  
 }
 
 

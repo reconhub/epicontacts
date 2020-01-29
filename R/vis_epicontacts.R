@@ -149,7 +149,7 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   nodes <- data.frame(id = all_nodes,
                       stringsAsFactors = FALSE)
 
-  nodes <- merge(nodes, x$linelist, by = "id", all = TRUE)
+  nodes <- merge(nodes, x$linelist, by = "id", all = TRUE, sort = FALSE)
 
 
   ## generate annotations ('title' in visNetwork terms)

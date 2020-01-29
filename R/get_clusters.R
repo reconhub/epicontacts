@@ -98,10 +98,11 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
                                    stringsAsFactors = FALSE),
                         c("id", member_col))
 
-  net_nodes <- merge(net_nodes, cs_size, by.x = member_col)
+  net_nodes <- merge(net_nodes, cs_size, by.x = member_col, sort = FALSE)
 
   if(output == "epicontacts") {
-    x$linelist <- merge(x$linelist, net_nodes, all = TRUE, by = "id")
+    x$linelist <- merge(x$linelist, net_nodes, all = TRUE,
+                        by = "id", sort = FALSE)
     x$linelist[ member_col ] <- as.factor(x$linelist[[ member_col ]])
     return(x)
   } else {
