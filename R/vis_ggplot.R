@@ -96,6 +96,7 @@
 #'   scale_fill_viridis_d scale_size scale_y_continuous scale_color_gradientn
 #'   scale_fill_gradientn theme theme_minimal unit scale_fill_manual
 #'   scale_fill_continuous scale_color_manual scale_color_continuous geom_text
+#'   arrow
 #'
 #' 
 #' @examples
@@ -170,6 +171,8 @@ vis_ggplot <- function(x,
   if (is.null(x_axis)) {
     stop("x_axis must be specified")
   } else {
+    ## test x_axis
+    x_axis <- assert_x_axis(x, x_axis)
     ## Remove NAs in x_axis
     x <- x[!is.na(x$linelist[[x_axis]])]
     ## Remove contacts that don't have both nodes in linelist

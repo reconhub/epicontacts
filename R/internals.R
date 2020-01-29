@@ -349,6 +349,7 @@ assert_x_axis <- function(x, x_axis) {
     stop("'x_axis' must indicate a single node attribute")
   }
   if (!is.null(x_axis)) {
+    
     if (is.numeric(x_axis)) {
       x_axis <- names(x$linelist)[x_axis]
     }
@@ -357,6 +358,12 @@ assert_x_axis <- function(x, x_axis) {
       msg <- sprintf("'%s' is not in the linelist", x_axis)
       stop(msg)
     }
+
+    if(!inherits(x$linelist[[x_axis]],
+                 c("Date", "numeric", "integer", "POSIXct", "POSIXt"))) {
+      stop("x_axis must indicate a Date, numeric or integer value")
+    }
+
   }
 
   return(x_axis)
@@ -564,9 +571,6 @@ get_coor <- function(x,
   axis_type <- match.arg(axis_type)
 
   ## Add cluster membership, for use in root clustering
-  x$linelist$id <- as.character(x$linelist$id)
-  x$contacts$from <- as.character(x$contacts$from)
-  x$contacts$to <- as.character(x$contacts$to)
   x <- get_clusters(x)
   linelist <- x$linelist
   contacts <- x$contacts

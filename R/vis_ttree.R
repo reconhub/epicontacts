@@ -1,14 +1,13 @@
 #' Plot epicontacts objects using visNetwork
 #'
-#' This function plots \code{\link{epicontacts}} objects with a dated x-axis
+#' This function plots \code{\link{epicontacts}} objects with a temporal x-axis
 #' using the \code{visNetwork} package. The produced object is an
 #' \code{htmlwidget} which will need rendering within a web browser.
 #'
 #' @export
 #'
 #'
-#' @author
-#' Finlay Campbell (\email{f.campbell15@imperial.ac.uk})
+#' @author Finlay Campbell (\email{f.campbell15@imperial.ac.uk})
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #'
