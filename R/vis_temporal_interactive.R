@@ -1,4 +1,4 @@
-#' Plot epicontacts objects using visNetwork
+#' Plot temporal networks using visNetwork
 #'
 #' This function plots \code{\link{epicontacts}} objects with a temporal x-axis
 #' using the \code{visNetwork} package. The produced object is an
@@ -63,7 +63,7 @@
 #' @param axis_type Number of axes to be plotted (one of 'single', 'double',
 #'   'none')
 #'
-#' @param igraph_type Alternate tree layouts provided by igraph. Must be one of
+#' @param igraph_type Alternate network shapes provided by igraph. Must be one of
 #'   'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
 #'   for Fruchterman-Reingold layout.
 #'
@@ -81,9 +81,9 @@
 #' head(mers_korea_2015[[1]])
 #' head(mers_korea_2015[[2]])
 #'
-#' x <- make_epicontacts(linelist=mers_korea_2015[[1]],
+#' x <- make_epicontacts(linelist = mers_korea_2015[[1]],
 #'                        contacts = mers_korea_2015[[2]],
-#'                        directed=TRUE)
+#'                        directed = TRUE)
 #'
 #' \dontrun{
 #' plot(x,
@@ -122,9 +122,9 @@ vis_temporal_interactive <- function(x,
                                      igraph_type = NULL,
                                      ...) {
 
-  ## this will assign the value specified in ... if present, otherwise use the
-  ## specified default. A list based method using the assign function looks
-  ## neater but causes global binding warnings in check.
+  ## this will assign the value specified in ... if present, otherwises use the
+  ## defaults given for vis_epicontacts. A list based method using the assign
+  ## function looks neater but causes global binding warnings in check.
   def <- as.list(args(vis_epicontacts))
   args <- list(...)
   node_color <- get_val('node_color', def, args)
@@ -156,6 +156,7 @@ vis_temporal_interactive <- function(x,
   font_size <- get_val('font_size', def, args)
   custom_parent_pos <- get_val('custom_parent_pos', def, args)
 
+  ## match arguments
   network_shape <- match.arg(network_shape)
   parent_pos <- match.arg(parent_pos)
   unlinked_pos <- match.arg(unlinked_pos)
@@ -169,33 +170,53 @@ vis_temporal_interactive <- function(x,
   }
 
   
-  ## In the following, we pull the list of all plotted nodes (those from the
+  ## in the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
   ## for the whole lot. These attributes are in turn used for plotting: as color
   ## ('group' in visNetwork terminology) or as annotations (converted to html
   ## code).
 
-  ## Remove NAs in contacts and linelist
+  ## remove NAs in contacts and linelist
   x <- x[i = !is.na(x$linelist$id),
          j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
-  
+
   ## check that x_axis is specified
   if (is.null(x_axis)) {
-    stop("x_axis must be specified")
-  } else {
-    ## test x_axis
-    x_axis <- assert_x_axis(x, x_axis)
-    ## Remove NAs in x_axis
-    x <- x[!is.na(x$linelist[[x_axis]])]
-    ## Remove contacts that don't have both nodes in linelist
-    x <- thin(x, what = 'contacts')
+    stop("x_axis must be specified when using method = 'temporal'")
   }
+  
+  ## test x_axis
+  x_axis <- assert_x_axis(x, x_axis)
+  
+  ## count number of nodes not in linelist
+  not_in_ll <- sum(!get_id(x, 'contacts') %in% get_id(x, 'linelist'))
+  
+  ## count number of contacts without x_axis data
+  contacts_rm <- sum(is.na(get_pairwise(x, x_axis)))
+  
+  ## identify linelist elements with NAs in x_axis
+  na_x_axis <- is.na(x$linelist[[x_axis]])
+  
+  ## warning to list number of nodes and edges not displayed
+  msg <- "%s nodes and %s edges removed as x_axis data is unavailable"
+  warning(sprintf(msg, not_in_ll + sum(na_x_axis), contacts_rm))
+  
+  ## remove NA x_axis elements from linelist
+  x <- x[!na_x_axis]
+  
+  ## remove contacts that don't have both nodes in linelist
+  x <- thin(x, what = 'contacts')
 
-  ## Remove linelist elements that aren't in contacts if thin = TRUE
+  ## remove linelist elements that aren't in contacts if thin = TRUE
   if(thin) {
     x <- thin(x)
   }
-
+  
+  ## check that contacts with x_axis data are available
+  if(nrow(x$contacts) == 0L) {
+    stop("No contacts found between cases with available x_axis data")
+  }
+  
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 
@@ -425,7 +446,7 @@ vis_temporal_interactive <- function(x,
     unq_linetype <- unique(edges[[edge_linetype]])
     if(length(stats::na.omit(unq_linetype)) > 2) {
       msg <- paste0("visNetwork only supports two linetypes; ",
-                    "use binary variable or set method = 'ggplot'.")
+                    "use binary variable or set output = 'static'.")
       stop(msg)
     }
     ## use alphabetical order / factor order

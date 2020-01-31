@@ -159,29 +159,50 @@ vis_temporal_static <- function(x,
   custom_parent_pos <- get_val("custom_parent_pos", def, args)
   legend_max <- get_val("legend_max", def, args)
 
+  ## match arguments
   parent_pos <- match.arg(parent_pos)
   unlinked_pos <- match.arg(unlinked_pos)
   lineend <- match.arg(lineend)
 
-  ## Remove NAs in contacts and linelist
+  ## remove NAs in contacts and linelist
   x <- x[i = !is.na(x$linelist$id),
          j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
   
   ## check that x_axis is specified
   if (is.null(x_axis)) {
-    stop("x_axis must be specified")
-  } else {
-    ## test x_axis
-    x_axis <- assert_x_axis(x, x_axis)
-    ## Remove NAs in x_axis
-    x <- x[!is.na(x$linelist[[x_axis]])]
-    ## Remove contacts that don't have both nodes in linelist
-    x <- thin(x, what = "contacts")
+    stop("x_axis must be specified when using method = 'temporal'")
   }
+  
+  ## test x_axis
+  x_axis <- assert_x_axis(x, x_axis)
+  
+  ## count number of nodes not in linelist
+  not_in_ll <- sum(!get_id(x, 'contacts') %in% get_id(x, 'linelist'))
+  
+  ## count number of contacts without x_axis data
+  contacts_rm <- sum(is.na(get_pairwise(x, x_axis)))
+  
+  ## identify linelist elements with NAs in x_axis
+  na_x_axis <- is.na(x$linelist[[x_axis]])
+  
+  ## warning to list number of nodes and edges not displayed
+  msg <- "%s nodes and %s edges removed as x_axis data is unavailable"
+  warning(sprintf(msg, not_in_ll + sum(na_x_axis), contacts_rm))
+  
+  ## remove NA x_axis elements from linelist
+  x <- x[!na_x_axis]
+  
+  ## remove contacts that don't have both nodes in linelist
+  x <- thin(x, what = 'contacts')
 
-  ## Remove linelist elements that aren't in contacts if thin = TRUE
+  ## remove linelist elements that aren't in contacts if thin = TRUE
   if(thin) {
     x <- thin(x)
+  }
+
+  ## check that contacts with x_axis data are available
+  if(nrow(x$contacts) == 0L) {
+    stop("No contacts found between cases with available x_axis data")
   }
   
   ## check node_color (node attribute used for color)

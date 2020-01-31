@@ -73,65 +73,65 @@ test_that("Testing vis_temporal_interactive", {
     classes <- c('character', 'date', 'factor', 'numeric', 'integer')
     for(i in classes) {
       for(j in paste0(classes, "_from")) {
-        expect_error(plot(z,
-                          method = 'temporal'
-                          x_axis = 'date',
-                          node_color = i,
-                          node_order = i,
-                          root_order = i,
-                          edge_color = j,
-                          edge_label = j),
-                     NA)
+        expect_error(suppressWarnings(plot(z,
+                                           method = 'temporal',
+                                           x_axis = 'date',
+                                           node_color = i,
+                                           node_order = i,
+                                           root_order = i,
+                                           edge_color = j,
+                                           edge_label = j)),
+                                      NA)
+        }
       }
-    }
 
     ## error when mapping node_size to character
-    expect_error(plot(z,
-                      method = 'temporal'
-                      x_axis = 'date',
-                      node_size = 'character',
-                      node_color = 'character',
-                      node_order = 'character',
-                      root_order = 'character'),
+    expect_error(suppressWarnings(plot(z,
+                                       method = 'temporal',
+                                       x_axis = 'date',
+                                       node_size = 'character',
+                                       node_color = 'character',
+                                       node_order = 'character',
+                                       root_order = 'character')),
                  'node_size cannot be mapped to character variable')
 
     ## error when mapping edge_width to character
-    expect_error(plot(z,
-                      method = 'temporal'
-                      x_axis = 'date',
-                      edge_width = 'character_from'),
+    expect_error(suppressWarnings(plot(z,
+                                       method = 'temporal',
+                                       x_axis = 'date',
+                                       edge_width = 'character_from')),
                  'edge_width cannot be mapped to character variable')
 
     ## error when mapping edge_linetype to character
-    expect_error(plot(z,
-                      method = 'temporal'
-                      x_axis = 'date',
-                      edge_linetype = 'character_from'),
+    expect_error(suppressWarnings(plot(z,
+                                       method = 'temporal',
+                                       x_axis = 'date',
+                                       edge_linetype = 'character_from')),
                  paste0("visNetwork only supports two linetypes; ",
                         "use binary variable or set output = 'static'."))
 
     ## testing igraph_type
-    expect_error(plot(z,
-                      method = 'temporal'
-                      x_axis = 'date',
-                      igraph_type = 'rt'),
+    expect_error(suppressWarnings(plot(z,
+                                       method = 'temporal',
+                                       x_axis = 'date',
+                                       igraph_type = 'rt')),
                  NA)
-    expect_error(plot(z,
-                      method = 'temporal'
-                      x_axis = 'date',
-                      igraph_type = 'fr'),
+    expect_error(suppressWarnings(plot(z,
+                                       method = 'temporal',
+                                       x_axis = 'date',
+                                       igraph_type = 'fr')),
                  NA)
-    expect_error(plot(z,
-                      method = 'temporal'
-                      x_axis = 'date',
-                      igraph_type = 'sugiyama'),
+    expect_error(suppressWarnings(plot(z,
+                                       method = 'temporal',
+                                       x_axis = 'date',
+                                       igraph_type = 'sugiyama')),
                  NA)
 
     ## test custom parent_pos
-    expect_error(plot(x,
-                      'date',
-                      method = 'temporal',
-                      custom_parent_pos = function(n) n),
+    expect_error(suppressWarnings(plot(z,
+                                       method = 'temporal',
+                                       x_axis = 'date',
+                                       custom_parent_pos = function(n) n)),
                  paste0("custom_parent_pos must be a function of n",
                         " returning a numeric vector of length n"))
 
@@ -139,13 +139,17 @@ test_that("Testing vis_temporal_interactive", {
 
   ## check x_axis must be numeric or date
   msg <- "x_axis must indicate a Date, numeric or integer value"
-  expect_error(plot(x, method = 'temporal', x_axis = 'date'), NA)
-  expect_error(plot(x, method = 'temporal', x_axis = 'integer'), NA)
-  expect_error(plot(x, method = 'temporal', x_axis = 'numeric'), NA)
-  expect_error(plot(x, method = 'temporal', x_axis = 'character'), msg)
-  expect_error(plot(x, method = 'temporal', x_axis = 'factor'), msg)
-
-  
+  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'date')),
+               NA)
+  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'integer')),
+               NA)
+  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'numeric')),
+               NA)
+  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'character')),
+               msg)
+  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'factor')),
+               msg)
+    
 })
 
 

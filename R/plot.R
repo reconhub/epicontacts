@@ -72,9 +72,11 @@ plot.epicontacts <- function(x,
   method <- match.arg(method)
 
   if(!missing(output) && method != "temporal") {
-    warning("The 'output' argument is only used if method = 'temporal'")
+    stop("The 'output' argument can only be specified if method = 'temporal'")
   }
-    
+
+  output <- match.arg(output)
+
   lst <- list(visNetwork = vis_epicontacts,
               graph3D = graph3D,
               temporal = ifelse(output == "interactive",

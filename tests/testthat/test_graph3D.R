@@ -4,9 +4,12 @@ test_that("graph3D produces list that is not null", {
 
   skip_on_cran()
 
-  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-    id="case_id", to="case_id", from="infector",
-    directed=TRUE)
+  x <- make_epicontacts(ebola_sim$linelist[1:100,],
+                        ebola_sim$contacts[1:100,],
+                        id= "case_id" ,
+                        to = "case_id",
+                        from = "infector",
+                        directed=TRUE)
 
   g <- graph3D(x)
   expect_is(g, "scatterplotThree")
@@ -19,8 +22,11 @@ test_that("graph3D errors as expected on bad annotation and group specification"
 
   skip_on_cran()
 
-  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                        id="case_id", to="case_id", from="infector",
+  x <- make_epicontacts(ebola_sim$linelist[1:100,],
+                        ebola_sim$contacts[1:100,],
+                        id= "case_id" ,
+                        to = "case_id",
+                        from = "infector",
                         directed=TRUE)
 
   msg <- "Annot 'toto, caca' is not in the linelist"
@@ -53,8 +59,11 @@ test_that("graph3D object includes annotation", {
 
   skip_on_cran()
 
-  x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
-                        id="case_id", to="case_id", from="infector",
+  x <- make_epicontacts(ebola_sim$linelist[1:100,],
+                        ebola_sim$contacts[1:100,],
+                        id= "case_id" ,
+                        to = "case_id",
+                        from = "infector",
                         directed=TRUE)
 
   g <- graph3D(x, annot = c("date_of_infection", "outcome"))
