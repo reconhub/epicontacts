@@ -2,7 +2,7 @@
 % Please edit documentation in R/vis_temporal_interactive.R
 \name{vis_temporal_interactive}
 \alias{vis_temporal_interactive}
-\title{Plot epicontacts objects using visNetwork}
+\title{Plot temporal networks using visNetwork}
 \usage{
 vis_temporal_interactive(x, x_axis = NULL,
   network_shape = c("branching", "rectangle"), root_order = x_axis,
@@ -68,7 +68,7 @@ children. Can be one of 'middle', 'top' or 'bottom'.}
 \item{axis_type}{Number of axes to be plotted (one of 'single', 'double',
 'none')}
 
-\item{igraph_type}{Alternate tree layouts provided by igraph. Must be one of
+\item{igraph_type}{Alternate network shapes provided by igraph. Must be one of
 'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
 for Fruchterman-Reingold layout.}
 
@@ -89,9 +89,9 @@ if (require(outbreaks)) {
 head(mers_korea_2015[[1]])
 head(mers_korea_2015[[2]])
 
-x <- make_epicontacts(linelist=mers_korea_2015[[1]],
+x <- make_epicontacts(linelist = mers_korea_2015[[1]],
                        contacts = mers_korea_2015[[2]],
-                       directed=TRUE)
+                       directed = TRUE)
 
 \dontrun{
 plot(x,
@@ -118,5 +118,5 @@ width = 1500)
   \code{\link{edges_pal}} and \code{\link{cases_pal}} for color palettes used
 }
 \author{
-Finlay Campbell (\email{f.campbell15@imperial.ac.uk})
+Finlay Campbell (\email{finlaycampbell93@gmail.com})
 }

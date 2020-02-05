@@ -7,7 +7,7 @@
 #' @export
 #'
 #'
-#' @author Finlay Campbell (\email{f.campbell15@imperial.ac.uk})
+#' @author Finlay Campbell (\email{finlaycampbell93@gmail.com})
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #'

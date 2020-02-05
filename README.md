@@ -369,4 +369,4 @@ Contributions are welcome via **pull requests**.
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-**Maintainer:** Finlay Campbell (f.campbell15@imperial.ac.uk)
+**Maintainer:** Finlay Campbell (finlaycampbell93@gmail.com)

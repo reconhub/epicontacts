@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Handling, Visualisation and Analysis of Epidemiological Contacts • epicontacts</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Handling, Visualisation and Analysis of Epidemiological Contacts">
 <meta property="og:description" content="A collection of tools for representing epidemiological contact data, composed of case line lists and contacts between cases. Also contains procedures for data handling, interactive graphics, and statistics.">
 <meta name="twitter:card" content="summary">
@@ -18,7 +19,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-article">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -59,7 +60,7 @@
       <a href="articles/epicontacts_class.html">`epicontacts` Class: Details Regarding the Data Structure for `epicontacts` Objects</a>
     </li>
     <li>
-      <a href="articles/ttree.html">Visualisation of timed transmission trees using epicontacts</a>
+      <a href="articles/ttree.html">Visualising timed transmission trees using epicontacts</a>
     </li>
   </ul>
 </li>
@@ -76,12 +77,10 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    
 
-    
-    
+      </header><div class="row">
+  <div class="contents col-md-9">
+
 <div id="welcome-to-the-epicontacts-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#welcome-to-the-epicontacts-package" class="anchor"></a>Welcome to the <em>epicontacts</em> package!</h2>
@@ -93,9 +92,9 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#installing-the-package" class="anchor"></a>Installing the package</h1></div>
 <p>To install the current stable, CRAN version of the package, type:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"epicontacts"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"epicontacts"</span>)</a></code></pre></div>
 <p>To benefit from the latest features and bug fixes, install the development, <em>github</em> version of the package using:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"reconhub/epicontacts"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"reconhub/epicontacts"</span>)</a></code></pre></div>
 <p>Note that this requires the package <em>devtools</em> installed.</p>
 </div>
 <div id="what-does-it-do" class="section level1">
@@ -127,9 +126,9 @@
 <h2 class="hasAnchor">
 <a href="#vignettes" class="anchor"></a>Vignettes</h2>
 <p>An overview of <em>epicontacts</em> is provided below in the worked example below. More detailed tutorials are distributed as vignettes with the package:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"overview"</span>, <span class="dt">package=</span><span class="st">"epicontacts"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"customize_plot"</span>, <span class="dt">package=</span><span class="st">"epicontacts"</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"epicontacts_class"</span>, <span class="dt">package=</span><span class="st">"epicontacts"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"overview"</span>, <span class="dt">package=</span><span class="st">"epicontacts"</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"customize_plot"</span>, <span class="dt">package=</span><span class="st">"epicontacts"</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"epicontacts_class"</span>, <span class="dt">package=</span><span class="st">"epicontacts"</span>)</a></code></pre></div>
 </div>
 <div id="websites" class="section level2">
 <h2 class="hasAnchor">
@@ -162,104 +161,109 @@
 <p>There does not need to be an one-to-one correspondance between cases documented in the linelist and those appearing in the contacts. However, links will be made between the two sources of data whenever unique identifiers match. This will be especially handy when subsetting data, or when characterising contacts in terms of ‘node’ (case) properties.</p>
 <p>We illustrate the construction of an <em>epicontacts</em> using contact data from a Middle East Respiratory Syndrom coronavirus (MERS CoV) from South Korea in 2015, available as the dataset <code>mers_korea_2015</code> in the package <em>outbreaks</em>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(outbreaks)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(epicontacts)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(mers_korea_<span class="dv">2015</span>)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; [1] "linelist" "contacts"</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(mers_korea_<span class="dv">2015</span><span class="op">$</span>linelist) </a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; [1] 162  15</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(mers_korea_<span class="dv">2015</span><span class="op">$</span>contacts) </a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; [1] 98  4</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">x &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_epicontacts.html">make_epicontacts</a></span>(<span class="dt">linelist =</span> mers_korea_<span class="dv">2015</span><span class="op">$</span>linelist,</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">                      <span class="dt">contacts =</span> mers_korea_<span class="dv">2015</span><span class="op">$</span>contacts, </a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">                      <span class="dt">directed =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">x</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; /// Epidemiological Contacts //</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;   // class: epicontacts</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;   // 162 cases in linelist; 98 contacts;  directed </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(outbreaks)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(epicontacts)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; Registered S3 methods overwritten by 'ggplot2':</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;   method         from </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   [.quosures     rlang</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;   c.quosures     rlang</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   print.quosures rlang</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(mers_korea_<span class="dv">2015</span>)</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; [1] "linelist" "contacts"</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(mers_korea_<span class="dv">2015</span><span class="op">$</span>linelist) </a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; [1] 162  15</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(mers_korea_<span class="dv">2015</span><span class="op">$</span>contacts) </a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; [1] 98  4</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">x &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_epicontacts.html">make_epicontacts</a></span>(<span class="dt">linelist =</span> mers_korea_<span class="dv">2015</span><span class="op">$</span>linelist,</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">                      <span class="dt">contacts =</span> mers_korea_<span class="dv">2015</span><span class="op">$</span>contacts, </a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">                      <span class="dt">directed =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">x</a>
 <a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;   // linelist</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; /// Epidemiological Contacts //</span></a>
 <a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; # A tibble: 162 x 15</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt;    id      age age_class sex   place_infect reporting_ctry loc_hosp</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt;  * &lt;chr&gt; &lt;int&gt; &lt;chr&gt;     &lt;fct&gt; &lt;fct&gt;        &lt;fct&gt;          &lt;fct&gt;   </span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt;  1 SK_1     68 60-69     M     Middle East  South Korea    Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;  2 SK_2     63 60-69     F     Outside Mid… South Korea    Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt;  3 SK_3     76 70-79     M     Outside Mid… South Korea    Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt;  4 SK_4     46 40-49     F     Outside Mid… South Korea    Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co">#&gt;  5 SK_5     50 50-59     M     Outside Mid… South Korea    365 Yeo…</span></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co">#&gt;  6 SK_6     71 70-79     M     Outside Mid… South Korea    Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt;  7 SK_7     28 20-29     F     Outside Mid… South Korea    Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt;  8 SK_8     46 40-49     F     Outside Mid… South Korea    Seoul C…</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co">#&gt;  9 SK_9     56 50-59     M     Outside Mid… South Korea    Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="co">#&gt; 10 SK_10    44 40-49     M     Outside Mid… China          Pyeongt…</span></a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co">#&gt; # ... with 152 more rows, and 8 more variables: dt_onset &lt;date&gt;,</span></a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="co">#&gt; #   dt_report &lt;date&gt;, week_report &lt;fct&gt;, dt_start_exp &lt;date&gt;,</span></a>
-<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="co">#&gt; #   dt_end_exp &lt;date&gt;, dt_diag &lt;date&gt;, outcome &lt;fct&gt;, dt_death &lt;date&gt;</span></a>
-<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="co">#&gt;   // contacts</span></a>
-<a class="sourceLine" id="cb4-42" data-line-number="42"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="co">#&gt; # A tibble: 98 x 4</span></a>
-<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="co">#&gt;    from  to     exposure       diff_dt_onset</span></a>
-<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;fct&gt;                  &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb4-46" data-line-number="46"><span class="co">#&gt;  1 SK_14 SK_113 Emergency room            10</span></a>
-<a class="sourceLine" id="cb4-47" data-line-number="47"><span class="co">#&gt;  2 SK_14 SK_116 Emergency room            13</span></a>
-<a class="sourceLine" id="cb4-48" data-line-number="48"><span class="co">#&gt;  3 SK_14 SK_41  Emergency room            14</span></a>
-<a class="sourceLine" id="cb4-49" data-line-number="49"><span class="co">#&gt;  4 SK_14 SK_112 Emergency room            14</span></a>
-<a class="sourceLine" id="cb4-50" data-line-number="50"><span class="co">#&gt;  5 SK_14 SK_100 Emergency room            15</span></a>
-<a class="sourceLine" id="cb4-51" data-line-number="51"><span class="co">#&gt;  6 SK_14 SK_114 Emergency room            15</span></a>
-<a class="sourceLine" id="cb4-52" data-line-number="52"><span class="co">#&gt;  7 SK_14 SK_136 Emergency room            15</span></a>
-<a class="sourceLine" id="cb4-53" data-line-number="53"><span class="co">#&gt;  8 SK_14 SK_47  Emergency room            16</span></a>
-<a class="sourceLine" id="cb4-54" data-line-number="54"><span class="co">#&gt;  9 SK_14 SK_110 Emergency room            16</span></a>
-<a class="sourceLine" id="cb4-55" data-line-number="55"><span class="co">#&gt; 10 SK_14 SK_122 Emergency room            16</span></a>
-<a class="sourceLine" id="cb4-56" data-line-number="56"><span class="co">#&gt; # ... with 88 more rows</span></a>
-<a class="sourceLine" id="cb4-57" data-line-number="57"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(x)</a>
-<a class="sourceLine" id="cb4-58" data-line-number="58"><span class="co">#&gt; [1] "epicontacts"</span></a>
-<a class="sourceLine" id="cb4-59" data-line-number="59"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(x)</a>
-<a class="sourceLine" id="cb4-60" data-line-number="60"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-61" data-line-number="61"><span class="co">#&gt; /// Overview //</span></a>
-<a class="sourceLine" id="cb4-62" data-line-number="62"><span class="co">#&gt;   // number of unique IDs in linelist: 162</span></a>
-<a class="sourceLine" id="cb4-63" data-line-number="63"><span class="co">#&gt;   // number of unique IDs in contacts: 97</span></a>
-<a class="sourceLine" id="cb4-64" data-line-number="64"><span class="co">#&gt;   // number of unique IDs in both: 97</span></a>
-<a class="sourceLine" id="cb4-65" data-line-number="65"><span class="co">#&gt;   // number of contacts: 98</span></a>
-<a class="sourceLine" id="cb4-66" data-line-number="66"><span class="co">#&gt;   // contacts with both cases in linelist: 100 %</span></a>
-<a class="sourceLine" id="cb4-67" data-line-number="67"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-68" data-line-number="68"><span class="co">#&gt; /// Degrees of the network //</span></a>
-<a class="sourceLine" id="cb4-69" data-line-number="69"><span class="co">#&gt;   // in-degree summary:</span></a>
-<a class="sourceLine" id="cb4-70" data-line-number="70"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
-<a class="sourceLine" id="cb4-71" data-line-number="71"><span class="co">#&gt;    0.00    1.00    1.00    1.01    1.00    3.00 </span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt;   // class: epicontacts</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt;   // 162 cases in linelist; 98 contacts;  directed </span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt;   // linelist</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt; # A tibble: 162 x 15</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt;    id      age age_class sex   place_infect reporting_ctry loc_hosp</span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co">#&gt;    &lt;chr&gt; &lt;int&gt; &lt;chr&gt;     &lt;fct&gt; &lt;fct&gt;        &lt;fct&gt;          &lt;fct&gt;   </span></a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co">#&gt;  1 SK_1     68 60-69     M     Middle East  South Korea    Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt;  2 SK_2     63 60-69     F     Outside Mid… South Korea    Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt;  3 SK_3     76 70-79     M     Outside Mid… South Korea    Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co">#&gt;  4 SK_4     46 40-49     F     Outside Mid… South Korea    Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="co">#&gt;  5 SK_5     50 50-59     M     Outside Mid… South Korea    365 Yeo…</span></a>
+<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co">#&gt;  6 SK_6     71 70-79     M     Outside Mid… South Korea    Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="co">#&gt;  7 SK_7     28 20-29     F     Outside Mid… South Korea    Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="co">#&gt;  8 SK_8     46 40-49     F     Outside Mid… South Korea    Seoul C…</span></a>
+<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="co">#&gt;  9 SK_9     56 50-59     M     Outside Mid… South Korea    Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="co">#&gt; 10 SK_10    44 40-49     M     Outside Mid… China          Pyeongt…</span></a>
+<a class="sourceLine" id="cb4-42" data-line-number="42"><span class="co">#&gt; # … with 152 more rows, and 8 more variables: dt_onset &lt;date&gt;,</span></a>
+<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="co">#&gt; #   dt_report &lt;date&gt;, week_report &lt;fct&gt;, dt_start_exp &lt;date&gt;,</span></a>
+<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="co">#&gt; #   dt_end_exp &lt;date&gt;, dt_diag &lt;date&gt;, outcome &lt;fct&gt;, dt_death &lt;date&gt;</span></a>
+<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-46" data-line-number="46"><span class="co">#&gt;   // contacts</span></a>
+<a class="sourceLine" id="cb4-47" data-line-number="47"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-48" data-line-number="48"><span class="co">#&gt; # A tibble: 98 x 4</span></a>
+<a class="sourceLine" id="cb4-49" data-line-number="49"><span class="co">#&gt;    from  to     exposure       diff_dt_onset</span></a>
+<a class="sourceLine" id="cb4-50" data-line-number="50"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;fct&gt;                  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb4-51" data-line-number="51"><span class="co">#&gt;  1 SK_14 SK_113 Emergency room            10</span></a>
+<a class="sourceLine" id="cb4-52" data-line-number="52"><span class="co">#&gt;  2 SK_14 SK_116 Emergency room            13</span></a>
+<a class="sourceLine" id="cb4-53" data-line-number="53"><span class="co">#&gt;  3 SK_14 SK_41  Emergency room            14</span></a>
+<a class="sourceLine" id="cb4-54" data-line-number="54"><span class="co">#&gt;  4 SK_14 SK_112 Emergency room            14</span></a>
+<a class="sourceLine" id="cb4-55" data-line-number="55"><span class="co">#&gt;  5 SK_14 SK_100 Emergency room            15</span></a>
+<a class="sourceLine" id="cb4-56" data-line-number="56"><span class="co">#&gt;  6 SK_14 SK_114 Emergency room            15</span></a>
+<a class="sourceLine" id="cb4-57" data-line-number="57"><span class="co">#&gt;  7 SK_14 SK_136 Emergency room            15</span></a>
+<a class="sourceLine" id="cb4-58" data-line-number="58"><span class="co">#&gt;  8 SK_14 SK_47  Emergency room            16</span></a>
+<a class="sourceLine" id="cb4-59" data-line-number="59"><span class="co">#&gt;  9 SK_14 SK_110 Emergency room            16</span></a>
+<a class="sourceLine" id="cb4-60" data-line-number="60"><span class="co">#&gt; 10 SK_14 SK_122 Emergency room            16</span></a>
+<a class="sourceLine" id="cb4-61" data-line-number="61"><span class="co">#&gt; # … with 88 more rows</span></a>
+<a class="sourceLine" id="cb4-62" data-line-number="62"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(x)</a>
+<a class="sourceLine" id="cb4-63" data-line-number="63"><span class="co">#&gt; [1] "epicontacts"</span></a>
+<a class="sourceLine" id="cb4-64" data-line-number="64"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(x)</a>
+<a class="sourceLine" id="cb4-65" data-line-number="65"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-66" data-line-number="66"><span class="co">#&gt; /// Overview //</span></a>
+<a class="sourceLine" id="cb4-67" data-line-number="67"><span class="co">#&gt;   // number of unique IDs in linelist: 162</span></a>
+<a class="sourceLine" id="cb4-68" data-line-number="68"><span class="co">#&gt;   // number of unique IDs in contacts: 97</span></a>
+<a class="sourceLine" id="cb4-69" data-line-number="69"><span class="co">#&gt;   // number of unique IDs in both: 97</span></a>
+<a class="sourceLine" id="cb4-70" data-line-number="70"><span class="co">#&gt;   // number of contacts: 98</span></a>
+<a class="sourceLine" id="cb4-71" data-line-number="71"><span class="co">#&gt;   // contacts with both cases in linelist: 100 %</span></a>
 <a class="sourceLine" id="cb4-72" data-line-number="72"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-73" data-line-number="73"><span class="co">#&gt;   // out-degree summary:</span></a>
-<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
-<a class="sourceLine" id="cb4-75" data-line-number="75"><span class="co">#&gt;    0.00    0.00    0.00    1.01    0.00   38.00 </span></a>
-<a class="sourceLine" id="cb4-76" data-line-number="76"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-77" data-line-number="77"><span class="co">#&gt;   // in and out degree summary:</span></a>
-<a class="sourceLine" id="cb4-78" data-line-number="78"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
-<a class="sourceLine" id="cb4-79" data-line-number="79"><span class="co">#&gt;   1.000   1.000   1.000   2.021   1.000  39.000 </span></a>
-<a class="sourceLine" id="cb4-80" data-line-number="80"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-81" data-line-number="81"><span class="co">#&gt; /// Attributes //</span></a>
-<a class="sourceLine" id="cb4-82" data-line-number="82"><span class="co">#&gt;   // attributes in linelist:</span></a>
-<a class="sourceLine" id="cb4-83" data-line-number="83"><span class="co">#&gt;  age age_class sex place_infect reporting_ctry loc_hosp dt_onset dt_report week_report dt_start_exp dt_end_exp dt_diag outcome dt_death</span></a>
-<a class="sourceLine" id="cb4-84" data-line-number="84"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-85" data-line-number="85"><span class="co">#&gt;   // attributes in contacts:</span></a>
-<a class="sourceLine" id="cb4-86" data-line-number="86"><span class="co">#&gt;  exposure diff_dt_onset</span></a></code></pre></div>
-<p>In practice, the linelist and contacts will usually be imported from a text file (e.g. .txt, .csv) or a spreadsheet (e.g. .ods, .xls) using usual import functions (e.g. <code>read.table</code>, <code>read.csv</code>, <code><a href="https://www.rdocumentation.org/packages/gdata/topics/read.xls">gdata::read.xls</a></code>).</p>
+<a class="sourceLine" id="cb4-73" data-line-number="73"><span class="co">#&gt; /// Degrees of the network //</span></a>
+<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt;   // in-degree summary:</span></a>
+<a class="sourceLine" id="cb4-75" data-line-number="75"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
+<a class="sourceLine" id="cb4-76" data-line-number="76"><span class="co">#&gt;    0.00    1.00    1.00    1.01    1.00    3.00 </span></a>
+<a class="sourceLine" id="cb4-77" data-line-number="77"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-78" data-line-number="78"><span class="co">#&gt;   // out-degree summary:</span></a>
+<a class="sourceLine" id="cb4-79" data-line-number="79"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
+<a class="sourceLine" id="cb4-80" data-line-number="80"><span class="co">#&gt;    0.00    0.00    0.00    1.01    0.00   38.00 </span></a>
+<a class="sourceLine" id="cb4-81" data-line-number="81"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-82" data-line-number="82"><span class="co">#&gt;   // in and out degree summary:</span></a>
+<a class="sourceLine" id="cb4-83" data-line-number="83"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
+<a class="sourceLine" id="cb4-84" data-line-number="84"><span class="co">#&gt;   1.000   1.000   1.000   2.021   1.000  39.000 </span></a>
+<a class="sourceLine" id="cb4-85" data-line-number="85"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-86" data-line-number="86"><span class="co">#&gt; /// Attributes //</span></a>
+<a class="sourceLine" id="cb4-87" data-line-number="87"><span class="co">#&gt;   // attributes in linelist:</span></a>
+<a class="sourceLine" id="cb4-88" data-line-number="88"><span class="co">#&gt;  age age_class sex place_infect reporting_ctry loc_hosp dt_onset dt_report week_report dt_start_exp dt_end_exp dt_diag outcome dt_death</span></a>
+<a class="sourceLine" id="cb4-89" data-line-number="89"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-90" data-line-number="90"><span class="co">#&gt;   // attributes in contacts:</span></a>
+<a class="sourceLine" id="cb4-91" data-line-number="91"><span class="co">#&gt;  exposure diff_dt_onset</span></a></code></pre></div>
+<p>In practice, the linelist and contacts will usually be imported from a text file (e.g. .txt, .csv) or a spreadsheet (e.g. .ods, .xls) using usual import functions (e.g. <code>read.table</code>, <code>read.csv</code>, <code><a href="https://rdrr.io/pkg/gdata/man/read.xls.html">gdata::read.xls</a></code>).</p>
 </div>
 <div id="simple-analyses" class="section level2">
 <h2 class="hasAnchor">
 <a href="#simple-analyses" class="anchor"></a>Simple analyses</h2>
 <p>First, we plot the <em>epicontacts</em> object:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(x, <span class="dt">selector =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(x, <span class="dt">selector =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x.png" width="600px"></p>
 <p>This is a screenshot of the actual plot. For interactive graphs, see the <a href="http://www.repidemicsconsortium.org/epicontacts/articles/epicontacts.html">introductory vignette</a>.</p>
 <p>We can look for patterns of contacts between genders:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(x, <span class="st">"sex"</span>, <span class="dt">col_pal =</span> spectral)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(x, <span class="st">"sex"</span>, <span class="dt">col_pal =</span> spectral)</a></code></pre></div>
 <p><img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x_gender.png" width="600px"></p>
 <p>There is no obvious signs of non-random mixing patterns, but this is worth testing. The function <code>get_pairwise</code> is particularly useful for this. In its basic form, it reports nodes of attributes for all contacts. For instance:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
@@ -286,7 +290,7 @@
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; values.from  F  M</span></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;           F  2  4</span></a>
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;           M 38 54</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/fisher.test">fisher.test</a></span>(sex_tab)</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span>(sex_tab)</a>
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  Fisher's Exact Test for Count Data</span></a>
 <a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; </span></a>
@@ -307,13 +311,13 @@
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; [47] 14 17  9 14 14  6  6  9  9  9 10 12 13 21  5 14 16 20 21 13  3 11 11</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; [70] 12 12 12 12 13 13 14 15 15 16 18 21 22 12 11  9  3 10 10 10 10 11 12</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [93] 12 13 14 16 17 18</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(si)</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(si)</a>
 <a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
 <a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;    2.00   11.00   14.00   14.47   18.00   27.00</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/hist">hist</a></span>(si, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>, <span class="dt">nclass =</span> <span class="dv">30</span>, </a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(si, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>, <span class="dt">nclass =</span> <span class="dv">30</span>, </a>
 <a class="sourceLine" id="cb9-13" data-line-number="13">     <span class="dt">xlab =</span> <span class="st">"Time to secondary onset (days)"</span>, </a>
 <a class="sourceLine" id="cb9-14" data-line-number="14">     <span class="dt">main =</span> <span class="st">"Distribution of the serial interval"</span>)</a></code></pre></div>
-<p><img src="figs/si-1.png" width="768"></p>
+<p><img src="figs/si-1.png" alt="plot of chunk si"></p>
 </div>
 </div>
 <div id="contributors-by-alphabetic-order" class="section level1">
@@ -329,8 +333,9 @@
 <p>See details of contributions on: <br><a href="https://github.com/reconhub/epicontacts/graphs/contributors" class="uri">https://github.com/reconhub/epicontacts/graphs/contributors</a></p>
 <p>Contributions are welcome via <strong>pull requests</strong>.</p>
 <p>Please note that this project is released with a <a href="CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
-<p><strong>Maintainer:</strong> VP Nagraj (<a href="mailto:vpnagraj@virginia.edu">vpnagraj@virginia.edu</a>)</p>
+<p><strong>Maintainer:</strong> Finlay Campbell (<a href="mailto:finlaycampbell93@gmail.com">finlaycampbell93@gmail.com</a>)</p>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -358,32 +363,33 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>VP Nagraj <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Finlay Campbell <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Thibaut Jombart <br><small class="roles"> Author </small>  </li>
 <li>Nistara Randhawa <br><small class="roles"> Author </small>  </li>
 <li>Bertrand Sudre <br><small class="roles"> Author </small>  </li>
-<li>Finlay Campbell <br><small class="roles"> Author </small>  </li>
+<li>VP Nagraj <br><small class="roles"> Author </small>  </li>
 <li>Thomas Crellen <br><small class="roles"> Author </small>  </li>
 <li>Zhian N. Kamvar <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
-      </div>
-
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by VP Nagraj, Thibaut Jombart, Nistara Randhawa, Bertrand Sudre, Finlay Campbell, Thomas Crellen, Zhian N. Kamvar.</p>
+  <p>Developed by Finlay Campbell, Thibaut Jombart, Nistara Randhawa, Bertrand Sudre, VP Nagraj, Thomas Crellen, Zhian N. Kamvar.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

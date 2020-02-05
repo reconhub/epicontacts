@@ -11,7 +11,7 @@
 #' Thibaut Jombart (\email{thibautjombart@@gmail.com})
 #' VP Nagraj (\email{vpnagraj@@virginia.edu})
 #' Zhian N. Kamvar (\email{zkamvar@@gmail.com})
-#' Finlay Campbell (\email{f.campbell15@imperial.ac.uk})
+#' Finlay Campbell (\email{finlaycampbell93@@gmail.com})
 #'
 #' @param x An \code{\link{epicontacts}} object.
 #'

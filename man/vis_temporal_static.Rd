@@ -120,5 +120,5 @@ plot(x, method = "ggplot", x_axis = "dt_onset", node_color = "sex")
   \code{\link{edges_pal}} and \code{\link{cases_pal}} for color palettes used
 }
 \author{
-Finlay Campbell (\email{f.campbell15@imperial.ac.uk})
+Finlay Campbell (\email{finlaycampbell93@gmail.com})
 }

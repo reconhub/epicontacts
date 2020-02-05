@@ -9,7 +9,7 @@
 #' clusters of cases connected to specified cases) or cluster sizes (returning
 #' cluster of a specific, minimum or maximum size).
 #'
-#' @author Finlay Campbell (\email{f.campbell15@@imperial.ac.uk}), Nistara
+#' @author Finlay Campbell (\email{finlaycampbell93@@gmail.com}), Nistara
 #'     Randhawa (\email{nrandhawa@@ucdavis.edu})
 #'
 #' @export
