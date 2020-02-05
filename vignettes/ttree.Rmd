@@ -35,7 +35,6 @@ sim$directed <- TRUE
 plot(sim,
      method = 'temporal',
      x_axis = 'onset',
-#     legend = FALSE,
      network_shape = 'rectangle',
      root_order = 'subtree_size',
      node_order = 'onset',
@@ -47,8 +46,8 @@ plot(sim,
      unlinked_pos = 'bottom',
      reverse_root_order = FALSE,
      reverse_node_order = TRUE,
-     label = TRUE,
      height = 700,
+     width = 700,
      legend = TRUE,
      highlight_downstream = TRUE,
      axis_type = 'double'
@@ -88,7 +87,10 @@ for the x-axis (in this case, the date of symptom onset).
 ```{r}
 plot(sim,
      method = 'temporal',
-     x_axis = 'onset')
+     x_axis = 'onset',
+     height = 700,
+     width = 700,
+)
 ```
 
 ## Specifying node and edge attributes
@@ -107,7 +109,9 @@ plot(sim,
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
-     size_range = c(5, 20))
+     size_range = c(5, 20),
+     height = 700,
+     width = 700)
 ```
 
 We can specify the size range of the nodes using the `size_range` argument, and
@@ -126,7 +130,9 @@ plot(sim,
      size_range = c(5, 20),
      edge_color = 'status',
      edge_linetype = 'status',
-     edge_width = 'duration')
+     edge_width = 'duration',
+     height = 700,
+     width = 700)
 ```
 
 ## Specifying transmission tree shape
@@ -146,7 +152,9 @@ plot(sim,
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
-     edge_linetype = 'status')
+     edge_linetype = 'status',
+     height = 700,
+     width = 700)
 ```
 
 Furthermore, the vertical ordering of the nodes within the tree can be mapped to a given column
@@ -170,7 +178,9 @@ plot(sim,
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
      node_size = 'R_i',
      size_range = c(5, 20),
-     edge_linetype = 'status')
+     edge_linetype = 'status',
+     height = 700,
+     width = 700)
 ```
 
 Each case node can be assigned a unique vertical position by toggling the
@@ -192,7 +202,9 @@ plot(sim,
      size_range = c(5, 20),
      edge_linetype = 'status',
      position_dodge = TRUE,
-     unlinked_pos = 'top')
+     unlinked_pos = 'top',
+     height = 700,
+     width = 700)
 ```
 
 The position of the parent node relative to the children nodes can be
@@ -216,7 +228,9 @@ plot(sim,
      edge_linetype = 'status',
      position_dodge = FALSE,
      unlinked_pos = 'top',
-     parent_pos = 'bottom')
+     parent_pos = 'bottom',
+     height = 700,
+     width = 700)
 ```
 
 Alternative tree layouts provided by `igraph` can also be used via the
@@ -234,7 +248,9 @@ plot(sim,
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
-     igraph_type = 'fr')
+     igraph_type = 'fr',
+     height = 700,
+     width = 700)
 ```
 
 ## Time axis
@@ -261,7 +277,9 @@ plot(sim,
      position_dodge = TRUE,
      unlinked_pos = 'top',
      axis_type = 'double',
-     date_labels = "%b %d")
+     date_labels = "%b %d",
+     height = 700,
+     width = 700)
 ```
 
 ## Collapsing nodes
@@ -288,7 +306,9 @@ plot(sim,
      unlinked_pos = 'top',
      axis_type = 'double',
      date_label = "%b %d",
-     collapse = TRUE)
+     collapse = TRUE,
+     height = 700,
+     width = 700)
 ```
 
 ## Adding a title
@@ -313,7 +333,9 @@ plot(sim,
      axis_type = 'double',
      date_label = "%b %d",
      title = "Transmission chains, June-August 2018",
-     collapse = TRUE)
+     collapse = TRUE,
+     height = 700,
+     width = 700)
 ```
 
 
@@ -335,14 +357,15 @@ plot(sim,
      reverse_root_order = TRUE,
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
      edge_label = 'status',
      edge_flex = TRUE,
      highlight_downstream = TRUE,
-     label = FALSE)
+     label = FALSE,
+     height = 700,
+     width = 700)
 ```
 
 The `height` and `width` of the figure can be specified in pixels. 
@@ -358,11 +381,11 @@ plot(sim,
      reverse_root_order = TRUE,
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
-     height = 1000)
+     height = 700,
+     width = 700)
 ```
 
 
@@ -397,8 +420,8 @@ plot(sim_2,
      size_range = c(5, 20),
      edge_color = 'suspicious',
      title = "Uncleaned contact network",
-     height = 1000,
-     width = 900,
+     height = 700,
+     width = 700,
      label = FALSE,
      thin = TRUE,
      position_dodge = TRUE)
@@ -424,8 +447,8 @@ plot(sim_2_clean,
      size_range = c(5, 20),
      edge_color = 'suspicious',
      title = "Cleaned contact network",
-     height = 1000,
-     width = 900,
+     height = 700,
+     width = 700,
      label = FALSE,
      thin = TRUE,
      position_dodge = TRUE)
@@ -468,7 +491,8 @@ plot(sim_3,
      node_size = 'R_i',
      size_range = c(5, 20),
      edge_linetype = 'status',
-     height = 1000,
+     height = 700,
+     width = 700,
      position_dodge = FALSE)
      
 ```  

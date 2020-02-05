@@ -7,7 +7,8 @@
 vis_temporal_static(x, x_axis, edge_alpha = NULL,
   network_shape = "branching", root_order = "subtree_size",
   node_order = "subtree_size", reverse_root_order = FALSE,
-  reverse_node_order = FALSE, lineend = c("butt", "round", "square"),
+  reverse_node_order = FALSE, rank_contact = x_axis,
+  reverse_rank_contact = FALSE, lineend = c("butt", "round", "square"),
   unlinked_pos = c("bottom", "top", "middle"), position_dodge = FALSE,
   parent_pos = c("middle", "top", "bottom"), custom_parent_pos = NULL,
   y_label = NULL, node_label = NULL, y_coor = NULL,
@@ -44,6 +45,16 @@ should be reversed. This argument is only called when type = "ttree".}
 
 \item{reverse_node_order}{A logical indicating if the ordering of the nodes
 should be reversed. This argument is only called when type = "ttree".}
+
+\item{rank_contact}{If more than one incoming contact is provided for a given
+case, which attribute in the contact list should be used to rank the
+contacts and choose the top value. These contacts forms the 'scaffold' of the
+transmission tree and determine the y-position of each node. If a node
+attribute is provided, the pairwise difference in node attributes will be
+taken to rank the contacts.}
+
+\item{reverse_rank_contact}{Logical indicating if the contact ranking should
+be reversed in order.}
 
 \item{lineend}{Character indicating the lineend to be used for
 geom_segment. One of "round", "butt" or "square".}

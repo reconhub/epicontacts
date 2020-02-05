@@ -57,6 +57,13 @@
 #'
 #' @param parent_pos Specify the position of the parent node relative to its
 #'   children. Can be one of 'middle', 'top' or 'bottom'.
+#'
+#' @param custom_parent_pos A function specifying the position of children nodes
+#'   relative to their parent. This function must accept a single integer `x` as
+#'   its only argument, specifying the number of children nodes. It must return
+#'   a vector of length x, specifying the position of each child relative to the
+#'   parent, where a x > 0 indicates above the parent, x < 0 indicates below the
+#'   parent, and x = 0 indicates the same height as the parent.
 #' 
 #' @param n_breaks The number of breaks on the x-axis timeline.
 #'
@@ -199,7 +206,10 @@ vis_temporal_interactive <- function(x,
   
   ## warning to list number of nodes and edges not displayed
   msg <- "%s nodes and %s edges removed as x_axis data is unavailable"
-  warning(sprintf(msg, not_in_ll + sum(na_x_axis), contacts_rm))
+  sm <- not_in_ll + sum(na_x_axis) + contacts_rm
+  if(sm > 0) {
+    warning(sprintf(msg, not_in_ll + sum(na_x_axis), contacts_rm))
+  }
   
   ## remove NA x_axis elements from linelist
   x <- x[!na_x_axis]

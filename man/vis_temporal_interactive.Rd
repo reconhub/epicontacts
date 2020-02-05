@@ -10,8 +10,9 @@ vis_temporal_interactive(x, x_axis = NULL,
   reverse_node_order = FALSE, rank_contact = x_axis,
   reverse_rank_contact = FALSE, unlinked_pos = c("bottom", "top",
   "middle"), edge_flex = FALSE, position_dodge = FALSE,
-  parent_pos = c("middle", "top", "bottom"), n_breaks = 5,
-  axis_type = c("single", "double", "none"), igraph_type = NULL, ...)
+  parent_pos = c("middle", "top", "bottom"), custom_parent_pos = NULL,
+  n_breaks = 5, axis_type = c("single", "double", "none"),
+  igraph_type = NULL, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -62,6 +63,13 @@ coordinate or 'dodge' each other.}
 
 \item{parent_pos}{Specify the position of the parent node relative to its
 children. Can be one of 'middle', 'top' or 'bottom'.}
+
+\item{custom_parent_pos}{A function specifying the position of children nodes
+relative to their parent. This function must accept a single integer `x` as
+its only argument, specifying the number of children nodes. It must return
+a vector of length x, specifying the position of each child relative to the
+parent, where a x > 0 indicates above the parent, x < 0 indicates below the
+parent, and x = 0 indicates the same height as the parent.}
 
 \item{n_breaks}{The number of breaks on the x-axis timeline.}
 

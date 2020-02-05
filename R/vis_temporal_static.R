@@ -198,7 +198,10 @@ vis_temporal_static <- function(x,
   
   ## warning to list number of nodes and edges not displayed
   msg <- "%s nodes and %s edges removed as x_axis data is unavailable"
-  warning(sprintf(msg, not_in_ll + sum(na_x_axis), contacts_rm))
+  sm <- not_in_ll + sum(na_x_axis) + contacts_rm
+  if(sm > 0) {
+    warning(sprintf(msg, not_in_ll + sum(na_x_axis), contacts_rm))
+  }
   
   ## remove NA x_axis elements from linelist
   x <- x[!na_x_axis]
