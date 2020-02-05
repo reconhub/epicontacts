@@ -117,6 +117,7 @@ vis_temporal_interactive <- function(x,
                                      edge_flex = FALSE,
                                      position_dodge = FALSE,
                                      parent_pos = c('middle', 'top', 'bottom'),
+                                     custom_parent_pos = NULL,
                                      n_breaks = 5,
                                      axis_type = c("single", "double", "none"),
                                      igraph_type = NULL,
@@ -154,7 +155,6 @@ vis_temporal_interactive <- function(x,
   collapse <- get_val('collapse', def, args)
   thin <- get_val('thin', def, args)
   font_size <- get_val('font_size', def, args)
-  custom_parent_pos <- get_val('custom_parent_pos', def, args)
 
   ## match arguments
   network_shape <- match.arg(network_shape)

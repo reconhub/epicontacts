@@ -41,6 +41,16 @@
 #' @param reverse_node_order A logical indicating if the ordering of the nodes
 #'   should be reversed. This argument is only called when type = "ttree".
 #'
+#' @param rank_contact If more than one incoming contact is provided for a given
+#'   case, which attribute in the contact list should be used to rank the
+#'   contacts and choose the top value. These contacts forms the 'scaffold' of the
+#'   transmission tree and determine the y-position of each node. If a node
+#'   attribute is provided, the pairwise difference in node attributes will be
+#'   taken to rank the contacts.
+#'
+#' @param reverse_rank_contact Logical indicating if the contact ranking should
+#'   be reversed in order.
+#'
 #' @param lineend Character indicating the lineend to be used for
 #'   geom_segment. One of "round", "butt" or "square".
 #' 
@@ -122,6 +132,8 @@ vis_temporal_static <- function(x,
                        node_order = "subtree_size",
                        reverse_root_order = FALSE,
                        reverse_node_order = FALSE,
+                       rank_contact = x_axis,
+                       reverse_rank_contact = FALSE,
                        lineend = c("butt", "round", "square"),
                        unlinked_pos = c("bottom", "top", "middle"),
                        position_dodge = FALSE,
@@ -156,7 +168,6 @@ vis_temporal_static <- function(x,
   size_range <- get_val("size_range", def, args)
   width_range <- get_val("width_range", def, args)
   thin <- get_val("thin", def, args)
-  custom_parent_pos <- get_val("custom_parent_pos", def, args)
   legend_max <- get_val("legend_max", def, args)
 
   ## match arguments
@@ -214,12 +225,27 @@ vis_temporal_static <- function(x,
   ## check edge_color (edge attribute used for color)
   edge_color <- assert_edge_color(x, edge_color)
 
+  ## check edge_width (edge attribute used for width)
+  edge_width <- assert_edge_width(x, edge_width)
+
   ## check edge_linetype (edge attribute used for linetype)
   edge_linetype <- assert_edge_linetype(x, edge_linetype)
 
   ## check edge_alpha (edge attribute used for alpha)
   edge_alpha <- assert_edge_alpha(x, edge_alpha)
 
+  ## check node_order (node attribute used for vertical node ordering)
+  node_order <- assert_node_order(x, node_order)
+
+  ## check root_order (node attribute used for vertical root ordering)
+  root_order <- assert_root_order(x, root_order)
+
+  ## check rank_contact
+  rank_contact <- assert_rank_contact(x, rank_contact)
+
+  ## check root_order (node attribute used for vertical root ordering)
+  custom_parent_pos <- assert_custom_parent_pos(custom_parent_pos)
+  
   ## edge width can only be numeric in vis_temporal_static
   if(length(edge_width) > 1 | !inherits(edge_width, c("numeric", "integer"))) {
     msg <- paste("edge width must be a single number in vis_temporal_static (cannot be",

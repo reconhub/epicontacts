@@ -198,59 +198,69 @@ test_that("Testing vis_temporal_static", {
     classes <- c('character', 'date', 'factor', 'numeric', 'integer')
     for(i in classes) {
       for(j in paste0(classes, "_from")) {
-        expect_error(vis_ggplot(z,
-                                x_axis = 'date',
-                                node_color = i,
-                                node_order = i,
-                                root_order = i,
-                                edge_color = j,
-                                edge_label = j),
-                     NA)
+        expect_error(suppressWarnings(plot(z,
+                                           method = 'temporal',
+                                           output = 'static',
+                                           x_axis = 'date',
+                                           node_color = i,
+                                           node_order = i,
+                                           root_order = i,
+                                           edge_color = j,
+                                           edge_label = j)),
+                                      NA)
       }
+
+      ## error when mapping node_size to character
+      expect_error(suppressWarnings(plot(z,
+                                         method = 'temporal',
+                                         output = 'static',
+                                         x_axis = 'date',
+                                         node_size = 'character',
+                                         node_color = 'character',
+                                         node_order = 'character',
+                                         root_order = 'character')),
+                   'node_size cannot be mapped to character variable')
+
+      ## no error when mapping edge_linetype to character in ggplot
+      expect_error(suppressWarnings(plot(z,
+                                         method = 'temporal',
+                                         output = 'static',
+                                         x_axis = 'date',
+                                         edge_linetype = 'character_from')),
+                   NA)
+
+      ## testing igraph_type
+      expect_error(suppressWarnings(plot(z,
+                                         method = 'temporal',
+                                         output = 'static',
+                                         x_axis = 'date',
+                                         igraph_type = 'rt')),
+                   NA)
+      expect_error(suppressWarnings(plot(z,
+                                         method = 'temporal',
+                                         output = 'static',
+                                         x_axis = 'date',
+                                         igraph_type = 'fr')),
+                   NA)
+      expect_error(suppressWarnings(plot(z,
+                                         method = 'temporal',
+                                         output = 'static',
+                                         x_axis = 'date',
+                                         igraph_type = 'sugiyama')),
+                   NA)
+
     }
 
-    ## error when mapping node_size to character
-    expect_error(plot(z,
-                      method = 'temporal',
-                      output = 'static',
-                      x_axis = 'date',
-                      node_size = 'character',
-                      node_color = 'character',
-                      node_order = 'character',
-                      root_order = 'character'),
-                 'node_size cannot be mapped to character variable')
-
-    ## no error when mapping edge_linetype to character in ggplot
-    expect_error(plot(z, method = 'temporal', output = 'static',
-                            x_axis = 'date',
-                            edge_linetype = 'character_from'),
-                 NA)
-
-    ## testing igraph_type
-    expect_error(plot(z,
-                      method = 'temporal',
-                      output = 'static',
-                      x_axis = 'date',
-                      igraph_type = 'rt'), NA)
-    expect_error(plot(z,
-                      method = 'temporal',
-                      output = 'static',
-                      x_axis = 'date',
-                      igraph_type = 'fr'), NA)
-    expect_error(plot(z,
-                      method = 'temporal',
-                      output = 'static',
-                      x_axis = 'date',
-                      igraph_type = 'sugiyama'), NA)
-
     ## test custom parent_pos
-    expect_error(plot(x,
-                      method = 'temporal',
-                      output = 'static',
-                      custom_parent_pos = function(n) n),
+    expect_error(suppressWarnings(plot(x,
+                                       method = 'temporal',
+                                       output = 'static',
+                                       x_axis = 'date',
+                                       custom_parent_pos = function(n) n)),
                  paste0("custom_parent_pos must be a function of n",
                         " returning a numeric vector of length n"))
 
+
   }
-  
 })
+  
