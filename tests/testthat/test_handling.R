@@ -1,6 +1,13 @@
 context("Handling: [ operator")
 
 test_that("Various subsetting using [", {
+  
+  ## Add list elements for testing
+  linelist <- ebola_sim$linelist
+  linelist$latlon <- replicate(nrow(linelist),
+                               runif(2, -90, 90),
+                               simplify = FALSE)
+
     x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                            id = "case_id", to = "case_id", from = "infector",
                            directed = TRUE)
