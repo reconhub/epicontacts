@@ -121,23 +121,20 @@
   if (missing(i)) {
     i <- TRUE
   }
+
   if (inherits(i, 'Date')) {
     stop("Cannot subset by date")
   }
   if (is.character(i)) {
     i <- x$linelist$id %in% i
   }
-  
 
   x$linelist <- x$linelist[i, , drop=FALSE]
 
   ## make sure 'id' is the first column, keep columns 'k'
   if (ncol(x$linelist) > 1) {
-    x$linelist <- data.frame(c(x$linelist[1],
-                               x$linelist[-1][k]),
-                             stringsAsFactors = FALSE)
+    x$linelist <- x$linelist[c(1, seq_along(x$linelist[-1])[k] + 1)]
   }
-
 
   ## subset $contacts
   if (missing(j)) {
@@ -163,7 +160,6 @@
   if (inherits(j, 'Date')) {
     stop("Cannot subset by date")
   }
-
 
   x$contacts <- x$contacts[j, , drop=FALSE]
 
