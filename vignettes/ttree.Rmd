@@ -16,6 +16,15 @@ library(knitr)
 opts_chunk$set(message=FALSE, warning=FALSE, eval=TRUE, echo=TRUE)
 ```
 
+## Installation
+This version of `epicontacts` is still in development but can be installed from
+github using the following command:
+
+```{r, eval = FALSE}
+remotes::install_github("reconhub/epicontacts@ttree")
+library(epicontacts)
+```
+
 ## Introduction
 
 Visualising chains of transmission in an infectious disease outbreak can provide
