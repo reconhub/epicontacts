@@ -94,11 +94,5 @@ test_that("test that correct errors are thrown", {
     get_path(net, c("asnfo", "hwqga"), "dyzvt"),
     "from and to must be the same length"
   )
-
-  expect_error(
-    get_path(net, c("asnfo", "hwqga"), c(5, 5)),
-    "from and to must be the same length"
-  )
-
   
 })
