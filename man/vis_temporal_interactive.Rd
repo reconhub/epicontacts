@@ -4,15 +4,26 @@
 \alias{vis_temporal_interactive}
 \title{Plot temporal networks using visNetwork}
 \usage{
-vis_temporal_interactive(x, x_axis = NULL,
-  network_shape = c("branching", "rectangle"), root_order = x_axis,
-  node_order = x_axis, reverse_root_order = FALSE,
-  reverse_node_order = FALSE, rank_contact = x_axis,
-  reverse_rank_contact = FALSE, unlinked_pos = c("bottom", "top",
-  "middle"), edge_flex = FALSE, position_dodge = FALSE,
-  parent_pos = c("middle", "top", "bottom"), custom_parent_pos = NULL,
-  n_breaks = 5, axis_type = c("single", "double", "none"),
-  igraph_type = NULL, ...)
+vis_temporal_interactive(
+  x,
+  x_axis = NULL,
+  network_shape = c("branching", "rectangle"),
+  root_order = x_axis,
+  node_order = x_axis,
+  reverse_root_order = FALSE,
+  reverse_node_order = FALSE,
+  rank_contact = x_axis,
+  reverse_rank_contact = FALSE,
+  unlinked_pos = c("bottom", "top", "middle"),
+  edge_flex = FALSE,
+  position_dodge = FALSE,
+  parent_pos = c("middle", "top", "bottom"),
+  custom_parent_pos = NULL,
+  n_breaks = 5,
+  axis_type = c("single", "double", "none"),
+  igraph_type = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}

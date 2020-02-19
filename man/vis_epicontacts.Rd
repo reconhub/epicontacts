@@ -4,16 +4,38 @@
 \alias{vis_epicontacts}
 \title{Plot epicontacts objects using visNetwork}
 \usage{
-vis_epicontacts(x, node_color = "id", node_shape = NULL,
-  node_size = 20, edge_color = NULL, edge_width = 3,
-  edge_linetype = NULL, edge_label = NULL, col_pal = cases_pal,
-  edge_col_pal = edges_pal, NA_col = "lightgrey", shapes = NULL,
-  size_range = c(5, 20), width_range = c(1, 5), label = "id",
-  annot = TRUE, width = "90\%", height = "700px", title = NULL,
-  legend = TRUE, legend_max = 10, x_axis = NULL,
-  date_labels = "\%d/\%m/\%Y", thin = TRUE, selector = TRUE,
-  editor = FALSE, highlight_downstream = FALSE, collapse = TRUE,
-  font_size = NULL, ...)
+vis_epicontacts(
+  x,
+  node_color = "id",
+  node_shape = NULL,
+  node_size = 20,
+  edge_color = NULL,
+  edge_width = 3,
+  edge_linetype = NULL,
+  edge_label = NULL,
+  col_pal = cases_pal,
+  edge_col_pal = edges_pal,
+  NA_col = "lightgrey",
+  shapes = NULL,
+  size_range = c(5, 20),
+  width_range = c(1, 5),
+  label = "id",
+  annot = TRUE,
+  width = "90\%",
+  height = "700px",
+  title = NULL,
+  legend = TRUE,
+  legend_max = 10,
+  x_axis = NULL,
+  date_labels = "\%d/\%m/\%Y",
+  thin = TRUE,
+  selector = TRUE,
+  editor = FALSE,
+  highlight_downstream = FALSE,
+  collapse = TRUE,
+  font_size = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}

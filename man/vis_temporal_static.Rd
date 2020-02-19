@@ -4,16 +4,30 @@
 \alias{vis_temporal_static}
 \title{Plot epicontacts objects using ggplot}
 \usage{
-vis_temporal_static(x, x_axis, edge_alpha = NULL,
-  network_shape = "branching", root_order = "subtree_size",
-  node_order = "subtree_size", reverse_root_order = FALSE,
-  reverse_node_order = FALSE, rank_contact = x_axis,
-  reverse_rank_contact = FALSE, lineend = c("butt", "round", "square"),
-  unlinked_pos = c("bottom", "top", "middle"), position_dodge = FALSE,
-  parent_pos = c("middle", "top", "bottom"), custom_parent_pos = NULL,
-  y_label = NULL, node_label = NULL, y_coor = NULL,
-  igraph_type = NULL, col_pal = cases_pal, edge_col_pal = edges_pal,
-  ...)
+vis_temporal_static(
+  x,
+  x_axis,
+  edge_alpha = NULL,
+  network_shape = "branching",
+  root_order = "subtree_size",
+  node_order = "subtree_size",
+  reverse_root_order = FALSE,
+  reverse_node_order = FALSE,
+  rank_contact = x_axis,
+  reverse_rank_contact = FALSE,
+  lineend = c("butt", "round", "square"),
+  unlinked_pos = c("bottom", "top", "middle"),
+  position_dodge = FALSE,
+  parent_pos = c("middle", "top", "bottom"),
+  custom_parent_pos = NULL,
+  y_label = NULL,
+  node_label = NULL,
+  y_coor = NULL,
+  igraph_type = NULL,
+  col_pal = cases_pal,
+  edge_col_pal = edges_pal,
+  ...
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}

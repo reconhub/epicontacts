@@ -198,7 +198,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
       if (sum(contacts_na) > 1) {
         warning(sum(contacts_na), " NA IDs in the contacts have been renamed ",
                 "NA_", sum(linelist_na) + 1, " to NA_",
-                sum(contacts_na) + sum(linelist_na) + 1)
+                sum(contacts_na) + sum(linelist_na))
       } else {
         warning("1 NA ID in the contacts has renamed to NA_", sum(linelist_na) + 1)
       }

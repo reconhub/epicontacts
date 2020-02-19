@@ -1117,11 +1117,6 @@ extr_num <- function(x) {
   return(as.numeric(substr(x, grg[[1]][1], length(grg))))
 }
 
-
-
-
-
-
 ## Rescale a vector of numerics to min and max
 rescale <- function(x, min_val = 0, max_val = 1) {
   if(length(unique(x)) == 1L) return(x)
@@ -1130,14 +1125,12 @@ rescale <- function(x, min_val = 0, max_val = 1) {
   return(out)
 }
 
-
 ## Make all string elements the same length n by inserting whitespaces
 get_adj_width <- function(x, n) {
   diff <- n - nchar(x)
   edge <- vapply(diff/2, strrep, " ", x = "  ")
   return(paste0(edge, x, edge))
 }
-
 
 ## This function will return the value of var in args if present, otherwise
 ## returns the default value in def.

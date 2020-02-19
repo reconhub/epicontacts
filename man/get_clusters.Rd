@@ -4,9 +4,13 @@
 \alias{get_clusters}
 \title{Assign cluster IDs to epicontacts data}
 \usage{
-get_clusters(x, output = c("epicontacts", "data.frame"),
-  member_col = "cluster_member", size_col = "cluster_size",
-  override = FALSE)
+get_clusters(
+  x,
+  output = c("epicontacts", "data.frame"),
+  member_col = "cluster_member",
+  size_col = "cluster_size",
+  override = FALSE
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}

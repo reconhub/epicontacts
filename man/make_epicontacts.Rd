@@ -5,8 +5,16 @@
 \alias{epicontacts}
 \title{Read linelist and contact data}
 \usage{
-make_epicontacts(linelist, contacts, id = 1L, from = 1L, to = 2L,
-  directed = FALSE, na_rm_linelist = FALSE, na_rm_contacts = FALSE)
+make_epicontacts(
+  linelist,
+  contacts,
+  id = 1L,
+  from = 1L,
+  to = 2L,
+  directed = FALSE,
+  na_rm_linelist = FALSE,
+  na_rm_contacts = FALSE
+)
 }
 \arguments{
 \item{linelist}{a \link{data.frame} with at least one column providing unique

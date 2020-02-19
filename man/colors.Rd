@@ -16,8 +16,13 @@ cases_pal(n)
 
 spectral(n)
 
-fac2col(x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE,
-  adj_width = FALSE)
+fac2col(
+  x,
+  pal = cases_pal,
+  NA_col = "lightgrey",
+  legend = FALSE,
+  adj_width = FALSE
+)
 }
 \arguments{
 \item{col}{A color vector to which transparency should be added.}
