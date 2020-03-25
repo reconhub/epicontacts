@@ -15,9 +15,9 @@
 #' @param method A character string indicating the plotting method to be used;
 #' available values are "visNetwork", "graph3D" and "temporal"; see details.
 #'
-#' @param output A character string indicating whether the output should be
-#'   "interactive" (using visNetwork) or "static" (using ggplot). This argument
-#'   is only available if \code{method} is set to "temporal".
+#' @param x_axis If a temporal axis is to be displayed, a character string
+#'   indicating which field of the linelist data should be used to specify the x
+#'   axis position (must be numeric or Date).
 #'
 #' @param ... Further arguments passed to the plotting methods.
 #'
@@ -65,26 +65,34 @@
 #' }
 plot.epicontacts <- function(x,
                              node_color = "id",
-                             method = c("visNetwork", "graph3D", "temporal"),
-                             output = c("interactive", "static"),
+                             method = c("visNetwork", "graph3D", "ggplot"),
+                             x_axis = NULL,
                              ...){
   
   method <- match.arg(method)
 
-  if(!missing(output) && method != "temporal") {
-    stop("The 'output' argument can only be specified if method = 'temporal'")
+  if(method == "ggplot" && is.null(x_axis)) {
+    stop("ggplot method only works if x_axis is specified")
   }
 
-  output <- match.arg(output)
+  if(method == "graph3D" && !is.null(x_axis)) {
+    stop("x_axis cannot be specified for graph3D")
+  }
 
-  lst <- list(visNetwork = vis_epicontacts,
-              graph3D = graph3D,
-              temporal = ifelse(output == "interactive",
-                                vis_temporal_interactive,
-                                vis_temporal_static))
-
-  out <- lst[[method]](x, node_color = node_color, ...)
-
+  if(method == "graph3D") {
+    out <- graph3D(x, node_color = node_color, ...)
+  } else if(method == 'visNetwork') {
+    if(is.null(x_axis)) {
+      out <- vis_epicontacts(x, node_color = node_color, ...)
+    } else {
+      out <- vis_temporal_interactive(x, x_axis = x_axis,
+                                      node_color = node_color, ...)
+    }
+  } else if(method == "ggplot") {
+    out <- vis_temporal_static(x, x_axis = x_axis,
+                               node_color = node_color, ...)
+  }
+  
   return(out)
   
 }

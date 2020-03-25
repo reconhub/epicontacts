@@ -42,7 +42,6 @@ library(epicontacts)
 data(package = 'epicontacts')
 sim$directed <- TRUE
 plot(sim,
-     method = 'temporal',
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'subtree_size',
@@ -95,7 +94,6 @@ for the x-axis (in this case, the date of symptom onset).
 
 ```{r}
 plot(sim,
-     method = 'temporal',
      x_axis = 'onset',
      height = 700,
      width = 700,
@@ -113,7 +111,6 @@ cluster with that case as an ancestor). For example:
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
@@ -131,7 +128,6 @@ For example:
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
@@ -154,7 +150,6 @@ a phylogeny. For example:
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      node_color = 'sex',
@@ -176,7 +171,6 @@ roots of each transmission chain (i.e. the index case of each chain) is specifie
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -198,7 +192,6 @@ reported contacts) is specified using the `unlinked_pos` argument.
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -223,7 +216,6 @@ parent node in the middle, however it can be placed at the bottom (`parent_pos =
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -250,7 +242,6 @@ though.
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      node_color = 'sex',
      col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
@@ -271,7 +262,6 @@ the standard codes defined in `strftime()`.
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -299,7 +289,6 @@ clicking on a node below.
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'branching',
      root_order = 'onset',
@@ -325,7 +314,6 @@ A title can be added to the plot as follows:
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'branching',
      root_order = 'onset',
@@ -357,7 +345,6 @@ free up some space to label the edges using the `edge_label` argument.
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -381,7 +368,6 @@ The `height` and `width` of the figure can be specified in pixels.
 
 ```{r}
 plot(sim, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -416,7 +402,6 @@ si <- get_pairwise(sim_2, 'onset', function(x, y) y - x)
 sim_2$contacts$suspicious <- si < min_si | si > max_si
 
 plot(sim_2, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -443,7 +428,6 @@ sim_2_clean <- sim_2
 sim_2_clean$contacts <- sim_2$contacts[!sim_2$contacts$suspicious,]
   
 plot(sim_2_clean, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -488,7 +472,6 @@ sim_3$contacts <- rbind(sim_3$contacts, contacts_3)
 sim_3 $directed <- TRUE
 col_pal <- colorRampPalette(c("#427A82", "#AA6F39"))
 plot(sim_3, 
-     method = 'temporal', 
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',
@@ -516,8 +499,7 @@ below in renaming the legend labels, for example.
 ```{r, fig.width = 7, fig.height = 8}
 sim_3$directed <- FALSE
 plot(sim_3, 
-     method = 'temporal',
-     output = 'static',
+     method = 'ggplot',
      x_axis = 'onset',
      network_shape = 'rectangle',
      root_order = 'onset',

@@ -94,7 +94,6 @@
 #'
 #' \dontrun{
 #' plot(x,
-#' method = 'temporal',
 #' x_axis = 'dt_onset',
 #' network_shape = 'rectangle',
 #' node_size = 'R_i',
@@ -162,6 +161,7 @@ vis_temporal_interactive <- function(x,
   collapse <- get_val('collapse', def, args)
   thin <- get_val('thin', def, args)
   font_size <- get_val('font_size', def, args)
+  arrow_size <- get_val("arrow_size", def, args)
 
   ## match arguments
   network_shape <- match.arg(network_shape)
@@ -186,11 +186,6 @@ vis_temporal_interactive <- function(x,
   ## remove NAs in contacts and linelist
   x <- x[i = !is.na(x$linelist$id),
          j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
-
-  ## check that x_axis is specified
-  if (is.null(x_axis)) {
-    stop("x_axis must be specified when using method = 'temporal'")
-  }
   
   ## test x_axis
   x_axis <- assert_x_axis(x, x_axis)
@@ -430,7 +425,7 @@ vis_temporal_interactive <- function(x,
 
   ## no arrows for intermediate edges
   if (x$directed) {
-    edges$arrows <- ifelse(edges$to_node, 'to', NA)
+    edges$arrows.to <- edges$to_node
   }
 
   ## add edge labels
@@ -470,97 +465,72 @@ vis_temporal_interactive <- function(x,
 
   ## add axes
   if(axis_type %in% c("single", "double")) {
+
+    ## get the range of dates
+    axis_range <- range(nodes[[x_axis]], na.rm = TRUE)
+    nodes$level <- nodes[[x_axis]] - axis_range[1] + 1L
+    axis_range <- seq(axis_range[1], axis_range[2], by = 1L)
+    axis_range <- pretty(axis_range, n = n_breaks)
     
-    drange <- range(nodes[[x_axis]], na.rm = TRUE)
-    nodes$level <- nodes[[x_axis]] - drange[1] + 1L
-    drange <- seq(drange[1], drange[2], by = 1L)
-    drange <- pretty(drange, n = n_breaks)
-    ## create unique node ids for axes
-    drange_id <- paste0("date_", seq_along(drange))
-    
-    dnodes <- data.frame(
-      id = as.character(drange_id),
-      level = drange - drange[1] + 1L,
-      stringsAsFactors = FALSE
-    )
-    dedges <- data.frame(
-      from = dnodes$id[-nrow(dnodes)],
-      to   = dnodes$id[-1]
-    )
-    nmerge <- c("id", "level")
-    emerge <- c("from", "to")
-    if (!is.null(label)) {
-      if(inherits(drange, c("Date", "POSIXct"))) {
-        dnodes$label <- as.character(format(drange, date_labels))
-      } else {
-        dnodes$label <- as.character(drange)
-      }
-      nmerge <- c(nmerge, "label")
-    }
-    if (!is.null(node_shape)) {
-      dnodes$shape     <- "icon"
-      dnodes$icon.code <- codeawesome["clock-o"]
-      nmerge <- c(nmerge, "shape", "icon.code")
-    }
-    if (!is.null(node_color)) {
-      dnodes$group.color <- dnodes$icon.color <- "#666666"
-      nmerge <- c(nmerge, "group.color", "icon.color")
-    }
-    if (!is.null(annot)) {
-      dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
-      nmerge <- c(nmerge, "title")
+    ## create axis nodes and edges
+    axis_nodes <- data.frame(id = paste0("date_", seq_along(axis_range)),
+                             level = axis_range - axis_range[1] + 1L,
+                             stringsAsFactors = FALSE)
+    axis_edges <- data.frame(from = axis_nodes$id[-nrow(axis_nodes)],
+                             to = axis_nodes$id[-1],
+                             stringsAsFactors = FALSE)
+
+    ## add labels
+    if(inherits(axis_range, c("Date", "POSIXct"))) {
+      axis_nodes$label <- as.character(format(axis_range, date_labels))
+    } else {
+      axis_nodes$label <- as.character(axis_range)
     }
 
-    ddnodes <- nodes[rep(1, nrow(dnodes)),]
-    ddnodes[] <- NA
-    var <- c('id', 'label', 'title')
-    ddnodes[var] <- dnodes[var]
+    ## create node dataframe and fill with axis_nodes data
+    var <- c('id', 'label')
+    val <- axis_nodes[var]
+    
+    axis_nodes <- nodes[rep(1, nrow(axis_nodes)),]
+    axis_nodes[] <- NA
+    axis_nodes[var] <- val
+
+    ## format axis nodes
     col_var <- c('color.background', 'color.highlight.background',
                  'color.border', 'color.highlight.border')
-    if(is.null(node_shape)) {
-      ddnodes[col_var] <- 'black'
-    }
-    ddnodes$size <- 0.1
-    ddnodes$borderWidth <- 0.1
-    ddnodes$x <- utils::tail(resc_x,
-                             length(pretty(x$linelist[[x_axis]],
-                                           n = n_breaks)))
-    ddnodes$y <- coor$y[1]
-    ddnodes$level <- 1
-    if(network_shape == 'rectangle') {
-      ddnodes$hidden <- FALSE
-    }
+    if(is.null(node_shape)) axis_nodes[col_var] <- 'black'
+    axis_nodes$size <- 0.1
+    axis_nodes$borderWidth <- 0.1
+
+    ## assign x and y axis positions
+    axis_nodes$x <- utils::tail(resc_x, length(pretty(x$linelist[[x_axis]],
+                                                   n = n_breaks)))
+    axis_nodes$y <- coor$y[1]
+    axis_nodes$level <- 1
+
+    if(network_shape == 'rectangle') axis_nodes$hidden <- FALSE
 
     if(axis_type == 'double') {
 
-      ddnodes_2 <- ddnodes
-      ddnodes_2$y <- coor$y[2]
-      ddnodes_2$id <- paste0(ddnodes_2$id, "_2")
-      ddnodes <- rbind(ddnodes, ddnodes_2)
+      axis_nodes_2 <- axis_nodes
+      axis_nodes_2$y <- coor$y[2]
+      axis_nodes_2$id <- paste0(axis_nodes_2$id, "_2")
+      axis_nodes <- rbind(axis_nodes, axis_nodes_2)
 
-      dedges_2 <- dedges
-      dedges_2$from <- paste0(dedges_2$from, "_2")
-      dedges_2$to <- paste0(dedges_2$to, "_2")
-      dedges <- rbind(dedges, dedges_2)
+      axis_edges_2 <- axis_edges
+      axis_edges_2$from <- paste0(axis_edges_2$from, "_2")
+      axis_edges_2$to <- paste0(axis_edges_2$to, "_2")
+      axis_edges <- rbind(axis_edges, axis_edges_2)
       
     }
 
-    dnodes <- ddnodes
-    nmerge <- names(dnodes)
-
-    nodes <- merge(nodes,
-                   dnodes,
-                   by = nmerge,
-                   all = TRUE,
-                   sort = FALSE
-                   )
+    nodes <- merge(nodes, axis_nodes, by = names(axis_nodes),
+                   all = TRUE, sort = FALSE)
     nodes <- nodes[!is.na(nodes$level), , drop = FALSE]
-    edges <- merge(edges,
-                   dedges,
-                   by = emerge,
-                   all = TRUE,
-                   sort = FALSE
-                   )
+    
+    edges <- merge(edges, axis_edges, by = c("from", "to"),
+                   all = TRUE, sort = FALSE)
+    edges$arrows.to[is.na(edges$arrows.to)] <- FALSE
 
   }
 
@@ -569,9 +539,8 @@ vis_temporal_interactive <- function(x,
     edges$font.size <- font_size
     nodes$font.size <- font_size
   }
-  
+
   ## build visNetwork output
-  edges$arrows.ScaleFactor <- 5
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height)
@@ -585,9 +554,11 @@ vis_temporal_interactive <- function(x,
                               arrowStrikethrough = FALSE,
                               font = list(align = 'top'),
                               selectionWidth = 1)
-  out <- visNetwork::visPhysics(out,
-                                enabled = FALSE)
-  
+  if(x$directed) {
+    out <- visNetwork::visEdges(out, arrows = list(to = list(scaleFactor = arrow_size)))
+  }
+  out <- visNetwork::visPhysics(out, enabled = FALSE)
+
   tt_style <- paste0("position: fixed;visibility:hidden;",
                      "padding: 5px;white-space: nowrap;",
                      "font-family: verdana;font-size:14px;",

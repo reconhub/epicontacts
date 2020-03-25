@@ -91,9 +91,6 @@
 #' 
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
-#' @param x_axis A character string indicating which field of the linelist data
-#'   should be used to specify the x axis position (must be numeric or Date).
-#'
 #' @param date_labels A string giving the formatting specification for the
 #' x-axis date labels. Codes are defined in ‘strftime()’.
 #' 
@@ -113,6 +110,8 @@
 #'   given node upon double-clicking.
 #'
 #' @param font_size The font size of the node and edge labels.
+#'
+#' @param arrow_size The size of the arrow.
 #' 
 #' @param ... Further arguments to be passed to \code{visNetwork}.
 #'
@@ -135,10 +134,7 @@
 #' \dontrun{
 #' plot(x)
 #' plot(x, node_color = "place_infect")
-#' # show transmission tree with time as the horizontal axis, showing all nodes
-#' vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
-#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 #' plot(x, "place_infect", node_shape = "sex",
 #'      shapes = c(M = "male", F = "female"))
 #'
@@ -167,7 +163,6 @@ vis_epicontacts <- function(x,
                             title = NULL,
                             legend = TRUE,
                             legend_max = 10,
-                            x_axis = NULL,
                             date_labels = "%d/%m/%Y",
                             thin = TRUE,
                             selector = TRUE,
@@ -175,6 +170,7 @@ vis_epicontacts <- function(x,
                             highlight_downstream = FALSE,
                             collapse = TRUE,
                             font_size = NULL,
+                            arrow_size = 2,
                             ...){
   
   ## In the following, we pull the list of all plotted nodes (those from the
@@ -269,8 +265,6 @@ vis_epicontacts <- function(x,
     K <- length(node_col_info$leg_lab)
     if(!is.null(node_shape)) {
       nodes$icon.color <- node_col_info$color
-    } else if(!is.null(x_axis)) {
-      nodes$group.color <- nodes$icon.color <- node_col_info$color
     } else {
       nodes$color.background <- nodes$color.highlight.background <- node_col_info$color
       nodes$color.border <- nodes$color.highlight.border <- 'black'
@@ -335,11 +329,6 @@ vis_epicontacts <- function(x,
     }
   }
   
-  if (x$directed) {
-    edges$arrows <- "to"
-  }
-
-
   ## add edge labels
   if (!is.null(edge_label)) {
     edges$label <- edges[, edge_label]
@@ -379,59 +368,6 @@ vis_epicontacts <- function(x,
 
 
 
-  ## set up nodes and edges if x_axis is specified
-  if (!is.null(x_axis)) {
-    if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
-      stop("Data used to specify x axis must be a date or number")
-    }
-    drange <- range(nodes[[x_axis]], na.rm = TRUE)
-    nodes$level <- nodes[[x_axis]] - drange[1] + 1L
-    drange <- seq(drange[1], drange[2], by = 1L)
-    if(inherits(drange, "Date")) {
-      drange_id <- format(drange, date_labels)
-    } else {
-      drange_id <- drange
-    }
-    dnodes <- data.frame(id = as.character(drange_id),
-                         level = drange - drange[1] + 1L,
-                         stringsAsFactors = FALSE)
-    dedges <- data.frame(from = dnodes$id[-nrow(dnodes)],
-                         to = dnodes$id[-1])
-    nmerge <- c("id", "level")
-    emerge <- c("from", "to")
-    if (!is.null(label)) {
-      dnodes$label <- dnodes$id
-      nmerge <- c(nmerge, "label")
-    }
-    if (!is.null(node_shape)) {
-      dnodes$shape     <- "icon"
-      dnodes$icon.code <- codeawesome["clock-o"]
-      nmerge <- c(nmerge, "shape", "icon.code")
-    }
-    if (!is.null(node_color)) {
-      dnodes$group.color <- dnodes$icon.color <- "#666666"
-      nmerge <- c(nmerge, "group.color", "icon.color")
-    }
-    if (!is.null(annot)) {
-      dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
-      nmerge <- c(nmerge, "title")
-    }
-
-    nodes <- merge(nodes,
-                   dnodes,
-                   by = nmerge,
-                   all = TRUE,
-                   sort = FALSE
-                   )
-    nodes <- nodes[!is.na(nodes$level), , drop = FALSE]
-    edges <- merge(edges,
-                   dedges,
-                   by = emerge,
-                   all = TRUE,
-                   sort = FALSE
-                   )
-  }
-
   ## Change font size
   if(!is.null(font_size)) {
     edges$font.size <- font_size
@@ -451,6 +387,12 @@ vis_epicontacts <- function(x,
                      "-moz-border-radius: 3px;-webkit-border-radius: 3px;",
                      "border-radius: 3px;border: 1px solid #000000;")
   out <- visNetwork::visInteraction(out, tooltipStyle = tt_style)
+
+  ## add arrows if directed
+  if (x$directed) {
+    out <- visNetwork::visEdges(out,
+                                arrows = list(to = list(scaleFactor = arrow_size)))
+  }
   
   ## specify group colors, add legend
   if (legend) {
@@ -502,20 +444,6 @@ vis_epicontacts <- function(x,
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) node_color else NULL
   
-  ## options specific for x_axis
-  if (!is.null(x_axis)) {
-    
-    out <- visNetwork::visHierarchicalLayout(out,
-                                             direction = 'LR')
-    
-    ## only display ids of "real" (i.e. case or linelist) nodes in select list
-    selectvals <- setdiff(nodes$id, dnodes$id)
-    out <- visNetwork::visOptions(out, 
-                                  nodesIdSelection = list(values = selectvals),
-                                  selectedBy = arg_selec,
-                                  manipulation = editor)
-  }
-  
   ## should nodes collapse upon double clicking
   if(collapse) {
     collapse <- list(enabled = TRUE, keepCoord = TRUE)
@@ -525,23 +453,27 @@ vis_epicontacts <- function(x,
   if(highlight_downstream) {
     
 
-    out <- visNetwork::visOptions(out,
-                                  highlightNearest = list(enabled = TRUE,
-                                                          algorithm = "hierarchical",
-                                                          degree = list(from = 0, to = 50),
-                                                          hideColor = 'rgba(200,200,200,1)'),
-                                  nodesIdSelection = FALSE,
-                                  selectedBy = arg_selec,
-                                  manipulation = editor,
-                                  collapse = collapse)
+    out <- visNetwork::visOptions(
+                         out,
+                         highlightNearest = list(enabled = TRUE,
+                                                 algorithm = "hierarchical",
+                                                 degree = list(from = 0, to = 50),
+                                                 hideColor = 'rgba(200,200,200,1)'),
+                         nodesIdSelection = FALSE,
+                         selectedBy = arg_selec,
+                         manipulation = editor,
+                         collapse = collapse
+                       )
 
   } else {
-    out <- visNetwork::visOptions(out,
-                                  highlightNearest = list(enabled = TRUE,
-                                                          hideColor = 'rgba(200,200,200,1)'),
-                                  selectedBy = arg_selec,
-                                  manipulation = editor,
-                                  collapse = collapse)
+    out <- visNetwork::visOptions(
+                         out,
+                         highlightNearest = list(enabled = TRUE,
+                                                 hideColor = 'rgba(200,200,200,1)'),
+                         selectedBy = arg_selec,
+                         manipulation = editor,
+                         collapse = collapse
+                       )
   }
 
   out <- visNetwork::visPhysics(out, stabilization = FALSE)

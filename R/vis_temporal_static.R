@@ -179,11 +179,6 @@ vis_temporal_static <- function(x,
   x <- x[i = !is.na(x$linelist$id),
          j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
   
-  ## check that x_axis is specified
-  if (is.null(x_axis)) {
-    stop("x_axis must be specified when using method = 'temporal'")
-  }
-  
   ## test x_axis
   x_axis <- assert_x_axis(x, x_axis)
   
@@ -251,7 +246,7 @@ vis_temporal_static <- function(x,
   
   ## edge width can only be numeric in vis_temporal_static
   if(length(edge_width) > 1 | !inherits(edge_width, c("numeric", "integer"))) {
-    msg <- paste("edge width must be a single number in vis_temporal_static (cannot be",
+    msg <- paste("edge width must be a single number if method = 'ggplot' (cannot be",
                  "mapped to a variable because scale_size is reserved for node_size)")
     stop(msg)
   }

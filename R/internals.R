@@ -643,184 +643,187 @@ get_coor <- function(x,
     subtree_size <- treestat$subtree_size
   }
 
-  ## Add cluster size to linelist so that it can be called in node_order /
-  ## root_order This will overwrite a node attribute called size, if it exists
-  ## (but only within this function)
-  linelist$subtree_size <- subtree_size
+  ## if(is.null(igraph_type)) {
 
-  ## NAs treated as 0 to be safe, though these should be removed beforehand
-  contacts$from[is.na(contacts$from)] <- 0
+    ## Add cluster size to linelist so that it can be called in node_order /
+    ## root_order. This will overwrite a node attribute called size, if it exists
+    ## (but only within this function)
+    linelist$subtree_size <- subtree_size
 
-  ## mat is a matrix with the ranking of a node relative to its parent, at each
-  ## depth. Every node inherits the ranking of its parent, ensuring nodes only
-  ## split from their parents at the correct depth.
-  mat <- matrix(0, nrow(linelist), max(depth))
+    ## NAs treated as 0 to be safe, though these should be removed beforehand
+    contacts$from[is.na(contacts$from)] <- 0
 
-  ## We iterate through every depth value and split cases at that depth
-  for(i in seq_len(max(depth))) {
+    ## mat is a matrix with the ranking of a node relative to its parent, at each
+    ## depth. Every node inherits the ranking of its parent, ensuring nodes only
+    ## split from their parents at the correct depth.
+    mat <- matrix(0, nrow(linelist), max(depth))
 
-    ## index of the cases found at a given depth i
-    ind <- which(depth == i)
+    ## We iterate through every depth value and split cases at that depth
+    for(i in seq_len(max(depth))) {
 
-    ## to_add will be the ranking of a child relative to its parent
-    to_add <- numeric(length(ind))
+      ## index of the cases found at a given depth i
+      ind <- which(depth == i)
 
-    ## Analyse non-root cases
-    if(i > 1) {
+      ## to_add will be the ranking of a child relative to its parent
+      to_add <- numeric(length(ind))
 
-      ## Group cases by single infector identified in scaffold tree
-      grouped <- split(ind, infector[ind])
-      
-      for(y in grouped) {
+      ## Analyse non-root cases
+      if(i > 1) {
 
-        ## Get the splitting at each infector
-        splt <- get_split(length(y), parent_pos, custom_parent_pos)
-
-        ## Re-order nodes by order_nodes
-        if(!is.null(node_order)) {
-          
-          y <- y[order(linelist[[node_order]][y], decreasing = reverse_node_order)]
-          
-        }
-
-        ## Add splitting to ordered nodes
-        to_add[match(y, ind)] <- splt
+        ## Group cases by single infector identified in scaffold tree
+        grouped <- split(ind, infector[ind])
         
-      }
+        for(y in grouped) {
 
-      ## Children adopt ranking values from parent in scaffold tree
-      mat[ind, 1:(i-1)] <- mat[match(infector[ind], linelist$id), 1:(i-1)]
-      
-    } else {
+          ## Get the splitting at each infector
+          splt <- get_split(length(y), parent_pos, custom_parent_pos)
 
-      ## We need to link roots that are connected by secondary connections
-      tab <- table(contacts$to)
-      multiple_inf <- names(tab)[tab>1]
-      if(length(multiple_inf) > 0) {
-
-        ## Identify cluster, group roots by cluster
-        linelist$cluster_member <- as.numeric(linelist$cluster_member)
-        root_ind <- match(unique(root), linelist$id)
-        linked <- split(linelist$id[root_ind],
-                        linelist$cluster_member[root_ind])
-
-        ## Get all combinations of linked roots
-        get_combn <- function(j) if(length(unique(j)) > 1) t(utils::combn(unique(j), 2))
-        linked_roots <- lapply(linked, get_combn)
-        linked_roots <- linked_roots[!vapply(linked_roots, is.null, TRUE)]
-        if(length(linked_roots) > 0) {
-          linked_roots <- do.call(rbind, linked_roots)
-        }
-
-      } else {
-        linked_roots <- numeric()
-      }
-
-      ## Get splitting of roots
-      splt <- get_split(length(ind), parent_pos, custom_parent_pos)
-      
-      if(!is.null(root_order)) {
-
-        ## Get initiail ordering of roots by root_order
-        ord <- order(linelist[[root_order]][ind], decreasing = reverse_root_order)
-
-        ## If we have linked roots, we need to place them next to each other. We
-        ## choose a 'root of roots' that is higest ranked in root_order
-        if(length(linked_roots) > 0) {
-          
-          ## Bring the lower ranked root (from root_order) right below the
-          ## higher ranked root by subtracting 0.0001
-          for(j in seq_len(nrow(linked_roots))) {
-            sub_ord <- ord[match(linked_roots[j,], linelist$id[ind])]
-            min_ind <- match(linked_roots[j, which.min(sub_ord)], linelist$id[ind])
-            max_ind <- match(linked_roots[j, which.max(sub_ord)], linelist$id[ind])
-            ord[min_ind] <- ord[max_ind] - 0.0001*j
+          ## Re-order nodes by order_nodes
+          if(!is.null(node_order)) {
+            
+            y <- y[order(linelist[[node_order]][y], decreasing = reverse_node_order)]
+            
           }
 
-          ## We now need to re-order the roots, considering only the 'roots of
-          ## roots', ie the base root of a group of linked roots
-          root_root <- ord %in% ceiling(ord)
+          ## Add splitting to ordered nodes
+          to_add[match(y, ind)] <- splt
+          
+        }
 
-          ## This points to the root of each root
-          mtch <- match(ceiling(ord), ord[root_root])
+        ## Children adopt ranking values from parent in scaffold tree
+        mat[ind, 1:(i-1)] <- mat[match(infector[ind], linelist$id), 1:(i-1)]
+        
+      } else {
 
-          ## This gets the rank of the root of roots
-          rr_ord <- rank(linelist[[root_order]][ind][root_root],
-                         ties.method = "first")
+        ## We need to link roots that are connected by secondary connections
+        tab <- table(contacts$to)
+        multiple_inf <- names(tab)[tab>1]
+        if(length(multiple_inf) > 0) {
 
-          ## This places the roots under the roots of roots
-          diff <- ord - ceiling(ord)
-          ord <- rr_ord[mtch] + diff
+          ## Identify cluster, group roots by cluster
+          linelist$cluster_member <- as.numeric(linelist$cluster_member)
+          root_ind <- match(unique(root), linelist$id)
+          linked <- split(linelist$id[root_ind],
+                          linelist$cluster_member[root_ind])
 
-          ## Get indices and get splitting
-          ord <- match(ord, sort(ord))
-          to_add <- splt[ord]
+          ## Get all combinations of linked roots
+          get_combn <- function(j) if(length(unique(j)) > 1) t(utils::combn(unique(j), 2))
+          linked_roots <- lapply(linked, get_combn)
+          linked_roots <- linked_roots[!vapply(linked_roots, is.null, TRUE)]
+          if(length(linked_roots) > 0) {
+            linked_roots <- do.call(rbind, linked_roots)
+          }
+
+        } else {
+          linked_roots <- numeric()
+        }
+
+        ## Get splitting of roots
+        splt <- get_split(length(ind), parent_pos, custom_parent_pos)
+        
+        if(!is.null(root_order)) {
+
+          ## Get initiail ordering of roots by root_order
+          ord <- order(linelist[[root_order]][ind], decreasing = reverse_root_order)
+
+          ## If we have linked roots, we need to place them next to each other. We
+          ## choose a 'root of roots' that is higest ranked in root_order
+          if(length(linked_roots) > 0) {
+            
+            ## Bring the lower ranked root (from root_order) right below the
+            ## higher ranked root by subtracting 0.0001
+            for(j in seq_len(nrow(linked_roots))) {
+              sub_ord <- ord[match(linked_roots[j,], linelist$id[ind])]
+              min_ind <- match(linked_roots[j, which.min(sub_ord)], linelist$id[ind])
+              max_ind <- match(linked_roots[j, which.max(sub_ord)], linelist$id[ind])
+              ord[min_ind] <- ord[max_ind] - 0.0001*j
+            }
+
+            ## We now need to re-order the roots, considering only the 'roots of
+            ## roots', ie the base root of a group of linked roots
+            root_root <- ord %in% ceiling(ord)
+
+            ## This points to the root of each root
+            mtch <- match(ceiling(ord), ord[root_root])
+
+            ## This gets the rank of the root of roots
+            rr_ord <- rank(linelist[[root_order]][ind][root_root],
+                           ties.method = "first")
+
+            ## This places the roots under the roots of roots
+            diff <- ord - ceiling(ord)
+            ord <- rr_ord[mtch] + diff
+
+            ## Get indices and get splitting
+            ord <- match(ord, sort(ord))
+            to_add <- splt[ord]
+            
+          } else {
+
+            ## Add normal splitting if we don't have linked roots
+            to_add[ord] <- splt
+            
+          }
+
           
         } else {
 
-          ## Add normal splitting if we don't have linked roots
-          to_add[ord] <- splt
+          ## If node_order is null, use native ordering in linelist
+          to_add <- splt
           
         }
 
-        
-      } else {
-
-        ## If node_order is null, use native ordering in linelist
-        to_add <- splt
-        
       }
 
+      ## Add the splitting at the given depth
+      mat[ind, i] <- to_add
+      
     }
 
-    ## Add the splitting at the given depth
-    mat[ind, i] <- to_add
+    ## This is true if i is ranked higher than j (essentially looks at the
+    ## difference in ranking at each depth and choose the first difference)
+    is_higher <- function(i, j) {
+      comp <- mat[i,] - mat[j,]
+      out <- comp[comp != 0][1] > 0
+    }
+
+    ## Rank all cases by pairwise comparison - this is quite slow for large
+    ## networks, there is definitely a quicker way
+    comb <- expand.grid(seq_len(nrow(mat)), seq_len(nrow(mat)))
+    mat2 <- matrix(FALSE, nrow = nrow(mat), ncol = nrow(mat))
+
+    mat2[as.matrix(comb)] <- apply(comb, 1, function(x) is_higher(x[1], x[2]))
+    mat2[is.na(mat2)] <- FALSE
+
+    ## We get global ranking by taking the sum of all pairwise rankings
+    val <- apply(mat2, 1, sum)
     
-  }
+    ## Get isolated cases and place them as specified by unlinked_pos
+    ## If position_dodge, order these by root_order
+    contacts <- contacts[contacts$from != 0,]
+    unlinked <- which(!linelist$id %in% c(contacts$from, contacts$to))
+    if(length(unlinked) > 0) {
+      if(position_dodge) {
+        unlinked_order <- order(linelist[[root_order]][unlinked],
+                                decreasing = reverse_root_order)
+        unlinked_to_add <- seq_along(unlinked)
+      } else {
+        unlinked_order <- seq_along(unlinked)
+        unlinked_to_add <- 0
+      }
 
-  ## This is true if i is ranked higher than j (essentially looks at the
-  ## difference in ranking at each depth and choose the first difference)
-  is_higher <- function(i, j) {
-    comp <- mat[i,] - mat[j,]
-    out <- comp[comp != 0][1] > 0
-  }
-
-  ## Rank all cases by pairwise comparison - this is quite slow for large
-  ## networks, there is definitely a quicker way
-  comb <- expand.grid(seq_len(nrow(mat)), seq_len(nrow(mat)))
-  mat2 <- matrix(FALSE, nrow = nrow(mat), ncol = nrow(mat))
-
-  mat2[as.matrix(comb)] <- apply(comb, 1, function(x) is_higher(x[1], x[2]))
-  mat2[is.na(mat2)] <- FALSE
-
-  ## We get global ranking by taking the sum of all pairwise rankings
-  val <- apply(mat2, 1, sum)
-  
-  ## Get isolated cases and place them as specified by unlinked_pos
-  ## If position_dodge, order these by root_order
-  contacts <- contacts[contacts$from != 0,]
-  unlinked <- which(!linelist$id %in% c(contacts$from, contacts$to))
-  if(length(unlinked) > 0) {
-    if(position_dodge) {
-      unlinked_order <- order(linelist[[root_order]][unlinked],
-                              decreasing = reverse_root_order)
-      unlinked_to_add <- seq_along(unlinked)
-    } else {
-      unlinked_order <- seq_along(unlinked)
-      unlinked_to_add <- 0
+      ## Place nodes at top or bottom by adding 10000 to val
+      if(unlinked_pos == 'top') {
+        val[unlinked[unlinked_order]] <- 10000 + unlinked_to_add
+      } else if(unlinked_pos == 'bottom') {
+        val[unlinked[unlinked_order]] <- -10000 + unlinked_to_add
+      }
     }
 
-    ## Place nodes at top or bottom by adding 10000 to val
-    if(unlinked_pos == 'top') {
-      val[unlinked[unlinked_order]] <- 10000 + unlinked_to_add
-    } else if(unlinked_pos == 'bottom') {
-      val[unlinked[unlinked_order]] <- -10000 + unlinked_to_add
-    }
-  }
-
-  ## potential igraph algorithm
+  ## } else {
   if(!is.null(igraph_type)) {
 
+    ## use igraph clustering
     net <- igraph::graph_from_data_frame(stats::na.omit(x$contacts),
                                          vertices = x$linelist)
 
@@ -859,7 +862,7 @@ get_coor <- function(x,
   }
 
   ## Also return infector because we need scaffold tree for later
-  return(list(y = y_pos, infector = infector, subtree_size = subtree_size))
+  return(list(y = y_pos, subtree_size = subtree_size))
   
 }
 
@@ -968,10 +971,10 @@ get_v_rect <- function(linelist, contacts) {
 
     if(nrow(old_edge) > 0) {
       old_edge$to_node <- TRUE
-      new_edge$to_node <- ifelse(new_edge$to %in% linelist$id, TRUE, FALSE)
+      new_edge$to_node <- new_edge$to %in% linelist$id
       edges <- rbind(old_edge, new_edge)
     } else {
-      new_edge$to_node <- ifelse(new_edge$to %in% linelist$id, TRUE, FALSE)
+      new_edge$to_node <- new_edge$to %in% linelist$id
       edges <- new_edge
     }
     
