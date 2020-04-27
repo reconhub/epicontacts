@@ -337,7 +337,7 @@ vis_temporal_static <- function(x,
   ## Specifying node color palette for different use cases
   if(!is.null(node_color)) {
 
-    if(inherits(nodes[[node_color]], c("factor", "character"))) {
+    if(inherits(nodes[[node_color]], c("factor", "character", "logical"))) {
       
       cols <- fac2col(factor(nodes[, node_color]), col_pal, NA_col, TRUE)
 
@@ -561,7 +561,7 @@ vis_temporal_static <- function(x,
     df$xmid <- (df$x + df$xend)/2
   }
   df$ymid <- (df$y + df$yend)/2
-  
+
   out <- ggplot(df) +
     segment1 +
     segment2 +

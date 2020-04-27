@@ -34,7 +34,7 @@
 #'
 #' @param edge_color An index or character string indicating which field of the
 #'   contacts data should be used to color the edges of the graph.
-#' 
+#'
 #' @param edge_width An integer indicating the width of the edges, or a
 #'   character string indicating which field of the contacts data should be used
 #'   to determine the width of the edge. Defaults to 3.
@@ -43,7 +43,7 @@
 #'   the contacts data should be used to indicate the edge linetype. If the
 #'   output format is visNetwork, this field of the contacts data must contain a
 #'   binary variable, as visNetwork only supports dashed/non-dashed edges.
-#' 
+#'
 #' @param edge_label An index or character string indicating which field of the
 #'   contacts data should be used to label the edges of the graph.
 #'
@@ -88,23 +88,23 @@
 #'
 #' @param legend A logical indicating whether a legend should be added to the
 #'   plot.
-#' 
+#'
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
 #' @param date_labels A string giving the formatting specification for the
 #' x-axis date labels. Codes are defined in ‘strftime()’.
-#' 
+#'
 #' @param thin A logical indicating if the data should be thinned with
 #'   \code{\link{thin}} so that only cases with contacts should be plotted.
 #'
-#' @param selector A logical indicating if the selector tool should be used;
-#'   defaults to TRUE.
+#' @param selector A string indicating which column should be used for the
+#'   selector tool. Set to NULL to disable.
 #'
 #' @param editor A logical indicating if the editor tool should be used;
 #'   defaults to FALSE.
 #'
 #' @param highlight_downstream A logical indicating if all cases 'downstream' of
-#'   the the selected node should be highlighted. 
+#'   the the selected node should be highlighted.
 #'
 #' @param collapse A logical indicating if the network should be collapsed at a
 #'   given node upon double-clicking.
@@ -112,7 +112,7 @@
 #' @param font_size The font size of the node and edge labels.
 #'
 #' @param arrow_size The size of the arrow.
-#' 
+#'
 #' @param ... Further arguments to be passed to \code{visNetwork}.
 #'
 #' @return The same output as \code{visNetwork}.
@@ -165,14 +165,14 @@ vis_epicontacts <- function(x,
                             legend_max = 10,
                             date_labels = "%d/%m/%Y",
                             thin = TRUE,
-                            selector = TRUE,
+                            selector = 'id',
                             editor = FALSE,
                             highlight_downstream = FALSE,
                             collapse = TRUE,
                             font_size = NULL,
                             arrow_size = 2,
                             ...){
-  
+
   ## In the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
   ## for the whole lot. These attributes are in turn used for plotting: as color
@@ -186,7 +186,7 @@ vis_epicontacts <- function(x,
   if (thin) {
     x <- thin(x)
   }
-  
+
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 
@@ -224,7 +224,7 @@ vis_epicontacts <- function(x,
     x$linelist$R_i <- sapply(x$linelist$id,
                              function(i) sum(x$contacts$from == i, na.rm = TRUE))
   }
-  
+
   ## make a list of all nodes, and generate a data.frame of node attributes
   cont_nodes <- c(x$contacts$from, x$contacts$to)
   list_nodes <- x$linelist$id
@@ -235,7 +235,7 @@ vis_epicontacts <- function(x,
   nodes <- merge(nodes, x$linelist, by = "id", all = TRUE, sort = FALSE)
 
   edges <- x$contacts
-  
+
   ## generate annotations ('title' in visNetwork terms)
   if (!is.null(label)) {
     labels <- apply(nodes[, label, drop = FALSE], 1,
@@ -243,7 +243,7 @@ vis_epicontacts <- function(x,
     nodes$label <- labels
   }
 
-  
+
   ## generate annotations ('title' in visNetwork terms)
   if (!is.null(annot)) {
     temp <- nodes[, annot, drop = FALSE]
@@ -254,7 +254,7 @@ vis_epicontacts <- function(x,
                          apply(temp, 1, paste0, collapse = "<br>"), "</p>")
   }
 
-  
+
   ## add node color ('group')
   if (!is.null(node_color)) {
     node_col_info <- fac2col(factor(nodes[, node_color]),
@@ -273,7 +273,7 @@ vis_epicontacts <- function(x,
     ## if node_color set to NULL (not default) color nodes black
     nodes$group.color <- nodes$icon.color <- nodes$color.border <- 'black'
   }
-  
+
 
   ## add node size
   if(!is.null(node_size)) {
@@ -289,7 +289,7 @@ vis_epicontacts <- function(x,
     }
   }
 
-  
+
   ## add shape info
   if (!is.null(node_shape)) {
     if (is.null(shapes)) {
@@ -328,7 +328,7 @@ vis_epicontacts <- function(x,
       edges$width <- rescale(as.numeric(edge_width_values), width_range[1], width_range[2])
     }
   }
-  
+
   ## add edge labels
   if (!is.null(edge_label)) {
     edges$label <- edges[, edge_label]
@@ -373,13 +373,13 @@ vis_epicontacts <- function(x,
     edges$font.size <- font_size
     nodes$font.size <- font_size
   }
-  
+
   ## build visNetwork output
 
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height, ...)
-  
+
   tt_style <- paste0("position: fixed;visibility:hidden;",
                      "padding: 5px;white-space: nowrap;",
                      "font-family: verdana;font-size:14px;",
@@ -393,7 +393,7 @@ vis_epicontacts <- function(x,
     out <- visNetwork::visEdges(out,
                                 arrows = list(to = list(scaleFactor = arrow_size)))
   }
-  
+
   ## specify group colors, add legend
   if (legend) {
     if (!is.null(node_color) &&  (K < legend_max)) {
@@ -442,8 +442,8 @@ vis_epicontacts <- function(x,
 
   ## set nodes borders, edge width, and plotting options
   enabled <- list(enabled = TRUE)
-  arg_selec <- if (selector) node_color else NULL
-  
+  arg_selec <- selector
+
   ## should nodes collapse upon double clicking
   if(collapse) {
     collapse <- list(enabled = TRUE, keepCoord = TRUE)
@@ -451,7 +451,7 @@ vis_epicontacts <- function(x,
 
   ## options specific to highlight_downstream
   if(highlight_downstream) {
-    
+
 
     out <- visNetwork::visOptions(
                          out,
@@ -486,7 +486,7 @@ vis_epicontacts <- function(x,
     out$x$main$text <- title
     out$x$main$style <- "font-weight:bold;font-size:20px;text-align:center"
   }
-  
+
   return(out)
-  
+
 }
