@@ -309,7 +309,7 @@ vis_temporal_interactive <- function(x,
     coor$y <- extr_num(height)*coor$y
   }
 
-  ## extract y coordinates ignoring axes
+  ## extract y coordinates, ignore
   if(axis_type %in% c("single", "double")) {
     nodes$y <- coor$y[-(1:ifelse(axis_type == 'double', 2, 1))]
   } else {
