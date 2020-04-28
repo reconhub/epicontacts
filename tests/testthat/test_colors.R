@@ -46,10 +46,13 @@ test_that("Test fac2col", {
     ## check manual labelling
     pal <- c(Death = "blue", Recover = "green")
     col <- fac2col(x$linelist$outcome, pal, legend = TRUE)
+
     ## check color order is correct
     expect_equal(unname(pal[col$leg_lab]), col$leg_col)
     col <- fac2col(x$linelist$outcome, as.list(pal), legend = TRUE)
     expect_equal(unname(pal[col$leg_lab]), col$leg_col)
+
+    ## check errors
     expect_error(fac2col(x$linelist$gender, pal, legend = TRUE),
                  paste0("col_pal/edge_col_pal must specify a color for",
                         " all elements in node_color/edge_color"))
@@ -59,6 +62,6 @@ test_that("Test fac2col", {
     wrong_pal <- c(Death = "bluee", Recover = "green")
     expect_error(fac2col(x$linelist$outcome, wrong_pal),
                  paste0("all values in col_pal/edge_col_pal must be colors"))
-    
+
 
 })
