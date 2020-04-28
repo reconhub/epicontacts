@@ -37,7 +37,7 @@
 #'
 #' @param edge_width An integer indicating the width of the edges, or a
 #'   character string indicating which field of the contacts data should be used
-#'   to determine the width of the edge. Defaults to 3.
+#'   to determine the width of the edge.
 #'
 #' @param edge_linetype An integer or character string indicating which field of
 #'   the contacts data should be used to indicate the edge linetype. If the
@@ -156,6 +156,7 @@ vis_epicontacts <- function(x,
                             shapes = NULL,
                             size_range = c(5, 20),
                             width_range = c(1, 5),
+                            length_range = c(1, 5),
                             label = "id",
                             annot  =  TRUE,
                             width = "90%",
@@ -326,7 +327,9 @@ vis_epicontacts <- function(x,
       if(is.character(edge_width_values)) {
         stop("edge_width cannot be mapped to character variable")
       }
-      edges$width <- rescale(as.numeric(edge_width_values), width_range[1], width_range[2])
+      edges$width <- rescale(as.numeric(edge_width_values),
+                             width_range[1],
+                             width_range[2])
     }
   }
 
@@ -364,6 +367,9 @@ vis_epicontacts <- function(x,
     edges$font.size <- font_size
     nodes$font.size <- font_size
   }
+
+  ## convert height "xx%" to "xxvh" due to visNetwork bug
+  if(is.character(height)) height <- gsub("%", "vh", height)
 
   ## build visNetwork output
   out <- visNetwork::visNetwork(nodes, edges,

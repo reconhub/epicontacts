@@ -541,6 +541,9 @@ vis_temporal_interactive <- function(x,
     nodes$font.size <- font_size
   }
 
+  ## convert height "xx%" to "xxvh" due to visNetwork bug
+  if(is.character(height)) height <- gsub("%", "vh", height)
+
   ## build visNetwork output
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
