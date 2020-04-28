@@ -79,7 +79,7 @@
 #' head(x$contacts)
 #' }
 make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
-                             directed = FALSE){
+                             directed = FALSE) {
   ## We read data from linelist, which needs to contain at least one case, and
   ## contacts. Sanity checks will include standard class
   ## and dimensionality checks, as well as uniqueness of IDs in the line list,
@@ -106,24 +106,21 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     stop("linelist should have at least one row")
   }
 
-  linelist[,id] <- linelist[,id]
-  if (sum(temp <- duplicated(linelist[,id]))>0) {
-    msg <- paste(linelist[temp,id], collapse=" ")
-    stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
-  }
-
-  ## reordering
   if (is.character(id)) {
     id <- match(id, names(linelist))
   }
+  if (sum(temp <- duplicated(linelist[,id])) > 0) {
+    msg <- paste(linelist[temp, id], collapse = " ")
+    stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
+  }
+
+  ## reordering of variables
   names(linelist)[id] <- "id"
   linelist <- subset(linelist,
                      select = c(id, setdiff(seq_len(ncol(linelist)), id)))
 
   ## convert factors to characters
   if (is.factor(linelist$id)) linelist$id <- as.character(linelist$id)
-  if (is.factor(linelist$from)) linelist$from <- as.character(linelist$from)
-  if (is.factor(linelist$to)) linelist$to <- as.character(linelist$to)
 
 
   ## process contacts ##
@@ -155,8 +152,10 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
   if (is.character(to)) {
     to <- match(to, names(contacts))
   }
-  names(contacts)[c(from,to)] <- c("from", "to")
-  contacts <- contacts[, c(from, to, setdiff(seq_len(ncol(contacts)), c(from,to)))]
+  names(contacts)[c(from, to)] <- c("from", "to")
+  contacts <- contacts[, c(from,
+                           to,
+                           setdiff(seq_len(ncol(contacts)), c(from,to)))]
 
   ## ensure all IDs are stored as characters if one is
   if (is.character(linelist$id) ||
