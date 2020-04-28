@@ -1,7 +1,7 @@
 context("Test get_paths")
 
 test_that("test that return values are correct", {
-  
+
   skip_on_cran()
 
   net <- readRDS("rds/test_net.rds")
@@ -34,7 +34,7 @@ test_that("test that return values are correct", {
                     c("dyzvt", "rvmls", "qmsza"),
                     which = "shortest",
                     output = "generations")
-  
+
   expect_is(path3, "numeric")
   expect_length(path3, 3L)
 
@@ -44,7 +44,7 @@ test_that("test that return values are correct", {
                     c("dyzvt", "rvmls", "qmsza"),
                     which = "all",
                     output = "generations")
-  
+
   expect_is(path3[[1]], "numeric")
   expect_is(path3, "list")
   expect_length(path3, 3L)
@@ -74,13 +74,13 @@ test_that("test that return values are correct", {
                     simplify = TRUE)
 
   expect_is(path5, "character")
-  
+
 })
 
 
 
 test_that("test that correct errors are thrown", {
-  
+
   skip_on_cran()
 
   net <- readRDS("rds/test_net.rds")
@@ -89,10 +89,10 @@ test_that("test that correct errors are thrown", {
     get_path(net, "error", "dyzvt"),
     "The following IDs are not found in the epicontacts object: error"
   )
-  
+
   expect_error(
     get_path(net, c("asnfo", "hwqga"), "dyzvt"),
     "from and to must be the same length"
   )
-  
+
 })

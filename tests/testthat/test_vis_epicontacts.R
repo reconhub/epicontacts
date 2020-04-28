@@ -23,14 +23,6 @@ test_that("Plotting groups as color", {
                           shapes = c(f = "female", m = "male"))
 
   expect_equal(vis1$x$byselection$variable, "gender")
-  ## expect_equal_to_reference(vis1, file = "rds/vis1.rds")
-  ## expect_equal_to_reference(vis2, file = "rds/vis2.rds")
-  ## expect_equal_to_reference(vis3, file = "rds/vis3.rds")
-  ## expect_equal_to_reference(vis4, file = "rds/vis4.rds")
-  ## expect_equal_to_reference(vis5, file = "rds/vis5.rds")
-  ## expect_equal_to_reference(vis6, file = "rds/vis6.rds")
-  ## expect_equal_to_reference(vis7, file = "rds/vis7.rds")
-
   expect_equal(vis_epicontacts(x, node_color = NULL),
                vis_epicontacts(x, node_color = FALSE))
   expect_equal(vis_epicontacts(x, annot = NULL),

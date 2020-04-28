@@ -354,8 +354,7 @@ vis_temporal_interactive <- function(x,
     node_col_info <- fac2col(factor(nodes[, node_color]),
                              col_pal,
                              NA_col,
-                             legend = TRUE,
-                             adj_width = TRUE)
+                             legend = TRUE)
     K <- length(node_col_info$leg_lab)
     if(!is.null(node_shape)) {
       nodes$icon.color <- node_col_info$color
@@ -579,12 +578,16 @@ vis_temporal_interactive <- function(x,
   ## disable physics
   out <- visNetwork::visPhysics(out, enabled = FALSE)
 
-  ## specify group colors, add legend
+  ## add legend
   if (legend) {
+
+    ## node color legend
     if (!is.null(node_color) &&  (K < legend_max)) {
       leg_nodes <- data.frame(label = node_col_info$leg_lab,
-                              color = node_col_info$leg_col,
-                              shape = "circle",
+                              color.background = node_col_info$leg_col,
+                              color.border = "black",
+                              shape = "dot",
+                              borderWidth = 2,
                               shadow = FALSE,
                               font.size = ifelse(is.null(font_size),
                                                  14, font_size))
@@ -592,7 +595,35 @@ vis_temporal_interactive <- function(x,
       leg_nodes <- NULL
     }
 
-    ## specify edge colors, add legend
+    ## node shape legend
+    if (!is.null(node_shape) && nrow(node_shape_info) < legend_max) {
+      ## don't add extra legend keys if variable is the same as node_color
+      if(node_shape == node_color){
+        leg_nodes$shape <- "icon"
+        leg_nodes$icon.code <- node_shape_info$icon
+        leg_nodes[c("color.border",
+                    "color.highlight.border",
+                    "borderWidth")]<- NULL
+        names(leg_nodes)[names(leg_nodes) == "color.background"] <- "icon.color"
+      } else {
+        tmp <- data.frame(label = node_shape_info$leg_lab,
+                          icon.color = 'black',
+                          shape = "icon",
+                          icon.code = node_shape_info$icon,
+                          shadow = FALSE,
+                          font.size = ifelse(is.null(font_size),
+                                             14, font_size))
+        leg_nodes$shape <- "icon"
+        leg_nodes$icon.code <- codeawesome["circle"]
+        leg_nodes[c("color.border",
+                    "color.highlight.border",
+                    "borderWidth")]<- NULL
+        names(leg_nodes)[names(leg_nodes) == "color.background"] <- "icon.color"
+        leg_nodes <- rbind(leg_nodes, tmp)
+      }
+    }
+
+    ## edge color legend
     if (!is.null(edge_color) &&  (L < legend_max)) {
       leg_edges <- data.frame(label = edge_col_info$leg_lab,
                               color = edge_col_info$leg_col,
@@ -604,7 +635,7 @@ vis_temporal_interactive <- function(x,
       leg_edges <- NULL
     }
 
-    ## specify edge linetype, add legend
+    ## edge linetype legend
     if (!is.null(edge_linetype)) {
       ## Don't add extra legend keys if variable is the same
       if(!is.null(edge_color) && edge_linetype == edge_color) {
@@ -618,21 +649,6 @@ vis_temporal_interactive <- function(x,
                           font.align = 'top')
         leg_edges <- rbind(leg_edges, tmp)
       }
-    }
-
-    ## specify node shape, add legend
-    if (!is.null(node_shape) && nrow(node_shape_info) < legend_max) {
-      tmp <- data.frame(label = node_shape_info$leg_lab,
-                        icon.color = 'black',
-                        shape = "icon",
-                        icon.code = node_shape_info$icon,
-                        shadow = FALSE,
-                        font.size = ifelse(is.null(font_size),
-                                           14, font_size))
-      leg_nodes$shape <- "icon"
-      leg_nodes$icon.code <- codeawesome["circle"]
-      names(leg_nodes)[names(leg_nodes) == "color"] <- "icon.color"
-      leg_nodes <- rbind(leg_nodes, tmp)
     }
 
     out <- visNetwork::visLegend(out,
@@ -663,24 +679,26 @@ vis_temporal_interactive <- function(x,
 
   ## options specific to highlight_downstream
   if(highlight_downstream) {
-
-    out <- visNetwork::visOptions(out,
-                                  highlightNearest = list(enabled = TRUE,
-                                                          algorithm = "hierarchical",
-                                                          degree = list(from = 0, to = 50),
-                                                          hideColor = 'rgba(200,200,200,1)'),
-                                  nodesIdSelection = FALSE,
-                                  selectedBy = arg_selec,
-                                  manipulation = editor,
-                                  collapse = collapse)
-
+    out <- visNetwork::visOptions(
+                         out,
+                         highlightNearest = list(enabled = TRUE,
+                                                 algorithm = "hierarchical",
+                                                 degree = list(from = 0, to = 50),
+                                                 hideColor = 'rgba(200,200,200,1)'),
+                         nodesIdSelection = FALSE,
+                         selectedBy = arg_selec,
+                         manipulation = editor,
+                         collapse = collapse
+                       )
   } else {
-    out <- visNetwork::visOptions(out,
-                                  highlightNearest = list(enabled = TRUE,
-                                                          hideColor = 'rgba(200,200,200,1)'),
-                                  selectedBy = arg_selec,
-                                  manipulation = editor,
-                                  collapse = collapse)
+    out <- visNetwork::visOptions(
+                         out,
+                         highlightNearest = list(enabled = TRUE,
+                                                 hideColor = 'rgba(200,200,200,1)'),
+                         selectedBy = arg_selec,
+                         manipulation = editor,
+                         collapse = collapse
+                       )
   }
 
   ## add fontAwesome

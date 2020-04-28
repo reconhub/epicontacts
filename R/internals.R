@@ -1,5 +1,5 @@
 #' Simulated outbreak for vignette
-#' 
+#'
 #' @name sim
 #' @docType data
 #'
@@ -205,7 +205,7 @@ assert_edge_width <- function(x, edge_width) {
   }
 
   return(edge_width)
-  
+
 }
 
 
@@ -335,7 +335,7 @@ assert_custom_parent_pos <- function(custom_parent_pos) {
   }
 
   return(custom_parent_pos)
-  
+
 }
 
 
@@ -349,7 +349,7 @@ assert_x_axis <- function(x, x_axis) {
     stop("'x_axis' must indicate a single node attribute")
   }
   if (!is.null(x_axis)) {
-    
+
     if (is.numeric(x_axis)) {
       x_axis <- names(x$linelist)[x_axis]
     }
@@ -367,7 +367,7 @@ assert_x_axis <- function(x, x_axis) {
   }
 
   return(x_axis)
-  
+
 }
 
 
@@ -389,7 +389,7 @@ get_treestat <- function(i, depth, subtree_size, contacts, linelist, leaf,
 
   ## To remove cycles, we store all edges in a given function call - if we hit
   ## upon a loop, we remove the edge with the lowest score in rank_contact by
-  ## directly editing the contacts dataframe. 
+  ## directly editing the contacts dataframe.
 
   if(length(infector) == 0) {
     infector <- NA
@@ -410,7 +410,7 @@ get_treestat <- function(i, depth, subtree_size, contacts, linelist, leaf,
     stop("type = 'ttree' does not work with cyclical networks. use type = 'network'")
   }
   if(is.na(infector) || infector == 0) {
-    return(list(depth = depth, subtree_size = subtree_size, infector = infector_keep, root = i)) 
+    return(list(depth = depth, subtree_size = subtree_size, infector = infector_keep, root = i))
   } else {
     depth <- depth + 1
     inf_ind <- which(linelist$id == infector)
@@ -458,14 +458,14 @@ clean_cycles <- function(i, leaf, contacts, cycle_elements,
     ## Restart loop from leaf with updated contacts
     contacts <- clean_cycles(leaf, leaf, contacts, NULL,
                              rank_contact, reverse_rank_contact)
-    
+
     ## If no loop, move onwards
   } else {
-    
+
     cycle_elements <- rbind(cycle_elements, to_keep)
     contacts <- clean_cycles(to_keep$from, leaf, contacts, cycle_elements,
                              rank_contact, reverse_rank_contact)
-    
+
   }
 
   return(contacts)
@@ -485,7 +485,7 @@ get_all_roots <- function(i, root, contacts, linelist, leaf) {
     infector <- NA
   }
 
-  
+
   if(length(infector) == 1 & any(is.na(infector)) |
      length(infector) == 1 & any(infector == 0)) {
       return(i)
@@ -493,7 +493,7 @@ get_all_roots <- function(i, root, contacts, linelist, leaf) {
 
   ## If it is an import (infector = 0) and has anothe infector, ignore import
   for(j in infector[infector != 0]) {
-    
+
     ## Break loop if cyclical
     if(j == leaf) {
       stop("type = 'ttree' does not work with cyclical networks. use type = 'network'")
@@ -501,11 +501,11 @@ get_all_roots <- function(i, root, contacts, linelist, leaf) {
 
     sub_root <- get_all_roots(j, root = root, contacts, linelist, leaf)
     root <- c(root, sub_root)
-    
+
   }
 
   return(root)
-  
+
 }
 
 
@@ -574,11 +574,11 @@ get_coor <- function(x,
   x <- get_clusters(x)
   linelist <- x$linelist
   contacts <- x$contacts
-  
+
   ## If rank_contact is a node attribute, calculate an edge attribute for each
   ## contact by taking the difference in node attributes
   if(!rank_contact %in% names(contacts)) {
-    
+
     if(!rank_contact %in% names(linelist)) {
       stop("rank_contact is not found in linelist or contacts")
     }
@@ -590,7 +590,7 @@ get_coor <- function(x,
 
     mtch_from <- match(contacts$from, linelist$id)
     mtch_to <- match(contacts$to, linelist$id)
-    
+
     weight <- linelist[[rank_contact]][mtch_to] - linelist[[rank_contact]][mtch_from]
     weight <- as.numeric(weight)
     contacts[[rank_contact]] <- weight
@@ -613,7 +613,7 @@ get_coor <- function(x,
   ## We remove cycles when building the scaffold tree. We do so by recursively
   ## removing the weakest edge in a cycle (as defined by rank_contact)
   contacts_clean <- contacts
-  
+
   for(i in linelist$id) {
     contacts_clean <- clean_cycles(i,
                                    leaf = i,
@@ -636,7 +636,7 @@ get_coor <- function(x,
                              infector_keep = NULL,
                              root = NULL)
 
-    ind <- which(linelist$id == i) 
+    ind <- which(linelist$id == i)
     depth[ind] <- treestat$depth
     infector[ind] <- treestat$infector
     root[ind] <- treestat$root
@@ -672,7 +672,7 @@ get_coor <- function(x,
 
         ## Group cases by single infector identified in scaffold tree
         grouped <- split(ind, infector[ind])
-        
+
         for(y in grouped) {
 
           ## Get the splitting at each infector
@@ -680,19 +680,19 @@ get_coor <- function(x,
 
           ## Re-order nodes by order_nodes
           if(!is.null(node_order)) {
-            
+
             y <- y[order(linelist[[node_order]][y], decreasing = reverse_node_order)]
-            
+
           }
 
           ## Add splitting to ordered nodes
           to_add[match(y, ind)] <- splt
-          
+
         }
 
         ## Children adopt ranking values from parent in scaffold tree
         mat[ind, 1:(i-1)] <- mat[match(infector[ind], linelist$id), 1:(i-1)]
-        
+
       } else {
 
         ## We need to link roots that are connected by secondary connections
@@ -720,7 +720,7 @@ get_coor <- function(x,
 
         ## Get splitting of roots
         splt <- get_split(length(ind), parent_pos, custom_parent_pos)
-        
+
         if(!is.null(root_order)) {
 
           ## Get initiail ordering of roots by root_order
@@ -729,7 +729,7 @@ get_coor <- function(x,
           ## If we have linked roots, we need to place them next to each other. We
           ## choose a 'root of roots' that is higest ranked in root_order
           if(length(linked_roots) > 0) {
-            
+
             ## Bring the lower ranked root (from root_order) right below the
             ## higher ranked root by subtracting 0.0001
             for(j in seq_len(nrow(linked_roots))) {
@@ -757,27 +757,27 @@ get_coor <- function(x,
             ## Get indices and get splitting
             ord <- match(ord, sort(ord))
             to_add <- splt[ord]
-            
+
           } else {
 
             ## Add normal splitting if we don't have linked roots
             to_add[ord] <- splt
-            
+
           }
 
-          
+
         } else {
 
           ## If node_order is null, use native ordering in linelist
           to_add <- splt
-          
+
         }
 
       }
 
       ## Add the splitting at the given depth
       mat[ind, i] <- to_add
-      
+
     }
 
     ## This is true if i is ranked higher than j (essentially looks at the
@@ -797,7 +797,7 @@ get_coor <- function(x,
 
     ## We get global ranking by taking the sum of all pairwise rankings
     val <- apply(mat2, 1, sum)
-    
+
     ## Get isolated cases and place them as specified by unlinked_pos
     ## If position_dodge, order these by root_order
     contacts <- contacts[contacts$from != 0,]
@@ -863,7 +863,7 @@ get_coor <- function(x,
 
   ## Also return infector because we need scaffold tree for later
   return(list(y = y_pos, subtree_size = subtree_size))
-  
+
 }
 
 
@@ -928,7 +928,7 @@ get_v_rect <- function(linelist, contacts) {
       if(is.numeric(linelist$id)) {
         anchor <- as.numeric(anchor)
       }
-      
+
       ids <- splt[[i]]
       anchor_y <- linelist$y[match(nm[i], linelist$id)]
       d_y <- new_node$y[match(ids, new_node$id)]
@@ -960,9 +960,9 @@ get_v_rect <- function(linelist, contacts) {
                           new_edge[match(vert_nodes$to, new_edge$from),
                                    !names(new_edge) %in% c("from", "to")])
       names(vert_nodes) <- names(contacts)
-      
+
       new_edge <- rbind(new_edge, vert_nodes)
-      
+
     }
 
     nodes <- rbind(linelist, new_node)
@@ -977,7 +977,7 @@ get_v_rect <- function(linelist, contacts) {
       new_edge$to_node <- new_edge$to %in% linelist$id
       edges <- new_edge
     }
-    
+
   } else {
     nodes <- linelist
     edges <- contacts
@@ -1018,7 +1018,7 @@ get_g_rect <- function(linelist, contacts) {
   if(is.character(linelist$id)) {
     new_node$id <- as.character(new_node$id)
   }
-  
+
   ## These unobserved nodes will sit on the x position of the infector and the
   ## y position of the infectee
   new_node$x <- df$x_inf[new_node_ind]
@@ -1031,7 +1031,7 @@ get_g_rect <- function(linelist, contacts) {
   out <- NULL
 
   for(i in seq_along(splt)) {
-    
+
     ## anchor is the common ancestor of all cases in splt[[i]]
     anchor <- nm[i]
 
@@ -1100,13 +1100,13 @@ get_g_rect <- function(linelist, contacts) {
     ## cbind edge attributes - choose the first one if there are multiple
     tmp <- cbind(tmp, contacts[vapply(ind, "[", 1, 1),
                                !names(contacts) %in% c("from", "to")])
-    
+
     out <- rbind(out, tmp)
 
   }
 
   return(out)
-  
+
 }
 
 
@@ -1126,13 +1126,6 @@ rescale <- function(x, min_val = 0, max_val = 1) {
   out <- (x - min(x, na.rm = TRUE))/(diff(range(x, na.rm = TRUE)))*(max_val - min_val)
   out <- out + min_val
   return(out)
-}
-
-## Make all string elements the same length n by inserting whitespaces
-get_adj_width <- function(x, n) {
-  diff <- n - nchar(x)
-  edge <- vapply(diff/2, strrep, " ", x = "  ")
-  return(paste0(edge, x, edge))
 }
 
 ## This function will return the value of var in args if present, otherwise
