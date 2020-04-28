@@ -11,11 +11,11 @@ test_that("Testing get_coor", {
   x <- thin(x[1:300], 2)
 
   n <- nrow(x$linelist)
-  
+
   coor1 <- get_coor(x, 'date_of_onset', axis_type = 'none')
   coor2 <- get_coor(x, 'date_of_onset', axis_type = 'single')
   coor3 <- get_coor(x, 'date_of_onset', axis_type = 'double')
-  
+
   ## check one y-coordinate for each node, plus for axes
   expect_length(coor1$y, n)
   expect_length(coor2$y, n+1)
@@ -67,14 +67,13 @@ test_that("Testing vis_temporal_interactive", {
 
   ## test numerical and character ids
   for(z in list(x, y)) {
-    
+
     ## test no errors thrown when node attributes and edge attributes mapped to
     ## character, date, factor, numeric and integer
     classes <- c('character', 'date', 'factor', 'numeric', 'integer')
     for(i in classes) {
       for(j in paste0(classes, "_from")) {
         expect_error(suppressWarnings(plot(z,
-                                           method = 'temporal',
                                            x_axis = 'date',
                                            node_color = i,
                                            node_order = i,
@@ -87,7 +86,6 @@ test_that("Testing vis_temporal_interactive", {
 
     ## error when mapping node_size to character
     expect_error(suppressWarnings(plot(z,
-                                       method = 'temporal',
                                        x_axis = 'date',
                                        node_size = 'character',
                                        node_color = 'character',
@@ -97,39 +95,33 @@ test_that("Testing vis_temporal_interactive", {
 
     ## error when mapping edge_width to character
     expect_error(suppressWarnings(plot(z,
-                                       method = 'temporal',
                                        x_axis = 'date',
                                        edge_width = 'character_from')),
                  'edge_width cannot be mapped to character variable')
 
     ## error when mapping edge_linetype to character
     expect_error(suppressWarnings(plot(z,
-                                       method = 'temporal',
                                        x_axis = 'date',
                                        edge_linetype = 'character_from')),
                  paste0("visNetwork only supports two linetypes; ",
-                        "use binary variable or set output = 'static'."))
+                        "use binary variable or set method = 'ggplot'."))
 
     ## testing igraph_type
     expect_error(suppressWarnings(plot(z,
-                                       method = 'temporal',
                                        x_axis = 'date',
                                        igraph_type = 'rt')),
                  NA)
     expect_error(suppressWarnings(plot(z,
-                                       method = 'temporal',
                                        x_axis = 'date',
                                        igraph_type = 'fr')),
                  NA)
     expect_error(suppressWarnings(plot(z,
-                                       method = 'temporal',
                                        x_axis = 'date',
                                        igraph_type = 'sugiyama')),
                  NA)
 
     ## test custom parent_pos
     expect_error(suppressWarnings(plot(z,
-                                       method = 'temporal',
                                        x_axis = 'date',
                                        custom_parent_pos = function(n) n)),
                  paste0("custom_parent_pos must be a function of n",
@@ -139,17 +131,17 @@ test_that("Testing vis_temporal_interactive", {
 
   ## check x_axis must be numeric or date
   msg <- "x_axis must indicate a Date, numeric or integer value"
-  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'date')),
+  expect_error(suppressWarnings(plot(x, x_axis = 'date')),
                NA)
-  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'integer')),
+  expect_error(suppressWarnings(plot(x, x_axis = 'integer')),
                NA)
-  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'numeric')),
+  expect_error(suppressWarnings(plot(x, x_axis = 'numeric')),
                NA)
-  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'character')),
+  expect_error(suppressWarnings(plot(x, x_axis = 'character')),
                msg)
-  expect_error(suppressWarnings(plot(x, method = 'temporal', x_axis = 'factor')),
+  expect_error(suppressWarnings(plot(x, x_axis = 'factor')),
                msg)
-    
+
 })
 
 
@@ -192,15 +184,14 @@ test_that("Testing vis_temporal_static", {
 
   ## test numerical and character ids
   for(z in list(x, y)) {
-    
+
     ## test no errors thrown when node attributes and edge attributes mapped to
     ## character, date, factor, numeric and integer
     classes <- c('character', 'date', 'factor', 'numeric', 'integer')
     for(i in classes) {
       for(j in paste0(classes, "_from")) {
         expect_error(suppressWarnings(plot(z,
-                                           method = 'temporal',
-                                           output = 'static',
+                                           method = 'ggplot',
                                            x_axis = 'date',
                                            node_color = i,
                                            node_order = i,
@@ -212,8 +203,7 @@ test_that("Testing vis_temporal_static", {
 
       ## error when mapping node_size to character
       expect_error(suppressWarnings(plot(z,
-                                         method = 'temporal',
-                                         output = 'static',
+                                         method = 'ggplot',
                                          x_axis = 'date',
                                          node_size = 'character',
                                          node_color = 'character',
@@ -223,28 +213,24 @@ test_that("Testing vis_temporal_static", {
 
       ## no error when mapping edge_linetype to character in ggplot
       expect_error(suppressWarnings(plot(z,
-                                         method = 'temporal',
-                                         output = 'static',
+                                         method = 'ggplot',
                                          x_axis = 'date',
                                          edge_linetype = 'character_from')),
                    NA)
 
       ## testing igraph_type
       expect_error(suppressWarnings(plot(z,
-                                         method = 'temporal',
-                                         output = 'static',
+                                         method = 'ggplot',
                                          x_axis = 'date',
                                          igraph_type = 'rt')),
                    NA)
       expect_error(suppressWarnings(plot(z,
-                                         method = 'temporal',
-                                         output = 'static',
+                                         method = 'ggplot',
                                          x_axis = 'date',
                                          igraph_type = 'fr')),
                    NA)
       expect_error(suppressWarnings(plot(z,
-                                         method = 'temporal',
-                                         output = 'static',
+                                         method = 'ggplot',
                                          x_axis = 'date',
                                          igraph_type = 'sugiyama')),
                    NA)
@@ -253,8 +239,7 @@ test_that("Testing vis_temporal_static", {
 
     ## test custom parent_pos
     expect_error(suppressWarnings(plot(x,
-                                       method = 'temporal',
-                                       output = 'static',
+                                       method = 'ggplot',
                                        x_axis = 'date',
                                        custom_parent_pos = function(n) n)),
                  paste0("custom_parent_pos must be a function of n",
@@ -263,4 +248,3 @@ test_that("Testing vis_temporal_static", {
 
   }
 })
-  

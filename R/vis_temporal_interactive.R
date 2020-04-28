@@ -154,6 +154,8 @@ vis_temporal_interactive <- function(x,
   title <- get_val('title', def, args)
   legend <- get_val('legend', def, args)
   legend_max <- get_val('legend_max', def, args)
+  ## default selector value is node_color
+  def$selector <- node_color
   selector <- get_val('selector', def, args)
   editor <- get_val('editor', def, args)
   highlight_downstream <- get_val('highlight_downstream', def, args)
@@ -365,7 +367,6 @@ vis_temporal_interactive <- function(x,
     ## if node_color set to NULL (not default) color nodes black
     nodes$color.background <- nodes$color.highlight.background <- 'black'
     nodes$color.border <- nodes$color.highlight.border <- 'black'
-
   }
 
   ## add node size
@@ -405,11 +406,11 @@ vis_temporal_interactive <- function(x,
     node_code <- codeawesome[shapes[vec_node_shapes]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
+    ## define icon size if node_size is specified
     if(!is.null(node_size)) nodes$icon.size <- nodes$size
     node_shape_info <- data.frame(icon = unique(node_code),
                                   leg_lab = unique(vec_node_shapes))
   }
-
   nodes$borderWidth <- 2
 
   ## add edge width
@@ -462,11 +463,6 @@ vis_temporal_interactive <- function(x,
     edges$dashes <- edges[[edge_linetype]] != sort(unq_linetype)[1]
   }
 
-  ## check x_axis
-  if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer", "POSIXct"))) {
-    stop("Data used to specify x axis must be a date or number")
-  }
-
   ## add axes
   if(axis_type %in% c("single", "double")) {
 
@@ -507,8 +503,9 @@ vis_temporal_interactive <- function(x,
     axis_nodes$borderWidth <- 0.1
 
     ## assign x and y axis positions
-    axis_nodes$x <- utils::tail(resc_x, length(pretty(x$linelist[[x_axis]],
-                                                   n = n_breaks)))
+    axis_nodes$x <- utils::tail(resc_x,
+                                length(pretty(x$linelist[[x_axis]],
+                                              n = n_breaks)))
     axis_nodes$y <- coor$y[1]
     axis_nodes$level <- 1
 
@@ -549,21 +546,22 @@ vis_temporal_interactive <- function(x,
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height)
+
+  ## specify node attributes
   out <- visNetwork::visNodes(out,
                               fixed = list(x = TRUE, y = FALSE),
                               hidden = hidden,
                               borderWidth = 2,
                               borderWidthSelected = 2)
+
+  ## specify edge attributes
   out <- visNetwork::visEdges(out,
                               smooth = edge_flex,
                               arrowStrikethrough = FALSE,
                               font = list(align = 'top'),
                               selectionWidth = 1)
-  if(x$directed) {
-    out <- visNetwork::visEdges(out, arrows = list(to = list(scaleFactor = arrow_size)))
-  }
-  out <- visNetwork::visPhysics(out, enabled = FALSE)
 
+  ## specify tool tip
   tt_style <- paste0("position: fixed;visibility:hidden;",
                      "padding: 5px;white-space: nowrap;",
                      "font-family: verdana;font-size:14px;",
@@ -571,6 +569,15 @@ vis_temporal_interactive <- function(x,
                      "-moz-border-radius: 3px;-webkit-border-radius: 3px;",
                      "border-radius: 3px;border: 1px solid #000000;")
   out <- visNetwork::visInteraction(out, tooltipStyle = tt_style)
+
+  ## add arrows if directed
+  if(x$directed) {
+    out <- visNetwork::visEdges(out,
+                                arrows = list(to = list(scaleFactor = arrow_size)))
+  }
+
+  ## disable physics
+  out <- visNetwork::visPhysics(out, enabled = FALSE)
 
   ## specify group colors, add legend
   if (legend) {
@@ -592,7 +599,7 @@ vis_temporal_interactive <- function(x,
                               dashes = FALSE,
                               font.size = ifelse(is.null(font_size),
                                                  14, font_size),
-                              font.align = 'bottom')
+                              font.align = 'top')
     } else {
       leg_edges <- NULL
     }
@@ -608,7 +615,7 @@ vis_temporal_interactive <- function(x,
                           dashes = c(FALSE, TRUE),
                           font.size = ifelse(is.null(font_size),
                                              14, font_size),
-                          font.align = 'bottom')
+                          font.align = 'top')
         leg_edges <- rbind(leg_edges, tmp)
       }
     }
@@ -641,7 +648,13 @@ vis_temporal_interactive <- function(x,
 
   ## set nodes borders, edge width, and plotting options
   enabled <- list(enabled = TRUE)
-  arg_selec <- selector
+
+  ## set selector
+  if(is.logical(selector)) {
+    arg_selec <- if(selector) "id" else NULL
+  } else {
+    arg_selec <- selector
+  }
 
   ## should nodes collapse upon double clicking
   if(collapse) {

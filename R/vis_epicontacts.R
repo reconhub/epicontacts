@@ -98,7 +98,7 @@
 #'   \code{\link{thin}} so that only cases with contacts should be plotted.
 #'
 #' @param selector A string indicating which column should be used for the
-#'   selector tool. Set to NULL to disable.
+#'   selector tool. Set to FALSE to disable.
 #'
 #' @param editor A logical indicating if the editor tool should be used;
 #'   defaults to FALSE.
@@ -163,9 +163,9 @@ vis_epicontacts <- function(x,
                             title = NULL,
                             legend = TRUE,
                             legend_max = 10,
-                            date_labels = "%d/%m/%Y",
+                            date_labels = "%Y-%m-%d",
                             thin = TRUE,
-                            selector = 'id',
+                            selector = node_color,
                             editor = FALSE,
                             highlight_downstream = FALSE,
                             collapse = TRUE,
@@ -229,8 +229,7 @@ vis_epicontacts <- function(x,
   cont_nodes <- c(x$contacts$from, x$contacts$to)
   list_nodes <- x$linelist$id
 
-  nodes <- data.frame(id = unique(c(list_nodes, cont_nodes)),
-                      stringsAsFactors = FALSE)
+  nodes <- data.frame(id = get_id(x, "all"), stringsAsFactors = FALSE)
 
   nodes <- merge(nodes, x$linelist, by = "id", all = TRUE, sort = FALSE)
 
@@ -271,9 +270,9 @@ vis_epicontacts <- function(x,
     }
   } else {
     ## if node_color set to NULL (not default) color nodes black
-    nodes$group.color <- nodes$icon.color <- nodes$color.border <- 'black'
+    nodes$color.background <- nodes$color.highlight.background <- 'black'
+    nodes$color.border <- nodes$color.highlight.border <- 'black'
   }
-
 
   ## add node size
   if(!is.null(node_size)) {
@@ -285,10 +284,11 @@ vis_epicontacts <- function(x,
       if(is.character(node_size_values)) {
         stop("node_size cannot be mapped to character variable")
       }
-      nodes$size <- rescale(as.numeric(node_size_values), size_range[1], size_range[2])
+      nodes$size <- rescale(as.numeric(node_size_values),
+                            size_range[1],
+                            size_range[2])
     }
   }
-
 
   ## add shape info
   if (!is.null(node_shape)) {
@@ -307,14 +307,16 @@ vis_epicontacts <- function(x,
                      culprits)
       stop(msg)
     }
-
     vec_node_shapes <- paste(vec_node_shapes)
     node_code <- codeawesome[shapes[vec_node_shapes]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
-  } else {
-    nodes$borderWidth <- 2
+    ## define icon size if node_size is specified
+    if(!is.null(node_size)) nodes$icon.size <- nodes$size
+    node_shape_info <- data.frame(icon = unique(node_code),
+                                  leg_lab = unique(vec_node_shapes))
   }
+  nodes$borderWidth <- 2
 
   ## add edge width
   if(!is.null(edge_width)) {
@@ -331,7 +333,7 @@ vis_epicontacts <- function(x,
 
   ## add edge labels
   if (!is.null(edge_label)) {
-    edges$label <- edges[, edge_label]
+    edges$label <- as.character(edges[, edge_label])
   }
 
   ## add edge color
@@ -346,27 +348,17 @@ vis_epicontacts <- function(x,
     edges$color <- 'black'
   }
 
-  ## ## add edge linetype
-  ## if(!is.null(edge_linetype)) {
-  ##   unq <- unique(edges[[edge_linetype]])
-  ##   if(length(stats::na.omit(unq)) > 2) {
-  ##     stop("visNetwork only supports two linetypes; use binary variable or set method = 'ggplot'.")
-  ##   }
-  ##   ## Uses alphabetical order / factor order
-  ##   edges$dashes <- edges[[edge_linetype]] != sort(unq)[1]
-  ## }
-
   ## add edge linetype
   if(!is.null(edge_linetype)) {
     unq_linetype <- unique(edges[[edge_linetype]])
     if(length(stats::na.omit(unq_linetype)) > 2) {
-      stop("visNetwork only supports two linetypes; use binary variable or set method = 'ggplot'.")
+      msg <- paste0("visNetwork only supports two linetypes; ",
+                    "use binary variable or set method = 'ggplot'.")
+      stop(msg)
     }
-    ## Uses alphabetical order / factor order
+    ## use alphabetical order / factor order
     edges$dashes <- edges[[edge_linetype]] != sort(unq_linetype)[1]
   }
-
-
 
   ## Change font size
   if(!is.null(font_size)) {
@@ -375,11 +367,11 @@ vis_epicontacts <- function(x,
   }
 
   ## build visNetwork output
-
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
                                 height = height, ...)
 
+  ## specify tool tip
   tt_style <- paste0("position: fixed;visibility:hidden;",
                      "padding: 5px;white-space: nowrap;",
                      "font-family: verdana;font-size:14px;",
@@ -407,6 +399,7 @@ vis_epicontacts <- function(x,
       leg_nodes <- NULL
     }
 
+    ## specify edge colors, add legend
     if (!is.null(edge_color) &&  (L < legend_max)) {
       leg_edges <- data.frame(label = edge_col_info$leg_lab,
                               color = edge_col_info$leg_col,
@@ -418,6 +411,7 @@ vis_epicontacts <- function(x,
       leg_edges <- NULL
     }
 
+    ## specify edge linetype, add legend
     if (!is.null(edge_linetype)) {
       ## Don't add extra legend keys if variable is the same
       if(!is.null(edge_color) && edge_linetype == edge_color) {
@@ -433,16 +427,41 @@ vis_epicontacts <- function(x,
       }
     }
 
+    ## specify node shape, add legend
+    if (!is.null(node_shape) && nrow(node_shape_info) < legend_max) {
+      tmp <- data.frame(label = node_shape_info$leg_lab,
+                        icon.color = 'black',
+                        shape = "icon",
+                        icon.code = node_shape_info$icon,
+                        shadow = FALSE,
+                        font.size = ifelse(is.null(font_size),
+                                           14, font_size))
+      leg_nodes$shape <- "icon"
+      leg_nodes$icon.code <- codeawesome["circle"]
+      names(leg_nodes)[names(leg_nodes) == "color"] <- "icon.color"
+      leg_nodes <- rbind(leg_nodes, tmp)
+    }
+
     out <- visNetwork::visLegend(out,
+                                 zoom = FALSE,
                                  addNodes = leg_nodes,
                                  addEdges = leg_edges,
+                                 width = ifelse(is.null(edge_linetype),
+                                                0.07,
+                                                0.10),
                                  useGroups = FALSE)
 
   }
 
   ## set nodes borders, edge width, and plotting options
   enabled <- list(enabled = TRUE)
-  arg_selec <- selector
+
+  ## set selector
+  if(is.logical(selector)) {
+    arg_selec <- if(selector) "id" else NULL
+  } else {
+    arg_selec <- selector
+  }
 
   ## should nodes collapse upon double clicking
   if(collapse) {
@@ -451,7 +470,6 @@ vis_epicontacts <- function(x,
 
   ## options specific to highlight_downstream
   if(highlight_downstream) {
-
 
     out <- visNetwork::visOptions(
                          out,
@@ -476,6 +494,7 @@ vis_epicontacts <- function(x,
                        )
   }
 
+  ## disable stabilization
   out <- visNetwork::visPhysics(out, stabilization = FALSE)
 
   ## add fontAwesome
