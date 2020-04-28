@@ -28,7 +28,9 @@ transparency, and 1 for full opacity.}
 
 \item{x}{A character or a factor to be converted to colors.}
 
-\item{pal}{A color palette.}
+\item{pal}{A color palette. Can be a function accepting a single number n and
+returning a vector of n colors, or a named character vector matching all
+factor levels in x to a color.}
 
 \item{NA_col}{The color to be used for NA values.}
 

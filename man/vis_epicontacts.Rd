@@ -53,11 +53,15 @@ plot.}
 \item{x_axis}{A character string indicating which field of the linelist data
 should be used to specify the x axis position (must be numeric or Date)}
 
-\item{col_pal}{A color palette for the nodes.}
+\item{col_pal}{A color palette for the nodes. Can be a function accepting a
+single number n and returning a vector of n colors, or a named character
+vector/list matching all factor levels in node_color to a color.}
 
 \item{NA_col}{The color used for unknown group.}
 
-\item{edge_col_pal}{A color palette for the edges.}
+\item{edge_col_pal}{A color palette for the edges. Can be a function accepting a
+single number n and returning a vector of n colors, or a named character
+vector/list matching all factor levels in edge_color to a color.}
 
 \item{width}{The width of the output, in html compatible format (e.g. '90\%'
 or '800px').}
