@@ -443,7 +443,7 @@ vis_epicontacts <- function(x,
                               dashes = FALSE,
                               font.size = ifelse(is.null(font_size),
                                                  14, font_size),
-                              font.align = 'top')
+                              font.align = 'bottom')
     } else {
       leg_edges <- NULL
     }
@@ -459,7 +459,7 @@ vis_epicontacts <- function(x,
                           dashes = c(FALSE, TRUE),
                           font.size = ifelse(is.null(font_size),
                                              14, font_size),
-                          font.align = 'top')
+                          font.align = 'bottom')
         leg_edges <- rbind(leg_edges, tmp)
       }
     }
