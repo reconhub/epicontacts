@@ -1019,7 +1019,8 @@ get_g_rect <- function(linelist, contacts) {
 
     ## cbind edge attributes - choose the first one if there are multiple
     tmp <- cbind(tmp, contacts[vapply(ind, "[", 1, 1),
-                               !names(contacts) %in% c("from", "to")])
+                               !names(contacts) %in% c("from", "to"),
+                               drop = FALSE])
 
     out <- rbind(out, tmp)
 

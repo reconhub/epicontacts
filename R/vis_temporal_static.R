@@ -15,11 +15,11 @@
 #'
 #' @param x_axis A character string indicating which field of the linelist data
 #'   should be used to specify the x axis position (must be numeric or Date).
-#' 
+#'
 #' @param edge_alpha An integer/numeric indicating the global transparency of
 #'   the edges, or a character string indicating which field of the contacts data
 #'   should be used to indicate the edge transparency.
-#' 
+#'
 #' @param network_shape "branching" will create a branching transmission
 #'   tree. "rectangle" will create a rectangular shaped plot similar to a
 #'   phylogeny that avoids overlapping edges.
@@ -53,7 +53,7 @@
 #'
 #' @param lineend Character indicating the lineend to be used for
 #'   geom_segment. One of "round", "butt" or "square".
-#' 
+#'
 #' @param unlinked_pos A character string indicating where unlinked cases
 #'   should be placed. Valid options are "top", "bottom" and "middle", where
 #'   "middle" will place unlinked cases according to root_order. This argument
@@ -108,7 +108,7 @@
 #'   scale_fill_continuous scale_color_manual scale_color_continuous geom_text
 #'   arrow
 #'
-#' 
+#'
 #' @examples
 #' if (require(outbreaks)) {
 #'
@@ -178,29 +178,29 @@ vis_temporal_static <- function(x,
   ## remove NAs in contacts and linelist
   x <- x[i = !is.na(x$linelist$id),
          j = !is.na(x$contacts$from) & !is.na(x$contacts$to)]
-  
+
   ## test x_axis
   x_axis <- assert_x_axis(x, x_axis)
-  
+
   ## count number of nodes not in linelist
   not_in_ll <- sum(!get_id(x, 'contacts') %in% get_id(x, 'linelist'))
-  
+
   ## count number of contacts without x_axis data
   contacts_rm <- sum(is.na(get_pairwise(x, x_axis)))
-  
+
   ## identify linelist elements with NAs in x_axis
   na_x_axis <- is.na(x$linelist[[x_axis]])
-  
+
   ## warning to list number of nodes and edges not displayed
   msg <- "%s nodes and %s edges removed as x_axis data is unavailable"
   sm <- not_in_ll + sum(na_x_axis) + contacts_rm
   if(sm > 0) {
     warning(sprintf(msg, not_in_ll + sum(na_x_axis), contacts_rm))
   }
-  
+
   ## remove NA x_axis elements from linelist
   x <- x[!na_x_axis]
-  
+
   ## remove contacts that don't have both nodes in linelist
   x <- thin(x, what = 'contacts')
 
@@ -213,7 +213,7 @@ vis_temporal_static <- function(x,
   if(nrow(x$contacts) == 0L) {
     stop("No contacts found between cases with available x_axis data")
   }
-  
+
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 
@@ -243,7 +243,7 @@ vis_temporal_static <- function(x,
 
   ## check root_order (node attribute used for vertical root ordering)
   custom_parent_pos <- assert_custom_parent_pos(custom_parent_pos)
-  
+
   ## edge width can only be numeric in vis_temporal_static
   if(length(edge_width) > 1 | !inherits(edge_width, c("numeric", "integer"))) {
     msg <- paste("edge width must be a single number if method = 'ggplot' (cannot be",
@@ -263,7 +263,7 @@ vis_temporal_static <- function(x,
       stop("igraph_type cannot be specified with y-axis labels")
     }
   }
-  
+
   ## Calculate R_i if needed
   if("R_i" %in% c(node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- vapply(x$linelist$id,
@@ -293,7 +293,7 @@ vis_temporal_static <- function(x,
   } else {
     nodes$y <- y_coor
   }
-  
+
   nodes$x <- x$linelist[[x_axis]]
   nodes$subtree_size <- coor$subtree_size
 
@@ -315,14 +315,14 @@ vis_temporal_static <- function(x,
     if(!is.null(df)) {
       df <- df[apply(df[,1:4], 1, function(xx) !any(is.na(xx))),]
     }
-    
+
     df <- rbind(df, df1)
 
   } else if(network_shape == "branching") {
 
     i_ind <- match(edges$to, nodes$id)
     inf_ind <- match(edges$from, nodes$id)
-    
+
     df <- data.frame(y = nodes$y[inf_ind],
                      yend = nodes$y[i_ind],
                      x = nodes$x[inf_ind],
@@ -338,12 +338,12 @@ vis_temporal_static <- function(x,
   if(!is.null(node_color)) {
 
     if(inherits(nodes[[node_color]], c("factor", "character", "logical"))) {
-      
+
       cols <- fac2col(factor(nodes[, node_color]), col_pal, NA_col, TRUE)
 
       vals <- cols$leg_col
       names(vals) <- cols$leg_lab
-      
+
       col_pal <- scale_fill_manual(values = vals, na.value = NA_col)
 
       ## annoying workaround to specify colors for dates
@@ -363,9 +363,9 @@ vis_temporal_static <- function(x,
                                         breaks = as.numeric(dates),
                                         labels = dates)
       }
-      
+
     } else if(inherits(nodes[[node_color]], c("numeric", "integer"))) {
-      
+
       if(missing(col_pal)) {
         col_pal <- scale_fill_continuous()
       } else {
@@ -378,21 +378,21 @@ vis_temporal_static <- function(x,
   } else {
 
     col_pal <- NULL
-    
+
   }
 
   ## Specifying edge color palette for different use cases
   if(!is.null(edge_color)) {
 
     if(inherits(edges[[edge_color]], c("factor", "character"))) {
-      
+
       cols <- fac2col(factor(edges[, edge_color]), edge_col_pal, NA_col, TRUE)
 
       vals <- cols$leg_col
       names(vals) <- cols$leg_lab
-      
+
       edge_col_pal <- scale_color_manual(values = vals, na.value = NA_col)
-      
+
       ## annoying workaround to specify colors for dates
       ## creates additional column called paste0(edge_color, "_")
     } else if(inherits(edges[[edge_color]], "Date")) {
@@ -413,9 +413,9 @@ vis_temporal_static <- function(x,
                                               labels = dates,
                                               na.value = NA_col)
       }
-      
+
     } else if(inherits(edges[[edge_color]], c("numeric", "integer"))) {
-      
+
       if(missing(edge_col_pal)) {
         edge_col_pal <- scale_color_continuous(na.value = NA_col)
       } else {
@@ -429,7 +429,7 @@ vis_temporal_static <- function(x,
   } else {
 
     edge_col_pal <- NULL
-    
+
   }
 
   ## Check node size attribute
@@ -441,17 +441,17 @@ vis_temporal_static <- function(x,
                                    fill = node_color),
                         size = node_size,
                         shape = 21)
-    
+
     size_pal <- NULL
 
   } else {
 
     if(inherits(nodes[[node_size]], "character")) {
-      
+
       stop("node_size cannot be mapped to character variable")
-      
+
     } else if(inherits(nodes[[node_size]], "Date")) {
-      
+
       dates <- pretty(nodes[[node_size]])
       numeric_node_size <- as.numeric(nodes[[node_size]])
       node_size <- paste0(node_size, "_")
@@ -459,9 +459,9 @@ vis_temporal_static <- function(x,
       size_pal <- scale_size(range = c(size_range[1], size_range[2]),
                              breaks = scales::pretty_breaks(as.numeric(dates)),
                              labels = dates)
-      
+
     } else if(inherits(nodes[[node_size]], "factor")) {
-      
+
       warning("Mapping factor to size; converting factors to integers.")
       lev <- levels(nodes[[node_size]])
       ind <- as.integer(nodes[[node_size]])
@@ -481,7 +481,7 @@ vis_temporal_static <- function(x,
                                    size = node_size,
                                    fill = node_color),
                         shape = 21)
-    
+
   }
 
   if(x$directed) {
@@ -574,7 +574,7 @@ vis_temporal_static <- function(x,
     theme_minimal() +
     gg_theme +
     labs(x = x_axis)
-    
+
   return(out)
-  
+
 }
