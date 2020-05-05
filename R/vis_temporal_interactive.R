@@ -419,6 +419,9 @@ vis_temporal_interactive <- function(x,
 
   ## merge timeline nodes and edges - timeline nodes do not have titles
   if(!is.null(timeline)) {
+    ## store the nodes and edges belonging to the network (not timeline and axis)
+    net_nodes <- nodes
+    net_edges <- edges
     nodes <- merge(nodes,
                    timeline_nodes,
                    by = intersect(names(nodes), names(timeline_nodes)),
@@ -426,28 +429,23 @@ vis_temporal_interactive <- function(x,
                    sort = FALSE)
     edge_ind <- seq_len(nrow(edges))
     timeline_ind <- seq(nrow(edges) + 1, length = nrow(timeline_edges))
+
     edges <- merge(edges,
                    timeline_edges,
                    by = intersect(names(edges), names(timeline_edges)),
                    all = TRUE,
                    sort = FALSE)
+  } else {
+    ## store the nodes and edges belonging to the network (not timeline and axis)
+    net_nodes <- nodes
+    net_edges <- edges
   }
   browser()
 
-  join_node_vals <- function(nodes, timeline, node, start, end) {
-    node_val <- if(is.null(nodes))
-    c(if(is.null(node)) rep(NA, nrow(nodes)) else nodes[, node],
-      if(is.null(start)) rep(NA, nrow(timeline)) else timeline[, start],
-      if(is.null(end)) rep(NA, nrow(timeline)) else timeline[, end])
-  }
-
-  join_edge_vals <- function(edges, timeline, edge, tl_edge) {
-    c(if(is.null(edge)) rep(NA, nrow(edges)) else edges[, edge],
-      if(is.null(tl_edge)) rep(NA, nrow(timeline)) else timeline[, tl_edge])
-  }
-
   ## add node color ("group")
-  if (!is.null(c(node_color, tl_start_node_color, tl_end_node_color)) {
+  if (!is.null(c(node_color, tl_start_node_color, tl_end_node_color))) {
+    joint_col <- join_node_vals(nodes, timeline, node_color,
+                                tl_start_node_color, tl_end_node_color)
     node_col_info <- fac2col(factor(nodes[, node_color]),
                              col_pal,
                              NA_col,

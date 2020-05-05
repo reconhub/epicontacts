@@ -67,6 +67,7 @@ assert_node_size <- function(df, node_size, var = "node_shape") {
   return(node_size)
 }
 
+
 assert_annot <- function(x, annot) {
   if (is.logical(annot) && sum(annot) == 0L) {
     annot <- NULL
@@ -87,6 +88,7 @@ assert_annot <- function(x, annot) {
   return(annot)
 }
 
+
 assert_edge_label <- function(df, edge_label, var = "edge_label") {
   if (length(edge_label) > 1L) {
     stop(sprintf("'%s' must indicate a single edge attribute", var))
@@ -106,6 +108,7 @@ assert_edge_label <- function(df, edge_label, var = "edge_label") {
 
   return(edge_label)
 }
+
 
 assert_edge_color <- function(df, edge_color, var = "edge_color") {
   if (length(edge_color) > 1L) {
@@ -325,6 +328,8 @@ assert_timeline <- function(timeline, x, x_axis) {
 
 }
 
+
+
 ## this is a recursive function calculating various properties of the leaf node
 ##  -depth is the number of edges from a root node
 ##  -identify of the root node
@@ -429,6 +434,7 @@ prune_cycles <- function(i, leaf, contacts, cycle_edges,
   return(contacts)
 
 }
+
 
 
 ## get_child_pos outputs children node positions relative to the parent
@@ -553,7 +559,7 @@ get_coor <- function(x,
                                    reverse_rank_contact = reverse_rank_contact)
   }
 
-  ## calculate various tree statistics using scaffold tree
+  ## calculate various tree statistics using scaffold tree
   for(i in linelist$id) {
     treestat <- get_treestat(i,
                              depth = 1,
@@ -788,9 +794,6 @@ get_coor <- function(x,
 
 
 
-
-
-
 ## Get rectangular nodes and edges for visNetwork output. This function returns
 ## the nodes and edges (with corresponding node and edge attributes) for a
 ## 'rectangular' shaped transmission tree.
@@ -913,9 +916,6 @@ get_v_rect <- function(linelist, contacts) {
 
 
 
-
-
-
 ## Get coordinates for for ggplot geom_segments when network_shape =
 ## 'rectangle'. Corresponding node and edge attributes are passed on.
 get_g_rect <- function(linelist, contacts) {
@@ -1032,14 +1032,13 @@ get_g_rect <- function(linelist, contacts) {
 
 
 
-
-
-
 ## Extract numeric from string to avoid stringr dependency
 extr_num <- function(x) {
   grg <- gregexpr('[0-9]', x)[[1]]
   return(as.numeric(substr(x, grg[[1]][1], length(grg))))
 }
+
+
 
 ## Rescale a vector of numerics to min and max
 rescale <- function(x, min_val = 0, max_val = 1) {
@@ -1048,6 +1047,8 @@ rescale <- function(x, min_val = 0, max_val = 1) {
   out <- out + min_val
   return(out)
 }
+
+
 
 ## This function will return the value of var in args if present, otherwise
 ## returns the default value in def.
@@ -1059,9 +1060,31 @@ get_val <- function(var, def, args) {
   }
 }
 
+
+
 ## Determine if character string is a color
 is_color <- function(x) {
   vapply(x, function(e)
     !is.null(tryCatch(grDevices::col2rgb(e), error = function(e) NULL)),
     FALSE)
 }
+
+
+
+## Join node information from nodes and timelines
+join_node_vals <- function(nodes, timeline, node, start, end) {
+  node_val <- if(is.null(nodes)) NULL else if(is.null(node)) rep(NA, nrow(nodes)) else nodes[, node]
+  start_val <- if(is.null(timeline)) NULL else if(is.null(start)) rep(NA, nrow(timeline)) else timeline[, start]
+  end_val <- if(is.null(timeline)) NULL else if(is.null(end)) rep(NA, nrow(timeline)) else timeline[, end]
+  return(c(node_val, start_val, end_val))
+}
+
+
+
+## Join edge information from edges and timelines
+join_edge_vals <- function(edges, timeline, edge, tl_edge) {
+  edge_val <- if(is.null(edges)) NULL else if(is.null(edge)) rep(NA, nrow(edges)) else edges[, edge]
+  tl_val <- if(is.null(timeline)) NULL else if(is.null(tl_edge)) rep(NA, nrow(timeline)) else timeline[, tl_edge]
+  return(c(node_val, tl_val))
+}
+

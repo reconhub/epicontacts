@@ -123,9 +123,9 @@ spectral <- grDevices::colorRampPalette(
 #'   output. If TRUE, the output will be a list, with colors in the
 #'   \code{$color} component.
 #'
-fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE) {
+fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE, tl_col = NULL) {
   x <- factor(x)
-  lev <- levels(x)
+  lev <- levels(x)[levels(x) == "timeline"]
   leg_lab <- lev
   nlev <- length(lev)
   res <- rep(NA_col, length(x))
