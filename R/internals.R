@@ -87,7 +87,7 @@ assert_annot <- function(x, annot) {
   return(annot)
 }
 
-assert_edge_label <- function(x, edge_label, var = "edge_label") {
+assert_edge_label <- function(df, edge_label, var = "edge_label") {
   if (length(edge_label) > 1L) {
     stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
@@ -107,7 +107,7 @@ assert_edge_label <- function(x, edge_label, var = "edge_label") {
   return(edge_label)
 }
 
-assert_edge_color <- function(x, edge_color, var = "edge_color") {
+assert_edge_color <- function(df, edge_color, var = "edge_color") {
   if (length(edge_color) > 1L) {
     stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
@@ -127,7 +127,7 @@ assert_edge_color <- function(x, edge_color, var = "edge_color") {
 }
 
 
-assert_edge_linetype <- function(x, edge_linetype) {
+assert_edge_linetype <- function(df, edge_linetype, var = "edge_linetype") {
   if (length(edge_linetype) > 1L) {
     stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
@@ -147,7 +147,7 @@ assert_edge_linetype <- function(x, edge_linetype) {
 }
 
 
-assert_edge_width <- function(x, edge_width, var) {
+assert_edge_width <- function(df, edge_width, var) {
   if (length(edge_width) > 1L) {
     stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
@@ -554,7 +554,7 @@ get_coor <- function(x,
   }
 
   ## calculate various tree statistics using scaffold tree
-  for(i in linelist$id) {
+  for(i in linelist$id) {
     treestat <- get_treestat(i,
                              depth = 1,
                              subtree_size = subtree_size,

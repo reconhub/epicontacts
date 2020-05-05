@@ -237,28 +237,38 @@ vis_temporal_interactive <- function(x,
   }
 
   ## check node_color (node attribute used for color)
-  node_color <- assert_node_color(x, node_color)
+  node_color <- assert_node_color(x$linelist, node_color, "node_color")
+  tl_start_node_color <- assert_node_color(timeline, tl_start_node_color, "tl_start_node_color")
+  tl_end_node_color <- assert_node_color(timeline, tl_end_node_color, "tl_end_node_color")
 
   ## check node_shape (node attribute used for color)
-  node_shape <- assert_node_shape(x, node_shape)
+  node_shape <- assert_node_shape(x$linelist, node_shape, "node_shape")
+  tl_start_node_shape <- assert_node_shape(timeline, tl_start_node_shape, "tl_start_node_shape")
+  tl_end_node_shape <- assert_node_shape(timeline, tl_end_node_shape, "tl_end_node_shape")
 
   ## check node_size (node attribute used for color)
-  node_size <- assert_node_size(x, node_size)
+  node_size <- assert_node_size(x$linelist, node_size, "node_size")
+  tl_start_node_size <- assert_node_size(timeline, tl_start_node_size, "tl_start_node_size")
+  tl_end_node_size <- assert_node_size(timeline, tl_end_node_size, "tl_end_node_size")
 
   ## check annot (txt displayed when clicking on node)
   annot <- assert_annot(x, annot)
 
   ## check edge_label (edge attribute used for label)
-  edge_label <- assert_edge_label(x, edge_label, timeline)
+  edge_label <- assert_edge_label(x$contacts, edge_label, "edge_label")
+  tl_edge_label <- assert_edge_label(timeline, tl_edge_label, "tl_edge_label")
 
   ## check edge_color (edge attribute used for color)
-  edge_color <- assert_edge_color(x, edge_color, timeline)
+  edge_color <- assert_edge_color(x$contacts, edge_color, "edge_color")
+  tl_edge_color <- assert_edge_color(timeline, tl_edge_color, "tl_edge_color")
 
   ## check edge_width (edge attribute used for width)
-  edge_width <- assert_edge_width(x, edge_width, timeline)
+  edge_width <- assert_edge_width(x$contacts, edge_width, "edge_width")
+  tl_edge_width <- assert_edge_width(timeline, tl_edge_width, "tl_edge_width")
 
   ## check edge_linetype (edge attribute used for linetype)
-  edge_linetype <- assert_edge_linetype(x, edge_linetype, timeline)
+  edge_linetype <- assert_edge_linetype(x$contacts, edge_linetype, "edge_linetype")
+  tl_edge_linetype <- assert_edge_linetype(timeline, tl_edge_linetype, "tl_edge_linetype")
 
   ## check node_order (node attribute used for vertical node ordering)
   node_order <- assert_node_order(x, node_order)
@@ -407,8 +417,37 @@ vis_temporal_interactive <- function(x,
                          apply(temp, 1, paste0, collapse = "<br>"), "</p>")
   }
 
+  ## merge timeline nodes and edges - timeline nodes do not have titles
+  if(!is.null(timeline)) {
+    nodes <- merge(nodes,
+                   timeline_nodes,
+                   by = intersect(names(nodes), names(timeline_nodes)),
+                   all = TRUE,
+                   sort = FALSE)
+    edge_ind <- seq_len(nrow(edges))
+    timeline_ind <- seq(nrow(edges) + 1, length = nrow(timeline_edges))
+    edges <- merge(edges,
+                   timeline_edges,
+                   by = intersect(names(edges), names(timeline_edges)),
+                   all = TRUE,
+                   sort = FALSE)
+  }
+  browser()
+
+  join_node_vals <- function(nodes, timeline, node, start, end) {
+    node_val <- if(is.null(nodes))
+    c(if(is.null(node)) rep(NA, nrow(nodes)) else nodes[, node],
+      if(is.null(start)) rep(NA, nrow(timeline)) else timeline[, start],
+      if(is.null(end)) rep(NA, nrow(timeline)) else timeline[, end])
+  }
+
+  join_edge_vals <- function(edges, timeline, edge, tl_edge) {
+    c(if(is.null(edge)) rep(NA, nrow(edges)) else edges[, edge],
+      if(is.null(tl_edge)) rep(NA, nrow(timeline)) else timeline[, tl_edge])
+  }
+
   ## add node color ("group")
-  if (!is.null(node_color)) {
+  if (!is.null(c(node_color, tl_start_node_color, tl_end_node_color)) {
     node_col_info <- fac2col(factor(nodes[, node_color]),
                              col_pal,
                              NA_col,
@@ -445,7 +484,7 @@ vis_temporal_interactive <- function(x,
   ## add shape info
   if (!is.null(node_shape)) {
     if (is.null(shapes)) {
-      msg <- paste(""shapes" needed if "node_shape" provided;",
+      msg <- paste("'shapes' needed if 'node_shape' provided;",
                    "to see codes, node_shape: codeawesome")
       stop(msg)
     }
@@ -455,7 +494,7 @@ vis_temporal_interactive <- function(x,
     if (any(unknown_codes)) {
       culprits <- paste(shapes[unknown_codes],
                         collapse = ", ")
-      msg <- sprintf("unknown icon codes: %s \nto see "codeawesome"",
+      msg <- sprintf("unknown icon codes: %s \nto see 'codeawesome'",
                      culprits)
       stop(msg)
     }
@@ -469,24 +508,6 @@ vis_temporal_interactive <- function(x,
                                   leg_lab = unique(vec_node_shapes))
   }
   nodes$borderWidth <- 2
-
-  ## merge timeline nodes AFTER node attributes have been mapped. this ensures
-  ## that timeline nodes do not end up in the legends
-  if(!is.null(timeline)) {
-    nodes <- merge(nodes,
-                   timeline_nodes,
-                   by = intersect(names(nodes), names(timeline_nodes)),
-                   all = TRUE,
-                   sort = FALSE)
-
-    edge_ind <- seq_len(nrow(edges))
-    timeline_ind <- seq(nrow(edges) + 1, length = nrow(timeline_edges))
-    edges <- merge(edges,
-                   timeline_edges,
-                   by = intersect(names(edges), names(timeline_edges)),
-                   all = TRUE,
-                   sort = FALSE)
-  }
 
   ## add edge width
   if(!is.null(edge_width)) {
@@ -566,7 +587,7 @@ vis_temporal_interactive <- function(x,
     unq_linetype <- unique(edges[[edge_linetype]])
     if(length(unq_linetype) > 2) {
       msg <- paste0("visNetwork only supports two linetypes; ",
-                    "use binary variable or set method = "ggplot".")
+                    "use binary variable or set method = 'ggplot'.")
       stop(msg)
     }
     ## use alphabetical order / factor order
