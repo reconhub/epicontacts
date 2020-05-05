@@ -113,22 +113,32 @@
 vis_temporal_interactive <- function(x,
                                      x_axis = NULL,
                                      timeline = NULL,
-                                     network_shape = c('branching', 'rectangle'),
+                                     network_shape = c("branching", "rectangle"),
                                      root_order = x_axis,
                                      node_order = x_axis,
                                      reverse_root_order = FALSE,
                                      reverse_node_order = FALSE,
                                      rank_contact = x_axis,
                                      reverse_rank_contact = FALSE,
-                                     unlinked_pos = c('bottom', 'top', 'middle'),
+                                     unlinked_pos = c("bottom", "top", "middle"),
                                      edge_flex = FALSE,
                                      position_dodge = FALSE,
-                                     parent_pos = c('middle', 'top', 'bottom'),
+                                     parent_pos = c("middle", "top", "bottom"),
                                      custom_parent_pos = NULL,
                                      n_breaks = 5,
                                      timeline_width = 5,
                                      axis_type = c("single", "double", "none"),
                                      igraph_type = NULL,
+                                     tl_start_node_color = NULL,
+                                     tl_end_node_color = NULL,
+                                     tl_start_node_shape = NULL,
+                                     tl_end_node_shape = NULL,
+                                     tl_start_node_size = NULL,
+                                     tl_end_node_size = NULL,
+                                     tl_edge_color = NULL,
+                                     tl_edge_width = NULL,
+                                     tl_edge_linetype = NULL,
+                                     tl_edge_label = NULL,
                                      ...) {
 
   ## this will assign the value specified in ... if present, otherwises use the
@@ -136,35 +146,35 @@ vis_temporal_interactive <- function(x,
   ## function looks neater but causes global binding warnings in check.
   def <- as.list(args(vis_epicontacts))
   args <- list(...)
-  node_color <- get_val('node_color', def, args)
-  node_shape <- get_val('node_shape', def, args)
-  node_size <- get_val('node_size', def, args)
-  edge_color <- get_val('edge_color', def, args)
-  edge_width <- get_val('edge_width', def, args)
-  edge_linetype <- get_val('edge_linetype', def, args)
-  edge_label <- get_val('edge_label', def, args)
-  col_pal <- get_val('col_pal', def, args)
-  edge_col_pal <- get_val('edge_col_pal', def, args)
-  NA_col <- get_val('NA_col', def, args)
-  shapes <- get_val('shapes', def, args)
-  size_range <- get_val('size_range', def, args)
-  width_range <- get_val('width_range', def, args)
-  label <- get_val('label', def, args)
-  annot  <- get_val('annot', def, args)
-  width <- get_val('width', def, args)
-  height <- get_val('height', def, args)
-  title <- get_val('title', def, args)
-  legend <- get_val('legend', def, args)
-  legend_max <- get_val('legend_max', def, args)
+  node_color <- get_val("node_color", def, args)
+  node_shape <- get_val("node_shape", def, args)
+  node_size <- get_val("node_size", def, args)
+  edge_color <- get_val("edge_color", def, args)
+  edge_width <- get_val("edge_width", def, args)
+  edge_linetype <- get_val("edge_linetype", def, args)
+  edge_label <- get_val("edge_label", def, args)
+  col_pal <- get_val("col_pal", def, args)
+  edge_col_pal <- get_val("edge_col_pal", def, args)
+  NA_col <- get_val("NA_col", def, args)
+  shapes <- get_val("shapes", def, args)
+  size_range <- get_val("size_range", def, args)
+  width_range <- get_val("width_range", def, args)
+  label <- get_val("label", def, args)
+  annot  <- get_val("annot", def, args)
+  width <- get_val("width", def, args)
+  height <- get_val("height", def, args)
+  title <- get_val("title", def, args)
+  legend <- get_val("legend", def, args)
+  legend_max <- get_val("legend_max", def, args)
   ## default selector value is node_color
   def$selector <- node_color
-  selector <- get_val('selector', def, args)
-  editor <- get_val('editor', def, args)
-  highlight_downstream <- get_val('highlight_downstream', def, args)
-  date_labels <- get_val('date_labels', def, args)
-  collapse <- get_val('collapse', def, args)
-  thin <- get_val('thin', def, args)
-  font_size <- get_val('font_size', def, args)
+  selector <- get_val("selector", def, args)
+  editor <- get_val("editor", def, args)
+  highlight_downstream <- get_val("highlight_downstream", def, args)
+  date_labels <- get_val("date_labels", def, args)
+  collapse <- get_val("collapse", def, args)
+  thin <- get_val("thin", def, args)
+  font_size <- get_val("font_size", def, args)
   arrow_size <- get_val("arrow_size", def, args)
 
   ## match arguments
@@ -174,7 +184,7 @@ vis_temporal_interactive <- function(x,
   axis_type <- match.arg(axis_type)
 
   ## Calculate R_i if needed
-  if('R_i' %in% c(node_shape, node_color, node_size, node_order, root_order)) {
+  if("R_i" %in% c(node_shape, node_color, node_size, node_order, root_order)) {
     x$linelist$R_i <- vapply(x$linelist$id,
                              function(i) sum(x$contacts$from == i, na.rm = TRUE),
                              numeric(1))
@@ -184,7 +194,7 @@ vis_temporal_interactive <- function(x,
   ## in the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
   ## for the whole lot. These attributes are in turn used for plotting: as color
-  ## ('group' in visNetwork terminology) or as annotations (converted to html
+  ## ("group" in visNetwork terminology) or as annotations (converted to html
   ## code).
 
   ## remove NAs in contacts and linelist
@@ -195,7 +205,7 @@ vis_temporal_interactive <- function(x,
   x_axis <- assert_x_axis(x, x_axis)
 
   ## count number of nodes not in linelist
-  not_in_ll <- sum(!get_id(x, 'contacts') %in% get_id(x, 'linelist'))
+  not_in_ll <- sum(!get_id(x, "contacts") %in% get_id(x, "linelist"))
 
   ## count number of contacts without x_axis data
   contacts_rm <- sum(is.na(get_pairwise(x, x_axis)))
@@ -213,10 +223,10 @@ vis_temporal_interactive <- function(x,
   ## remove NA x_axis elements from linelist
   x <- x[!na_x_axis]
 
-  ## remove contacts that don't have both nodes in linelist
-  x <- thin(x, what = 'contacts')
+  ## remove contacts that don"t have both nodes in linelist
+  x <- thin(x, what = "contacts")
 
-  ## remove linelist elements that aren't in contacts if thin = TRUE
+  ## remove linelist elements that aren"t in contacts if thin = TRUE
   if(thin) {
     x <- thin(x)
   }
@@ -291,9 +301,9 @@ vis_temporal_interactive <- function(x,
   ## Get subtree size for potential later use
   nodes$subtree_size <- coor$subtree_size
 
-  ## Date -> numeric as visnetwork doesn't support dates
+  ## Date -> numeric as visnetwork doesn"t support dates
   x_axis_lab <- pretty(c(nodes[[x_axis]], timeline$start, timeline$end), n = n_breaks)
-  if(inherits(nodes$x, c('Date', 'POSIXct'))) {
+  if(inherits(nodes$x, c("Date", "POSIXct"))) {
     nodes$x <- as.numeric(nodes$x)
     if(!is.null(timeline)) {
       timeline$start <- as.numeric(timeline$start)
@@ -307,7 +317,7 @@ vis_temporal_interactive <- function(x,
   coor$y <- 1 - coor$y
 
   ## If percent specification, scale to 150x1840px (ie 100% dimension)
-  if(regexpr('%', width) != -1) {
+  if(regexpr("%", width) != -1) {
     resc_x <- extr_num(width)*resc_x*18.4
   } else {
     resc_x <- extr_num(width)*resc_x
@@ -321,7 +331,7 @@ vis_temporal_interactive <- function(x,
   )
 
 
-  if(regexpr('%', height) != -1) {
+  if(regexpr("%", height) != -1) {
     coor$y <- extr_num(height)*coor$y*1.5
   } else {
     coor$y <- extr_num(height)*coor$y
@@ -329,13 +339,13 @@ vis_temporal_interactive <- function(x,
 
   ## extract y coordinates, ignore
   if(axis_type %in% c("single", "double")) {
-    nodes$y <- coor$y[-(1:ifelse(axis_type == 'double', 2, 1))]
+    nodes$y <- coor$y[-(1:ifelse(axis_type == "double", 2, 1))]
   } else {
     nodes$y <- coor$y
   }
 
   ## Get nodes and edges for rectangle shape
-  if(network_shape == 'rectangle') {
+  if(network_shape == "rectangle") {
 
     rect <- get_v_rect(nodes, edges)
     nodes <- rect$nodes
@@ -343,7 +353,7 @@ vis_temporal_interactive <- function(x,
     hidden <- nodes$hidden
 
     ## No hidden nodes if shape is branching
-  } else if(network_shape == 'branching') {
+  } else if(network_shape == "branching") {
     hidden <- NULL
     nodes$hidden <- FALSE
     if(nrow(edges) > 0) edges$to_node <- TRUE
@@ -380,14 +390,14 @@ vis_temporal_interactive <- function(x,
 
   }
 
-  ## generate annotations ('title' in visNetwork terms)
+  ## generate annotations ("title" in visNetwork terms)
   if (!is.null(label)) {
     labels <- apply(nodes[, label, drop = FALSE], 1,
                     paste, collapse = "\n")
     nodes$label <- labels
   }
 
-  ## generate annotations ('title' in visNetwork terms)
+  ## generate annotations ("title" in visNetwork terms)
   if (!is.null(annot)) {
     temp <- nodes[, annot, drop = FALSE]
     temp <- vapply(names(temp),
@@ -397,7 +407,7 @@ vis_temporal_interactive <- function(x,
                          apply(temp, 1, paste0, collapse = "<br>"), "</p>")
   }
 
-  ## add node color ('group')
+  ## add node color ("group")
   if (!is.null(node_color)) {
     node_col_info <- fac2col(factor(nodes[, node_color]),
                              col_pal,
@@ -408,12 +418,12 @@ vis_temporal_interactive <- function(x,
       nodes$icon.color <- node_col_info$color
     } else {
       nodes$color.background <- nodes$color.highlight.background <- node_col_info$color
-      nodes$color.border <- nodes$color.highlight.border <- 'black'
+      nodes$color.border <- nodes$color.highlight.border <- "black"
     }
   } else {
     ## if node_color set to NULL (not default) color nodes black
-    nodes$color.background <- nodes$color.highlight.background <- 'black'
-    nodes$color.border <- nodes$color.highlight.border <- 'black'
+    nodes$color.background <- nodes$color.highlight.background <- "black"
+    nodes$color.border <- nodes$color.highlight.border <- "black"
   }
 
   ## add node size
@@ -435,7 +445,7 @@ vis_temporal_interactive <- function(x,
   ## add shape info
   if (!is.null(node_shape)) {
     if (is.null(shapes)) {
-      msg <- paste("'shapes' needed if 'node_shape' provided;",
+      msg <- paste(""shapes" needed if "node_shape" provided;",
                    "to see codes, node_shape: codeawesome")
       stop(msg)
     }
@@ -445,7 +455,7 @@ vis_temporal_interactive <- function(x,
     if (any(unknown_codes)) {
       culprits <- paste(shapes[unknown_codes],
                         collapse = ", ")
-      msg <- sprintf("unknown icon codes: %s \nto see 'codeawesome'",
+      msg <- sprintf("unknown icon codes: %s \nto see "codeawesome"",
                      culprits)
       stop(msg)
     }
@@ -525,14 +535,14 @@ vis_temporal_interactive <- function(x,
     edges$color <- edge_col_info$color
     ## set default timeline color if not mapped
     if(!is.null(timeline) & !edge_color %in% names(timeline)) {
-      edges$color[timeline_ind] <- 'black'
+      edges$color[timeline_ind] <- "black"
     }
     ## set default edge color if not mapped
     if(!is.null(timeline) & !edge_color %in% names(x$contacts)) {
-      edges$color[edge_ind] <- 'black'
+      edges$color[edge_ind] <- "black"
     }
   } else {
-    edges$color <- 'black'
+    edges$color <- "black"
   }
 
   ## add edge linetype
@@ -556,7 +566,7 @@ vis_temporal_interactive <- function(x,
     unq_linetype <- unique(edges[[edge_linetype]])
     if(length(unq_linetype) > 2) {
       msg <- paste0("visNetwork only supports two linetypes; ",
-                    "use binary variable or set method = 'ggplot'.")
+                    "use binary variable or set method = "ggplot".")
       stop(msg)
     }
     ## use alphabetical order / factor order
@@ -586,7 +596,7 @@ vis_temporal_interactive <- function(x,
     }
 
     ## create node dataframe and fill with axis_nodes data
-    var <- c('id', 'label')
+    var <- c("id", "label")
     val <- axis_nodes[var]
 
     axis_nodes <- nodes[rep(1, nrow(axis_nodes)),]
@@ -594,9 +604,9 @@ vis_temporal_interactive <- function(x,
     axis_nodes[var] <- val
 
     ## format axis nodes
-    col_var <- c('color.background', 'color.highlight.background',
-                 'color.border', 'color.highlight.border')
-    if(is.null(node_shape)) axis_nodes[col_var] <- 'black'
+    col_var <- c("color.background", "color.highlight.background",
+                 "color.border", "color.highlight.border")
+    if(is.null(node_shape)) axis_nodes[col_var] <- "black"
     axis_nodes$size <- 0.1
     axis_nodes$borderWidth <- 0.1
 
@@ -606,7 +616,7 @@ vis_temporal_interactive <- function(x,
 
     axis_nodes$hidden <- FALSE
 
-    if(axis_type == 'double') {
+    if(axis_type == "double") {
 
       axis_nodes_2 <- axis_nodes
       axis_nodes_2$y <- coor$y[2]
@@ -626,7 +636,7 @@ vis_temporal_interactive <- function(x,
     edges <- merge(edges, axis_edges, by = c("from", "to"),
                    all = TRUE, sort = FALSE)
     edges$arrows.to[is.na(edges$arrows.to)] <- FALSE
-    edges$color[is.na(edges$color)] <- 'black'
+    edges$color[is.na(edges$color)] <- "black"
 
   }
 
@@ -656,7 +666,7 @@ vis_temporal_interactive <- function(x,
   out <- visNetwork::visEdges(out,
                               smooth = edge_flex,
                               arrowStrikethrough = FALSE,
-                              font = list(align = 'top'),
+                              font = list(align = "top"),
                               selectionWidth = 1)
 
   ## specify tool tip
@@ -696,7 +706,7 @@ vis_temporal_interactive <- function(x,
 
     ## node shape legend
     if (!is.null(node_shape) && nrow(node_shape_info) < legend_max) {
-      ## don't add extra legend keys if variable is the same as node_color
+      ## don"t add extra legend keys if variable is the same as node_color
       if(node_shape == node_color){
         leg_nodes$shape <- "icon"
         leg_nodes$icon.code <- node_shape_info$icon
@@ -706,7 +716,7 @@ vis_temporal_interactive <- function(x,
         names(leg_nodes)[names(leg_nodes) == "color.background"] <- "icon.color"
       } else {
         tmp <- data.frame(label = node_shape_info$leg_lab,
-                          icon.color = 'black',
+                          icon.color = "black",
                           shape = "icon",
                           icon.code = node_shape_info$icon,
                           shadow = FALSE,
@@ -731,25 +741,25 @@ vis_temporal_interactive <- function(x,
                               arrows.to = x$directed & edge_color %in% names(x$contacts),
                               font.size = ifelse(is.null(font_size),
                                                  14, font_size),
-                              font.align = 'bottom')
+                              font.align = "bottom")
     } else {
       leg_edges <- NULL
     }
 
     ## edge linetype legend
     if (!is.null(edge_linetype)) {
-      ## Don't add extra legend keys if variable is the same
+      ## Don"t add extra legend keys if variable is the same
       if(!is.null(edge_color) && edge_linetype == edge_color) {
         leg_edges$dashes <- c(FALSE, TRUE)
       } else {
         tmp <- data.frame(label = unq_linetype,
-                          color = 'black',
+                          color = "black",
                           dashes = c(FALSE, TRUE),
                           width = 5,
                           arrows.to = x$directed & edge_linetype %in% names(x$contacts),
                           font.size = ifelse(is.null(font_size),
                                              14, font_size),
-                          font.align = 'bottom')
+                          font.align = "bottom")
         leg_edges <- rbind(leg_edges, tmp)
       }
     }
@@ -786,7 +796,7 @@ vis_temporal_interactive <- function(x,
                          highlightNearest = list(enabled = TRUE,
                                                  algorithm = "hierarchical",
                                                  degree = list(from = 0, to = 50),
-                                                 hideColor = 'rgba(200,200,200,1)'),
+                                                 hideColor = "rgba(200,200,200,1)"),
                          nodesIdSelection = FALSE,
                          selectedBy = arg_selec,
                          manipulation = editor,
@@ -796,7 +806,7 @@ vis_temporal_interactive <- function(x,
     out <- visNetwork::visOptions(
                          out,
                          highlightNearest = list(enabled = TRUE,
-                                                 hideColor = 'rgba(200,200,200,1)'),
+                                                 hideColor = "rgba(200,200,200,1)"),
                          selectedBy = arg_selec,
                          manipulation = editor,
                          collapse = collapse

@@ -11,66 +11,59 @@
 
 ## author: Thibaut Jombart
 
-assert_node_color <- function(x, node_color) {
+assert_node_color <- function(df, node_color, var = "node_color") {
   if (length(node_color) > 1L) {
-    stop("'node_color' must indicate a single node attribute")
+    stop(sprintf("'%s' must indicate a single node attribute", var))
   }
   if (is.logical(node_color) && !node_color) {
     node_color <- NULL
   }
   if (!is.null(node_color)) {
     if (is.numeric(node_color)) {
-      node_color <- names(x$linelist)[node_color]
+      node_color <- names(df)[node_color]
     }
-
-    if (!node_color %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
-      msg <- sprintf("node_color '%s' is not in the linelist", node_color)
+    if (!node_color %in% c(names(df), 'R_i', 'subtree_size')) {
+      msg <- sprintf("%s '%s' is not in the linelist", var, node_color)
       stop(msg)
     }
   }
-
   return(node_color)
 }
 
 
-assert_node_shape <- function(x, node_shape) {
-
+assert_node_shape <- function(df, node_shape, var = "node_shape") {
   if (length(node_shape) > 1L) {
-    stop("'node_shape' must indicate a single node attribute")
+    stop(sprintf("'%s' must indicate a single node attribute", var))
   }
   if (is.logical(node_shape) && !node_shape) {
     node_shape <- NULL
   }
   if (!is.null(node_shape)) {
     if (is.numeric(node_shape)) {
-      node_shape <- names(x$linelist)[node_shape]
+      node_shape <- names(df)[node_shape]
     }
-
-    if (!node_shape %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
-      msg <- sprintf("node_shape '%s' is not in the linelist", node_shape)
+    if (!node_shape %in% c(names(df), 'R_i', 'subtree_size')) {
+      msg <- sprintf("%s '%s' is not in the linelist", var, node_shape)
       stop(msg)
     }
   }
-
   return(node_shape)
 }
 
 
-assert_node_size <- function(x, node_size) {
-
+assert_node_size <- function(df, node_size, var = "node_shape") {
   if (length(node_size) > 1L) {
-    stop("'node_size' must indicate a single node attribute")
+    stop("'%s' must indicate a single node attribute", var)
   }
   if (is.logical(node_size) && !node_size) {
     node_size <- NULL
   }
   if (!is.null(node_size)) {
-    if (!is.numeric(node_size) & !node_size %in% c(names(x$linelist), 'R_i', 'subtree_size')) {
-      msg <- sprintf("node_size '%s' is not in the linelist", node_size)
+    if (!is.numeric(node_size) & !node_size %in% c(names(df), 'R_i', 'subtree_size')) {
+      msg <- sprintf("%s '%s' is not in the linelist", var, node_size)
       stop(msg)
     }
   }
-
   return(node_size)
 }
 
@@ -94,20 +87,19 @@ assert_annot <- function(x, annot) {
   return(annot)
 }
 
-assert_edge_label <- function(x, edge_label, timeline = NULL) {
+assert_edge_label <- function(x, edge_label, var = "edge_label") {
   if (length(edge_label) > 1L) {
-    stop("'edge_label' must indicate a single edge attribute")
+    stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
   if (is.logical(edge_label) && !edge_label) {
     edge_label <- NULL
   }
   if (!is.null(edge_label)) {
     if (is.numeric(edge_label)) {
-      edge_label <- names(x$contacts)[edge_label]
+      edge_label <- names(df)[edge_label]
     }
-
-    if (!edge_label %in% c(names(x$contacts), names(timeline))) {
-      msg <- sprintf("edge_label '%s' is not in the contacts", edge_label)
+    if (!edge_label %in% names(df)) {
+      msg <- sprintf("%s '%s' is not in the contacts", var, edge_label)
       stop(msg)
     }
   }
@@ -115,63 +107,59 @@ assert_edge_label <- function(x, edge_label, timeline = NULL) {
   return(edge_label)
 }
 
-assert_edge_color <- function(x, edge_color, timeline = NULL) {
+assert_edge_color <- function(x, edge_color, var = "edge_color") {
   if (length(edge_color) > 1L) {
-    stop("'edge_color' must indicate a single edge attribute")
+    stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
   if (is.logical(edge_color) && !edge_color) {
     edge_color <- NULL
   }
   if (!is.null(edge_color)) {
     if (is.numeric(edge_color)) {
-      edge_color <- names(x$contacts)[edge_color]
+      edge_color <- names(df)[edge_color]
     }
-
-    if (!edge_color %in% c(names(x$contacts), names(timeline))) {
-      msg <- sprintf("edge_color '%s' is not in the contacts", edge_color)
+    if (!edge_color %in% names(df)) {
+      msg <- sprintf("%s '%s' is not in the contacts", var, edge_color)
       stop(msg)
     }
   }
-
   return(edge_color)
 }
 
 
-assert_edge_linetype <- function(x, edge_linetype, timeline = NULL) {
+assert_edge_linetype <- function(x, edge_linetype) {
   if (length(edge_linetype) > 1L) {
-    stop("'edge_linetype' must indicate a single edge attribute")
+    stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
   if (is.logical(edge_linetype) && !edge_linetype) {
     edge_linetype <- NULL
   }
   if (!is.null(edge_linetype)) {
     if (is.numeric(edge_linetype)) {
-      edge_linetype <- names(x$contacts)[edge_linetype]
+      edge_linetype <- names(df)[edge_linetype]
     }
-    if(!edge_linetype %in% c(names(x$contacts), names(timeline))) {
-      msg <- sprintf("edge_linetype '%s' is not in the contacts", edge_linetype)
+    if(!edge_linetype %in% names(df)) {
+      msg <- sprintf("%s '%s' is not in the contacts", var, edge_linetype)
       stop(msg)
     }
   }
-
   return(edge_linetype)
 }
 
 
-assert_edge_width <- function(x, edge_width, timeline = NULL) {
+assert_edge_width <- function(x, edge_width, var) {
   if (length(edge_width) > 1L) {
-    stop("'edge_width' must indicate a single edge attribute")
+    stop(sprintf("'%s' must indicate a single edge attribute", var))
   }
   if (is.logical(edge_width) && !edge_width) {
     edge_width <- NULL
   }
   if (!is.null(edge_width)) {
-    if(is.character(edge_width) & !edge_width %in% c(names(x$contacts), names(timeline))) {
-      msg <- sprintf("edge_width '%s' is not in the contacts", edge_width)
+    if(is.character(edge_width) & !edge_width %in% names(df)) {
+      msg <- sprintf("%s '%s' is not in the contacts", var, edge_width)
       stop(msg)
     }
   }
-
   return(edge_width)
 
 }
