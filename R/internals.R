@@ -94,7 +94,7 @@ assert_annot <- function(x, annot) {
   return(annot)
 }
 
-assert_edge_label <- function(x, edge_label) {
+assert_edge_label <- function(x, edge_label, timeline = NULL) {
   if (length(edge_label) > 1L) {
     stop("'edge_label' must indicate a single edge attribute")
   }
@@ -106,7 +106,7 @@ assert_edge_label <- function(x, edge_label) {
       edge_label <- names(x$contacts)[edge_label]
     }
 
-    if (!edge_label %in% names(x$contacts)) {
+    if (!edge_label %in% c(names(x$contacts), names(timeline))) {
       msg <- sprintf("edge_label '%s' is not in the contacts", edge_label)
       stop(msg)
     }
@@ -115,7 +115,7 @@ assert_edge_label <- function(x, edge_label) {
   return(edge_label)
 }
 
-assert_edge_color <- function(x, edge_color) {
+assert_edge_color <- function(x, edge_color, timeline = NULL) {
   if (length(edge_color) > 1L) {
     stop("'edge_color' must indicate a single edge attribute")
   }
@@ -127,7 +127,7 @@ assert_edge_color <- function(x, edge_color) {
       edge_color <- names(x$contacts)[edge_color]
     }
 
-    if (!edge_color %in% names(x$contacts)) {
+    if (!edge_color %in% c(names(x$contacts), names(timeline))) {
       msg <- sprintf("edge_color '%s' is not in the contacts", edge_color)
       stop(msg)
     }
@@ -137,7 +137,7 @@ assert_edge_color <- function(x, edge_color) {
 }
 
 
-assert_edge_linetype <- function(x, edge_linetype) {
+assert_edge_linetype <- function(x, edge_linetype, timeline = NULL) {
   if (length(edge_linetype) > 1L) {
     stop("'edge_linetype' must indicate a single edge attribute")
   }
@@ -148,7 +148,7 @@ assert_edge_linetype <- function(x, edge_linetype) {
     if (is.numeric(edge_linetype)) {
       edge_linetype <- names(x$contacts)[edge_linetype]
     }
-    if(is.character(edge_linetype) & !edge_linetype %in% names(x$contacts)) {
+    if(!edge_linetype %in% c(names(x$contacts), names(timeline))) {
       msg <- sprintf("edge_linetype '%s' is not in the contacts", edge_linetype)
       stop(msg)
     }
@@ -158,7 +158,7 @@ assert_edge_linetype <- function(x, edge_linetype) {
 }
 
 
-assert_edge_width <- function(x, edge_width) {
+assert_edge_width <- function(x, edge_width, timeline = NULL) {
   if (length(edge_width) > 1L) {
     stop("'edge_width' must indicate a single edge attribute")
   }
@@ -166,7 +166,7 @@ assert_edge_width <- function(x, edge_width) {
     edge_width <- NULL
   }
   if (!is.null(edge_width)) {
-    if(is.character(edge_width) & !edge_width %in% names(x$contacts)) {
+    if(is.character(edge_width) & !edge_width %in% c(names(x$contacts), names(timeline))) {
       msg <- sprintf("edge_width '%s' is not in the contacts", edge_width)
       stop(msg)
     }
@@ -315,6 +315,27 @@ assert_x_axis <- function(x, x_axis) {
 
 }
 
+
+assert_timeline <- function(timeline, x, x_axis) {
+
+  if(!is.null(timeline)) {
+    if(!inherits(timeline$start, class(x$linelist[[x_axis]])) |
+       !inherits(timeline$end, class(x$linelist[[x_axis]]))) {
+      stop("timeline dates must be of the same class as the x_axis")
+    }
+    ind <- timeline$id %in% get_id(x, "linelist") &
+      !is.na(timeline$start) &
+      !is.na(timeline$end)
+    if(any(!ind)) {
+      warning(sprintf("%i timeline row(s) removed as ID not found in linelist or start/end date is NA",
+                      sum(!ind)))
+    }
+    timeline <- subset(timeline, ind)
+  }
+
+  return(timeline)
+
+}
 
 ## this is a recursive function calculating various properties of the leaf node
 ##  -depth is the number of edges from a root node
