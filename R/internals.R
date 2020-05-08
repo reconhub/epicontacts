@@ -12,19 +12,21 @@
 ## author: Thibaut Jombart
 
 assert_node_color <- function(df, node_color, var = "node_color") {
-  if (length(node_color) > 1L) {
-    stop(sprintf("'%s' must indicate a single node attribute", var))
-  }
-  if (is.logical(node_color) && !node_color) {
-    node_color <- NULL
-  }
-  if (!is.null(node_color)) {
-    if (is.numeric(node_color)) {
-      node_color <- names(df)[node_color]
+  if(!is.null(df)) {
+    if (length(node_color) > 1L) {
+      stop(sprintf("'%s' must indicate a single node attribute", var))
     }
-    if (!node_color %in% c(names(df), 'R_i', 'subtree_size')) {
-      msg <- sprintf("%s '%s' is not in the linelist", var, node_color)
-      stop(msg)
+    if (is.logical(node_color) && !node_color) {
+      node_color <- NULL
+    }
+    if (!is.null(node_color)) {
+      if (is.numeric(node_color)) {
+        node_color <- names(df)[node_color]
+      }
+      if (!node_color %in% c(names(df), 'R_i', 'subtree_size')) {
+        msg <- sprintf("%s '%s' is not in the linelist", var, node_color)
+        stop(msg)
+      }
     }
   }
   return(node_color)
@@ -32,19 +34,21 @@ assert_node_color <- function(df, node_color, var = "node_color") {
 
 
 assert_node_shape <- function(df, node_shape, var = "node_shape") {
-  if (length(node_shape) > 1L) {
-    stop(sprintf("'%s' must indicate a single node attribute", var))
-  }
-  if (is.logical(node_shape) && !node_shape) {
-    node_shape <- NULL
-  }
-  if (!is.null(node_shape)) {
-    if (is.numeric(node_shape)) {
-      node_shape <- names(df)[node_shape]
+  if(!is.null(df)) {
+    if (length(node_shape) > 1L) {
+      stop(sprintf("'%s' must indicate a single node attribute", var))
     }
-    if (!node_shape %in% c(names(df), 'R_i', 'subtree_size')) {
-      msg <- sprintf("%s '%s' is not in the linelist", var, node_shape)
-      stop(msg)
+    if (is.logical(node_shape) && !node_shape) {
+      node_shape <- NULL
+    }
+    if (!is.null(node_shape)) {
+      if (is.numeric(node_shape)) {
+        node_shape <- names(df)[node_shape]
+      }
+      if (!node_shape %in% c(names(df), 'R_i', 'subtree_size')) {
+        msg <- sprintf("%s '%s' is not in the linelist", var, node_shape)
+        stop(msg)
+      }
     }
   }
   return(node_shape)
@@ -52,16 +56,18 @@ assert_node_shape <- function(df, node_shape, var = "node_shape") {
 
 
 assert_node_size <- function(df, node_size, var = "node_shape") {
-  if (length(node_size) > 1L) {
-    stop("'%s' must indicate a single node attribute", var)
-  }
-  if (is.logical(node_size) && !node_size) {
-    node_size <- NULL
-  }
-  if (!is.null(node_size)) {
-    if (!is.numeric(node_size) & !node_size %in% c(names(df), 'R_i', 'subtree_size')) {
-      msg <- sprintf("%s '%s' is not in the linelist", var, node_size)
-      stop(msg)
+  if(!is.null(df)) {
+    if (length(node_size) > 1L) {
+      stop("'%s' must indicate a single node attribute", var)
+    }
+    if (is.logical(node_size) && !node_size) {
+      node_size <- NULL
+    }
+    if (!is.null(node_size)) {
+      if (!is.numeric(node_size) & !node_size %in% c(names(df), 'R_i', 'subtree_size')) {
+        msg <- sprintf("%s '%s' is not in the linelist", var, node_size)
+        stop(msg)
+      }
     }
   }
   return(node_size)
@@ -90,40 +96,43 @@ assert_annot <- function(x, annot) {
 
 
 assert_edge_label <- function(df, edge_label, var = "edge_label") {
-  if (length(edge_label) > 1L) {
-    stop(sprintf("'%s' must indicate a single edge attribute", var))
-  }
-  if (is.logical(edge_label) && !edge_label) {
-    edge_label <- NULL
-  }
-  if (!is.null(edge_label)) {
-    if (is.numeric(edge_label)) {
-      edge_label <- names(df)[edge_label]
+  if(!is.null(df)) {
+    if (length(edge_label) > 1L) {
+      stop(sprintf("'%s' must indicate a single edge attribute", var))
     }
-    if (!edge_label %in% names(df)) {
-      msg <- sprintf("%s '%s' is not in the contacts", var, edge_label)
-      stop(msg)
+    if (is.logical(edge_label) && !edge_label) {
+      edge_label <- NULL
+    }
+    if (!is.null(edge_label)) {
+      if (is.numeric(edge_label)) {
+        edge_label <- names(df)[edge_label]
+      }
+      if (!edge_label %in% names(df)) {
+        msg <- sprintf("%s '%s' is not in the contacts", var, edge_label)
+        stop(msg)
+      }
     }
   }
-
   return(edge_label)
 }
 
 
 assert_edge_color <- function(df, edge_color, var = "edge_color") {
-  if (length(edge_color) > 1L) {
-    stop(sprintf("'%s' must indicate a single edge attribute", var))
-  }
-  if (is.logical(edge_color) && !edge_color) {
-    edge_color <- NULL
-  }
-  if (!is.null(edge_color)) {
-    if (is.numeric(edge_color)) {
-      edge_color <- names(df)[edge_color]
+  if(!is.null(df)) {
+    if (length(edge_color) > 1L) {
+      stop(sprintf("'%s' must indicate a single edge attribute", var))
     }
-    if (!edge_color %in% names(df)) {
-      msg <- sprintf("%s '%s' is not in the contacts", var, edge_color)
-      stop(msg)
+    if (is.logical(edge_color) && !edge_color) {
+      edge_color <- NULL
+    }
+    if (!is.null(edge_color)) {
+      if (is.numeric(edge_color)) {
+        edge_color <- names(df)[edge_color]
+      }
+      if (!edge_color %in% names(df)) {
+        msg <- sprintf("%s '%s' is not in the contacts", var, edge_color)
+        stop(msg)
+      }
     }
   }
   return(edge_color)
@@ -131,19 +140,21 @@ assert_edge_color <- function(df, edge_color, var = "edge_color") {
 
 
 assert_edge_linetype <- function(df, edge_linetype, var = "edge_linetype") {
-  if (length(edge_linetype) > 1L) {
-    stop(sprintf("'%s' must indicate a single edge attribute", var))
-  }
-  if (is.logical(edge_linetype) && !edge_linetype) {
-    edge_linetype <- NULL
-  }
-  if (!is.null(edge_linetype)) {
-    if (is.numeric(edge_linetype)) {
-      edge_linetype <- names(df)[edge_linetype]
+  if(!is.null(df)) {
+    if (length(edge_linetype) > 1L) {
+      stop(sprintf("'%s' must indicate a single edge attribute", var))
     }
-    if(!edge_linetype %in% names(df)) {
-      msg <- sprintf("%s '%s' is not in the contacts", var, edge_linetype)
-      stop(msg)
+    if (is.logical(edge_linetype) && !edge_linetype) {
+      edge_linetype <- NULL
+    }
+    if (!is.null(edge_linetype)) {
+      if (is.numeric(edge_linetype)) {
+        edge_linetype <- names(df)[edge_linetype]
+      }
+      if(!edge_linetype %in% names(df)) {
+        msg <- sprintf("%s '%s' is not in the contacts", var, edge_linetype)
+        stop(msg)
+      }
     }
   }
   return(edge_linetype)
@@ -151,20 +162,21 @@ assert_edge_linetype <- function(df, edge_linetype, var = "edge_linetype") {
 
 
 assert_edge_width <- function(df, edge_width, var) {
-  if (length(edge_width) > 1L) {
-    stop(sprintf("'%s' must indicate a single edge attribute", var))
-  }
-  if (is.logical(edge_width) && !edge_width) {
-    edge_width <- NULL
-  }
-  if (!is.null(edge_width)) {
-    if(is.character(edge_width) & !edge_width %in% names(df)) {
-      msg <- sprintf("%s '%s' is not in the contacts", var, edge_width)
-      stop(msg)
+  if(!is.null(df)) {
+    if (length(edge_width) > 1L) {
+      stop(sprintf("'%s' must indicate a single edge attribute", var))
+    }
+    if (is.logical(edge_width) && !edge_width) {
+      edge_width <- NULL
+    }
+    if (!is.null(edge_width)) {
+      if(is.character(edge_width) & !edge_width %in% names(df)) {
+        msg <- sprintf("%s '%s' is not in the contacts", var, edge_width)
+        stop(msg)
+      }
     }
   }
   return(edge_width)
-
 }
 
 
@@ -1073,18 +1085,124 @@ is_color <- function(x) {
 
 ## Join node information from nodes and timelines
 join_node_vals <- function(nodes, timeline, node, start, end) {
-  node_val <- if(is.null(nodes)) NULL else if(is.null(node)) rep(NA, nrow(nodes)) else nodes[, node]
-  start_val <- if(is.null(timeline)) NULL else if(is.null(start)) rep(NA, nrow(timeline)) else timeline[, start]
-  end_val <- if(is.null(timeline)) NULL else if(is.null(end)) rep(NA, nrow(timeline)) else timeline[, end]
-  return(c(node_val, start_val, end_val))
+
+  node_val <- if(is.null(nodes)) NULL
+              else if(is.null(node)) factor(rep("unmapped", nrow(nodes)))
+              else factor(nodes[, node])
+  start_val <- if(is.null(timeline)) NULL
+               else if(is.null(start)) factor(rep("unmapped", nrow(timeline)))
+               else factor(timeline[, start])
+  end_val <- if(is.null(timeline)) NULL
+             else if(is.null(end)) factor(rep("unmapped", nrow(timeline)))
+             else factor(timeline[, end])
+
+  lev <- unique(c(levels(node_val), levels(start_val), levels(end_val)))
+  lev <- lev[lev != "unmapped"]
+  lev <- c(lev, "unmapped")
+
+  ## this maintains factor levels
+  out <- factor(c(as.character(node_val),
+                  as.character(start_val),
+                  as.character(end_val)),
+                lev)
+
+  return(out)
+
 }
+
 
 
 
 ## Join edge information from edges and timelines
 join_edge_vals <- function(edges, timeline, edge, tl_edge) {
-  edge_val <- if(is.null(edges)) NULL else if(is.null(edge)) rep(NA, nrow(edges)) else edges[, edge]
-  tl_val <- if(is.null(timeline)) NULL else if(is.null(tl_edge)) rep(NA, nrow(timeline)) else timeline[, tl_edge]
-  return(c(node_val, tl_val))
+
+  edge_val <- if(is.null(edges)) NULL
+              else if(is.null(edge)) factor(rep("unmapped", nrow(edges)))
+              else factor(edges[, edge])
+  tl_val <- if(is.null(timeline)) NULL
+            else if(is.null(tl_edge)) factor(rep("unmapped", nrow(timeline)))
+            else factor(timeline[, tl_edge])
+
+  lev <- unique(c(levels(edge_val), levels(tl_val)))
+  lev <- lev[lev != "unmapped"]
+  lev <- c(lev, "unmapped")
+
+  ## this maintains factor levels
+  out <- factor(c(as.character(edge_val), as.character(tl_val)), lev)
+
+  ## coerce to character to stop factor coercion to integer
+  return(out)
+
 }
 
+
+
+
+## Join edge information from edges and timelines
+join_edge_linetype <- function(edges, timeline, edge, tl_edge) {
+
+  edge_val <- if(is.null(edges)) NULL
+              else if(is.null(edge)) rep("unmapped", nrow(edges))
+              else edges[, edge]
+  tl_val <- if(is.null(timeline)) NULL
+            else if(is.null(tl_edge)) rep("unmapped", nrow(timeline))
+            else timeline[, tl_edge]
+
+  ## coerce to character to stop factor coercion to integer
+  return(c(as.character(edge_val), as.character(tl_val)))
+
+}
+
+
+## Join edge information from edges and timelines
+join_edge_width <- function(edges, timeline, edge, tl_edge) {
+
+  edge_val <- if(is.null(edges)) NULL
+              else if(is.null(edge)) rep("unmapped", nrow(edges))
+              else if(is.numeric(edge)) rep("numeric", nrow(edges))
+              else if(is.character(timeline[, start])) stop("edge_width cannot be mapped to character variable")
+              else as.numeric(edges[, edge])
+
+  tl_val <- if(is.null(timeline)) NULL
+            else if(is.null(tl_edge)) rep("unmapped_tl", nrow(timeline))
+            else if(is.numeric(tl_edge)) rep("numeric_tl", nrow(timeline))
+            else if(is.character(timeline[, start])) stop("tl_edge_width cannot be mapped to character variable")
+            else as.numeric(timeline[, tl_edge])
+
+  ## coerce to character to stop factor coercion to integer
+  return(c(as.character(edge_val), as.character(tl_val)))
+
+}
+
+
+
+
+
+## Join node information from nodes and timelines
+join_node_sizes <- function(nodes, timeline, node, start, end) {
+
+  node_val <- if(is.null(nodes)) NULL
+              else if(is.null(node)) rep("unmapped", nrow(nodes))
+              else if(is.numeric(node)) rep("numeric", nrow(nodes))
+              else if(is.character(nodes[, node])) stop("node_size cannot be mapped to character variable")
+              else as.numeric(nodes[, node])
+
+  start_val <- if(is.null(timeline)) NULL
+               else if(is.null(start)) rep("unmapped", nrow(timeline))
+               else if(is.numeric(start)) rep("numeric_start", nrow(timeline))
+               else if(is.character(timeline[, start])) stop("tl_start_node_size cannot be mapped to character variable")
+               else as.numeric(timeline[, start])
+
+  end_val <- if(is.null(timeline)) NULL
+               else if(is.null(end)) rep("unmapped", nrow(timeline))
+               else if(is.numeric(end)) rep("numeric_end", nrow(timeline))
+               else if(is.character(timeline[, end])) stop("tl_end_node_size cannot be mapped to character variable")
+               else as.numeric(timeline[, end])
+
+  return(c(as.character(node_val), as.character(start_val), as.character(end_val)))
+
+}
+
+
+## check whether a and b are the same (both null or the same)
+null_or_same <- function(a, b) (!is.null(a) && !is.null(b) && a == b) | is.null(c(a, b))

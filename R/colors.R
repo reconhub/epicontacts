@@ -123,18 +123,23 @@ spectral <- grDevices::colorRampPalette(
 #'   output. If TRUE, the output will be a list, with colors in the
 #'   \code{$color} component.
 #'
-fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE, tl_col = NULL) {
+#' @param unmapped_col The default color when colors are not mapped.
+#'
+fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE, unmapped_col = "black") {
   x <- factor(x)
-  lev <- levels(x)[levels(x) == "timeline"]
+  na_ind <- is.na(x)
+  unmapped_ind <- x == "unmapped"
+  lev <- levels(x)[levels(x) != "unmapped"]
   leg_lab <- lev
   nlev <- length(lev)
   res <- rep(NA_col, length(x))
+  res[unmapped_ind] <- unmapped_col
   if(inherits(pal, "list")) {
     pal <- unlist(pal)
   }
   if(inherits(pal, "function")) {
     col <- pal(nlev)
-    res[!is.na(x)] <- col[as.integer(x[!is.na(x)])]
+    res[!na_ind & !unmapped_ind] <- col[as.integer(x[!na_ind & !unmapped_ind])]
     if (legend) {
       res <- list(color = res, leg_col = col, leg_lab = leg_lab)
     }
@@ -147,7 +152,7 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE, t
     if(any(!is_color(pal))) {
       stop("all values in col_pal/edge_col_pal must be colors")
     }
-    res[!is.na(x)] <- pal[x[!is.na(x)]]
+    res[!na_ind & !unmapped_ind] <- pal[x[!na_ind & !unmapped_ind]]
     if (legend) {
       res <- list(color = res, leg_col = unname(pal[lev]), leg_lab = leg_lab)
     }

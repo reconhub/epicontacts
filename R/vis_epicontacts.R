@@ -189,28 +189,28 @@ vis_epicontacts <- function(x,
   }
 
   ## check node_color (node attribute used for color)
-  node_color <- assert_node_color(x, node_color)
+  node_color <- assert_node_color(x$linelist, node_color, "node_color")
 
   ## check node_shape (node attribute used for color)
-  node_shape <- assert_node_shape(x, node_shape)
+  node_shape <- assert_node_shape(x$linelist, node_shape, "node_shape")
 
   ## check node_size (node attribute used for color)
-  node_size <- assert_node_size(x, node_size)
+  node_size <- assert_node_size(x$linelist, node_size, "node_shape")
 
   ## check annot (txt displayed when clicking on node)
   annot <- assert_annot(x, annot)
 
   ## check edge_label (edge attribute used for label)
-  edge_label <- assert_edge_label(x, edge_label)
+  edge_label <- assert_edge_label(x$contacts, edge_label, "edge_label")
 
   ## check edge_color (edge attribute used for color)
-  edge_color <- assert_edge_color(x, edge_color)
+  edge_color <- assert_edge_color(x$contacts, edge_color, "edge_color")
 
   ## check edge_width (edge attribute used for width)
-  edge_width <- assert_edge_width(x, edge_width)
+  edge_width <- assert_edge_width(x$contacts, edge_width, "edge_width")
 
   ## check edge_linetype (edge attribute used for linetype)
-  edge_linetype <- assert_edge_linetype(x, edge_linetype)
+  edge_linetype <- assert_edge_linetype(x$contacts, edge_linetype, "edge_linetype")
 
   ## make a list of all nodes, and generate a data.frame of node attributes
   all_nodes <- get_id(x, which = "all", na.rm = TRUE)

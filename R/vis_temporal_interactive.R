@@ -126,7 +126,6 @@ vis_temporal_interactive <- function(x,
                                      parent_pos = c("middle", "top", "bottom"),
                                      custom_parent_pos = NULL,
                                      n_breaks = 5,
-                                     timeline_width = 5,
                                      axis_type = c("single", "double", "none"),
                                      igraph_type = NULL,
                                      tl_start_node_color = NULL,
@@ -376,13 +375,17 @@ vis_temporal_interactive <- function(x,
     timeline_from_id <- replicate(nrow(timeline),
                                   paste0(sample(letters, 10), collapse = ""))
     timeline_to_id <- replicate(nrow(timeline),
-                                  paste0(sample(letters, 10), collapse = ""))
+                                paste0(sample(letters, 10), collapse = ""))
+
+    tl_start <- !is.null(c(tl_start_node_color, tl_start_node_shape, tl_start_node_size))
+    tl_end <- !is.null(c(tl_end_node_color, tl_end_node_shape, tl_end_node_size))
+
     timeline_nodes <- data.frame(
       id = c(timeline_from_id,
              timeline_to_id),
       x = resc_x[(max(axis_nodes_ind) + 1):(length(resc_x))],
       y = rep(nodes$y[match(timeline$id, nodes$id)], 2),
-      hidden = TRUE
+      hidden = c(rep(!tl_start, nrow(timeline)), rep(!tl_end, nrow(timeline)))
     )
 
     hidden <- c(hidden, timeline_nodes$hidden)
@@ -440,18 +443,22 @@ vis_temporal_interactive <- function(x,
     net_nodes <- nodes
     net_edges <- edges
   }
-  browser()
 
-  ## add node color ("group")
+  ## add node color
   if (!is.null(c(node_color, tl_start_node_color, tl_end_node_color))) {
-    joint_col <- join_node_vals(nodes, timeline, node_color,
-                                tl_start_node_color, tl_end_node_color)
-    node_col_info <- fac2col(factor(nodes[, node_color]),
+
+    joint_color <- join_node_vals(net_nodes, timeline, node_color,
+                                  tl_start_node_color, tl_end_node_color)
+
+    node_col_info <- fac2col(factor(joint_color),
                              col_pal,
                              NA_col,
-                             legend = TRUE)
+                             legend = TRUE,
+                             unmapped_col = "black")
     K <- length(node_col_info$leg_lab)
-    if(!is.null(node_shape)) {
+
+    ## colors are assigned via icon color if node shapes are specified
+    if(!is.null(c(node_shape, tl_start_node_shape, tl_end_node_shape))) {
       nodes$icon.color <- node_col_info$color
     } else {
       nodes$color.background <- nodes$color.highlight.background <- node_col_info$color
@@ -459,34 +466,68 @@ vis_temporal_interactive <- function(x,
     }
   } else {
     ## if node_color set to NULL (not default) color nodes black
-    nodes$color.background <- nodes$color.highlight.background <- "black"
-    nodes$color.border <- nodes$color.highlight.border <- "black"
-  }
-
-  ## add node size
-  if(!is.null(node_size)) {
-    ## if numeric, use node_size for all nodes
-    if(is.numeric(node_size)) {
-      nodes$size <- node_size
+    if(!is.null(c(node_shape, tl_start_node_shape, tl_end_node_shape))) {
+      nodes$icon.color <- "black"
     } else {
-      node_size_values <- nodes[[node_size]]
-      if(is.character(node_size_values)) {
-        stop("node_size cannot be mapped to character variable")
-      }
-      nodes$size <- rescale(as.numeric(node_size_values),
-                            size_range[1],
-                            size_range[2])
+      nodes$color.background <- nodes$color.highlight.background <- "black"
+      nodes$color.border <- nodes$color.highlight.border <- "black"
     }
   }
 
+  ## add node size
+  if(!is.null(c(node_size, tl_start_node_size, tl_end_node_size))) {
+
+    ## join size information in vetor of correct length
+    joint_size <- join_node_sizes(net_nodes, timeline, node_size,
+                                  tl_start_node_size, tl_end_node_size)
+
+    ## these values are mapped to node properties and scaled to size_range
+    node_size_map <- !joint_size %in% c("numeric", "numeric_start", "numeric_end", "unmapped")
+    if(any(node_size_map)) {
+      joint_size[node_size_map] <- rescale(as.numeric(joint_size[node_size_map]),
+                                           size_range[1],
+                                           size_range[2])
+    }
+
+    ## these values are numericaly specified
+    if(any(joint_size == "numeric", na.rm = TRUE)) {
+      joint_size[joint_size == "numeric"] <- node_size
+    }
+    if(any(joint_size == "numeric_start", na.rm = TRUE)) {
+      joint_size[joint_size == "numeric_start"] <- tl_start_node_size
+    }
+    if(any(joint_size == "numeric_end", na.rm = TRUE)) {
+      joint_size[joint_size == "numeric_end"] <- tl_end_node_size
+    }
+
+    ## these values are not specified and so are assigned the default size
+    joint_size[joint_size == "unmapped"] <- 25
+
+    ## assign to node dataframe
+    nodes$size <- as.numeric(joint_size)
+
+  }
+
   ## add shape info
-  if (!is.null(node_shape)) {
+  if (!is.null(c(node_shape, tl_start_node_shape, tl_end_node_shape))) {
     if (is.null(shapes)) {
       msg <- paste("'shapes' needed if 'node_shape' provided;",
                    "to see codes, node_shape: codeawesome")
       stop(msg)
     }
-    vec_node_shapes <- as.character(unlist(nodes[node_shape]))
+
+    ## combine node shape info
+    joint_shape <- as.character(
+      join_node_vals(
+        net_nodes, timeline, node_shape,
+        tl_start_node_shape, tl_end_node_shape
+      )
+    )
+
+    ## values in this index are mapped to node properties
+    node_shape_map <- joint_shape != "unmapped"
+
+    ## vec_node_shapes <- as.character(unlist(nodes[node_shape]))
     shapes["NA"] <- "question-circle"
     unknown_codes <- !shapes %in% names(codeawesome)
     if (any(unknown_codes)) {
@@ -496,36 +537,59 @@ vis_temporal_interactive <- function(x,
                      culprits)
       stop(msg)
     }
-    vec_node_shapes <- paste(vec_node_shapes)
-    node_code <- codeawesome[shapes[vec_node_shapes]]
+
+    ## construct nod shape vector
+    joint_shape <- paste(joint_shape)
+    node_code <- character(length(joint_shape))
+
+    ## assign mapped node shape
+    node_code[node_shape_map] <- codeawesome[shapes[joint_shape[node_shape_map]]]
+
+    ## assign default unmapped node shape
+    node_code[!node_shape_map] <- codeawesome["circle"]
+
+    ## modify nodes dataframe
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
+
     ## define icon size if node_size is specified
     if(!is.null(node_size)) nodes$icon.size <- nodes$size
-    node_shape_info <- data.frame(icon = unique(node_code),
-                                  leg_lab = unique(vec_node_shapes))
+
+    ## create legend info
+    node_shape_info <- data.frame(icon = unique(node_code[node_shape_map]),
+                                  leg_lab = unique(joint_shape[node_shape_map]))
   }
   nodes$borderWidth <- 2
 
   ## add edge width
-  if(!is.null(edge_width)) {
-    if(is.numeric(edge_width)) {
-      edges$width <- edge_width
-    } else {
-      edge_width_values <- edges[[edge_width]]
-      if(is.character(edge_width_values)) {
-        stop("edge_width cannot be mapped to character variable")
-      }
-      edges$width <- rescale(as.numeric(edge_width_values), width_range[1], width_range[2])
+  if(!is.null(c(edge_width, tl_edge_width))) {
+
+    ## join size information in vetor of correct length
+    joint_width <- join_edge_width(net_edges, timeline, edge_width, tl_edge_width)
+
+    ## these values are mapped to node properties and scaled to width_range
+    edge_width_map <- !joint_width %in% c("numeric", "numeric_tl", "unmapped", "unmapped_tl")
+    if(any(edge_width_map)) {
+      joint_width[edge_width_map] <- rescale(as.numeric(joint_width[edge_width_map]),
+                                             width_range[1],
+                                             width_range[2])
     }
-    ## set default timeline color if not mapped
-    if(!is.null(timeline) & !edge_width %in% names(timeline)) {
-      edges$width[timeline_ind] <- timeline_width
+
+    ## these values are numerically specified
+    if(any(joint_width == "numeric", na.rm = TRUE)) {
+      joint_width[joint_width == "numeric"] <- edge_width
     }
-    ## set default edge color if not mapped
-    if(!is.null(timeline) & !edge_width %in% names(x$contacts)) {
-      edges$width[edge_ind] <- 1
+    if(any(joint_width == "numeric_tl", na.rm = TRUE)) {
+      joint_width[joint_width == "numeric_tl"] <- tl_edge_width
     }
+
+    ## these values are not specified and so are assigned default edge and timeline widths
+    joint_width[joint_width == "unmapped"] <- 3
+    joint_width[joint_width == "unmapped_tl"] <- 5
+
+    ## assign to edge dataframe
+    edges$width <- as.numeric(joint_width)
+
   } else {
     edges$width <- 1
   }
@@ -538,58 +602,61 @@ vis_temporal_interactive <- function(x,
   }
 
   ## add edge labels
-  if (!is.null(edge_label)) {
-    edges$label <- as.character(edges[, edge_label])
-    edges$label[!edges$to_node &
-                !seq_along(edges$to_node) %in% timeline_ind] <- ""
+  if (!is.null(c(edge_label, tl_edge_label))) {
+
+    joint_edge_label <- as.character(
+      join_edge_vals(net_edges, timeline, edge_label, tl_edge_label)
+    )
+    joint_edge_label[joint_edge_label == "unmapped" |
+                     is.na(joint_edge_label) |
+                     (!edges$to_node & seq_len(nrow(edges)) %in% seq_len(nrow(net_edges)))] <- ""
+    edges$label <- joint_edge_label
+
   }
 
   ## add edge color
-  if (!is.null(edge_color)) {
-    edge_col_info <- fac2col(factor(edges[, edge_color]),
+  if (!is.null(c(edge_color, tl_edge_color))) {
+
+    joint_edge_color <- join_edge_vals(net_edges, timeline, edge_color, tl_edge_color)
+
+    edge_col_info <- fac2col(joint_edge_color,
                              edge_col_pal,
                              NA_col,
-                             legend = TRUE)
+                             legend = TRUE,
+                             unmapped_col = "black")
+
     L <- length(edge_col_info$leg_lab)
     edges$color <- edge_col_info$color
-    ## set default timeline color if not mapped
-    if(!is.null(timeline) & !edge_color %in% names(timeline)) {
-      edges$color[timeline_ind] <- "black"
-    }
-    ## set default edge color if not mapped
-    if(!is.null(timeline) & !edge_color %in% names(x$contacts)) {
-      edges$color[edge_ind] <- "black"
-    }
+
   } else {
     edges$color <- "black"
   }
 
   ## add edge linetype
-  if(!is.null(edge_linetype)) {
-    ## convert NA to character so it can be mapped to linetype
-    ## set linetype to solid if it is not mapped
-    if(!is.null(timeline) & !edge_linetype %in% names(timeline)) {
-      edges[[edge_linetype]][timeline_ind] <- sort(edges[[edge_linetype]])[1]
+  if(!is.null(c(edge_linetype, tl_edge_linetype))) {
+
+    joint_edge_linetype <- join_edge_vals(net_edges, timeline, edge_linetype, tl_edge_linetype)
+
+    if(any(is.na(joint_edge_linetype))) {
+      levels(joint_edge_linetype) <- c(levels(joint_edge_linetype), "NA")
+      joint_edge_linetype[is.na(joint_edge_linetype)] <- "NA"
     }
-    if(!is.null(timeline) & !edge_linetype %in% names(x$contacts)) {
-      edges[[edge_linetype]][edge_ind] <- sort(edges[[edge_linetype]])[1]
-    }
-    linetype_na <- is.na(edges[[edge_linetype]])
-    if(any(linetype_na)) {
-      ## add NA factors level if factor
-      if(is.factor(edges[[edge_linetype]])) {
-        levels(edges[[edge_linetype]]) <- c(levels(edges[[edge_linetype]]), "NA")
-      }
-      edges[[edge_linetype]][] <- "NA"
-    }
-    unq_linetype <- unique(edges[[edge_linetype]])
+
+    ## use alphabetical order / factor order
+    edges$dashes <- joint_edge_linetype != sort(joint_edge_linetype)[1]
+
+    unq_linetype <- unique(as.character(joint_edge_linetype))
+    unq_linetype <- unq_linetype[unq_linetype != "unmapped"]
+
     if(length(unq_linetype) > 2) {
       msg <- paste0("visNetwork only supports two linetypes; ",
                     "use binary variable or set method = 'ggplot'.")
       stop(msg)
     }
-    ## use alphabetical order / factor order
-    edges$dashes <- edges[[edge_linetype]] != sort(unq_linetype)[1]
+
+    ## unmapped linetypes are set to solid
+    edges$dashes[joint_edge_linetype == "unmapped"] <- FALSE
+
   }
 
   ## add axes
@@ -710,7 +777,8 @@ vis_temporal_interactive <- function(x,
   if (legend) {
 
     ## node color legend
-    if (!is.null(node_color) &&  (K < legend_max)) {
+    if (!is.null(c(node_color, tl_start_node_color, tl_end_node_color)) &&
+                 (K < legend_max)) {
       leg_nodes <- data.frame(label = node_col_info$leg_lab,
                               color.background = node_col_info$leg_col,
                               color.border = "black",
@@ -724,9 +792,12 @@ vis_temporal_interactive <- function(x,
     }
 
     ## node shape legend
-    if (!is.null(node_shape) && nrow(node_shape_info) < legend_max) {
+    if (!is.null(c(node_shape, tl_start_node_shape, tl_end_node_shape)) &&
+        nrow(node_shape_info) < legend_max) {
       ## don"t add extra legend keys if variable is the same as node_color
-      if(node_shape == node_color){
+      if(null_or_same(node_shape, node_color) &&
+         null_or_same(tl_start_node_shape, tl_start_node_color) &&
+         null_or_same(tl_end_node_shape, tl_end_node_color)) {
         leg_nodes$shape <- "icon"
         leg_nodes$icon.code <- node_shape_info$icon
         leg_nodes[c("color.border",
@@ -741,23 +812,27 @@ vis_temporal_interactive <- function(x,
                           shadow = FALSE,
                           font.size = ifelse(is.null(font_size),
                                              14, font_size))
-        leg_nodes$shape <- "icon"
-        leg_nodes$icon.code <- codeawesome["circle"]
-        leg_nodes[c("color.border",
-                    "color.highlight.border",
-                    "borderWidth")]<- NULL
-        names(leg_nodes)[names(leg_nodes) == "color.background"] <- "icon.color"
-        leg_nodes <- rbind(leg_nodes, tmp)
+        if(!is.null(leg_nodes)) {
+          leg_nodes$shape <- "icon"
+          leg_nodes$icon.code <- codeawesome["circle"]
+          leg_nodes[c("color.border",
+                      "color.highlight.border",
+                      "borderWidth")] <- NULL
+          names(leg_nodes)[names(leg_nodes) == "color.background"] <- "icon.color"
+          leg_nodes <- rbind(leg_nodes, tmp)
+        } else {
+          leg_nodes <- tmp
+        }
       }
     }
 
     ## edge color legend
-    if (!is.null(edge_color) &&  (L < legend_max)) {
+    if (!is.null(c(edge_color, tl_edge_color)) &&  (L < legend_max)) {
       leg_edges <- data.frame(label = edge_col_info$leg_lab,
                               color = edge_col_info$leg_col,
                               dashes = FALSE,
                               width = 5,
-                              arrows.to = x$directed & edge_color %in% names(x$contacts),
+                              arrows.to = x$directed && !is.null(edge_color),
                               font.size = ifelse(is.null(font_size),
                                                  14, font_size),
                               font.align = "bottom")
@@ -766,16 +841,17 @@ vis_temporal_interactive <- function(x,
     }
 
     ## edge linetype legend
-    if (!is.null(edge_linetype)) {
-      ## Don"t add extra legend keys if variable is the same
-      if(!is.null(edge_color) && edge_linetype == edge_color) {
+    if (!is.null(c(edge_linetype, tl_edge_linetype))) {
+      ## Don't add extra legend keys if variable is the same
+      if(null_or_same(edge_color, edge_linetype) &&
+         null_or_same(tl_edge_color, tl_edge_linetype)) {
         leg_edges$dashes <- c(FALSE, TRUE)
       } else {
         tmp <- data.frame(label = unq_linetype,
                           color = "black",
                           dashes = c(FALSE, TRUE),
                           width = 5,
-                          arrows.to = x$directed & edge_linetype %in% names(x$contacts),
+                          arrows.to = x$directed & !is.null(edge_linetype),
                           font.size = ifelse(is.null(font_size),
                                              14, font_size),
                           font.align = "bottom")
