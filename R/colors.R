@@ -107,6 +107,23 @@ spectral <- grDevices::colorRampPalette(
 
 
 
+#' @param x A numeric vector to be continously mapped to colors
+#'
+#' @param pal A color palette
+#'
+#' @param limits The upper and lower boundaries of values for x
+
+map2color<-function(x, pal, limits = NULL){
+  if(is.null(limits)) limits <- range(x)
+  pal <- pal(1000)
+  pal[findInterval(x, seq(limits[1], limits[2], length.out = length(pal)+1),
+                   all.inside=TRUE)]
+}
+
+
+
+
+
 
 #' @export
 #' @rdname colors
@@ -126,7 +143,6 @@ spectral <- grDevices::colorRampPalette(
 #' @param unmapped_col The default color when colors are not mapped.
 #'
 fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE, unmapped_col = "black") {
-  x <- factor(x)
   na_ind <- is.na(x)
   unmapped_ind <- x == "unmapped"
   lev <- levels(x)[levels(x) != "unmapped"]

@@ -333,7 +333,7 @@ assert_timeline <- function(timeline, x, x_axis) {
       warning(sprintf("%i timeline row(s) removed as ID not found in linelist or start/end date is NA",
                       sum(!ind)))
     }
-    timeline <- subset(timeline, ind)
+    timeline <- as.data.frame(subset(timeline, ind))
   }
 
   return(timeline)
@@ -1097,8 +1097,7 @@ join_node_vals <- function(nodes, timeline, node, start, end) {
              else factor(timeline[, end])
 
   lev <- unique(c(levels(node_val), levels(start_val), levels(end_val)))
-  lev <- lev[lev != "unmapped"]
-  lev <- c(lev, "unmapped")
+  lev <- c(lev[lev != "unmapped"], "unmapped")
 
   ## this maintains factor levels
   out <- factor(c(as.character(node_val),
@@ -1124,8 +1123,7 @@ join_edge_vals <- function(edges, timeline, edge, tl_edge) {
             else factor(timeline[, tl_edge])
 
   lev <- unique(c(levels(edge_val), levels(tl_val)))
-  lev <- lev[lev != "unmapped"]
-  lev <- c(lev, "unmapped")
+  lev <- c(lev[lev != "unmapped"], "unmapped")
 
   ## this maintains factor levels
   out <- factor(c(as.character(edge_val), as.character(tl_val)), lev)

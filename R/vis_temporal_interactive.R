@@ -189,6 +189,9 @@ vis_temporal_interactive <- function(x,
                              numeric(1))
   }
 
+  ## Convert tibbles to data.frames so that drop = TRUE by default in subsetting
+  x$linelist <- as.data.frame(x$linelist)
+  x$contacts <- as.data.frame(x$contacts)
 
   ## in the following, we pull the list of all plotted nodes (those from the
   ## linelist, and from the contacts data.frame, and then derive node attributes
@@ -525,7 +528,7 @@ vis_temporal_interactive <- function(x,
     )
 
     ## values in this index are mapped to node properties
-    node_shape_map <- joint_shape != "unmapped"
+    node_shape_map <- joint_shape != "unmapped" | is.na(joint_shape)
 
     ## vec_node_shapes <- as.character(unlist(nodes[node_shape]))
     shapes["NA"] <- "question-circle"
@@ -692,7 +695,7 @@ vis_temporal_interactive <- function(x,
     ## format axis nodes
     col_var <- c("color.background", "color.highlight.background",
                  "color.border", "color.highlight.border")
-    if(is.null(node_shape)) axis_nodes[col_var] <- "black"
+    if(is.null(c(node_shape, tl_start_node_shape, tl_end_node_shape))) axis_nodes[col_var] <- "black"
     axis_nodes$size <- 0.1
     axis_nodes$borderWidth <- 0.1
 
