@@ -168,7 +168,7 @@ fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE, u
     if(any(!is_color(pal))) {
       stop("all values in col_pal/edge_col_pal must be colors")
     }
-    res[!na_ind & !unmapped_ind] <- pal[x[!na_ind & !unmapped_ind]]
+    res[!na_ind & !unmapped_ind] <- pal[as.character(x[!na_ind & !unmapped_ind])]
     if (legend) {
       res <- list(color = res, leg_col = unname(pal[lev]), leg_lab = leg_lab)
     }
