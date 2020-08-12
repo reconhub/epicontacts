@@ -142,7 +142,11 @@ map2color<-function(x, pal, limits = NULL){
 #'
 #' @param unmapped_col The default color when colors are not mapped.
 #'
-fac2col <- function (x, pal = cases_pal, NA_col = "lightgrey", legend = FALSE, unmapped_col = "black") {
+fac2col <- function (x,
+                     pal = cases_pal,
+                     NA_col = "lightgrey",
+                     legend = FALSE,
+                     unmapped_col = "black") {
   na_ind <- is.na(x)
   unmapped_ind <- x == "unmapped"
   lev <- levels(x)[levels(x) != "unmapped"]

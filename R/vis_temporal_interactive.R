@@ -318,6 +318,8 @@ vis_temporal_interactive <- function(x,
   if(inherits(nodes$x, c("Date", "POSIXct"))) {
     nodes$x <- as.numeric(nodes$x)
     if(!is.null(timeline)) {
+      timeline_start <- timeline$start
+      timeline_end <- timeline$end
       timeline$start <- as.numeric(timeline$start)
       timeline$end <- as.numeric(timeline$end)
     }
@@ -666,7 +668,7 @@ vis_temporal_interactive <- function(x,
   if(axis_type %in% c("single", "double")) {
 
     ## get the range of dates
-    axis_range <- range(c(nodes[[x_axis]], timeline$start, timeline$end), na.rm = TRUE)
+    axis_range <- range(c(nodes[[x_axis]], timeline_start, timeline_end), na.rm = TRUE)
     axis_range <- seq(axis_range[1], axis_range[2], by = 1L)
     axis_range <- pretty(axis_range, n = n_breaks)
 
