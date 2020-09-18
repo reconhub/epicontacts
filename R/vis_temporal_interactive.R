@@ -561,8 +561,11 @@ vis_temporal_interactive <- function(x,
     if(!is.null(node_size)) nodes$icon.size <- nodes$size
 
     ## create legend info
-    node_shape_info <- data.frame(icon = unique(node_code[node_shape_map]),
-                                  leg_lab = unique(joint_shape[node_shape_map]))
+    node_shape_info <- data.frame(
+      icon = codeawesome[shapes[unique(joint_shape[node_shape_map])]],
+      leg_lab = unique(joint_shape[node_shape_map])
+    )
+
   }
   nodes$borderWidth <- 2
 
