@@ -55,7 +55,7 @@ assert_node_shape <- function(df, node_shape, var = "node_shape") {
 }
 
 
-assert_node_size <- function(df, node_size, var = "node_shape") {
+assert_node_size <- function(df, node_size, var = "node_size") {
   if(!is.null(df)) {
     if (length(node_size) > 1L) {
       stop("'%s' must indicate a single node attribute", var)
@@ -63,10 +63,13 @@ assert_node_size <- function(df, node_size, var = "node_shape") {
     if (is.logical(node_size) && !node_size) {
       node_size <- NULL
     }
-    if (!is.null(node_size)) {
-      if (!is.numeric(node_size) & !node_size %in% c(names(df), 'R_i', 'subtree_size')) {
+    if (!is.null(node_size) & !is.numeric(node_size)) {
+      if (!node_size %in% c(names(df), 'R_i', 'subtree_size')) {
         msg <- sprintf("%s '%s' is not in the linelist", var, node_size)
         stop(msg)
+      }
+      if(var == "node_size" & inherits(df[[node_size]], "character")) {
+        stop("node_size cannot be mapped to character variable")
       }
     }
   }
@@ -169,10 +172,13 @@ assert_edge_width <- function(df, edge_width, var) {
     if (is.logical(edge_width) && !edge_width) {
       edge_width <- NULL
     }
-    if (!is.null(edge_width)) {
-      if(is.character(edge_width) & !edge_width %in% names(df)) {
+    if (!is.null(edge_width) & !is.numeric(edge_width)) {
+      if(!edge_width %in% names(df)) {
         msg <- sprintf("%s '%s' is not in the contacts", var, edge_width)
         stop(msg)
+      }
+      if(var == "edge_width" & inherits(df[[edge_width]], "character")) {
+        stop("edge_width cannot be mapped to character variable")
       }
     }
   }

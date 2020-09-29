@@ -215,19 +215,19 @@ vis_temporal_static <- function(x,
   }
 
   ## check node_color (node attribute used for color)
-  node_color <- assert_node_color(x, node_color)
+  node_color <- assert_node_color(x$linelist, node_color, "node_color")
 
   ## check node_size (node attribute used for color)
-  node_size <- assert_node_size(x, node_size)
+  node_size <- assert_node_size(x$linelist, node_size, "node_size")
 
   ## check edge_color (edge attribute used for color)
-  edge_color <- assert_edge_color(x, edge_color)
+  edge_color <- assert_edge_color(x$contacts, edge_color, "edge_color")
 
   ## check edge_width (edge attribute used for width)
-  edge_width <- assert_edge_width(x, edge_width)
+  edge_width <- assert_edge_width(x$contacts, edge_width, "edge_width")
 
   ## check edge_linetype (edge attribute used for linetype)
-  edge_linetype <- assert_edge_linetype(x, edge_linetype)
+  edge_linetype <- assert_edge_linetype(x$contacts, edge_linetype, "edge_linetype")
 
   ## check edge_alpha (edge attribute used for alpha)
   edge_alpha <- assert_edge_alpha(x, edge_alpha)

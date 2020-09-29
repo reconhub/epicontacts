@@ -148,6 +148,7 @@ fac2col <- function (x,
                      legend = FALSE,
                      unmapped_col = "black") {
   na_ind <- is.na(x)
+  x <- factor(x)
   unmapped_ind <- x == "unmapped"
   lev <- levels(x)[levels(x) != "unmapped"]
   leg_lab <- lev

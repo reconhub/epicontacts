@@ -84,8 +84,8 @@ graph3D <- function(x,
                     thin = TRUE) {
 
   ## check node_color (node attribute used for color)
-  node_color <- assert_node_color(x, node_color)
-  
+  node_color <- assert_node_color(x$linelist, node_color, "node_color")
+
   ## thin
   if (thin) {
     x <- thin(x)
@@ -165,5 +165,5 @@ graph3D <- function(x,
   ## Create 3D graph (note fg not supported, but may be in the future)
   threejs::graphjs(g, main = g_title, fg = label_col, bg = bg_col,
                    vertex.color = nodes$color, vertex.size = node_size)
-  
+
 }

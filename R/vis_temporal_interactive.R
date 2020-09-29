@@ -74,6 +74,42 @@
 #'   'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
 #'   for Fruchterman-Reingold layout.
 #'
+#' @param timeline A dataframe of at least three columns: a column 'id'
+#'   corresponding to the 'id' column in the linelist, a column 'start' of the
+#'   same type as 'x_axis' indicating the start date of a timeline element, and
+#'   a column 'end' of the same type as 'x_axis' indicating the end date of a
+#'   timeline element.
+#'
+#' @param tl_start_node_color An index or character string indicating which field of the
+#'   timeline should be used to color the start node of a timeline element.
+#'
+#' @param tl_end_node_color An index or character string indicating which field of the
+#'   timeline should be used to color the end node of a timeline element.
+#'
+#' @param tl_start_node_shape An index or character string indicating which field of the
+#'   timeline should be used to define the shape of the start node of a timeline element.
+#'
+#' @param tl_end_node_shape An index or character string indicating which field of the
+#'   timeline should be used to define the shape of the end node of a timeline element.
+#'
+#' @param tl_start_node_size An index or character string indicating which field of the
+#'   timeline should be used to define the size of the start node of a timeline element.
+#'
+#' @param tl_end_node_size An index or character string indicating which field of the
+#'   timeline should be used to define the size of the end node of a timeline element.
+#'
+#' @param tl_edge_color An index or character string indicating which field of the
+#'   timeline should be used to color the edge of a timeline element.
+#'
+#' @param tl_edge_width An index or character string indicating which field of the
+#'   timeline should be used to define the width of the edge of a timeline element.
+#'
+#' @param tl_edge_linetype An index or character string indicating which field of the
+#'   timeline should be used to define the linetype of the edge of a timeline element.
+#'
+#' @param tl_edge_label An index or character string indicating which field of the
+#'   timeline should be used to label the edge of a timeline element.
+#'
 #' @param ... Additional arguments specified in \code{vis_epicontacts}.
 #'
 #' @return The same output as \code{visNetwork}.
@@ -112,7 +148,6 @@
 #' }
 vis_temporal_interactive <- function(x,
                                      x_axis = NULL,
-                                     timeline = NULL,
                                      network_shape = c("branching", "rectangle"),
                                      root_order = x_axis,
                                      node_order = x_axis,
@@ -128,6 +163,7 @@ vis_temporal_interactive <- function(x,
                                      n_breaks = 5,
                                      axis_type = c("single", "double", "none"),
                                      igraph_type = NULL,
+                                     timeline = NULL,
                                      tl_start_node_color = NULL,
                                      tl_end_node_color = NULL,
                                      tl_start_node_shape = NULL,
@@ -313,13 +349,19 @@ vis_temporal_interactive <- function(x,
   ## Get subtree size for potential later use
   nodes$subtree_size <- coor$subtree_size
 
+  ## Store the timeline dates for later use
+  if(!is.null(timeline)) {
+    timeline_start <- timeline$start
+    timeline_end <- timeline$end
+  } else {
+    timeline_start <- timeline_end <- NULL
+  }
+
   ## Date -> numeric as visnetwork doesn"t support dates
   x_axis_lab <- pretty(c(nodes[[x_axis]], timeline$start, timeline$end), n = n_breaks)
-  if(inherits(nodes$x, c("Date", "POSIXct"))) {
+    if(inherits(nodes$x, c("Date", "POSIXct"))) {
     nodes$x <- as.numeric(nodes$x)
     if(!is.null(timeline)) {
-      timeline_start <- timeline$start
-      timeline_end <- timeline$end
       timeline$start <- as.numeric(timeline$start)
       timeline$end <- as.numeric(timeline$end)
     }

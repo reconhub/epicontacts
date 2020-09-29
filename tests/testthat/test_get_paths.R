@@ -8,8 +8,8 @@ test_that("test that return values are correct", {
 
   ## a list of character vectors if IDs on shortest path
   path1 <- get_path(net,
-                    c("asnfo", "hwqga", "stetw"),
-                    c("dyzvt", "rvmls", "qmsza"),
+                    c("qotje", "zrmrj", "yauxa"),
+                    c("lxyer", "lisgc", "mqmlu"),
                     which = "shortest",
                     output = "ids")
 
@@ -19,8 +19,8 @@ test_that("test that return values are correct", {
 
   ## a list of list of character IDs if IDs on all paths
   path2 <- get_path(net,
-                    c("asnfo", "hwqga", "stetw"),
-                    c("dyzvt", "rvmls", "qmsza"),
+                    c("qotje", "zrmrj", "yauxa"),
+                    c("lxyer", "lisgc", "mqmlu"),
                     which = "all",
                     output = "ids")
 
@@ -30,8 +30,8 @@ test_that("test that return values are correct", {
 
   ## a vector of lengths if shortest lengths
   path3 <- get_path(net,
-                    c("asnfo", "hwqga", "stetw"),
-                    c("dyzvt", "rvmls", "qmsza"),
+                    c("qotje", "zrmrj", "yauxa"),
+                    c("lxyer", "lisgc", "mqmlu"),
                     which = "shortest",
                     output = "generations")
 
@@ -40,8 +40,8 @@ test_that("test that return values are correct", {
 
   ## a list of lengths if all lengths
   path3 <- get_path(net,
-                    c("asnfo", "hwqga", "stetw"),
-                    c("dyzvt", "rvmls", "qmsza"),
+                    c("qotje", "zrmrj", "yauxa"),
+                    c("lxyer", "lisgc", "mqmlu"),
                     which = "all",
                     output = "generations")
 
@@ -59,7 +59,7 @@ test_that("test that return values are correct", {
   expect_length(path4, 1L)
 
   ## return character vector if simplify is TRUE
-  path4 <- get_path(net, "NA_5", "NA_6",
+  path4 <- get_path(net, "NA_7", "cilrw",
                     which = "shortest",
                     output = "ids",
                     simplify = FALSE)
@@ -68,7 +68,7 @@ test_that("test that return values are correct", {
   expect_length(path4, 1L)
 
   ## return character vector if simplify is TRUE
-  path5 <- get_path(net, "NA_5", "NA_6",
+  path5 <- get_path(net, "NA_7", "cilrw",
                     which = "shortest",
                     output = "ids",
                     simplify = TRUE)

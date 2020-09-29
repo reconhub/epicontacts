@@ -41,25 +41,26 @@ library(epicontacts)
 
 data(package = 'epicontacts')
 sim$directed <- TRUE
-plot(sim,
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'subtree_size',
-     node_order = 'onset',
-     node_size = 'R_i',
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     edge_linetype = 'status',
-     edge_flex = FALSE,
-     unlinked_pos = 'bottom',
-     reverse_root_order = FALSE,
-     reverse_node_order = TRUE,
-     height = 700,
-     width = 700,
-     legend = TRUE,
-     highlight_downstream = TRUE,
-     axis_type = 'double'
-     )
+plot(
+  sim,
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'subtree_size',
+  node_order = 'onset',
+  node_size = 'R_i',
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  edge_linetype = 'status',
+  edge_flex = FALSE,
+  unlinked_pos = 'bottom',
+  reverse_root_order = FALSE,
+  reverse_node_order = TRUE,
+  height = 700,
+  width = 700,
+  legend = TRUE,
+  highlight_downstream = TRUE,
+  axis_type = 'double'
+)
 
 ```
 
@@ -93,10 +94,11 @@ the `method` argument, and indicate which column of the linelist should be used
 for the x-axis (in this case, the date of symptom onset).
 
 ```{r}
-plot(sim,
-     x_axis = 'onset',
-     height = 700,
-     width = 700,
+plot(
+  sim,
+  x_axis = 'onset',
+  height = 700,
+  width = 700
 )
 ```
 
@@ -110,14 +112,16 @@ caused by each case), and `subtree_size` is the total number of downstream cases
 cluster with that case as an ancestor). For example:
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  height = 700,
+  width = 700
+)
 ```
 
 We can specify the size range of the nodes using the `size_range` argument, and
@@ -127,17 +131,19 @@ Edge color, width and linetype can be mapped to a given column in the contacts d
 For example:
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_color = 'status',
-     edge_linetype = 'status',
-     edge_width = 'duration',
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_color = 'status',
+  edge_linetype = 'status',
+  edge_width = 'duration',
+  height = 700,
+  width = 700
+)
 ```
 
 ## Specifying transmission tree shape
@@ -149,16 +155,18 @@ in a densely connected network. The second shape is `rectangle`, which produces 
 a phylogeny. For example:
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  height = 700,
+  width = 700
+)
 ```
 
 Furthermore, the vertical ordering of the nodes within the tree can be mapped to a given column
@@ -170,20 +178,22 @@ roots of each transmission chain (i.e. the index case of each chain) is specifie
 (`root_order = "onset"`) and internal nodes ordered by subtree size (`node_order = "subtree_size"`).
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  height = 700,
+  width = 700
+)
 ```
 
 Each case node can be assigned a unique vertical position by toggling the
@@ -191,22 +201,24 @@ Each case node can be assigned a unique vertical position by toggling the
 reported contacts) is specified using the `unlinked_pos` argument.
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     position_dodge = TRUE,
-     unlinked_pos = 'top',
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  position_dodge = TRUE,
+  unlinked_pos = 'top',
+  height = 700,
+  width = 700
+)
 ```
 
 The position of the parent node relative to the children nodes can be
@@ -215,23 +227,25 @@ parent node in the middle, however it can be placed at the bottom (`parent_pos =
 'bottom'`) or at the top (`parent_pos = 'top'`).
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     position_dodge = FALSE,
-     unlinked_pos = 'top',
-     parent_pos = 'bottom',
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  position_dodge = FALSE,
+  unlinked_pos = 'top',
+  parent_pos = 'bottom',
+  height = 700,
+  width = 700
+)
 ```
 
 Alternative tree layouts provided by `igraph` can also be used via the
@@ -241,16 +255,18 @@ timed transmission trees. At times they may give a more space efficient layout,
 though.
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     igraph_type = 'fr',
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  igraph_type = 'fr',
+  height = 700,
+  width = 700
+)
 ```
 
 ## Time axis
@@ -261,24 +277,26 @@ the date labels can be specified using the `date_labels` argument, which uses
 the standard codes defined in `strftime()`.
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     position_dodge = TRUE,
-     unlinked_pos = 'top',
-     axis_type = 'double',
-     date_labels = "%b %d",
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  position_dodge = TRUE,
+  unlinked_pos = 'top',
+  axis_type = 'double',
+  date_labels = "%b %d",
+  height = 700,
+  width = 700
+)
 ```
 
 ## Collapsing nodes
@@ -288,51 +306,55 @@ The option to collapse nodes up double-clicking them is toggled using the
 clicking on a node below. 
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'branching',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     position_dodge = TRUE,
-     unlinked_pos = 'top',
-     axis_type = 'double',
-     date_label = "%b %d",
-     collapse = TRUE,
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'branching',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  position_dodge = TRUE,
+  unlinked_pos = 'top',
+  axis_type = 'double',
+  date_label = "%b %d",
+  collapse = TRUE,
+  height = 700,
+  width = 700
+)
 ```
 
 ## Adding a title
 A title can be added to the plot as follows:
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'branching',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     position_dodge = TRUE,
-     unlinked_pos = 'top',
-     axis_type = 'double',
-     date_label = "%b %d",
-     title = "Transmission chains, June-August 2018",
-     collapse = TRUE,
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'branching',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  position_dodge = TRUE,
+  unlinked_pos = 'top',
+  axis_type = 'double',
+  date_label = "%b %d",
+  title = "Transmission chains, June-August 2018",
+  collapse = TRUE,
+  height = 700,
+  width = 700
+)
 ```
 
 
@@ -344,43 +366,47 @@ argument. Node labels can be hidden using the `label` argument. This can
 free up some space to label the edges using the `edge_label` argument. 
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     edge_label = 'status',
-     edge_flex = TRUE,
-     highlight_downstream = TRUE,
-     label = FALSE,
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  edge_label = 'status',
+  edge_flex = TRUE,
+  highlight_downstream = TRUE,
+  label = FALSE,
+  height = 700,
+  width = 700
+)
 ```
 
 The `height` and `width` of the figure can be specified in pixels. 
 
 ```{r}
-plot(sim, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     height = 700,
-     width = 700)
+plot(
+  sim, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  height = 700,
+  width = 700
+)
 ```
 
 
@@ -401,50 +427,54 @@ min_si <- 3
 si <- get_pairwise(sim_2, 'onset', function(x, y) y - x)
 sim_2$contacts$suspicious <- si < min_si | si > max_si
 
-plot(sim_2, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_color = 'suspicious',
-     title = "Uncleaned contact network",
-     height = 700,
-     width = 700,
-     label = FALSE,
-     thin = TRUE,
-     position_dodge = TRUE)
+plot(
+  sim_2, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_color = 'suspicious',
+  title = "Uncleaned contact network",
+  height = 700,
+  width = 700,
+  label = FALSE,
+  thin = TRUE,
+  position_dodge = TRUE
+)
 ```  
-
-We can then remove these contacts and plot only those that seem feasible:
+  
+  We can then remove these contacts and plot only those that seem feasible:
 
 ```{r, echo = TRUE}
 sim_2_clean <- sim_2
 sim_2_clean$contacts <- sim_2$contacts[!sim_2$contacts$suspicious,]
   
-plot(sim_2_clean, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_color = 'suspicious',
-     title = "Cleaned contact network",
-     height = 700,
-     width = 700,
-     label = FALSE,
-     thin = TRUE,
-     position_dodge = TRUE)
+plot(
+  sim_2_clean, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = colorRampPalette(c("#427A82", "#AA6F39")),
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_color = 'suspicious',
+  title = "Cleaned contact network",
+  height = 700,
+  width = 700,
+  label = FALSE,
+  thin = TRUE,
+  position_dodge = TRUE
+)
 ```
 
 ## Multiple infectors per case and cyclical networks
@@ -469,53 +499,60 @@ contacts_3 <- data.frame(from = from,
 
 sim_3 <- sim
 sim_3$contacts <- rbind(sim_3$contacts, contacts_3)
-sim_3 $directed <- TRUE
+sim_3$directed <- TRUE
 col_pal <- colorRampPalette(c("#427A82", "#AA6F39"))
-plot(sim_3, 
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     col_pal = col_pal,
-     node_size = 'R_i',
-     size_range = c(5, 20),
-     edge_linetype = 'status',
-     height = 700,
-     width = 700,
-     position_dodge = FALSE)
-     
-```  
-
-## Outputting to ggplot
-
-The same algorithm was implemented within ggplot. Most of the available options
+plot(
+  sim_3, 
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  col_pal = col_pal,
+  node_size = 'R_i',
+  size_range = c(5, 20),
+  edge_linetype = 'status',
+  height = 700,
+  width = 700,
+  position_dodge = FALSE
+)
+``` 
+ 
+ ## Outputting to ggplot
+ 
+ The same algorithm was implemented within ggplot. Most of the available options
 remain the same, though check the documentation to be sure. The benefit of the
 ggplot output is that it allows much more customisation by the user, as seen
 below in renaming the legend labels, for example.
 
 ```{r, fig.width = 7, fig.height = 8}
 sim_3$directed <- FALSE
-plot(sim_3, 
-     method = 'ggplot',
-     x_axis = 'onset',
-     network_shape = 'rectangle',
-     root_order = 'onset',
-     node_order = 'subtree_size',
-     reverse_node_order = FALSE,
-     reverse_root_order = TRUE,
-     node_color = 'sex',
-     node_size = 'R_i',
-     size_range = c(3, 8),
-     edge_linetype = 'status',
-     position_dodge = FALSE) +
-  labs(x = "Date of symptom onset",
-       fill = 'Age of case',
-       size = "# cases infected",
-       linetype = "Contact status") +
-  scale_x_date(breaks = "1 week", 
-               date_labels = "%d-%b")
+plot(
+  sim_3, 
+  method = 'ggplot',
+  x_axis = 'onset',
+  network_shape = 'rectangle',
+  root_order = 'onset',
+  node_order = 'subtree_size',
+  reverse_node_order = FALSE,
+  reverse_root_order = TRUE,
+  node_color = 'sex',
+  node_size = 'R_i',
+  size_range = c(3, 8),
+  edge_linetype = 'status',
+  position_dodge = FALSE
+) +
+  labs(
+    x = "Date of symptom onset",
+    fill = 'Age of case',
+    size = "# cases infected",
+    linetype = "Contact status"
+  ) +
+  scale_x_date(
+    breaks = "1 week", 
+    date_labels = "%d-%b"
+  )
 ```
 
