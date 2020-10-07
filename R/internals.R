@@ -1164,13 +1164,13 @@ join_edge_width <- function(edges, timeline, edge, tl_edge) {
   edge_val <- if(is.null(edges)) NULL
               else if(is.null(edge)) rep("unmapped", nrow(edges))
               else if(is.numeric(edge)) rep("numeric", nrow(edges))
-              else if(is.character(timeline[, start])) stop("edge_width cannot be mapped to character variable")
+              else if(is.character(edges[, edge])) stop("edge_width cannot be mapped to character variable")
               else as.numeric(edges[, edge])
 
   tl_val <- if(is.null(timeline)) NULL
             else if(is.null(tl_edge)) rep("unmapped_tl", nrow(timeline))
             else if(is.numeric(tl_edge)) rep("numeric_tl", nrow(timeline))
-            else if(is.character(timeline[, start])) stop("tl_edge_width cannot be mapped to character variable")
+            else if(is.character(timeline[, tl_edge])) stop("tl_edge_width cannot be mapped to character variable")
             else as.numeric(timeline[, tl_edge])
 
   ## coerce to character to stop factor coercion to integer

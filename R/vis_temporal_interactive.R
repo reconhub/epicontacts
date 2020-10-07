@@ -201,6 +201,8 @@ vis_temporal_interactive <- function(x,
   title <- get_val("title", def, args)
   legend <- get_val("legend", def, args)
   legend_max <- get_val("legend_max", def, args)
+  legend_width <- get_val("legend_width", def, args)
+  legend_ncol <- get_val("legend_ncol", def, args)
   ## default selector value is node_color
   def$selector <- node_color
   selector <- get_val("selector", def, args)
@@ -713,9 +715,11 @@ vis_temporal_interactive <- function(x,
   if(axis_type %in% c("single", "double")) {
 
     ## get the range of dates
-    axis_range <- range(c(nodes[[x_axis]], timeline_start, timeline_end), na.rm = TRUE)
-    axis_range <- seq(axis_range[1], axis_range[2], by = 1L)
-    axis_range <- pretty(axis_range, n = n_breaks)
+    ## axis_range <- range(c(nodes[[x_axis]], timeline_start, timeline_end), na.rm = TRUE)
+    ## axis_range <- seq(axis_range[1], axis_range[2], by = 1L)
+    ## axis_range <- pretty(axis_range, n = n_breaks)
+
+    axis_range <- pretty(c(nodes[[x_axis]], timeline_start, timeline_end), n = n_breaks)
 
     ## create axis nodes and edges
     axis_nodes <- data.frame(id = paste0("date_", seq_along(axis_range)),
@@ -844,12 +848,12 @@ vis_temporal_interactive <- function(x,
     ## node shape legend
     if (!is.null(c(node_shape, tl_start_node_shape, tl_end_node_shape)) &&
         nrow(node_shape_info) < legend_max) {
-      ## don"t add extra legend keys if variable is the same as node_color
+      ## don't add extra legend keys if variable is the same as node_color
       if(null_or_same(node_shape, node_color) &&
          null_or_same(tl_start_node_shape, tl_start_node_color) &&
          null_or_same(tl_end_node_shape, tl_end_node_color)) {
         leg_nodes$shape <- "icon"
-        leg_nodes$icon.code <- node_shape_info$icon
+        leg_nodes$icon.code <- node_shape_info$icon[match(leg_nodes$label, node_shape_info$leg_lab)]
         leg_nodes[c("color.border",
                     "color.highlight.border",
                     "borderWidth")]<- NULL
@@ -913,8 +917,8 @@ vis_temporal_interactive <- function(x,
                                  zoom = FALSE,
                                  addNodes = leg_nodes,
                                  addEdges = leg_edges,
-                                 width = 0.1,
-                                 ncol = 2,
+                                 width = legend_width,
+                                 ncol = legend_ncol,
                                  useGroups = FALSE)
 
   }

@@ -91,6 +91,11 @@
 #'
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
+#' @param legend_width The width of the legend as a proportion of the total
+#'   figure width.
+#'
+#' @param legend_ncol The number of columns in the legend.
+#'
 #' @param date_labels A string giving the formatting specification for the
 #' x-axis date labels. Codes are defined in ‘strftime()’.
 #'
@@ -164,6 +169,8 @@ vis_epicontacts <- function(x,
                             title = NULL,
                             legend = TRUE,
                             legend_max = 10,
+                            legend_width = 0.1,
+                            legend_ncol = 1,
                             date_labels = "%Y-%m-%d",
                             thin = TRUE,
                             selector = node_color,
@@ -315,6 +322,7 @@ vis_epicontacts <- function(x,
     if(!is.null(node_size)) nodes$icon.size <- nodes$size
     node_shape_info <- data.frame(icon = unique(node_code),
                                   leg_lab = unique(vec_node_shapes))
+    node_shape_info <- node_shape_info[node_shape_info$leg_lab != "NA",]
   }
   nodes$borderWidth <- 2
 
@@ -468,9 +476,8 @@ vis_epicontacts <- function(x,
                                  zoom = FALSE,
                                  addNodes = leg_nodes,
                                  addEdges = leg_edges,
-                                 width = ifelse(is.null(edge_linetype),
-                                                0.07,
-                                                0.10),
+                                 width = legend_width,
+                                 ncol = legend_ncol,
                                  useGroups = FALSE)
 
   }
