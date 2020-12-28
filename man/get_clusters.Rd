@@ -4,9 +4,14 @@
 \alias{get_clusters}
 \title{Assign cluster IDs to epicontacts data}
 \usage{
-get_clusters(x, output = c("epicontacts", "data.frame"),
-  member_col = "cluster_member", size_col = "cluster_size",
-  override = FALSE)
+get_clusters(
+  x,
+  output = c("epicontacts", "data.frame"),
+  member_col = "cluster_member",
+  size_col = "cluster_size",
+  override = FALSE,
+  no_infector = TRUE
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
@@ -24,6 +29,9 @@ linelist. Default name is 'cluster_size'.}
 
 \item{override}{Logical value indicating whether cluster member and size columns
 should be overwritten if they already exist in the linelist. Default is 'FALSE'.}
+
+\item{no_infector}{Logical value indicating whether to assign clusters to cases with no
+infector in the contacts dataframe. Default is 'TRUE'.}
 }
 \value{
 An \code{\link{epicontacts}} object whose 'linelist' dataframe
@@ -44,7 +52,8 @@ x <- make_epicontacts(ebola_sim$linelist, ebola_sim$contacts,
                        id = "case_id",
                        to = "case_id",
                        from = "infector",
-                       directed = TRUE)
+                       directed = TRUE,
+                       no_infector = TRUE)
 
 
 ## add cluster membership and sizes to epicontacts 'linelist'
