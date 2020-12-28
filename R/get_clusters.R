@@ -80,7 +80,7 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
 
 
   if(!no_infector){
-    x_full <- x
+    x_full <- x$linelist
     x$contacts <- x$contacts[which(!is.na(x$contacts$from)),]
     x$linelist <- x$linelist[which(x$linelist$id %in% c(x$contacts$from, x$contacts$to)),]
   }
@@ -107,7 +107,7 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
   net_nodes <- dplyr::left_join(net_nodes, cs_size, by = member_col)
   if(output == "epicontacts") {
     if(!no_infector){
-      x$linelist <- dplyr::full_join(x_full$linelist, net_nodes, by = "id")
+      x$linelist <- dplyr::full_join(x_full, net_nodes, by = "id")
     } else {
       x$linelist <- dplyr::full_join(x$linelist, net_nodes, by = "id")
     }
