@@ -19,6 +19,7 @@ vis_epicontacts(
   shapes = NULL,
   size_range = c(5, 20),
   width_range = c(1, 5),
+  length_range = c(1, 5),
   label = "id",
   annot = TRUE,
   width = "90\%",
@@ -26,14 +27,16 @@ vis_epicontacts(
   title = NULL,
   legend = TRUE,
   legend_max = 10,
-  x_axis = NULL,
-  date_labels = "\%d/\%m/\%Y",
+  legend_width = 0.1,
+  legend_ncol = 1,
+  date_labels = "\%Y-\%m-\%d",
   thin = TRUE,
-  selector = TRUE,
+  selector = node_color,
   editor = FALSE,
   highlight_downstream = FALSE,
   collapse = TRUE,
   font_size = NULL,
+  arrow_size = 2,
   ...
 )
 }
@@ -62,7 +65,7 @@ contacts data should be used to color the edges of the graph.}
 
 \item{edge_width}{An integer indicating the width of the edges, or a
 character string indicating which field of the contacts data should be used
-to determine the width of the edge. Defaults to 3.}
+to determine the width of the edge.}
 
 \item{edge_linetype}{An integer or character string indicating which field of
 the contacts data should be used to indicate the edge linetype. If the
@@ -116,8 +119,10 @@ plot.}
 
 \item{legend_max}{The maximum number of groups for a legend to be displayed.}
 
-\item{x_axis}{A character string indicating which field of the linelist data
-should be used to specify the x axis position (must be numeric or Date).}
+\item{legend_width}{The width of the legend as a proportion of the total
+figure width.}
+
+\item{legend_ncol}{The number of columns in the legend.}
 
 \item{date_labels}{A string giving the formatting specification for the
 x-axis date labels. Codes are defined in ‘strftime()’.}
@@ -125,8 +130,8 @@ x-axis date labels. Codes are defined in ‘strftime()’.}
 \item{thin}{A logical indicating if the data should be thinned with
 \code{\link{thin}} so that only cases with contacts should be plotted.}
 
-\item{selector}{A logical indicating if the selector tool should be used;
-defaults to TRUE.}
+\item{selector}{A string indicating which column should be used for the
+selector tool. Set to FALSE to disable.}
 
 \item{editor}{A logical indicating if the editor tool should be used;
 defaults to FALSE.}
@@ -138,6 +143,8 @@ the the selected node should be highlighted.}
 given node upon double-clicking.}
 
 \item{font_size}{The font size of the node and edge labels.}
+
+\item{arrow_size}{The size of the arrow.}
 
 \item{...}{Further arguments to be passed to \code{visNetwork}.}
 }
@@ -163,10 +170,7 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
 \dontrun{
 plot(x)
 plot(x, node_color = "place_infect")
-# show transmission tree with time as the horizontal axis, showing all nodes
-vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
 plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
-plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 plot(x, "place_infect", node_shape = "sex",
      shapes = c(M = "male", F = "female"))
 

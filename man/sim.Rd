@@ -4,7 +4,9 @@
 \name{sim}
 \alias{sim}
 \title{Simulated outbreak for vignette}
-\format{An object of class \code{epicontacts} of length 3.}
+\format{
+An object of class \code{epicontacts} of length 3.
+}
 \usage{
 sim
 }

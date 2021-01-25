@@ -4,7 +4,9 @@
 \name{codeawesome}
 \alias{codeawesome}
 \title{Reference codes for fontawesome}
-\format{An object of class \code{character} of length 519.}
+\format{
+An object of class \code{character} of length 519.
+}
 \usage{
 codeawesome
 }

@@ -282,9 +282,9 @@ vis_temporal_interactive <- function(x,
   tl_end_node_color <- assert_node_color(timeline, tl_end_node_color, "tl_end_node_color")
 
   ## check node_shape (node attribute used for color)
-  node_shape <- assert_node_shape(x$linelist, node_shape, "node_shape")
-  tl_start_node_shape <- assert_node_shape(timeline, tl_start_node_shape, "tl_start_node_shape")
-  tl_end_node_shape <- assert_node_shape(timeline, tl_end_node_shape, "tl_end_node_shape")
+  node_shape <- assert_node_shape(x$linelist, node_shape, "node_shape", shapes)
+  tl_start_node_shape <- assert_node_shape(timeline, tl_start_node_shape, "tl_start_node_shape", shapes)
+  tl_end_node_shape <- assert_node_shape(timeline, tl_end_node_shape, "tl_end_node_shape", shapes)
 
   ## check node_size (node attribute used for color)
   node_size <- assert_node_size(x$linelist, node_size, "node_size")

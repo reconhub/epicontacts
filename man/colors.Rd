@@ -21,7 +21,7 @@ fac2col(
   pal = cases_pal,
   NA_col = "lightgrey",
   legend = FALSE,
-  adj_width = FALSE
+  unmapped_col = "black"
 )
 }
 \arguments{
@@ -44,9 +44,7 @@ factor levels in x to a color.}
 output. If TRUE, the output will be a list, with colors in the
 \code{$color} component.}
 
-\item{adj_width}{A logical indicating if legend labels should be adjusted so
-they all have the same number of characters (by inserting
-whitespaces). This ensures the size of the legend keys are the same.}
+\item{unmapped_col}{The default color when colors are not mapped.}
 }
 \description{
 These functions are used for defining palettes or colors in the

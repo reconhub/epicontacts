@@ -7,8 +7,8 @@
 \method{plot}{epicontacts}(
   x,
   node_color = "id",
-  method = c("visNetwork", "graph3D", "temporal"),
-  output = c("interactive", "static"),
+  method = c("visNetwork", "graph3D", "ggplot"),
+  x_axis = NULL,
   ...
 )
 }
@@ -21,11 +21,12 @@ individual reproductive number for each case (i.e. number of outgoing
 infection/contacts) will be calculated and used to specify the node colour.}
 
 \item{method}{A character string indicating the plotting method to be used;
-available values are "visNetwork", "graph3D" and "temporal"; see details.}
+available values are "visNetwork", "graph3D" and "ggplot". "ggplot" can
+only be used when the \code{x_axis} argument is specified.}
 
-\item{output}{A character string indicating whether the output should be
-"interactive" (using visNetwork) or "static" (using ggplot). This argument
-is only available if \code{method} is set to "temporal".}
+\item{x_axis}{If a temporal axis is to be displayed, a character string
+indicating which field of the linelist data should be used to specify the x
+axis position (must be numeric or Date).}
 
 \item{...}{Further arguments passed to the plotting methods.}
 }
@@ -40,12 +41,12 @@ the package, depending on the value of \code{method}:
 \itemize{
 
 \item \code{visNetwork}: calls the function \code{\link{vis_epicontacts}}
+when no \code{x_axis} argument is specified, and
+\code{\link{vis_temporal_interactive}} otherwise.
 
-\item \code{graph3D}: calls the function \code{\link{graph3D}}
+\item \code{graph3D}: calls the function \code{\link{graph3D}}.
 
-\item \code{temporal}: calls the function
-\code{link{vis_temporal_interactive}} or \code{link{vis_temporal_static}}
-depending on what argument is provide to \code{method}.
+\item \code{ggplot}: calls the function \code{link{vis_temporal_static}}.
 
 }
 }

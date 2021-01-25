@@ -22,6 +22,17 @@ vis_temporal_interactive(
   n_breaks = 5,
   axis_type = c("single", "double", "none"),
   igraph_type = NULL,
+  timeline = NULL,
+  tl_start_node_color = NULL,
+  tl_end_node_color = NULL,
+  tl_start_node_shape = NULL,
+  tl_end_node_shape = NULL,
+  tl_start_node_size = NULL,
+  tl_end_node_size = NULL,
+  tl_edge_color = NULL,
+  tl_edge_width = NULL,
+  tl_edge_linetype = NULL,
+  tl_edge_label = NULL,
   ...
 )
 }
@@ -91,6 +102,42 @@ parent, and x = 0 indicates the same height as the parent.}
 'rt' for Reingold-Tilford layout, 'sugiyama' for Sugiyama layout or 'fr'
 for Fruchterman-Reingold layout.}
 
+\item{timeline}{A dataframe of at least three columns: a column 'id'
+corresponding to the 'id' column in the linelist, a column 'start' of the
+same type as 'x_axis' indicating the start date of a timeline element, and
+a column 'end' of the same type as 'x_axis' indicating the end date of a
+timeline element.}
+
+\item{tl_start_node_color}{An index or character string indicating which field of the
+timeline should be used to color the start node of a timeline element.}
+
+\item{tl_end_node_color}{An index or character string indicating which field of the
+timeline should be used to color the end node of a timeline element.}
+
+\item{tl_start_node_shape}{An index or character string indicating which field of the
+timeline should be used to define the shape of the start node of a timeline element.}
+
+\item{tl_end_node_shape}{An index or character string indicating which field of the
+timeline should be used to define the shape of the end node of a timeline element.}
+
+\item{tl_start_node_size}{An index or character string indicating which field of the
+timeline should be used to define the size of the start node of a timeline element.}
+
+\item{tl_end_node_size}{An index or character string indicating which field of the
+timeline should be used to define the size of the end node of a timeline element.}
+
+\item{tl_edge_color}{An index or character string indicating which field of the
+timeline should be used to color the edge of a timeline element.}
+
+\item{tl_edge_width}{An index or character string indicating which field of the
+timeline should be used to define the width of the edge of a timeline element.}
+
+\item{tl_edge_linetype}{An index or character string indicating which field of the
+timeline should be used to define the linetype of the edge of a timeline element.}
+
+\item{tl_edge_label}{An index or character string indicating which field of the
+timeline should be used to label the edge of a timeline element.}
+
 \item{...}{Additional arguments specified in \code{vis_epicontacts}.}
 }
 \value{
@@ -114,7 +161,6 @@ x <- make_epicontacts(linelist = mers_korea_2015[[1]],
 
 \dontrun{
 plot(x,
-method = 'temporal',
 x_axis = 'dt_onset',
 network_shape = 'rectangle',
 node_size = 'R_i',

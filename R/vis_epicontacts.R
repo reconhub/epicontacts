@@ -199,7 +199,7 @@ vis_epicontacts <- function(x,
   node_color <- assert_node_color(x$linelist, node_color, "node_color")
 
   ## check node_shape (node attribute used for color)
-  node_shape <- assert_node_shape(x$linelist, node_shape, "node_shape")
+  node_shape <- assert_node_shape(x$linelist, node_shape, "node_shape", shapes)
 
   ## check node_size (node attribute used for color)
   node_size <- assert_node_size(x$linelist, node_size, "node_shape")
