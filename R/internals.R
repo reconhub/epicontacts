@@ -55,6 +55,7 @@ assert_node_shape <- function(df, node_shape, var = "node_shape", shapes) {
         stop(msg)
       }
       culprit <- unique(df[!df[[node_shape]] %in% names(shapes), node_shape])
+      culprit <- culprit[!is.na(culprit)]
       if (length(culprit > 0)) {
         stop(paste0("No shape specified for ", paste0("'", culprit, "'", collapse = ", ")))
       }
