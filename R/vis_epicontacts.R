@@ -141,7 +141,7 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
 
 
   ## make a list of all nodes, and generate a data.frame of node attributes
-  all_nodes <- get_id(x, which = "all", na.rm = TRUE)
+  all_nodes <- get_id(x, which = "all")
 
   ## find out which nodes are unconnected to any other nodes
   ## This is only relevant when `thin = TRUE`
@@ -180,7 +180,7 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
                              NA_col,
                              legend = TRUE)
     K <- length(node_col_info$leg_lab)
-    nodes$group.color <- nodes$icon.color <- node_col_info$color
+    nodes$color <- node_col_info$color
   }
 
 
@@ -207,10 +207,14 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
     node_code <- codeawesome[shapes[vec_node_shapes]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
+    nodes$icon.color <- nodes$color
   } else {
     nodes$borderWidth <- 2
   }
+
+  
   ## add edge info
+  
   edges <- x$contacts
   if (!is.null(x_axis)) {
     if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
