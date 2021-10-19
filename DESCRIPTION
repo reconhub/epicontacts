@@ -1,7 +1,7 @@
 Package: epicontacts
 Type: Package
 Title: Handling, Visualisation and Analysis of Epidemiological Contacts
-Version: 1.1.1
+Version: 1.1.2
 Date: 2018-03-26
 Authors@R: c(person("Finlay", "Campbell", email = "f.campbell15@imperial.ac.uk", role = c("aut", "cre")),
        	     person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut")),
