@@ -1,3 +1,12 @@
+epicontacts 1.1.2 (2021-19-10)
+==================
+
+### BUG FIXES
+
+- plotting bug (blank plot) induced by changes to `visNetwork` in `vis_epicontacts()` has been 
+  fixed
+
+
 epicontacts 1.1.1 (2018-9-18)
 ==================
 
