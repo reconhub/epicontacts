@@ -11,3 +11,4 @@ figs/
 ^cran-comments.md$
 ^docs
 ^logo
+^drat\.sh$
