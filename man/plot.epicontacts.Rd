@@ -4,8 +4,13 @@
 \alias{plot.epicontacts}
 \title{Plot epicontacts objects}
 \usage{
-\method{plot}{epicontacts}(x, node_color = "id",
-  method = c("visNetwork", "graph3D"), thin = TRUE, ...)
+\method{plot}{epicontacts}(
+  x,
+  node_color = "id",
+  method = c("visNetwork", "graph3D"),
+  thin = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}

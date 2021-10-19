@@ -59,7 +59,7 @@
 #' }
 #'
 #' @references
-#'     \url{http://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
+#'     \url{https://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
 #'
 #' @examples
 #' if (require(outbreaks)) {

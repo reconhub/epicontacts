@@ -4,13 +4,29 @@
 \alias{vis_epicontacts}
 \title{Plot epicontacts objects using visNetwork}
 \usage{
-vis_epicontacts(x, thin = TRUE, node_color = "id", label = "id",
-  annot = TRUE, node_shape = NULL, shapes = NULL,
-  edge_label = NULL, edge_color = NULL, legend = TRUE,
-  legend_max = 10, x_axis = NULL, col_pal = cases_pal,
-  NA_col = "lightgrey", edge_col_pal = edges_pal, width = "90\%",
-  height = "700px", selector = TRUE, editor = FALSE,
-  edge_width = 3, ...)
+vis_epicontacts(
+  x,
+  thin = TRUE,
+  node_color = "id",
+  label = "id",
+  annot = TRUE,
+  node_shape = NULL,
+  shapes = NULL,
+  edge_label = NULL,
+  edge_color = NULL,
+  legend = TRUE,
+  legend_max = 10,
+  x_axis = NULL,
+  col_pal = cases_pal,
+  NA_col = "lightgrey",
+  edge_col_pal = edges_pal,
+  width = "90\%",
+  height = "700px",
+  selector = TRUE,
+  editor = FALSE,
+  edge_width = 3,
+  ...
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
