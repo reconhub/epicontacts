@@ -24,6 +24,9 @@
 #' @param override Logical value indicating whether cluster member and size columns
 #' should be overwritten if they already exist in the linelist. Default is 'FALSE'.
 #'
+#'  @param no_infector Logical value indicating whether to assign clusters to cases with no
+#' infector in the contacts dataframe. Default is 'TRUE'.
+#'
 #' @return An \code{\link{epicontacts}} object whose 'linelist' dataframe
 #' contains new columns corresponding to cluster membership and size, or a
 #' \link{data.frame} containing member ids, cluster memberships as factors,
@@ -57,7 +60,8 @@
 get_clusters <- function(x, output = c("epicontacts", "data.frame"),
                          member_col = "cluster_member",
                          size_col = "cluster_size",
-                         override = FALSE) {
+                         override = FALSE,
+                         no_infector = TRUE) {
 
   ## check if cluster columns pre-exist in linelist
   cluster_cols <- c(member_col, size_col)
@@ -75,6 +79,13 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
   }
 
 
+  if(!no_infector){
+    x_full <- x$linelist
+    x$contacts <- x$contacts[which(!is.na(x$contacts$from)),]
+    x$linelist <- x$linelist[which(x$linelist$id %in% c(x$contacts$from, x$contacts$to)),]
+  }
+  
+  
   output <- match.arg(output)
   net <- as.igraph.epicontacts(x)
   cs <- igraph::clusters(net)
@@ -95,7 +106,11 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
 
   net_nodes <- dplyr::left_join(net_nodes, cs_size, by = member_col)
   if(output == "epicontacts") {
-    x$linelist <- dplyr::full_join(x$linelist, net_nodes, by = "id")
+    if(!no_infector){
+      x$linelist <- dplyr::full_join(x_full, net_nodes, by = "id")
+    } else {
+      x$linelist <- dplyr::full_join(x$linelist, net_nodes, by = "id")
+    }
     x$linelist[ member_col ] <- as.factor(x$linelist[[ member_col ]])
     return(x)
   } else {
