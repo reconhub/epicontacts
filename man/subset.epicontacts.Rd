@@ -4,9 +4,16 @@
 \alias{subset.epicontacts}
 \title{Subset an epicontact object by factors}
 \usage{
-\method{subset}{epicontacts}(x, node_attribute = NULL,
-  edge_attribute = NULL, cluster_id = NULL, cs = NULL,
-  cs_min = NULL, cs_max = NULL, ...)
+\method{subset}{epicontacts}(
+  x,
+  node_attribute = NULL,
+  edge_attribute = NULL,
+  cluster_id = NULL,
+  cs = NULL,
+  cs_min = NULL,
+  cs_max = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an epi_contact object to be subsetted}

@@ -4,9 +4,18 @@
 \alias{graph3D}
 \title{Interactive 3D Force-directed graph from epicontacts object}
 \usage{
-graph3D(x, node_color = "id", annot = TRUE, col_pal = cases_pal,
-  NA_col = "lightgrey", g_title = "", bg_col = "white",
-  label_col = "darkgrey", node_size = 1, edge_size = 0.5)
+graph3D(
+  x,
+  node_color = "id",
+  annot = TRUE,
+  col_pal = cases_pal,
+  NA_col = "lightgrey",
+  g_title = "",
+  bg_col = "white",
+  label_col = "darkgrey",
+  node_size = 1,
+  edge_size = 0.5
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}

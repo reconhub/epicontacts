@@ -4,8 +4,11 @@
 \alias{get_id}
 \title{Access unique identifiers in epicontacts objects}
 \usage{
-get_id(x, which = c("linelist", "contacts", "all", "common", "from",
-  "to"), na.rm = TRUE)
+get_id(
+  x,
+  which = c("linelist", "contacts", "all", "common", "from", "to"),
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{x}{an \code{\link{epicontacts}} object}

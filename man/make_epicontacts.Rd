@@ -5,8 +5,14 @@
 \alias{epicontacts}
 \title{Read linelist and contact data}
 \usage{
-make_epicontacts(linelist, contacts, id = 1L, from = 1L, to = 2L,
-  directed = FALSE)
+make_epicontacts(
+  linelist,
+  contacts,
+  id = 1L,
+  from = 1L,
+  to = 2L,
+  directed = FALSE
+)
 }
 \arguments{
 \item{linelist}{a \link{data.frame} with at least one column providing unique
@@ -81,7 +87,7 @@ head(x$contacts)
 }
 }
 \references{
-\url{http://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
+\url{https://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
 }
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
