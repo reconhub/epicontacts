@@ -4,8 +4,15 @@
 \alias{[.epicontacts}
 \title{Subset epicontacts objects based on case identifiers}
 \usage{
-\method{[}{epicontacts}(x, i, j, k = TRUE, l = TRUE,
-  contacts = c("both", "either", "from", "to"), ...)
+\method{[}{epicontacts}(
+  x,
+  i,
+  j,
+  k = TRUE,
+  l = TRUE,
+  contacts = c("both", "either", "from", "to"),
+  ...
+)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object}
