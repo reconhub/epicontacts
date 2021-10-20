@@ -155,11 +155,6 @@ available as the dataset `mers_korea_2015` in the package *outbreaks*.
 
 library(outbreaks)
 library(epicontacts)
-#> Registered S3 methods overwritten by 'ggplot2':
-#>   method         from 
-#>   [.quosures     rlang
-#>   c.quosures     rlang
-#>   print.quosures rlang
 
 names(mers_korea_2015)
 #> [1] "linelist" "contacts"
@@ -179,23 +174,26 @@ x
 #>   // 162 cases in linelist; 98 contacts;  directed 
 #> 
 #>   // linelist
-#> 
+#> Warning: `tbl_df()` was deprecated in dplyr 1.0.0.
+#> Please use `tibble::as_tibble()` instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 #> # A tibble: 162 x 15
-#>    id      age age_class sex   place_infect reporting_ctry loc_hosp
-#>    <chr> <int> <chr>     <fct> <fct>        <fct>          <fct>   
-#>  1 SK_1     68 60-69     M     Middle East  South Korea    Pyeongt…
-#>  2 SK_2     63 60-69     F     Outside Mid… South Korea    Pyeongt…
-#>  3 SK_3     76 70-79     M     Outside Mid… South Korea    Pyeongt…
-#>  4 SK_4     46 40-49     F     Outside Mid… South Korea    Pyeongt…
-#>  5 SK_5     50 50-59     M     Outside Mid… South Korea    365 Yeo…
-#>  6 SK_6     71 70-79     M     Outside Mid… South Korea    Pyeongt…
-#>  7 SK_7     28 20-29     F     Outside Mid… South Korea    Pyeongt…
-#>  8 SK_8     46 40-49     F     Outside Mid… South Korea    Seoul C…
-#>  9 SK_9     56 50-59     M     Outside Mid… South Korea    Pyeongt…
-#> 10 SK_10    44 40-49     M     Outside Mid… China          Pyeongt…
-#> # … with 152 more rows, and 8 more variables: dt_onset <date>,
-#> #   dt_report <date>, week_report <fct>, dt_start_exp <date>,
-#> #   dt_end_exp <date>, dt_diag <date>, outcome <fct>, dt_death <date>
+#>    id      age age_class sex   place_infect  reporting_ctry loc_hosp  dt_onset  
+#>    <chr> <int> <chr>     <fct> <fct>         <fct>          <fct>     <date>    
+#>  1 SK_1     68 60-69     M     Middle East   South Korea    Pyeongta~ 2015-05-11
+#>  2 SK_2     63 60-69     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-18
+#>  3 SK_3     76 70-79     M     Outside Midd~ South Korea    Pyeongta~ 2015-05-20
+#>  4 SK_4     46 40-49     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-25
+#>  5 SK_5     50 50-59     M     Outside Midd~ South Korea    365 Yeol~ 2015-05-25
+#>  6 SK_6     71 70-79     M     Outside Midd~ South Korea    Pyeongta~ 2015-05-24
+#>  7 SK_7     28 20-29     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-21
+#>  8 SK_8     46 40-49     F     Outside Midd~ South Korea    Seoul Cl~ 2015-05-26
+#>  9 SK_9     56 50-59     M     Outside Midd~ South Korea    Pyeongta~ NA        
+#> 10 SK_10    44 40-49     M     Outside Midd~ China          Pyeongta~ 2015-05-21
+#> # ... with 152 more rows, and 7 more variables: dt_report <date>,
+#> #   week_report <fct>, dt_start_exp <date>, dt_end_exp <date>, dt_diag <date>,
+#> #   outcome <fct>, dt_death <date>
 #> 
 #>   // contacts
 #> 
@@ -212,7 +210,7 @@ x
 #>  8 SK_14 SK_47  Emergency room            16
 #>  9 SK_14 SK_110 Emergency room            16
 #> 10 SK_14 SK_122 Emergency room            16
-#> # … with 88 more rows
+#> # ... with 88 more rows
 class(x)
 #> [1] "epicontacts"
 summary(x)
@@ -282,20 +280,19 @@ basic form, it reports nodes of attributes for all contacts. For instance:
 ```r
 
 get_pairwise(x, attribute = "sex")
-#>  [1] "M -> M" "M -> F" "M -> F" "M -> M" "M -> F" "M -> M" "M -> M"
-#>  [8] "M -> F" "M -> F" "M -> F" "M -> M" "M -> M" "M -> F" "M -> F"
-#> [15] "M -> F" "M -> M" "M -> F" "M -> M" "M -> F" "M -> M" "M -> M"
-#> [22] "M -> M" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M"
-#> [29] "M -> F" "M -> M" "M -> F" "M -> M" "F -> F" "M -> F" "M -> F"
-#> [36] "M -> F" "M -> M" "M -> F" "M -> M" "M -> M" "M -> F" "F -> M"
-#> [43] "M -> M" "M -> M" "M -> M" "M -> F" "M -> F" "M -> F" "M -> M"
-#> [50] "M -> F" "M -> M" "F -> M" "M -> M" "M -> F" "M -> M" "M -> F"
-#> [57] "M -> F" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M"
-#> [64] "M -> F" "M -> F" "F -> M" "M -> M" "M -> M" "M -> M" "M -> M"
-#> [71] "M -> M" "M -> M" "M -> F" "M -> F" "M -> M" "M -> M" "M -> F"
-#> [78] "M -> F" "M -> M" "M -> F" "M -> M" "M -> F" "F -> M" "M -> F"
-#> [85] "F -> F" "M -> F" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M"
-#> [92] "M -> F" "M -> M" "M -> M" "M -> F" "M -> F" "M -> M" "M -> M"
+#>  [1] "M -> M" "M -> F" "M -> F" "M -> M" "M -> F" "M -> M" "M -> M" "M -> F"
+#>  [9] "M -> F" "M -> F" "M -> M" "M -> M" "M -> F" "M -> F" "M -> F" "M -> M"
+#> [17] "M -> F" "M -> M" "M -> F" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M"
+#> [25] "M -> M" "M -> M" "M -> M" "M -> M" "M -> F" "M -> M" "M -> F" "M -> M"
+#> [33] "F -> F" "M -> F" "M -> F" "M -> F" "M -> M" "M -> F" "M -> M" "M -> M"
+#> [41] "M -> F" "F -> M" "M -> M" "M -> M" "M -> M" "M -> F" "M -> F" "M -> F"
+#> [49] "M -> M" "M -> F" "M -> M" "F -> M" "M -> M" "M -> F" "M -> M" "M -> F"
+#> [57] "M -> F" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M" "M -> F"
+#> [65] "M -> F" "F -> M" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M" "M -> M"
+#> [73] "M -> F" "M -> F" "M -> M" "M -> M" "M -> F" "M -> F" "M -> M" "M -> F"
+#> [81] "M -> M" "M -> F" "F -> M" "M -> F" "F -> F" "M -> F" "M -> M" "M -> M"
+#> [89] "M -> M" "M -> M" "M -> M" "M -> F" "M -> M" "M -> M" "M -> F" "M -> F"
+#> [97] "M -> M" "M -> M"
 ```
 
 However, one can specify the function to be used to compare the attributes of
@@ -333,11 +330,10 @@ distribution of the serial interval (delay between primary and secondary onset):
 
 si <- get_pairwise(x, attribute = "dt_onset")
 si
-#>  [1] 10 13 14 14 15 15 15 16 16 16 17 18 18 18 18 19 19 19 20 20 20 21 21
-#> [24] 22 22 22 24 24 24 25 17 15  2  7  9 10 14 15 14 22 15  5  9 27 10 12
-#> [47] 14 17  9 14 14  6  6  9  9  9 10 12 13 21  5 14 16 20 21 13  3 11 11
-#> [70] 12 12 12 12 13 13 14 15 15 16 18 21 22 12 11  9  3 10 10 10 10 11 12
-#> [93] 12 13 14 16 17 18
+#>  [1] 10 13 14 14 15 15 15 16 16 16 17 18 18 18 18 19 19 19 20 20 20 21 21 22 22
+#> [26] 22 24 24 24 25 17 15  2  7  9 10 14 15 14 22 15  5  9 27 10 12 14 17  9 14
+#> [51] 14  6  6  9  9  9 10 12 13 21  5 14 16 20 21 13  3 11 11 12 12 12 12 13 13
+#> [76] 14 15 15 16 18 21 22 12 11  9  3 10 10 10 10 11 12 12 13 14 16 17 18
 summary(si)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #>    2.00   11.00   14.00   14.47   18.00   27.00
@@ -369,4 +365,4 @@ Contributions are welcome via **pull requests**.
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-**Maintainer:** Finlay Campbell (f.campbell15@imperial.ac.uk)
+**Maintainer:** Finlay Campbell (finlaycampbell93@gmail.com)
