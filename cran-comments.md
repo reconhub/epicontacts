@@ -1,6 +1,6 @@
 Submitting **epicontacts** version 1.1.2.
 
-This release will transition the maintainer from VP Nagraj (vpnagraj@virginia.edu) to Finlay Campbell (f.campbell15@imperial.ac.uk).
+This release will transition the maintainer from VP Nagraj (vpnagraj@virginia.edu) to Finlay Campbell (finlaycampbell93@gmail.com). Note that the email address for VP Nagraj has also changed to nagraj@nagraj.net. Submitted by VP Nagraj.
 
 ## Test environments
 
@@ -16,10 +16,10 @@ There were no ERRORs or WARNINGs.
 There was 1 note:
 
 ```
- Maintainer: 'Finlay Campbell <f.campbell15@imperial.ac.uk>'
+ Maintainer: 'Finlay Campbell <finlaycampbell93@gmail.com>'
   
   New maintainer:
-    Finlay Campbell <f.campbell15@imperial.ac.uk>
+    Finlay Campbell <finlaycampbell93@gmail.com>
   Old maintainer(s):
     VP Nagraj <vpnagraj@virginia.edu>
 ```
