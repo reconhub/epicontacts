@@ -780,12 +780,17 @@ vis_temporal_interactive <- function(x,
 
   }
 
-
   ## Change font size
   if(!is.null(font_size)) {
     edges$font.size <- font_size
     nodes$font.size <- font_size
   }
+
+  ## Fix needed now that edges to hidden nodes are no longer shown; instead we
+  ## make the node small and set all attributes except size to NA
+  nodes[nodes$hidden, !names(nodes) %in% c("hidden", "id", "x", "y")] <- NA
+  nodes[nodes$hidden, names(nodes) %in% c("size", "icon.size")] <- 0.1
+  nodes$hidden <- NULL
 
   ## convert height "xx%" to "xxvh" due to visNetwork bug
   if(is.character(height)) height <- gsub("%", "vh", height)
@@ -798,7 +803,6 @@ vis_temporal_interactive <- function(x,
   ## specify node attributes
   out <- visNetwork::visNodes(out,
                               fixed = list(x = TRUE, y = FALSE),
-                              hidden = hidden,
                               borderWidth = 2,
                               borderWidthSelected = 2)
 
