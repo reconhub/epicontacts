@@ -8,23 +8,29 @@
 
 <title>Plot temporal networks using visNetwork — vis_temporal_interactive • epicontacts</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,12 +38,12 @@
 
 
 
-<meta property="og:title" content="Plot temporal networks using visNetwork — vis_temporal_interactive" />
 
+<meta property="og:title" content="Plot temporal networks using visNetwork — vis_temporal_interactive" />
 <meta property="og:description" content="This function plots epicontacts objects with a temporal x-axis
 using the visNetwork package. The produced object is an
 htmlwidget which will need rendering within a web browser." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -54,7 +60,7 @@ htmlwidget which will need rendering within a web browser." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +82,7 @@ htmlwidget which will need rendering within a web browser." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,9 +111,13 @@ htmlwidget which will need rendering within a web browser." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/reconhub/epicontacts/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -122,27 +132,48 @@ htmlwidget which will need rendering within a web browser." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot temporal networks using visNetwork</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/reconhub/epicontacts/blob/master/R/vis_temporal_interactive.R'><code>R/vis_temporal_interactive.R</code></a></small>
     <div class="hidden name"><code>vis_temporal_interactive.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This function plots <code><a href='make_epicontacts.html'>epicontacts</a></code> objects with a temporal x-axis
 using the <code>visNetwork</code> package. The produced object is an
 <code>htmlwidget</code> which will need rendering within a web browser.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>vis_temporal_interactive</span>(<span class='no'>x</span>, <span class='kw'>x_axis</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>network_shape</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"branching"</span>, <span class='st'>"rectangle"</span>), <span class='kw'>root_order</span> <span class='kw'>=</span> <span class='no'>x_axis</span>,
-  <span class='kw'>node_order</span> <span class='kw'>=</span> <span class='no'>x_axis</span>, <span class='kw'>reverse_root_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>reverse_node_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rank_contact</span> <span class='kw'>=</span> <span class='no'>x_axis</span>,
-  <span class='kw'>reverse_rank_contact</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>unlinked_pos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bottom"</span>, <span class='st'>"top"</span>,
-  <span class='st'>"middle"</span>), <span class='kw'>edge_flex</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>position_dodge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>parent_pos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"middle"</span>, <span class='st'>"top"</span>, <span class='st'>"bottom"</span>), <span class='kw'>n_breaks</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>axis_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"single"</span>, <span class='st'>"double"</span>, <span class='st'>"none"</span>), <span class='kw'>igraph_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>vis_temporal_interactive</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  x_axis <span class='op'>=</span> <span class='cn'>NULL</span>,
+  network_shape <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"branching"</span>, <span class='st'>"rectangle"</span><span class='op'>)</span>,
+  root_order <span class='op'>=</span> <span class='va'>x_axis</span>,
+  node_order <span class='op'>=</span> <span class='va'>x_axis</span>,
+  reverse_root_order <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  reverse_node_order <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  rank_contact <span class='op'>=</span> <span class='va'>x_axis</span>,
+  reverse_rank_contact <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  unlinked_pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bottom"</span>, <span class='st'>"top"</span>, <span class='st'>"middle"</span><span class='op'>)</span>,
+  edge_flex <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  position_dodge <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  parent_pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"middle"</span>, <span class='st'>"top"</span>, <span class='st'>"bottom"</span><span class='op'>)</span>,
+  custom_parent_pos <span class='op'>=</span> <span class='cn'>NULL</span>,
+  n_breaks <span class='op'>=</span> <span class='fl'>5</span>,
+  axis_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"single"</span>, <span class='st'>"double"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  igraph_type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  timeline <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_start_node_color <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_end_node_color <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_start_node_shape <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_end_node_shape <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_start_node_size <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_end_node_size <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_edge_color <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_edge_width <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_edge_linetype <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tl_edge_label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -222,6 +253,15 @@ coordinate or 'dodge' each other.</p></td>
 children. Can be one of 'middle', 'top' or 'bottom'.</p></td>
     </tr>
     <tr>
+      <th>custom_parent_pos</th>
+      <td><p>A function specifying the position of children nodes
+relative to their parent. This function must accept a single integer `x` as
+its only argument, specifying the number of children nodes. It must return
+a vector of length x, specifying the position of each child relative to the
+parent, where a x &gt; 0 indicates above the parent, x &lt; 0 indicates below the
+parent, and x = 0 indicates the same height as the parent.</p></td>
+    </tr>
+    <tr>
       <th>n_breaks</th>
       <td><p>The number of breaks on the x-axis timeline.</p></td>
     </tr>
@@ -237,66 +277,115 @@ children. Can be one of 'middle', 'top' or 'bottom'.</p></td>
 for Fruchterman-Reingold layout.</p></td>
     </tr>
     <tr>
+      <th>timeline</th>
+      <td><p>A dataframe of at least three columns: a column 'id'
+corresponding to the 'id' column in the linelist, a column 'start' of the
+same type as 'x_axis' indicating the start date of a timeline element, and
+a column 'end' of the same type as 'x_axis' indicating the end date of a
+timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_start_node_color</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to color the start node of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_end_node_color</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to color the end node of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_start_node_shape</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to define the shape of the start node of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_end_node_shape</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to define the shape of the end node of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_start_node_size</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to define the size of the start node of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_end_node_size</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to define the size of the end node of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_edge_color</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to color the edge of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_edge_width</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to define the width of the edge of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_edge_linetype</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to define the linetype of the edge of a timeline element.</p></td>
+    </tr>
+    <tr>
+      <th>tl_edge_label</th>
+      <td><p>An index or character string indicating which field of the
+timeline should be used to label the edge of a timeline element.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Additional arguments specified in <code>vis_epicontacts</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The same output as <code>visNetwork</code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/visNetwork/man/visNetwork.html'>visNetwork</a></code> in the package <code>visNetwork</code>.
-  <code><a href='colors.html'>edges_pal</a></code> and <code><a href='colors.html'>cases_pal</a></code> for color palettes used</p></div>
-    
+  <code><a href='transp.html'>edges_pal</a></code> and <code><a href='transp.html'>cases_pal</a></code> for color palettes used</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Finlay Campbell (<a href='mailto:finlaycampbell93@gmail.com'>finlaycampbell93@gmail.com</a>)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>outbreaks</span>)) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/reconhub/outbreaks'>outbreaks</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
 
 <span class='co'>## example using MERS outbreak in Korea, 2014</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
-                       <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]],
-                       <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span><span class='op'>(</span>linelist <span class='op'>=</span> <span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
+                       contacts <span class='op'>=</span> <span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>,
+                       directed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>,
-<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>'temporal'</span>,
-<span class='kw'>x_axis</span> <span class='kw'>=</span> <span class='st'>'dt_onset'</span>,
-<span class='kw'>network_shape</span> <span class='kw'>=</span> <span class='st'>'rectangle'</span>,
-<span class='kw'>node_size</span> <span class='kw'>=</span> <span class='st'>'R_i'</span>,
-<span class='kw'>edge_label</span> <span class='kw'>=</span> <span class='st'>'exposure'</span>,
-<span class='kw'>node_colour</span> <span class='kw'>=</span> <span class='st'>'sex'</span>,
-<span class='kw'>edge_color</span> <span class='kw'>=</span> <span class='st'>'diff_dt_onset'</span>,
-<span class='kw'>node_color</span> <span class='kw'>=</span> <span class='st'>'sex'</span>,
-<span class='kw'>size_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>30</span>),
-<span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>2500</span>,
-<span class='kw'>selector</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-<span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-<span class='kw'>axis_type</span> <span class='kw'>=</span> <span class='st'>'double'</span>,
-<span class='kw'>date_labels</span> <span class='kw'>=</span> <span class='st'>"%b %d"</span>,
-<span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>1500</span>)
-}
-}</div><div class='output co'>#&gt; <span class='warning'>Warning: Cycle(s) detected in the contact network: this may be unwanted</span></div></pre>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>,
+x_axis <span class='op'>=</span> <span class='st'>'dt_onset'</span>,
+network_shape <span class='op'>=</span> <span class='st'>'rectangle'</span>,
+node_size <span class='op'>=</span> <span class='st'>'R_i'</span>,
+edge_label <span class='op'>=</span> <span class='st'>'exposure'</span>,
+node_colour <span class='op'>=</span> <span class='st'>'sex'</span>,
+edge_color <span class='op'>=</span> <span class='st'>'diff_dt_onset'</span>,
+node_color <span class='op'>=</span> <span class='st'>'sex'</span>,
+size_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>30</span><span class='op'>)</span>,
+height <span class='op'>=</span> <span class='fl'>2500</span>,
+selector <span class='op'>=</span> <span class='cn'>FALSE</span>,
+label <span class='op'>=</span> <span class='cn'>FALSE</span>,
+axis_type <span class='op'>=</span> <span class='st'>'double'</span>,
+date_labels <span class='op'>=</span> <span class='st'>"%b %d"</span>,
+width <span class='op'>=</span> <span class='fl'>1500</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Cycle(s) detected in the contact network: this may be unwanted</span></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Finlay Campbell (<a href='mailto:finlaycampbell93@gmail.com'>finlaycampbell93@gmail.com</a>)</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -307,7 +396,7 @@ for Fruchterman-Reingold layout.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

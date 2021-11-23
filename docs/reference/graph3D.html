@@ -8,23 +8,29 @@
 
 <title>Interactive 3D Force-directed graph from epicontacts object — graph3D • epicontacts</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,10 +38,10 @@
 
 
 
-<meta property="og:title" content="Interactive 3D Force-directed graph from epicontacts object — graph3D" />
 
+<meta property="og:title" content="Interactive 3D Force-directed graph from epicontacts object — graph3D" />
 <meta property="og:description" content="This function creates a 3D graph from an epicontacts object" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -52,7 +58,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -103,9 +109,13 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/reconhub/epicontacts/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -120,21 +130,28 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Interactive 3D Force-directed graph from epicontacts object</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/reconhub/epicontacts/blob/master/R/graph3D.R'><code>R/graph3D.R</code></a></small>
     <div class="hidden name"><code>graph3D.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This function creates a 3D graph from an epicontacts object</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>graph3D</span>(<span class='no'>x</span>, <span class='kw'>node_color</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>col_pal</span> <span class='kw'>=</span> <span class='no'>cases_pal</span>,
-  <span class='kw'>NA_col</span> <span class='kw'>=</span> <span class='st'>"lightgrey"</span>, <span class='kw'>g_title</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>bg_col</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>label_col</span> <span class='kw'>=</span> <span class='st'>"darkgrey"</span>, <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>edge_size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>thin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>graph3D</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  node_color <span class='op'>=</span> <span class='st'>"id"</span>,
+  annot <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  col_pal <span class='op'>=</span> <span class='va'>cases_pal</span>,
+  NA_col <span class='op'>=</span> <span class='st'>"lightgrey"</span>,
+  g_title <span class='op'>=</span> <span class='st'>""</span>,
+  bg_col <span class='op'>=</span> <span class='st'>"white"</span>,
+  label_col <span class='op'>=</span> <span class='st'>"darkgrey"</span>,
+  node_size <span class='op'>=</span> <span class='fl'>1</span>,
+  edge_size <span class='op'>=</span> <span class='fl'>0.5</span>,
+  thin <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -188,64 +205,53 @@ is different from 'id').</p></td>
 <code><a href='thin.html'>thin</a></code> so that only cases with contacts should be plotted.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An htmlwidget object that is displayed using the object's show or
   print method.  (If you don't see your widget plot, try printing it with the
   <code>print</code> function.)</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>All colors must be specified as color names like "red", "blue", etc. or
   as hexadecimal color values without opacity channel, for example "#FF0000",
   "#0a3e55" (upper or lower case hex digits are allowed).</p>
 <p>Double-click or tap on the plot to reset the view.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Original rthreejs code by B. W. Lewis:
 <a href='https://github.com/bwlewis/rthreejs'>https://github.com/bwlewis/rthreejs</a>.</p>
-    
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>outbreaks</span>)) {
-
-<span class='co'>## example using MERS outbreak in Korea, 2014</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
-
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span>$<span class='no'>linelist</span>,
-                      <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span>$<span class='no'>contacts</span>,
-                      <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>graph3D</span>(<span class='no'>x</span>)
-<span class='fu'>graph3D</span>(<span class='no'>x</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>graph3D</span>(<span class='no'>x</span>, <span class='kw'>node_color</span> <span class='kw'>=</span> <span class='st'>"sex"</span>, <span class='kw'>g_title</span> <span class='kw'>=</span> <span class='st'>"MERS Korea 2014"</span>)
-<span class='fu'>graph3D</span>(<span class='no'>x</span>, <span class='kw'>node_color</span> <span class='kw'>=</span> <span class='st'>"sex"</span>, <span class='kw'>annot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age"</span>),
-        <span class='kw'>g_title</span> <span class='kw'>=</span> <span class='st'>"MERS Korea 2014"</span>)
-}
-}</div><div class='output co'>#&gt; <span class='warning'>Warning: Cycle(s) detected in the contact network: this may be unwanted</span></div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
     <p>Nistara Randhawa (<a href='mailto:nrandhawa@ucdavis.edu'>nrandhawa@ucdavis.edu</a>)
 Thibaut Jombart (<a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a>)
 VP Nagraj (<a href='mailto:vpnagraj@virginia.edu'>vpnagraj@virginia.edu</a>)</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/reconhub/outbreaks'>outbreaks</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+
+<span class='co'>## example using MERS outbreak in Korea, 2014</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span><span class='op'>(</span>linelist <span class='op'>=</span> <span class='va'>mers_korea_2015</span><span class='op'>$</span><span class='va'>linelist</span>,
+                      contacts <span class='op'>=</span> <span class='va'>mers_korea_2015</span><span class='op'>$</span><span class='va'>contacts</span>,
+                      directed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>graph3D</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='fu'>graph3D</span><span class='op'>(</span><span class='va'>x</span>, annot <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>graph3D</span><span class='op'>(</span><span class='va'>x</span>, node_color <span class='op'>=</span> <span class='st'>"sex"</span>, g_title <span class='op'>=</span> <span class='st'>"MERS Korea 2014"</span><span class='op'>)</span>
+<span class='fu'>graph3D</span><span class='op'>(</span><span class='va'>x</span>, node_color <span class='op'>=</span> <span class='st'>"sex"</span>, annot <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"age"</span><span class='op'>)</span>,
+        g_title <span class='op'>=</span> <span class='st'>"MERS Korea 2014"</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Cycle(s) detected in the contact network: this may be unwanted</span></div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -256,7 +262,7 @@ VP Nagraj (<a href='mailto:vpnagraj@virginia.edu'>vpnagraj@virginia.edu</a>)</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -8,23 +8,29 @@
 
 <title>Read linelist and contact data — make_epicontacts • epicontacts</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,13 +38,13 @@
 
 
 
-<meta property="og:title" content="Read linelist and contact data — make_epicontacts" />
 
+<meta property="og:title" content="Read linelist and contact data — make_epicontacts" />
 <meta property="og:description" content="This function reads data stored as data.frame containing linelist (case
 information, where each row corresponds to a unique patient), and contacts
 between patients. Common identifiers should be used in the two data sources
 for matching to be achieved." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -55,7 +61,7 @@ for matching to be achieved." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +83,7 @@ for matching to be achieved." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,9 +112,13 @@ for matching to be achieved." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/reconhub/epicontacts/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -123,22 +133,28 @@ for matching to be achieved." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Read linelist and contact data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/reconhub/epicontacts/blob/master/R/make_epicontacts.R'><code>R/make_epicontacts.R</code></a></small>
     <div class="hidden name"><code>make_epicontacts.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This function reads data stored as data.frame containing linelist (case
 information, where each row corresponds to a unique patient), and contacts
 between patients. Common identifiers should be used in the two data sources
 for matching to be achieved.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='kw'>directed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>na_rm_linelist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>na_rm_contacts</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>make_epicontacts</span><span class='op'>(</span>
+  <span class='va'>linelist</span>,
+  <span class='va'>contacts</span>,
+  id <span class='op'>=</span> <span class='fl'>1L</span>,
+  from <span class='op'>=</span> <span class='fl'>1L</span>,
+  to <span class='op'>=</span> <span class='fl'>2L</span>,
+  directed <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  na_rm_linelist <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  na_rm_contacts <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -186,7 +202,7 @@ NA IDs should be kept</p></td>
 NA IDs should be kept</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An <code>epicontacts</code> object in list format with three elements:</p>
@@ -199,7 +215,6 @@ containing character vector of unique identifiers</p></li>
 considered directed or not</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>An <code>epicontacts</code> object can be created from two components:</p><ul>
@@ -211,29 +226,31 @@ unique pairs of contacts with unique features of contact in columns. The line
 list and contact list should share an identification scheme for individuals.</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href='http://foodborne.unl.edu/public/role/epidemiologist/lineLists.html'>http://foodborne.unl.edu/public/role/epidemiologist/lineLists.html</a></p>
-    
+    <p><a href='https://foodborne.unl.edu/public/role/epidemiologist/lineLists.html'>https://foodborne.unl.edu/public/role/epidemiologist/lineLists.html</a></p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Thibaut Jombart (<a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a>)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>outbreaks</span>)) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/reconhub/outbreaks'>outbreaks</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'>## make epicontacts object from simulated Ebola data</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>, <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>)
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>make_epicontacts</span><span class='op'>(</span><span class='va'>ebola_sim</span><span class='op'>$</span><span class='va'>linelist</span>, <span class='va'>ebola_sim</span><span class='op'>$</span><span class='va'>contacts</span><span class='op'>)</span>
 
 <span class='co'>## test reordering of columns</span>
-<span class='no'>linelist</span> <span class='kw'>&lt;-</span> <span class='no'>ebola_sim</span>$<span class='no'>linelist</span>[,<span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>linelist</span>)))]
-<span class='no'>contacts</span> <span class='kw'>&lt;-</span> <span class='no'>ebola_sim</span>$<span class='no'>contacts</span>[,<span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>ebola_sim</span>$<span class='no'>contacts</span>)))]
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>linelist</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>contacts</span>)
+<span class='va'>linelist</span> <span class='op'>&lt;-</span> <span class='va'>ebola_sim</span><span class='op'>$</span><span class='va'>linelist</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>ebola_sim</span><span class='op'>$</span><span class='va'>linelist</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span>
+<span class='va'>contacts</span> <span class='op'>&lt;-</span> <span class='va'>ebola_sim</span><span class='op'>$</span><span class='va'>contacts</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>ebola_sim</span><span class='op'>$</span><span class='va'>contacts</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>linelist</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>contacts</span><span class='op'>)</span>
 
 <span class='co'>## make object</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>make_epicontacts</span>(<span class='no'>linelist</span>, <span class='no'>contacts</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>,
-                       <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"case_id"</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"infector"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>x</span>$<span class='no'>linelist</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>x</span>$<span class='no'>contacts</span>)
-}</div><div class='output co'>#&gt;      from     to  source
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>make_epicontacts</span><span class='op'>(</span><span class='va'>linelist</span>, <span class='va'>contacts</span>, id <span class='op'>=</span> <span class='st'>"case_id"</span>,
+                       to <span class='op'>=</span> <span class='st'>"case_id"</span>, from <span class='op'>=</span> <span class='st'>"infector"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>linelist</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>contacts</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt;      from     to  source
 #&gt; 2  d1fafd 53371b   other
 #&gt; 3  cac51e f5c3d8 funeral
 #&gt; 5  f5c3d8 0f58c4   other
@@ -241,22 +258,10 @@ list and contact list should share an identification scheme for individuals.</p>
 #&gt; 11 8508df 40ae5f   other
 #&gt; 12 127d83 f547d6 funeral</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Thibaut Jombart (<a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a>)</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -267,7 +272,7 @@ list and contact list should share an identification scheme for individuals.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

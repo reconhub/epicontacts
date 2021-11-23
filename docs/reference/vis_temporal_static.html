@@ -8,23 +8,29 @@
 
 <title>Plot epicontacts objects using ggplot — vis_temporal_static • epicontacts</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,13 +38,13 @@
 
 
 
-<meta property="og:title" content="Plot epicontacts objects using ggplot — vis_temporal_static" />
 
+<meta property="og:title" content="Plot epicontacts objects using ggplot — vis_temporal_static" />
 <meta property="og:description" content="This function plots epicontacts objects using the
 ggplot2 package. This output is only available for directed, acyclical
 networks with one incoming edge per node (e.g. a transmission network with
 only one infector per case)" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -55,7 +61,7 @@ only one infector per case)" />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +83,7 @@ only one infector per case)" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,9 +112,13 @@ only one infector per case)" />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/reconhub/epicontacts/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -123,29 +133,42 @@ only one infector per case)" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot epicontacts objects using ggplot</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/reconhub/epicontacts/blob/master/R/vis_temporal_static.R'><code>R/vis_temporal_static.R</code></a></small>
     <div class="hidden name"><code>vis_temporal_static.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This function plots <code><a href='make_epicontacts.html'>epicontacts</a></code> objects using the
 <code>ggplot2</code> package. This output is only available for directed, acyclical
 networks with one incoming edge per node (e.g. a transmission network with
 only one infector per case)</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>vis_temporal_static</span>(<span class='no'>x</span>, <span class='no'>x_axis</span>, <span class='kw'>edge_alpha</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>network_shape</span> <span class='kw'>=</span> <span class='st'>"branching"</span>, <span class='kw'>root_order</span> <span class='kw'>=</span> <span class='st'>"subtree_size"</span>,
-  <span class='kw'>node_order</span> <span class='kw'>=</span> <span class='st'>"subtree_size"</span>, <span class='kw'>reverse_root_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>reverse_node_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lineend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"butt"</span>, <span class='st'>"round"</span>, <span class='st'>"square"</span>),
-  <span class='kw'>unlinked_pos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bottom"</span>, <span class='st'>"top"</span>, <span class='st'>"middle"</span>), <span class='kw'>position_dodge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>parent_pos</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"middle"</span>, <span class='st'>"top"</span>, <span class='st'>"bottom"</span>), <span class='kw'>custom_parent_pos</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>y_label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>node_label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y_coor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>igraph_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>col_pal</span> <span class='kw'>=</span> <span class='no'>cases_pal</span>, <span class='kw'>edge_col_pal</span> <span class='kw'>=</span> <span class='no'>edges_pal</span>,
-  <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>vis_temporal_static</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>x_axis</span>,
+  edge_alpha <span class='op'>=</span> <span class='cn'>NULL</span>,
+  network_shape <span class='op'>=</span> <span class='st'>"branching"</span>,
+  root_order <span class='op'>=</span> <span class='st'>"subtree_size"</span>,
+  node_order <span class='op'>=</span> <span class='st'>"subtree_size"</span>,
+  reverse_root_order <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  reverse_node_order <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  rank_contact <span class='op'>=</span> <span class='va'>x_axis</span>,
+  reverse_rank_contact <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  lineend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"butt"</span>, <span class='st'>"round"</span>, <span class='st'>"square"</span><span class='op'>)</span>,
+  unlinked_pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bottom"</span>, <span class='st'>"top"</span>, <span class='st'>"middle"</span><span class='op'>)</span>,
+  position_dodge <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  parent_pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"middle"</span>, <span class='st'>"top"</span>, <span class='st'>"bottom"</span><span class='op'>)</span>,
+  custom_parent_pos <span class='op'>=</span> <span class='cn'>NULL</span>,
+  y_label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  node_label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  y_coor <span class='op'>=</span> <span class='cn'>NULL</span>,
+  igraph_type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  col_pal <span class='op'>=</span> <span class='va'>cases_pal</span>,
+  edge_col_pal <span class='op'>=</span> <span class='va'>edges_pal</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -194,6 +217,20 @@ should be reversed. This argument is only called when type = "ttree".</p></td>
       <th>reverse_node_order</th>
       <td><p>A logical indicating if the ordering of the nodes
 should be reversed. This argument is only called when type = "ttree".</p></td>
+    </tr>
+    <tr>
+      <th>rank_contact</th>
+      <td><p>If more than one incoming contact is provided for a given
+case, which attribute in the contact list should be used to rank the
+contacts and choose the top value. These contacts forms the 'scaffold' of the
+transmission tree and determine the y-position of each node. If a node
+attribute is provided, the pairwise difference in node attributes will be
+taken to rank the contacts.</p></td>
+    </tr>
+    <tr>
+      <th>reverse_rank_contact</th>
+      <td><p>Logical indicating if the contact ranking should
+be reversed in order.</p></td>
     </tr>
     <tr>
       <th>lineend</th>
@@ -265,47 +302,39 @@ single number n and returning a vector of n colors.</p></td>
       <td><p>Additional arguments specified in <code>vis_epicontacts</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The same output as <code>ggplot2</code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></code> in the package <code>ggplot2</code>.
-  <code><a href='colors.html'>edges_pal</a></code> and <code><a href='colors.html'>cases_pal</a></code> for color palettes used</p></div>
-    
+  <code><a href='transp.html'>edges_pal</a></code> and <code><a href='transp.html'>cases_pal</a></code> for color palettes used</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Finlay Campbell (<a href='mailto:finlaycampbell93@gmail.com'>finlaycampbell93@gmail.com</a>)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>outbreaks</span>)) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/reconhub/outbreaks'>outbreaks</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
 
 <span class='co'>## example using MERS outbreak in Korea, 2014</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]])
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span>(<span class='kw'>linelist</span><span class='kw'>=</span><span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>1</span>]],
-                       <span class='kw'>contacts</span> <span class='kw'>=</span> <span class='no'>mers_korea_2015</span><span class='kw'>[[</span><span class='fl'>2</span>]],
-                       <span class='kw'>directed</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='make_epicontacts.html'>make_epicontacts</a></span><span class='op'>(</span>linelist<span class='op'>=</span><span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
+                       contacts <span class='op'>=</span> <span class='va'>mers_korea_2015</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>,
+                       directed<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ggplot"</span>, <span class='kw'>x_axis</span> <span class='kw'>=</span> <span class='st'>"dt_onset"</span>, <span class='kw'>node_color</span> <span class='kw'>=</span> <span class='st'>"sex"</span>)
-}
-}</div><div class='output co'>#&gt; <span class='warning'>Warning: Cycle(s) detected in the contact network: this may be unwanted</span></div></pre>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, method <span class='op'>=</span> <span class='st'>"ggplot"</span>, x_axis <span class='op'>=</span> <span class='st'>"dt_onset"</span>, node_color <span class='op'>=</span> <span class='st'>"sex"</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Cycle(s) detected in the contact network: this may be unwanted</span></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Finlay Campbell (<a href='mailto:finlaycampbell93@gmail.com'>finlaycampbell93@gmail.com</a>)</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -316,7 +345,7 @@ single number n and returning a vector of n colors.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
