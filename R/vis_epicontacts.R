@@ -220,7 +220,7 @@ vis_epicontacts <- function(x,
   edge_linetype <- assert_edge_linetype(x$contacts, edge_linetype, "edge_linetype")
 
   ## make a list of all nodes, and generate a data.frame of node attributes
-  all_nodes <- get_id(x, which = "all", na.rm = TRUE)
+  all_nodes <- get_id(x, which = "all")
 
   ## find out which nodes are unconnected to any other nodes
   ## This is only relevant when `thin = TRUE`
@@ -269,8 +269,9 @@ vis_epicontacts <- function(x,
                              NA_col,
                              legend = TRUE)
     K <- length(node_col_info$leg_lab)
+
     if(!is.null(node_shape)) {
-      nodes$icon.color <- node_col_info$color
+      nodes$color <- node_col_info$color
     } else {
       nodes$color.background <- nodes$color.highlight.background <- node_col_info$color
       nodes$color.border <- nodes$color.highlight.border <- 'black'
@@ -318,6 +319,7 @@ vis_epicontacts <- function(x,
     node_code <- codeawesome[shapes[vec_node_shapes]]
     nodes$shape <- "icon"
     nodes$icon.code <- node_code
+
     ## define icon size if node_size is specified
     if(!is.null(node_size)) nodes$icon.size <- nodes$size
     node_shape_info <- data.frame(icon = unique(node_code),
@@ -425,10 +427,10 @@ vis_epicontacts <- function(x,
         leg_nodes[c("color.border",
                     "color.highlight.border",
                     "borderWidth")]<- NULL
-        names(leg_nodes)[names(leg_nodes) == "color.background"] <- "icon.color"
+        names(leg_nodes)[names(leg_nodes) == "color.background"] <- "color"
       } else {
         tmp <- data.frame(label = node_shape_info$leg_lab,
-                          icon.color = 'black',
+                          color = 'black',
                           shape = "icon",
                           icon.code = node_shape_info$icon,
                           shadow = FALSE,
@@ -439,7 +441,7 @@ vis_epicontacts <- function(x,
         leg_nodes[c("color.border",
                     "color.highlight.border",
                     "borderWidth")]<- NULL
-        names(leg_nodes)[names(leg_nodes) == "color.background"] <- "icon.color"
+        names(leg_nodes)[names(leg_nodes) == "color.background"] <- "color"
         leg_nodes <- rbind(leg_nodes, tmp)
       }
     }

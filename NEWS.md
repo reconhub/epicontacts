@@ -1,3 +1,4 @@
+
 epicontacts 1.2.0 (2018-9-18)
 ==================
 
@@ -8,6 +9,15 @@ epicontacts 1.2.0 (2018-9-18)
 ### BUG FIXES
 
 - fixed `NA` handling in `get_degree`.
+
+epicontacts 1.1.2 (2021-10-19)
+==================
+
+### BUG FIXES
+
+- plotting bug (blank plot) induced by changes to `visNetwork` in `vis_epicontacts()` has been 
+  fixed
+
 
 epicontacts 1.1.1 (2018-9-18)
 ==================
