@@ -203,6 +203,7 @@ vis_temporal_interactive <- function(x,
   legend_max <- get_val("legend_max", def, args)
   legend_width <- get_val("legend_width", def, args)
   legend_ncol <- get_val("legend_ncol", def, args)
+  legend_text_color <- get_val("legend_text_color", def, args)
   ## default selector value is node_color
   def$selector <- node_color
   selector <- get_val("selector", def, args)
@@ -916,6 +917,9 @@ vis_temporal_interactive <- function(x,
         leg_edges <- rbind(leg_edges, tmp)
       }
     }
+
+    leg_nodes$font.color <- legend_text_color
+    leg_edges$font.color <- legend_text_color
 
     out <- visNetwork::visLegend(out,
                                  zoom = FALSE,

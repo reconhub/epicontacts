@@ -10,8 +10,8 @@ test_that("pairwise analysis: gender", {
     pair <- get_pairwise(x, "gender")
     pair2 <- get_pairwise(x, 8)
 
-    expect_that( pair, is_a("character") ) 
-   expect_that( length(pair), equals(3800) )
+    expect_that( pair, is_a("character") )
+    expect_equal( length(pair), 3800 )
     expect_that( pair[1], is_a("character") )
 
     expect_identical(pair, pair2)
@@ -51,7 +51,7 @@ test_that("different types of attributes", {
     skip_on_cran()
 
     test_net <- readRDS("rds/test_net.rds")
-    
+
     ## date
     pair_date <- get_pairwise(test_net, "date")
     expect_is(pair_date, "integer")
@@ -67,11 +67,11 @@ test_that("different types of attributes", {
     ## character
     pair_character <- get_pairwise(test_net, "character")
     expect_is(pair_character, "character")
-    
+
     ## factor
     pair_factor <- get_pairwise(test_net, "factor")
     expect_is(pair_factor, "character")
-    
+
 })
 
 

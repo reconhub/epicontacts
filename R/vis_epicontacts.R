@@ -96,6 +96,8 @@
 #'
 #' @param legend_ncol The number of columns in the legend.
 #'
+#' @param legend_text_color The colour of the legend text.
+#'
 #' @param date_labels A string giving the formatting specification for the
 #' x-axis date labels. Codes are defined in ‘strftime()’.
 #'
@@ -171,6 +173,7 @@ vis_epicontacts <- function(x,
                             legend_max = 10,
                             legend_width = 0.1,
                             legend_ncol = 1,
+                            legend_text_color = "black",
                             date_labels = "%Y-%m-%d",
                             thin = TRUE,
                             selector = node_color,
@@ -473,6 +476,9 @@ vis_epicontacts <- function(x,
         leg_edges <- rbind(leg_edges, tmp)
       }
     }
+
+    leg_nodes$font.color <- legend_text_color
+    leg_edges$font.color <- legend_text_color
 
     out <- visNetwork::visLegend(out,
                                  zoom = FALSE,

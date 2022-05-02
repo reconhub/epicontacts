@@ -29,6 +29,7 @@ vis_epicontacts(
   legend_max = 10,
   legend_width = 0.1,
   legend_ncol = 1,
+  legend_text_color = "black",
   date_labels = "\%Y-\%m-\%d",
   thin = TRUE,
   selector = node_color,
@@ -123,6 +124,8 @@ plot.}
 figure width.}
 
 \item{legend_ncol}{The number of columns in the legend.}
+
+\item{legend_text_color}{The colour of the legend text.}
 
 \item{date_labels}{A string giving the formatting specification for the
 x-axis date labels. Codes are defined in ‘strftime()’.}
