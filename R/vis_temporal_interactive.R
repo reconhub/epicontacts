@@ -918,8 +918,8 @@ vis_temporal_interactive <- function(x,
       }
     }
 
-    leg_nodes$font.color <- legend_text_color
-    leg_edges$font.color <- legend_text_color
+    if(!is.null(leg_nodes)) leg_nodes$font.color <- legend_text_color
+    if(!is.null(leg_edges)) leg_edges$font.color <- legend_text_color
 
     out <- visNetwork::visLegend(out,
                                  zoom = FALSE,
