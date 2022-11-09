@@ -384,6 +384,9 @@ vis_epicontacts <- function(x,
   ## convert height "xx%" to "xxvh" due to visNetwork bug
   if(is.character(height)) height <- gsub("%", "vh", height)
 
+  ## specify arrows towards node if directed
+  edges$arrows.to <- x$directed
+
   ## build visNetwork output
   out <- visNetwork::visNetwork(nodes, edges,
                                 width = width,
