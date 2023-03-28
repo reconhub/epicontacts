@@ -46,14 +46,12 @@
 #'      vertex.color = cases_pal(50))
 #' }
 
-as.igraph.epicontacts <- function(x, na_rm = FALSE){
+as.igraph.epicontacts <- function(x, na_rm = FALSE, ...){
 
-  
-  
   ## Test for NA
   missing_contacts <- is.na(x$contacts$from) | is.na(x$contacts$to)
   missing_vertex   <- is.na(x$linelist$id)
-  
+
   if(na_rm) {
     x$contacts <- subset(x$contacts, !missing_contacts)
     x$linelist <- subset(x$linelist, !missing_vertex)
@@ -62,20 +60,20 @@ as.igraph.epicontacts <- function(x, na_rm = FALSE){
   ## Create vertex dataframe using combination of linelist and contacts
   all_ids <- data.frame(id = get_id(x, "all"), stringsAsFactors = FALSE)
   verts <- merge(x$linelist, all_ids, by = 'id', all = TRUE, sort = FALSE)
-    
+
   ## Checking if a "name" column exists
   if ("name" %in% colnames(verts)) {
     verts$epicontacts_name <- verts$name
     verts$name <- NULL
   }
-  
+
   ## Add NA vertex if necessary
   if (any(missing_contacts) && !any(missing_vertex) && !na_rm) {
     verts[nrow(verts) + 1, 1] <- NA
   }
-  
+
   ## Creating igraph object
-  ## Replace uninformative with informative warning 
+  ## Replace uninformative with informative warning
   net <- suppressWarnings(igraph::graph_from_data_frame(x$contacts,
                                                         vertices = verts,
                                                         directed = x$directed))
@@ -85,9 +83,9 @@ as.igraph.epicontacts <- function(x, na_rm = FALSE){
             "and are assumed to represent a single case. If this is unwanted, ",
             "set na_rm = TRUE to remove NA elements from the igraph object.")
   }
-  
+
   igraph::vertex_attr(net)$id <- igraph::vertex_attr(net)$name
-  
+
   return(net)
-  
+
 }

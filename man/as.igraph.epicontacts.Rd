@@ -4,7 +4,7 @@
 \alias{as.igraph.epicontacts}
 \title{Create igraph object from contact data}
 \usage{
-\method{as.igraph}{epicontacts}(x, na_rm = FALSE)
+\method{as.igraph}{epicontacts}(x, na_rm = FALSE, ...)
 }
 \arguments{
 \item{x}{An \code{\link{epicontacts}} object.}
