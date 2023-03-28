@@ -42,7 +42,7 @@
 #'      vertex.color = cases_pal(50))
 #' }
 
-as.igraph.epicontacts <- function(x){
+as.igraph.epicontacts <- function(x, ...){
 
   ## Create vertex dataframe using combination of linelist and contacts
 
