@@ -1,3 +1,11 @@
+epicontacts 1.1.3 (2023-03-28)
+==================
+
+### BUG FIXES
+
+- Small fix for CRAN warnings
+
+
 epicontacts 1.1.2 (2021-10-19)
 ==================
 
