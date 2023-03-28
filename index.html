@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">epicontacts</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/epicontacts.html">Get started</a>
 </li>
@@ -50,7 +46,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -67,7 +63,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/reconhub/epicontacts/">
+  <a href="https://github.com/reconhub/epicontacts/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -85,27 +81,27 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="welcome-to-the-epicontacts-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#welcome-to-the-epicontacts-package" class="anchor"></a>Welcome to the <em>epicontacts</em> package!</h2>
+<div class="section level2">
+<h2 id="welcome-to-the-epicontacts-package">Welcome to the <em>epicontacts</em> package!<a class="anchor" aria-label="anchor" href="#welcome-to-the-epicontacts-package"></a>
+</h2>
 <p><br></p>
-<p><a href="https://travis-ci.org/reconhub/epicontacts"><img src="https://travis-ci.org/reconhub/epicontacts.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://ci.appveyor.com/project/thibautjombart/epicontacts/branch/master"><img src="https://ci.appveyor.com/api/projects/status/7fj30xjlesja0vbr/branch/master?svg=true" alt="Build status"></a> <a href="https://codecov.io/github/reconhub/epicontacts?branch=master"><img src="https://codecov.io/github/reconhub/epicontacts/coverage.svg?branch=master" alt="Coverage Status"></a> <a href="https://cran.r-project.org/package=epicontacts"><img src="http://www.r-pkg.org/badges/version/epicontacts" alt="CRAN_Status_Badge"></a> <a href="https://cran.r-project.org/package=epicontacts"><img src="https://cranlogs.r-pkg.org/badges/epicontacts" alt="CRAN Downloads"></a> <a href="http://www.r-pkg.org/pkg/epicontacts"><img src="https://cranlogs.r-pkg.org/badges/grand-total/epicontacts" alt="Downloads from Rstudio mirror"></a></p>
+<p><a href="https://travis-ci.org/reconhub/epicontacts" class="external-link"><img src="https://travis-ci.org/reconhub/epicontacts.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://ci.appveyor.com/project/thibautjombart/epicontacts/branch/master" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/7fj30xjlesja0vbr/branch/master?svg=true" alt="Build status"></a> <a href="https://codecov.io/github/reconhub/epicontacts?branch=master" class="external-link"><img src="https://codecov.io/github/reconhub/epicontacts/coverage.svg?branch=master" alt="Coverage Status"></a> <a href="https://cran.r-project.org/package=epicontacts" class="external-link"><img src="http://www.r-pkg.org/badges/version/epicontacts" alt="CRAN_Status_Badge"></a> <a href="https://cran.r-project.org/package=epicontacts" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/epicontacts" alt="CRAN Downloads"></a> <a href="http://www.r-pkg.org/pkg/epicontacts" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/epicontacts" alt="Downloads from Rstudio mirror"></a></p>
 <p><br></p>
 </div>
-<div id="installing-the-package" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#installing-the-package" class="anchor"></a>Installing the package</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="installing-the-package">Installing the package<a class="anchor" aria-label="anchor" href="#installing-the-package"></a>
+</h1></div>
 <p>To install the current stable, CRAN version of the package, type:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"epicontacts"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"epicontacts"</span><span class="op">)</span></span></code></pre></div>
 <p>To benefit from the latest features and bug fixes, install the development, <em>github</em> version of the package using:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"reconhub/epicontacts"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"reconhub/epicontacts"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that this requires the package <em>devtools</em> installed.</p>
 </div>
-<div id="what-does-it-do" class="section level1">
-<h1 class="hasAnchor">
-<a href="#what-does-it-do" class="anchor"></a>What does it do?</h1>
+<div class="section level1">
+<h1 id="what-does-it-do">What does it do?<a class="anchor" aria-label="anchor" href="#what-does-it-do"></a>
+</h1>
 <p>The main features of the package include:</p>
 <ul>
 <li><p><strong><code>epicontacts</code>:</strong> a new S3 class for storing linelists and contacts data</p></li>
@@ -125,41 +121,41 @@
 <li><p><strong><code>graph3D</code></strong>: 3D graph from an <code>epicontacts</code> object.</p></li>
 </ul>
 </div>
-<div id="resources" class="section level1">
-<h1 class="hasAnchor">
-<a href="#resources" class="anchor"></a>Resources</h1>
-<div id="vignettes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#vignettes" class="anchor"></a>Vignettes</h2>
+<div class="section level1">
+<h1 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
+</h1>
+<div class="section level2">
+<h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
+</h2>
 <p>An overview of <em>epicontacts</em> is provided below in the worked example below. More detailed tutorials are distributed as vignettes with the package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"overview"</span>, package<span class="op">=</span><span class="st">"epicontacts"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"customize_plot"</span>, package<span class="op">=</span><span class="st">"epicontacts"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"epicontacts_class"</span>, package<span class="op">=</span><span class="st">"epicontacts"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"overview"</span>, package<span class="op">=</span><span class="st">"epicontacts"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"customize_plot"</span>, package<span class="op">=</span><span class="st">"epicontacts"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"epicontacts_class"</span>, package<span class="op">=</span><span class="st">"epicontacts"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="websites" class="section level2">
-<h2 class="hasAnchor">
-<a href="#websites" class="anchor"></a>Websites</h2>
+<div class="section level2">
+<h2 id="websites">Websites<a class="anchor" aria-label="anchor" href="#websites"></a>
+</h2>
 <p>The following websites are available:</p>
 <ul>
-<li><p>The official <em>epicontacts</em> website, providing an overview of the package’s functionalities, up-to-date tutorials and documentation: <br><a href="http://www.repidemicsconsortium.org/epicontacts/">http://www.repidemicsconsortium.org/epicontacts/</a></p></li>
-<li><p>The <em>epicontacts</em> project on <em>github</em>, useful for developers, contributors, and users wanting to post issues, bug reports and feature requests: <br><a href="http://github.com/reconhub/epicontacts">http://github.com/reconhub/epicontacts</a></p></li>
-<li><p>The <em>epicontacts</em> page on CRAN: <br><a href="https://CRAN.R-project.org/package=epicontacts">https://CRAN.R-project.org/package=epicontacts</a></p></li>
+<li><p>The official <em>epicontacts</em> website, providing an overview of the package’s functionalities, up-to-date tutorials and documentation: <br><a href="http://www.repidemicsconsortium.org/epicontacts/" class="external-link">http://www.repidemicsconsortium.org/epicontacts/</a></p></li>
+<li><p>The <em>epicontacts</em> project on <em>github</em>, useful for developers, contributors, and users wanting to post issues, bug reports and feature requests: <br><a href="http://github.com/reconhub/epicontacts" class="external-link">http://github.com/reconhub/epicontacts</a></p></li>
+<li><p>The <em>epicontacts</em> page on CRAN: <br><a href="https://CRAN.R-project.org/package=epicontacts" class="external-link">https://CRAN.R-project.org/package=epicontacts</a></p></li>
 </ul>
 </div>
-<div id="getting-help-online" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-help-online" class="anchor"></a>Getting help online</h2>
-<p>Bug reports and feature requests should be posted on <em>github</em> using the <a href="http://github.com/reconhub/epicontacts/issues"><em>issue</em></a> system. All other questions should be posted on the <strong>RECON forum</strong>: <br><a href="http://www.repidemicsconsortium.org/forum/">http://www.repidemicsconsortium.org/forum/</a></p>
+<div class="section level2">
+<h2 id="getting-help-online">Getting help online<a class="anchor" aria-label="anchor" href="#getting-help-online"></a>
+</h2>
+<p>Bug reports and feature requests should be posted on <em>github</em> using the <a href="http://github.com/reconhub/epicontacts/issues" class="external-link"><em>issue</em></a> system. All other questions should be posted on the <strong>RECON forum</strong>: <br><a href="http://www.repidemicsconsortium.org/forum/" class="external-link">http://www.repidemicsconsortium.org/forum/</a></p>
 </div>
 </div>
-<div id="a-quick-overview" class="section level1">
-<h1 class="hasAnchor">
-<a href="#a-quick-overview" class="anchor"></a>A quick overview</h1>
+<div class="section level1">
+<h1 id="a-quick-overview">A quick overview<a class="anchor" aria-label="anchor" href="#a-quick-overview"></a>
+</h1>
 <p>The following worked example provides a brief overview of the package’s functionalities. See the <a href="#vignettes"><em>vignettes section</em></a> for more detailed tutorials.</p>
-<div id="obtaining-an-epicontacts-object" class="section level2">
-<h2 class="hasAnchor">
-<a href="#obtaining-an-epicontacts-object" class="anchor"></a>Obtaining an <em>epicontacts</em> object</h2>
+<div class="section level2">
+<h2 id="obtaining-an-epicontacts-object">Obtaining an <em>epicontacts</em> object<a class="anchor" aria-label="anchor" href="#obtaining-an-epicontacts-object"></a>
+</h2>
 <p><em>epicontacts</em> need two types of data:</p>
 <ul>
 <li><p>a <strong>linelist</strong>, i.e. a spreadsheet documenting cases where columns are variables and rows correspond to unique cases</p></li>
@@ -168,178 +164,180 @@
 <p>There does not need to be an one-to-one correspondance between cases documented in the linelist and those appearing in the contacts. However, links will be made between the two sources of data whenever unique identifiers match. This will be especially handy when subsetting data, or when characterising contacts in terms of ‘node’ (case) properties.</p>
 <p>We illustrate the construction of an <em>epicontacts</em> using contact data from a Middle East Respiratory Syndrom coronavirus (MERS CoV) from South Korea in 2015, available as the dataset <code>mers_korea_2015</code> in the package <em>outbreaks</em>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/reconhub/outbreaks">outbreaks</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.repidemicsconsortium.org/epicontacts/">epicontacts</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">)</span>
-<span class="co">#&gt; [1] "linelist" "contacts"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">linelist</span><span class="op">)</span> 
-<span class="co">#&gt; [1] 162  15</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">contacts</span><span class="op">)</span> 
-<span class="co">#&gt; [1] 98  4</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_epicontacts.html">make_epicontacts</a></span><span class="op">(</span>linelist <span class="op">=</span> <span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">linelist</span>,
-                      contacts <span class="op">=</span> <span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">contacts</span>, 
-                      directed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">x</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; /// Epidemiological Contacts //</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   // class: epicontacts</span>
-<span class="co">#&gt;   // 162 cases in linelist; 98 contacts;  directed </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   // linelist</span>
-<span class="co">#&gt; Warning: `tbl_df()` was deprecated in dplyr 1.0.0.</span>
-<span class="co">#&gt; Please use `tibble::as_tibble()` instead.</span>
-<span class="co">#&gt; This warning is displayed once every 8 hours.</span>
-<span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span>
-<span class="co">#&gt; # A tibble: 162 x 15</span>
-<span class="co">#&gt;    id      age age_class sex   place_infect  reporting_ctry loc_hosp  dt_onset  </span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;int&gt; &lt;chr&gt;     &lt;fct&gt; &lt;fct&gt;         &lt;fct&gt;          &lt;fct&gt;     &lt;date&gt;    </span>
-<span class="co">#&gt;  1 SK_1     68 60-69     M     Middle East   South Korea    Pyeongta~ 2015-05-11</span>
-<span class="co">#&gt;  2 SK_2     63 60-69     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-18</span>
-<span class="co">#&gt;  3 SK_3     76 70-79     M     Outside Midd~ South Korea    Pyeongta~ 2015-05-20</span>
-<span class="co">#&gt;  4 SK_4     46 40-49     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-25</span>
-<span class="co">#&gt;  5 SK_5     50 50-59     M     Outside Midd~ South Korea    365 Yeol~ 2015-05-25</span>
-<span class="co">#&gt;  6 SK_6     71 70-79     M     Outside Midd~ South Korea    Pyeongta~ 2015-05-24</span>
-<span class="co">#&gt;  7 SK_7     28 20-29     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-21</span>
-<span class="co">#&gt;  8 SK_8     46 40-49     F     Outside Midd~ South Korea    Seoul Cl~ 2015-05-26</span>
-<span class="co">#&gt;  9 SK_9     56 50-59     M     Outside Midd~ South Korea    Pyeongta~ NA        </span>
-<span class="co">#&gt; 10 SK_10    44 40-49     M     Outside Midd~ China          Pyeongta~ 2015-05-21</span>
-<span class="co">#&gt; # ... with 152 more rows, and 7 more variables: dt_report &lt;date&gt;,</span>
-<span class="co">#&gt; #   week_report &lt;fct&gt;, dt_start_exp &lt;date&gt;, dt_end_exp &lt;date&gt;, dt_diag &lt;date&gt;,</span>
-<span class="co">#&gt; #   outcome &lt;fct&gt;, dt_death &lt;date&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   // contacts</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; # A tibble: 98 x 4</span>
-<span class="co">#&gt;    from  to     exposure       diff_dt_onset</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;fct&gt;                  &lt;int&gt;</span>
-<span class="co">#&gt;  1 SK_14 SK_113 Emergency room            10</span>
-<span class="co">#&gt;  2 SK_14 SK_116 Emergency room            13</span>
-<span class="co">#&gt;  3 SK_14 SK_41  Emergency room            14</span>
-<span class="co">#&gt;  4 SK_14 SK_112 Emergency room            14</span>
-<span class="co">#&gt;  5 SK_14 SK_100 Emergency room            15</span>
-<span class="co">#&gt;  6 SK_14 SK_114 Emergency room            15</span>
-<span class="co">#&gt;  7 SK_14 SK_136 Emergency room            15</span>
-<span class="co">#&gt;  8 SK_14 SK_47  Emergency room            16</span>
-<span class="co">#&gt;  9 SK_14 SK_110 Emergency room            16</span>
-<span class="co">#&gt; 10 SK_14 SK_122 Emergency room            16</span>
-<span class="co">#&gt; # ... with 88 more rows</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] "epicontacts"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; /// Overview //</span>
-<span class="co">#&gt;   // number of unique IDs in linelist: 162</span>
-<span class="co">#&gt;   // number of unique IDs in contacts: 97</span>
-<span class="co">#&gt;   // number of unique IDs in both: 97</span>
-<span class="co">#&gt;   // number of contacts: 98</span>
-<span class="co">#&gt;   // contacts with both cases in linelist: 100 %</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; /// Degrees of the network //</span>
-<span class="co">#&gt;   // in-degree summary:</span>
-<span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
-<span class="co">#&gt;    0.00    1.00    1.00    1.01    1.00    3.00 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   // out-degree summary:</span>
-<span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
-<span class="co">#&gt;    0.00    0.00    0.00    1.01    0.00   38.00 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   // in and out degree summary:</span>
-<span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
-<span class="co">#&gt;   1.000   1.000   1.000   2.021   1.000  39.000 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; /// Attributes //</span>
-<span class="co">#&gt;   // attributes in linelist:</span>
-<span class="co">#&gt;  age age_class sex place_infect reporting_ctry loc_hosp dt_onset dt_report week_report dt_start_exp dt_end_exp dt_diag outcome dt_death</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   // attributes in contacts:</span>
-<span class="co">#&gt;  exposure diff_dt_onset</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/reconhub/outbreaks" class="external-link">outbreaks</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.repidemicsconsortium.org/epicontacts/" class="external-link">epicontacts</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "linelist" "contacts"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">linelist</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [1] 162  15</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">contacts</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [1] 98  4</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_epicontacts.html">make_epicontacts</a></span><span class="op">(</span>linelist <span class="op">=</span> <span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">linelist</span>,</span>
+<span>                      contacts <span class="op">=</span> <span class="va">mers_korea_2015</span><span class="op">$</span><span class="va">contacts</span>, </span>
+<span>                      directed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; /// Epidemiological Contacts //</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   // class: epicontacts</span></span>
+<span><span class="co">#&gt;   // 162 cases in linelist; 98 contacts;  directed </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   // linelist</span></span>
+<span><span class="co">#&gt; Warning: `tbl_df()` was deprecated in dplyr 1.0.0.</span></span>
+<span><span class="co">#&gt; Please use `tibble::as_tibble()` instead.</span></span>
+<span><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span><span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span>
+<span><span class="co">#&gt; # A tibble: 162 x 15</span></span>
+<span><span class="co">#&gt;    id      age age_class sex   place_infect  reporting_ctry loc_hosp  dt_onset  </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;int&gt; &lt;chr&gt;     &lt;fct&gt; &lt;fct&gt;         &lt;fct&gt;          &lt;fct&gt;     &lt;date&gt;    </span></span>
+<span><span class="co">#&gt;  1 SK_1     68 60-69     M     Middle East   South Korea    Pyeongta~ 2015-05-11</span></span>
+<span><span class="co">#&gt;  2 SK_2     63 60-69     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-18</span></span>
+<span><span class="co">#&gt;  3 SK_3     76 70-79     M     Outside Midd~ South Korea    Pyeongta~ 2015-05-20</span></span>
+<span><span class="co">#&gt;  4 SK_4     46 40-49     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-25</span></span>
+<span><span class="co">#&gt;  5 SK_5     50 50-59     M     Outside Midd~ South Korea    365 Yeol~ 2015-05-25</span></span>
+<span><span class="co">#&gt;  6 SK_6     71 70-79     M     Outside Midd~ South Korea    Pyeongta~ 2015-05-24</span></span>
+<span><span class="co">#&gt;  7 SK_7     28 20-29     F     Outside Midd~ South Korea    Pyeongta~ 2015-05-21</span></span>
+<span><span class="co">#&gt;  8 SK_8     46 40-49     F     Outside Midd~ South Korea    Seoul Cl~ 2015-05-26</span></span>
+<span><span class="co">#&gt;  9 SK_9     56 50-59     M     Outside Midd~ South Korea    Pyeongta~ NA        </span></span>
+<span><span class="co">#&gt; 10 SK_10    44 40-49     M     Outside Midd~ China          Pyeongta~ 2015-05-21</span></span>
+<span><span class="co">#&gt; # ... with 152 more rows, and 7 more variables: dt_report &lt;date&gt;,</span></span>
+<span><span class="co">#&gt; #   week_report &lt;fct&gt;, dt_start_exp &lt;date&gt;, dt_end_exp &lt;date&gt;, dt_diag &lt;date&gt;,</span></span>
+<span><span class="co">#&gt; #   outcome &lt;fct&gt;, dt_death &lt;date&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   // contacts</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; # A tibble: 98 x 4</span></span>
+<span><span class="co">#&gt;    from  to     exposure       diff_dt_onset</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;fct&gt;                  &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1 SK_14 SK_113 Emergency room            10</span></span>
+<span><span class="co">#&gt;  2 SK_14 SK_116 Emergency room            13</span></span>
+<span><span class="co">#&gt;  3 SK_14 SK_41  Emergency room            14</span></span>
+<span><span class="co">#&gt;  4 SK_14 SK_112 Emergency room            14</span></span>
+<span><span class="co">#&gt;  5 SK_14 SK_100 Emergency room            15</span></span>
+<span><span class="co">#&gt;  6 SK_14 SK_114 Emergency room            15</span></span>
+<span><span class="co">#&gt;  7 SK_14 SK_136 Emergency room            15</span></span>
+<span><span class="co">#&gt;  8 SK_14 SK_47  Emergency room            16</span></span>
+<span><span class="co">#&gt;  9 SK_14 SK_110 Emergency room            16</span></span>
+<span><span class="co">#&gt; 10 SK_14 SK_122 Emergency room            16</span></span>
+<span><span class="co">#&gt; # ... with 88 more rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "epicontacts"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; /// Overview //</span></span>
+<span><span class="co">#&gt;   // number of unique IDs in linelist: 162</span></span>
+<span><span class="co">#&gt;   // number of unique IDs in contacts: 97</span></span>
+<span><span class="co">#&gt;   // number of unique IDs in both: 97</span></span>
+<span><span class="co">#&gt;   // number of contacts: 98</span></span>
+<span><span class="co">#&gt;   // contacts with both cases in linelist: 100 %</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; /// Degrees of the network //</span></span>
+<span><span class="co">#&gt;   // in-degree summary:</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;    0.00    1.00    1.00    1.01    1.00    3.00 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   // out-degree summary:</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;    0.00    0.00    0.00    1.01    0.00   38.00 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   // in and out degree summary:</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;   1.000   1.000   1.000   2.021   1.000  39.000 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; /// Attributes //</span></span>
+<span><span class="co">#&gt;   // attributes in linelist:</span></span>
+<span><span class="co">#&gt;  age age_class sex place_infect reporting_ctry loc_hosp dt_onset dt_report week_report dt_start_exp dt_end_exp dt_diag outcome dt_death</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   // attributes in contacts:</span></span>
+<span><span class="co">#&gt;  exposure diff_dt_onset</span></span></code></pre></div>
 <p>In practice, the linelist and contacts will usually be imported from a text file (e.g. .txt, .csv) or a spreadsheet (e.g. .ods, .xls) using usual import functions (e.g. <code>read.table</code>, <code>read.csv</code>, <code>gdata::read.xls</code>).</p>
 </div>
-<div id="simple-analyses" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simple-analyses" class="anchor"></a>Simple analyses</h2>
+<div class="section level2">
+<h2 id="simple-analyses">Simple analyses<a class="anchor" aria-label="anchor" href="#simple-analyses"></a>
+</h2>
 <p>First, we plot the <em>epicontacts</em> object:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, selector <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, selector <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x.png" width="600px"></p>
-<p>This is a screenshot of the actual plot. For interactive graphs, see the <a href="http://www.repidemicsconsortium.org/epicontacts/articles/epicontacts.html">introductory vignette</a>.</p>
+<p>This is a screenshot of the actual plot. For interactive graphs, see the <a href="http://www.repidemicsconsortium.org/epicontacts/articles/epicontacts.html" class="external-link">introductory vignette</a>.</p>
 <p>We can look for patterns of contacts between genders:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sex"</span>, col_pal <span class="op">=</span> <span class="va">spectral</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sex"</span>, col_pal <span class="op">=</span> <span class="va">spectral</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://github.com/reconhub/epicontacts/raw/master/figs/plot_x_gender.png" width="600px"></p>
 <p>There is no obvious signs of non-random mixing patterns, but this is worth testing. The function <code>get_pairwise</code> is particularly useful for this. In its basic form, it reports nodes of attributes for all contacts. For instance:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="reference/get_pairwise.html">get_pairwise</a></span><span class="op">(</span><span class="va">x</span>, attribute <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span>
-<span class="co">#&gt;  [1] "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F"</span>
-<span class="co">#&gt;  [9] "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; F" "M -&gt; M"</span>
-<span class="co">#&gt; [17] "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M"</span>
-<span class="co">#&gt; [25] "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M"</span>
-<span class="co">#&gt; [33] "F -&gt; F" "M -&gt; F" "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M"</span>
-<span class="co">#&gt; [41] "M -&gt; F" "F -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; F"</span>
-<span class="co">#&gt; [49] "M -&gt; M" "M -&gt; F" "M -&gt; M" "F -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; F"</span>
-<span class="co">#&gt; [57] "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F"</span>
-<span class="co">#&gt; [65] "M -&gt; F" "F -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M"</span>
-<span class="co">#&gt; [73] "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; F"</span>
-<span class="co">#&gt; [81] "M -&gt; M" "M -&gt; F" "F -&gt; M" "M -&gt; F" "F -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; M"</span>
-<span class="co">#&gt; [89] "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F"</span>
-<span class="co">#&gt; [97] "M -&gt; M" "M -&gt; M"</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="reference/get_pairwise.html">get_pairwise</a></span><span class="op">(</span><span class="va">x</span>, attribute <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F"</span></span>
+<span><span class="co">#&gt;  [9] "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; F" "M -&gt; M"</span></span>
+<span><span class="co">#&gt; [17] "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M"</span></span>
+<span><span class="co">#&gt; [25] "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M"</span></span>
+<span><span class="co">#&gt; [33] "F -&gt; F" "M -&gt; F" "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M"</span></span>
+<span><span class="co">#&gt; [41] "M -&gt; F" "F -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; F"</span></span>
+<span><span class="co">#&gt; [49] "M -&gt; M" "M -&gt; F" "M -&gt; M" "F -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; F"</span></span>
+<span><span class="co">#&gt; [57] "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F"</span></span>
+<span><span class="co">#&gt; [65] "M -&gt; F" "F -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; M"</span></span>
+<span><span class="co">#&gt; [73] "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; F"</span></span>
+<span><span class="co">#&gt; [81] "M -&gt; M" "M -&gt; F" "F -&gt; M" "M -&gt; F" "F -&gt; F" "M -&gt; F" "M -&gt; M" "M -&gt; M"</span></span>
+<span><span class="co">#&gt; [89] "M -&gt; M" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; M" "M -&gt; M" "M -&gt; F" "M -&gt; F"</span></span>
+<span><span class="co">#&gt; [97] "M -&gt; M" "M -&gt; M"</span></span></code></pre></div>
 <p>However, one can specify the function to be used to compare the attributes of connected nodes; for instance:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">sex_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_pairwise.html">get_pairwise</a></span><span class="op">(</span><span class="va">x</span>, attribute <span class="op">=</span> <span class="st">"sex"</span>, f <span class="op">=</span> <span class="va">table</span><span class="op">)</span>
-<span class="va">sex_tab</span>
-<span class="co">#&gt;            values.to</span>
-<span class="co">#&gt; values.from  F  M</span>
-<span class="co">#&gt;           F  2  4</span>
-<span class="co">#&gt;           M 38 54</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span><span class="op">(</span><span class="va">sex_tab</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  Fisher's Exact Test for Count Data</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; data:  sex_tab</span>
-<span class="co">#&gt; p-value = 1</span>
-<span class="co">#&gt; alternative hypothesis: true odds ratio is not equal to 1</span>
-<span class="co">#&gt; 95 percent confidence interval:</span>
-<span class="co">#&gt;  0.06158088 5.26628732</span>
-<span class="co">#&gt; sample estimates:</span>
-<span class="co">#&gt; odds ratio </span>
-<span class="co">#&gt;   0.712926</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">sex_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_pairwise.html">get_pairwise</a></span><span class="op">(</span><span class="va">x</span>, attribute <span class="op">=</span> <span class="st">"sex"</span>, f <span class="op">=</span> <span class="va">table</span><span class="op">)</span></span>
+<span><span class="va">sex_tab</span></span>
+<span><span class="co">#&gt;            values.to</span></span>
+<span><span class="co">#&gt; values.from  F  M</span></span>
+<span><span class="co">#&gt;           F  2  4</span></span>
+<span><span class="co">#&gt;           M 38 54</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">fisher.test</a></span><span class="op">(</span><span class="va">sex_tab</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Fisher's Exact Test for Count Data</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; data:  sex_tab</span></span>
+<span><span class="co">#&gt; p-value = 1</span></span>
+<span><span class="co">#&gt; alternative hypothesis: true odds ratio is not equal to 1</span></span>
+<span><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span><span class="co">#&gt;  0.06158088 5.26628732</span></span>
+<span><span class="co">#&gt; sample estimates:</span></span>
+<span><span class="co">#&gt; odds ratio </span></span>
+<span><span class="co">#&gt;   0.712926</span></span></code></pre></div>
 <p>Indeed, there are no patterns of association between genders. We can also use this function to compute delays between dates. For instance, to get the distribution of the serial interval (delay between primary and secondary onset):</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">si</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_pairwise.html">get_pairwise</a></span><span class="op">(</span><span class="va">x</span>, attribute <span class="op">=</span> <span class="st">"dt_onset"</span><span class="op">)</span>
-<span class="va">si</span>
-<span class="co">#&gt;  [1] 10 13 14 14 15 15 15 16 16 16 17 18 18 18 18 19 19 19 20 20 20 21 21 22 22</span>
-<span class="co">#&gt; [26] 22 24 24 24 25 17 15  2  7  9 10 14 15 14 22 15  5  9 27 10 12 14 17  9 14</span>
-<span class="co">#&gt; [51] 14  6  6  9  9  9 10 12 13 21  5 14 16 20 21 13  3 11 11 12 12 12 12 13 13</span>
-<span class="co">#&gt; [76] 14 15 15 16 18 21 22 12 11  9  3 10 10 10 10 11 12 12 13 14 16 17 18</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">si</span><span class="op">)</span>
-<span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
-<span class="co">#&gt;    2.00   11.00   14.00   14.47   18.00   27.00</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">si</span>, col <span class="op">=</span> <span class="st">"grey"</span>, border <span class="op">=</span> <span class="st">"white"</span>, nclass <span class="op">=</span> <span class="fl">30</span>, 
-     xlab <span class="op">=</span> <span class="st">"Time to secondary onset (days)"</span>, 
-     main <span class="op">=</span> <span class="st">"Distribution of the serial interval"</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/si-1.png" alt="plot of chunk si"></p>
+<code class="sourceCode R"><span></span>
+<span><span class="va">si</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_pairwise.html">get_pairwise</a></span><span class="op">(</span><span class="va">x</span>, attribute <span class="op">=</span> <span class="st">"dt_onset"</span><span class="op">)</span></span>
+<span><span class="va">si</span></span>
+<span><span class="co">#&gt;  [1] 10 13 14 14 15 15 15 16 16 16 17 18 18 18 18 19 19 19 20 20 20 21 21 22 22</span></span>
+<span><span class="co">#&gt; [26] 22 24 24 24 25 17 15  2  7  9 10 14 15 14 22 15  5  9 27 10 12 14 17  9 14</span></span>
+<span><span class="co">#&gt; [51] 14  6  6  9  9  9 10 12 13 21  5 14 16 20 21 13  3 11 11 12 12 12 12 13 13</span></span>
+<span><span class="co">#&gt; [76] 14 15 15 16 18 21 22 12 11  9  3 10 10 10 10 11 12 12 13 14 16 17 18</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">si</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;    2.00   11.00   14.00   14.47   18.00   27.00</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">si</span>, col <span class="op">=</span> <span class="st">"grey"</span>, border <span class="op">=</span> <span class="st">"white"</span>, nclass <span class="op">=</span> <span class="fl">30</span>, </span>
+<span>     xlab <span class="op">=</span> <span class="st">"Time to secondary onset (days)"</span>, </span>
+<span>     main <span class="op">=</span> <span class="st">"Distribution of the serial interval"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="figs/si-1.png" alt=""><p class="caption">plot of chunk si</p>
 </div>
 </div>
-<div id="contributors-by-alphabetic-order" class="section level1">
-<h1 class="hasAnchor">
-<a href="#contributors-by-alphabetic-order" class="anchor"></a>Contributors (by alphabetic order):</h1>
+</div>
+<div class="section level1">
+<h1 id="contributors-by-alphabetic-order">Contributors (by alphabetic order):<a class="anchor" aria-label="anchor" href="#contributors-by-alphabetic-order"></a>
+</h1>
 <ul>
-<li><a href="https://github.com/finlaycampbell">Finlay Campbell</a></li>
-<li><a href="https://github.com/tc13">Thomas Crellen</a></li>
-<li><a href="https://github.com/thibautjombart">Thibaut Jombart</a></li>
-<li><a href="https://github.com/nistara">Nistara Randhawa</a></li>
+<li><a href="https://github.com/finlaycampbell" class="external-link">Finlay Campbell</a></li>
+<li><a href="https://github.com/tc13" class="external-link">Thomas Crellen</a></li>
+<li><a href="https://github.com/thibautjombart" class="external-link">Thibaut Jombart</a></li>
+<li><a href="https://github.com/nistara" class="external-link">Nistara Randhawa</a></li>
 <li>Bertrand Sudre</li>
 </ul>
-<p>See details of contributions on: <br><a href="https://github.com/reconhub/epicontacts/graphs/contributors" class="uri">https://github.com/reconhub/epicontacts/graphs/contributors</a></p>
+<p>See details of contributions on: <br><a href="https://github.com/reconhub/epicontacts/graphs/contributors" class="external-link uri">https://github.com/reconhub/epicontacts/graphs/contributors</a></p>
 <p>Contributions are welcome via <strong>pull requests</strong>.</p>
 <p>Please note that this project is released with a <a href="CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 <p><strong>Maintainer:</strong> Finlay Campbell (<a href="mailto:finlaycampbell93@gmail.com" class="email">finlaycampbell93@gmail.com</a>)</p>
@@ -349,30 +347,31 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=epicontacts">https://​cloud.r-project.org/​package=epicontacts</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/reconhub/epicontacts/">https://​github.com/​reconhub/​epicontacts/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/reconhub/epicontacts/issues">https://​github.com/​reconhub/​epicontacts/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=epicontacts" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/reconhub/epicontacts/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/reconhub/epicontacts/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;=2)</li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing epicontacts</a></li>
+<li><a href="authors.html#citation">Citing epicontacts</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Finlay Campbell <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Thibaut Jombart <br><small class="roles"> Author </small>  </li>
@@ -384,16 +383,20 @@
 </ul>
 </div>
 
+
+
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Finlay Campbell, Thibaut Jombart, Nistara Randhawa, Bertrand Sudre, VP Nagraj, Thomas Crellen, Zhian N. Kamvar.</p>
+  <p></p>
+<p>Developed by Finlay Campbell, Thibaut Jombart, Nistara Randhawa, Bertrand Sudre, VP Nagraj, Thomas Crellen, Zhian N. Kamvar.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -401,6 +404,8 @@
 
   
 
+
+  
 
   </body>
 </html>
