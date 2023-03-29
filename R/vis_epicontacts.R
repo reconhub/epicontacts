@@ -13,7 +13,7 @@
 #' Zhian N. Kamvar (\email{zkamvar@@gmail.com})
 #'
 #' @param x An \code{\link{epicontacts}} object.
-#' 
+#'
 #' @param thin A logical indicating if the data should be thinned with \code{\link{thin}} so that only cases with contacts should be plotted.
 #'
 #' @param node_color An index or character string indicating which field of the
@@ -48,7 +48,7 @@
 #'
 #' @param legend A logical indicating whether a legend should be added to the
 #'   plot.
-#' 
+#'
 #' @param x_axis A character string indicating which field of the linelist data
 #'   should be used to specify the x axis position (must be numeric or Date)
 #'
@@ -94,7 +94,7 @@
 #' plot(x)
 #' plot(x, node_color = "place_infect")
 #' # show transmission tree with time as the horizontal axis, showing all nodes
-#' vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
+#' vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE)
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
 #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
 #' plot(x, "place_infect", node_shape = "sex",
@@ -119,11 +119,10 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   ## code).
 
   ## handling
-  
   if (thin) {
     x <- thin(x)
   }
-  
+
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 
@@ -212,9 +211,9 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
     nodes$borderWidth <- 2
   }
 
-  
+
   ## add edge info
-  
+
   edges <- x$contacts
   if (!is.null(x_axis)) {
     if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
@@ -319,17 +318,17 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
 
 
   if (!is.null(x_axis)){
-    
-    out <- visNetwork::visHierarchicalLayout(out, 
+
+    out <- visNetwork::visHierarchicalLayout(out,
                                              direction = 'LR')
-    
+
     # only display ids of "real" (i.e. case or linelist) nodes in select list
     selectvals <- setdiff(nodes$id, dnodes$id)
-    out <- visNetwork::visOptions(out, 
+    out <- visNetwork::visOptions(out,
                                   nodesIdSelection = list(values = selectvals))
-    
+
   }
-  
+
   ## set nodes borders, edge width, and plotting options
 
   enabled <- list(enabled = TRUE)
@@ -341,10 +340,10 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
                                 manipulation = editor,
                                 highlightNearest = enabled)
   out <- visNetwork::visPhysics(out, stabilization = FALSE)
-  
+
   # add fontAwesome
   out <- visNetwork::addFontAwesome(out)
-  
+
   return(out)
 }
 

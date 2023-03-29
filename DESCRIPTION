@@ -1,8 +1,8 @@
 Package: epicontacts
 Type: Package
 Title: Handling, Visualisation and Analysis of Epidemiological Contacts
-Version: 1.1.3
-Date: 2023-03-28
+Version: 1.1.4
+Date: 2023-03-29
 Authors@R: c(person("Finlay", "Campbell", email = "finlaycampbell93@gmail.com", role = c("aut", "cre")),
        	     person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut")),
 	     person("Nistara", "Randhawa", email = "nrandhawa@ucdavis.edu", role = c("aut")),

@@ -74,7 +74,7 @@ plot.epicontacts <- function(x, node_color = "id",
     ## make plots
 
     if (method == "visNetwork") {
-        return(vis_epicontacts(x, node_color = node_color, ...))
+        return(vis_epicontacts(x, node_color = node_color, thin = thin, ...))
     }
 
     if (method == "graph3D") {
