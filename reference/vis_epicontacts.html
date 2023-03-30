@@ -156,8 +156,7 @@ plot.</p></dd>
 
 
 <dt>x_axis</dt>
-<dd><p>A character string indicating which field of the linelist data
-should be used to specify the x axis position (must be numeric or Date)</p></dd>
+<dd><p>Feature currently only available in development "timeline" branch.</p></dd>
 
 
 <dt>col_pal</dt>
@@ -221,31 +220,7 @@ Zhian N. Kamvar (<a href="mailto:zkamvar@gmail.com">zkamvar@gmail.com</a>)</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/reconhub/outbreaks" class="external-link">outbreaks</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## example using MERS outbreak in Korea, 2014</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mers_korea_2015</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_epicontacts.html">make_epicontacts</a></span><span class="op">(</span>linelist<span class="op">=</span><span class="va">mers_korea_2015</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                       contacts <span class="op">=</span> <span class="va">mers_korea_2015</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                       directed<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, node_color <span class="op">=</span> <span class="st">"place_infect"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># show transmission tree with time as the horizontal axis, showing all nodes</span></span></span>
-<span class="r-in"><span><span class="fu">vis_epicontacts</span><span class="op">(</span><span class="va">x</span>, x_axis <span class="op">=</span> <span class="st">"dt_onset"</span>, thin <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, node_color <span class="op">=</span> <span class="st">"loc_hosp"</span>, legend_max<span class="op">=</span><span class="fl">20</span>, annot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, node_color <span class="op">=</span> <span class="st">"loc_hosp"</span>, legend_max<span class="op">=</span><span class="fl">20</span>, annot<span class="op">=</span><span class="cn">TRUE</span>, x_axis <span class="op">=</span> <span class="st">"dt_onset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"place_infect"</span>, node_shape <span class="op">=</span> <span class="st">"sex"</span>,</span></span>
-<span class="r-in"><span>     shapes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>M <span class="op">=</span> <span class="st">"male"</span>, F <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sex"</span>, node_shape <span class="op">=</span> <span class="st">"sex"</span>, shapes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>F <span class="op">=</span> <span class="st">"female"</span>, M <span class="op">=</span> <span class="st">"male"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>     edge_label <span class="op">=</span> <span class="st">"exposure"</span>, edge_color <span class="op">=</span> <span class="st">"exposure"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-</code></pre></div>
+    
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
