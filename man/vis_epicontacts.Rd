@@ -65,8 +65,7 @@ plot.}
 
 \item{legend_max}{The maximum number of groups for a legend to be displayed.}
 
-\item{x_axis}{A character string indicating which field of the linelist data
-should be used to specify the x axis position (must be numeric or Date)}
+\item{x_axis}{Feature currently only available in development "timeline" branch.}
 
 \item{col_pal}{A color palette for the nodes.}
 
@@ -114,10 +113,8 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
 plot(x)
 plot(x, node_color = "place_infect")
 # show transmission tree with time as the horizontal axis, showing all nodes
-vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE)
-plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
-plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
-plot(x, "place_infect", node_shape = "sex",
+#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
+#' plot(x, "place_infect", node_shape = "sex",
      shapes = c(M = "male", F = "female"))
 
 plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
