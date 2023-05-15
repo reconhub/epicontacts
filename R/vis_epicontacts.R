@@ -13,7 +13,7 @@
 #' Zhian N. Kamvar (\email{zkamvar@@gmail.com})
 #'
 #' @param x An \code{\link{epicontacts}} object.
-#' 
+#'
 #' @param thin A logical indicating if the data should be thinned with \code{\link{thin}} so that only cases with contacts should be plotted.
 #'
 #' @param node_color An index or character string indicating which field of the
@@ -48,9 +48,8 @@
 #'
 #' @param legend A logical indicating whether a legend should be added to the
 #'   plot.
-#' 
-#' @param x_axis A character string indicating which field of the linelist data
-#'   should be used to specify the x axis position (must be numeric or Date)
+#'
+#' @param x_axis Feature currently only available in development "timeline" branch.
 #'
 #' @param legend_max The maximum number of groups for a legend to be displayed.
 #'
@@ -94,10 +93,8 @@
 #' plot(x)
 #' plot(x, node_color = "place_infect")
 #' # show transmission tree with time as the horizontal axis, showing all nodes
-#' vis_epicontacts(x, x_axis = "dt_onset", thin = FALSE) 
-#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
-#' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE, x_axis = "dt_onset")
-#' plot(x, "place_infect", node_shape = "sex",
+#' #' plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
+#' #' plot(x, "place_infect", node_shape = "sex",
 #'      shapes = c(M = "male", F = "female"))
 #'
 #' plot(x, "sex", node_shape = "sex", shapes = c(F = "female", M = "male"),
@@ -119,11 +116,17 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   ## code).
 
   ## handling
-  
   if (thin) {
     x <- thin(x)
   }
-  
+
+  ## throw error if x_axis argument specified
+  if(!is.null(x_axis))
+    stop(paste(
+      "x_axis feature only available in development 'timeline' branch, which can be installed",
+      "via remotes::install_github('reconhub/epicontacts@timeline')."
+    ))
+
   ## check node_color (node attribute used for color)
   node_color <- assert_node_color(x, node_color)
 
@@ -212,59 +215,10 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
     nodes$borderWidth <- 2
   }
 
-  
+
   ## add edge info
-  
+
   edges <- x$contacts
-  if (!is.null(x_axis)) {
-    if (!inherits(nodes[[x_axis]], c("numeric", "Date", "integer"))) {
-      stop("Data used to specify x axis must be a date or number")
-    }
-    drange      <- range(nodes[[x_axis]], na.rm = TRUE)
-    nodes$level <- nodes[[x_axis]] - drange[1] + 1L
-    drange      <- seq(drange[1], drange[2], by = 1L)
-    dnodes      <- data.frame(
-                              id = as.character(drange),
-                              level = drange - drange[1] + 1L,
-                              stringsAsFactors = FALSE
-                             )
-    dedges      <- data.frame(
-                              from = dnodes$id[-nrow(dnodes)],
-                              to   = dnodes$id[-1]
-                             )
-    nmerge      <- c("id", "level")
-    emerge      <- c("from", "to")
-    if (!is.null(label)) {
-      dnodes$label <- dnodes$id
-      nmerge <- c(nmerge, "label")
-    }
-    if (!is.null(node_shape)) {
-      dnodes$shape     <- "icon"
-      dnodes$icon.code <- codeawesome["clock-o"]
-      nmerge <- c(nmerge, "shape", "icon.code")
-    }
-    if (!is.null(node_color)) {
-      dnodes$group.color <- dnodes$icon.color <- "#666666"
-      nmerge <- c(nmerge, "group.color", "icon.color")
-    }
-    if (!is.null(annot)) {
-      dnodes$title <- sprintf("<h3>%s</h3>", dnodes$id)
-      nmerge <- c(nmerge, "title")
-    }
-    nodes <- merge(nodes,
-                   dnodes,
-                   by = nmerge,
-                   all = TRUE,
-                   sort = FALSE
-                  )
-    nodes <- nodes[!is.na(nodes$level), , drop = FALSE]
-    edges <- merge(edges,
-                   dedges,
-                   by = emerge,
-                   all = TRUE,
-                   sort = FALSE
-                  )
-  }
   edges$width <- edge_width
   if (x$directed) {
     edges$arrows <- "to"
@@ -318,20 +272,7 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
   }
 
 
-  if (!is.null(x_axis)){
-    
-    out <- visNetwork::visHierarchicalLayout(out, 
-                                             direction = 'LR')
-    
-    # only display ids of "real" (i.e. case or linelist) nodes in select list
-    selectvals <- setdiff(nodes$id, dnodes$id)
-    out <- visNetwork::visOptions(out, 
-                                  nodesIdSelection = list(values = selectvals))
-    
-  }
-  
   ## set nodes borders, edge width, and plotting options
-
   enabled <- list(enabled = TRUE)
   arg_selec <- if (selector) node_color else NULL
 
@@ -341,10 +282,10 @@ vis_epicontacts <- function(x, thin = TRUE, node_color = "id", label = "id",
                                 manipulation = editor,
                                 highlightNearest = enabled)
   out <- visNetwork::visPhysics(out, stabilization = FALSE)
-  
+
   # add fontAwesome
   out <- visNetwork::addFontAwesome(out)
-  
+
   return(out)
 }
 

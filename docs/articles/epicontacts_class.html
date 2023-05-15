@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">epicontacts</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -82,14 +82,14 @@
 
       
 
-      </header><script src="epicontacts_class_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="epicontacts_class_files/header-attrs-2.14/header-attrs.js"></script><script src="epicontacts_class_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>
 <code>epicontacts</code> Class: Details Regarding the Data Structure for <code>epicontacts</code> Objects</h1>
                         <h4 class="author">VP Nagraj</h4>
             
-            <h4 class="date">2021-10-21</h4>
+            <h4 class="date">2023-03-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/reconhub/epicontacts/blob/master/vignettes/epicontacts_class.Rmd"><code>vignettes/epicontacts_class.Rmd</code></a></small>
       <div class="hidden name"><code>epicontacts_class.Rmd</code></div>
@@ -206,25 +206,26 @@
 ## /// Epidemiological Contacts //
 ## 
 ##   // class: epicontacts
-##   // 5,888 cases in linelist; 3,800 contacts;  directed 
+##   // 5,888 cases in linelist; 3,800 contacts; directed 
 ## 
 ##   // linelist
 ## 
 ## # A tibble: 5,888 x 11
-##    id     generation date_of_infection date_of_onset date_of_hospitalisation
-##    &lt;chr&gt;       &lt;int&gt; &lt;date&gt;            &lt;date&gt;        &lt;date&gt;                 
-##  1 d1fafd          0 NA                2014-04-07    2014-04-17             
-##  2 53371b          1 2014-04-09        2014-04-15    2014-04-20             
-##  3 f5c3d8          1 2014-04-18        2014-04-21    2014-04-25             
-##  4 6c286a          2 NA                2014-04-27    2014-04-27             
-##  5 0f58c4          2 2014-04-22        2014-04-26    2014-04-29             
-##  6 49731d          0 2014-03-19        2014-04-25    2014-05-02             
-##  7 f9149b          3 NA                2014-05-03    2014-05-04             
-##  8 881bd4          3 2014-04-26        2014-05-01    2014-05-05             
-##  9 e66fa4          2 NA                2014-04-21    2014-05-06             
-## 10 20b688          3 NA                2014-05-05    2014-05-06             
-## # … with 5,878 more rows, and 6 more variables: date_of_outcome &lt;date&gt;,
-## #   outcome &lt;fct&gt;, gender &lt;fct&gt;, hospital &lt;fct&gt;, lon &lt;dbl&gt;, lat &lt;dbl&gt;
+##    id     generation date_of_i~1 date_of_~2 date_of_~3 date_of_~4 outcome gender
+##    &lt;chr&gt;       &lt;int&gt; &lt;date&gt;      &lt;date&gt;     &lt;date&gt;     &lt;date&gt;     &lt;fct&gt;   &lt;fct&gt; 
+##  1 d1fafd          0 NA          2014-04-07 2014-04-17 2014-04-19 &lt;NA&gt;    f     
+##  2 53371b          1 2014-04-09  2014-04-15 2014-04-20 NA         &lt;NA&gt;    m     
+##  3 f5c3d8          1 2014-04-18  2014-04-21 2014-04-25 2014-04-30 Recover f     
+##  4 6c286a          2 NA          2014-04-27 2014-04-27 2014-05-07 Death   f     
+##  5 0f58c4          2 2014-04-22  2014-04-26 2014-04-29 2014-05-17 Recover f     
+##  6 49731d          0 2014-03-19  2014-04-25 2014-05-02 2014-05-07 &lt;NA&gt;    f     
+##  7 f9149b          3 NA          2014-05-03 2014-05-04 NA         Recover f     
+##  8 881bd4          3 2014-04-26  2014-05-01 2014-05-05 NA         Death   f     
+##  9 e66fa4          2 NA          2014-04-21 2014-05-06 2014-05-12 Recover m     
+## 10 20b688          3 NA          2014-05-05 2014-05-06 2014-05-14 Death   m     
+## # ... with 5,878 more rows, 3 more variables: hospital &lt;fct&gt;, lon &lt;dbl&gt;,
+## #   lat &lt;dbl&gt;, and abbreviated variable names 1: date_of_infection,
+## #   2: date_of_onset, 3: date_of_hospitalisation, 4: date_of_outcome
 ## 
 ##   // contacts
 ## 
@@ -241,7 +242,7 @@
 ##  8 20b688 d8a13d other  
 ##  9 2ae019 a3c8b8 other  
 ## 10 20b688 974bc1 other  
-## # … with 3,790 more rows</code></pre>
+## # ... with 3,790 more rows</code></pre>
 </div>
 <div id="summary-epicontacts" class="section level3">
 <h3 class="hasAnchor">
@@ -261,15 +262,15 @@
 ## /// Degrees of the network //
 ##   // in-degree summary:
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.0000  0.0000  1.0000  0.6895  1.0000  1.0000 
+##  0.0000  0.0000  1.0000  0.5392  1.0000  1.0000 
 ## 
 ##   // out-degree summary:
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.0000  0.0000  0.0000  0.6895  1.0000  6.0000 
+##  0.0000  0.0000  0.0000  0.5392  1.0000  6.0000 
 ## 
 ##   // in and out degree summary:
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   1.000   1.000   1.379   2.000   7.000 
+##   0.000   1.000   1.000   1.078   1.000   7.000 
 ## 
 ## /// Attributes //
 ##   // attributes in linelist:
@@ -298,15 +299,15 @@
 ## /// Degrees of the network //
 ##   // in-degree summary:
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.0000  0.0000  1.0000  0.5613  1.0000  1.0000 
+##  0.0000  0.0000  0.0000  0.4037  1.0000  1.0000 
 ## 
 ##   // out-degree summary:
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.0000  0.0000  0.0000  0.5613  1.0000  4.0000 
+##  0.0000  0.0000  0.0000  0.4037  1.0000  4.0000 
 ## 
 ##   // in and out degree summary:
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   1.000   1.000   1.123   1.000   4.000 
+##  0.0000  0.0000  1.0000  0.8073  1.0000  4.0000 
 ## 
 ## /// Attributes //
 ##   // attributes in linelist:

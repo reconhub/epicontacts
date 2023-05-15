@@ -1,3 +1,18 @@
+epicontacts 1.1.4 (2023-03-29)
+==================
+
+### BUG FIXES
+
+- Fix `thin` option for `plot.epicontacts`
+
+epicontacts 1.1.3 (2023-03-28)
+==================
+
+### BUG FIXES
+
+- Small fix for CRAN warnings
+
+
 epicontacts 1.1.2 (2021-10-19)
 ==================
 
@@ -13,7 +28,7 @@ epicontacts 1.1.1 (2018-9-18)
 ### NEW FEATURES
 
 * `vis_epicontacts()` gains an `x_axis` argument to specify a column to use for
-  displaying dates.
+  displaying dates
 
 ### BUG FIXES
 
