@@ -21,10 +21,10 @@ print.epicontacts <- function(x, ...){
         "\n")
 
     cat("\n  // linelist\n\n")
-    print(dplyr::tbl_df(x$linelist))
+    print(dplyr::as_tibble(x$linelist))
 
     cat("\n  // contacts\n\n")
-    print(dplyr::tbl_df(x$contacts))
+    print(dplyr::as_tibble(x$contacts))
 
     cat("\n")
 }
