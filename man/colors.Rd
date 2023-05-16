@@ -5,6 +5,7 @@
 \alias{edges_pal}
 \alias{cases_pal}
 \alias{spectral}
+\alias{map2color}
 \alias{fac2col}
 \title{Color tools and palettes for epicontacts}
 \usage{
@@ -15,6 +16,8 @@ edges_pal(n)
 cases_pal(n)
 
 spectral(n)
+
+map2color(x, pal, limits = NULL)
 
 fac2col(
   x,
@@ -37,6 +40,8 @@ transparency, and 1 for full opacity.}
 \item{pal}{A color palette. Can be a function accepting a single number n and
 returning a vector of n colors, or a named character vector matching all
 factor levels in x to a color.}
+
+\item{limits}{The upper and lower boundaries of values for x}
 
 \item{NA_col}{The color to be used for NA values.}
 

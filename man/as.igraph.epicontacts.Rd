@@ -12,6 +12,8 @@
 \item{na_rm}{A logical indicating whether linelist and contacts elements with
 NA values for case IDs should be removed. If these elements are kept, NAs
 are coerced to character and assumed to represent a single case.}
+
+\item{...}{Further arguments passed to as.igraph}
 }
 \value{
 An \code{igraph} object (from the \code{igraph} package).  Note: any

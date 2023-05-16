@@ -13,6 +13,8 @@
 #'   NA values for case IDs should be removed. If these elements are kept, NAs
 #'   are coerced to character and assumed to represent a single case.
 #'
+#' @param ... Further arguments passed to as.igraph
+#'
 #' @return An \code{igraph} object (from the \code{igraph} package).  Note: any
 #'   column called "name" in the original linelist will be stored as a new
 #'   vertex attribute in the \code{igraph} object named 'epicontacts_name'.

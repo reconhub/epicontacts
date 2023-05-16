@@ -106,7 +106,8 @@ spectral <- grDevices::colorRampPalette(
 
 
 
-
+#' @rdname colors
+#'
 #' @param x A numeric vector to be continously mapped to colors
 #'
 #' @param pal A color palette

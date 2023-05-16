@@ -19,7 +19,6 @@ vis_epicontacts(
   shapes = NULL,
   size_range = c(5, 20),
   width_range = c(1, 5),
-  length_range = c(1, 5),
   label = "id",
   annot = TRUE,
   width = "90\%",
@@ -173,6 +172,7 @@ x <- make_epicontacts(linelist=mers_korea_2015[[1]],
 \dontrun{
 plot(x)
 plot(x, node_color = "place_infect")
+# show transmission tree with time as the horizontal axis, showing all nodes
 plot(x, node_color = "loc_hosp", legend_max=20, annot=TRUE)
 plot(x, "place_infect", node_shape = "sex",
      shapes = c(M = "male", F = "female"))
