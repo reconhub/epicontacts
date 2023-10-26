@@ -688,7 +688,9 @@ vis_temporal_interactive <- function(x,
   ## add edge linetype
   if(!is.null(c(edge_linetype, tl_edge_linetype))) {
 
-    joint_edge_linetype <- join_edge_vals(net_edges, timeline, edge_linetype, tl_edge_linetype)
+    joint_edge_linetype <- join_edge_vals(
+      net_edges, timeline, edge_linetype, tl_edge_linetype
+    )
 
     if(any(is.na(joint_edge_linetype))) {
       levels(joint_edge_linetype) <- c(levels(joint_edge_linetype), "NA")
@@ -696,9 +698,9 @@ vis_temporal_interactive <- function(x,
     }
 
     ## use alphabetical order / factor order
-    edges$dashes <- joint_edge_linetype != sort(joint_edge_linetype)[2]
+    edges$dashes <- joint_edge_linetype != levels(joint_edge_linetype)[1]
 
-    unq_linetype <- unique(as.character(joint_edge_linetype))
+    unq_linetype <- as.character(levels(joint_edge_linetype))
     unq_linetype <- unq_linetype[unq_linetype != "unmapped"]
 
     if(length(unq_linetype) > 2) {
@@ -904,11 +906,12 @@ vis_temporal_interactive <- function(x,
       ## Don't add extra legend keys if variable is the same
       if(null_or_same(edge_color, edge_linetype) &&
          null_or_same(tl_edge_color, tl_edge_linetype)) {
-        leg_edges$dashes <- c(TRUE, FALSE)
+        if(nrow(leg_edges) == 1) leg_edges$dashes <- FALSE
+        else if(nrow(leg_edges) == 2) leg_edges$dashes <- c(FALSE, TRUE)
       } else {
         tmp <- data.frame(label = unq_linetype,
                           color = "black",
-                          dashes = c(TRUE, FALSE),
+                          dashes = c(FALSE, TRUE),
                           width = 5,
                           arrows.to = x$directed & !is.null(edge_linetype),
                           font.size = ifelse(is.null(font_size),
