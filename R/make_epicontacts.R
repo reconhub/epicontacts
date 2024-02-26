@@ -114,6 +114,12 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     stop("Duplicated IDs detected in the linelist; culprits are: ", msg)
   }
 
+  ## rename first column if "id" and not the selected id column
+  if (colnames(linelist)[1] == "id" && id != 1) {
+    ## follow base R make.unique() naming
+    colnames(linelist)[1] <- "id.1"
+  }
+  
   ## reordering of variables
   names(linelist)[id] <- "id"
   linelist <- subset(linelist,
