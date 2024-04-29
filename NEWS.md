@@ -1,9 +1,10 @@
-epicontacts 1.1.4 (2023-03-29)
+epicontacts 1.1.4 (2024-04-29)
 ==================
 
 ### BUG FIXES
 
 - Fix `thin` option for `plot.epicontacts`
+- Deal with duplicated IDs
 
 epicontacts 1.1.3 (2023-03-28)
 ==================
