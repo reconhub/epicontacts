@@ -12,7 +12,7 @@ Authors@R: c(person("Finlay", "Campbell", email = "finlaycampbell93@gmail.com", 
 	     person("Zhian N.", "Kamvar", email = "zkamvar@gmail.com", role = c("aut")))
 Description: A collection of tools for representing epidemiological contact data, composed of case line lists and contacts between cases. Also contains procedures for data handling, interactive graphics, and statistics.
 License: GPL (>=2)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports: grDevices, dplyr, igraph, visNetwork, threejs, methods
 Suggests: outbreaks, testthat, covr, shiny, readr, knitr, rmarkdown
 VignetteBuilder: knitr
