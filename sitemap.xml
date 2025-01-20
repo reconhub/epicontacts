@@ -1,84 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/articles/epicontacts_class.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as.igraph.epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/codeawesome.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_clusters.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_degree.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_id.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_pairwise.html</loc>
-  </url>
-  <url>
-    <loc>/reference/graph3D.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.summary_epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sub-.epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/subset.epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/subset_clusters_by_id.html</loc>
-  </url>
-  <url>
-    <loc>/reference/subset_clusters_by_size.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summary.epicontacts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/thin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/vis_epicontacts.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/epicontacts.html</loc></url>
+<url><loc>/articles/epicontacts_class.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/as.igraph.epicontacts.html</loc></url>
+<url><loc>/reference/codeawesome.html</loc></url>
+<url><loc>/reference/colors.html</loc></url>
+<url><loc>/reference/get_clusters.html</loc></url>
+<url><loc>/reference/get_degree.html</loc></url>
+<url><loc>/reference/get_id.html</loc></url>
+<url><loc>/reference/get_pairwise.html</loc></url>
+<url><loc>/reference/graph3D.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/make_epicontacts.html</loc></url>
+<url><loc>/reference/plot.epicontacts.html</loc></url>
+<url><loc>/reference/print.epicontacts.html</loc></url>
+<url><loc>/reference/print.summary_epicontacts.html</loc></url>
+<url><loc>/reference/sub-.epicontacts.html</loc></url>
+<url><loc>/reference/subset.epicontacts.html</loc></url>
+<url><loc>/reference/subset_clusters_by_id.html</loc></url>
+<url><loc>/reference/subset_clusters_by_size.html</loc></url>
+<url><loc>/reference/summary.epicontacts.html</loc></url>
+<url><loc>/reference/thin.html</loc></url>
+<url><loc>/reference/vis_epicontacts.html</loc></url>
 </urlset>
+
