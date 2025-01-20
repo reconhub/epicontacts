@@ -16,6 +16,6 @@ RoxygenNote: 7.3.2
 Imports: grDevices, dplyr, igraph, visNetwork, threejs, methods
 Suggests: outbreaks, testthat, covr, shiny, readr, knitr, rmarkdown
 VignetteBuilder: knitr
-URL: https://www.repidemicsconsortium.org/epicontacts/
+URL: https://www.repidemicsconsortium.org/epicontacts/, https://github.com/reconhub/epicontacts/
 BugReports: https://github.com/reconhub/epicontacts/issues
 Encoding: UTF-8
