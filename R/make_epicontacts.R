@@ -58,9 +58,6 @@
 #' list and contact list should share an identification scheme for individuals.
 #' }
 #'
-#' @references
-#'     \url{https://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
-#'
 #' @examples
 #' if (require(outbreaks)) {
 #' ## make epicontacts object from simulated Ebola data
@@ -119,7 +116,7 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
     ## follow base R make.unique() naming
     colnames(linelist)[1] <- "id.1"
   }
-  
+
   ## reordering of variables
   names(linelist)[id] <- "id"
   linelist <- subset(linelist,

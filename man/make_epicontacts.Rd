@@ -86,9 +86,6 @@ head(x$linelist)
 head(x$contacts)
 }
 }
-\references{
-\url{https://foodborne.unl.edu/public/role/epidemiologist/lineLists.html}
-}
 \author{
 Thibaut Jombart (\email{thibautjombart@gmail.com})
 }
