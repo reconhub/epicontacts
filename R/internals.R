@@ -561,6 +561,17 @@ get_coor <- function(x,
     weight <- linelist[[rank_contact]][to_ind] - linelist[[rank_contact]][from_ind]
     contacts[[rank_contact]] <- as.numeric(weight)
 
+  } else {
+
+    if(!inherits(contacts[[rank_contact]],
+                 c("Date", "numeric", "integer", "POSIXct", "POSIXt"))) {
+      stop(paste0(
+        "rank_contact variable: '", rank_contact,
+        "' must refer to a Date, numeric or integer variable ",
+        "in the contacts dataframe"
+      ))
+    }
+
   }
 
   N <- nrow(linelist)
