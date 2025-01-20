@@ -1,5 +1,4 @@
-
-epicontacts 1.2.0 (2018-9-18)
+epicontacts 1.2.0 (2025-01-20)
 ==================
 
 ### NEW FEATURES
@@ -9,6 +8,15 @@ epicontacts 1.2.0 (2018-9-18)
 ### BUG FIXES
 
 - fixed `NA` handling in `get_degree`.
+- Fix `thin` option for `plot.epicontacts`
+- Deal with duplicated IDs
+
+epicontacts 1.1.3 (2023-03-28)
+==================
+
+### BUG FIXES
+
+- Small fix for CRAN warnings
 
 epicontacts 1.1.2 (2021-10-19)
 ==================

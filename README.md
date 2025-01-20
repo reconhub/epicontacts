@@ -10,7 +10,7 @@ Welcome to the *epicontacts* package!
 [![Travis-CI Build Status](https://travis-ci.org/reconhub/epicontacts.svg?branch=master)](https://travis-ci.org/reconhub/epicontacts)
 [![Build status](https://ci.appveyor.com/api/projects/status/7fj30xjlesja0vbr/branch/master?svg=true)](https://ci.appveyor.com/project/thibautjombart/epicontacts/branch/master)
 [![Coverage Status](https://codecov.io/github/reconhub/epicontacts/coverage.svg?branch=master)](https://codecov.io/github/reconhub/epicontacts?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/epicontacts)](https://cran.r-project.org/package=epicontacts)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/epicontacts)](https://cran.r-project.org/package=epicontacts)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/epicontacts)](https://cran.r-project.org/package=epicontacts)
 [![Downloads from Rstudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/epicontacts)](http://www.r-pkg.org/pkg/epicontacts)
 
