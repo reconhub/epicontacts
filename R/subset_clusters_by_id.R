@@ -37,7 +37,7 @@ subset_clusters_by_id <- function(x, id){
   net <- as.igraph.epicontacts(x, na_rm = TRUE)
 
   ## Get cluster information for each node/case
-  cs <- igraph::clusters(net)
+  cs <- igraph::components(net)
   net_nodes <- data.frame(nodes = igraph::V(net)$id,
                           cs_member = cs$membership,
                           stringsAsFactors = FALSE)
@@ -53,7 +53,7 @@ subset_clusters_by_id <- function(x, id){
   epi_subset <- x[i = id_to_subset,
                   j = id_to_subset,
                   contacts = 'either']
-  
+
   return(epi_subset)
-  
+
 }

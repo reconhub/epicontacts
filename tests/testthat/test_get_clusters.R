@@ -34,7 +34,7 @@ test_that("construction of net nodes works", {
                         directed = TRUE)
 
   net <- as.igraph.epicontacts(x)
-  cs <- igraph::clusters(net)
+  cs <- igraph::components(net)
   cs_size <- data.frame(cluster_member = seq_along(cs$csize),
                         cluster_size = cs$csize)
 
@@ -65,8 +65,8 @@ test_that("clusters are identified correctly", {
                          to = seq(2, sum(cs_size)))
   contacts <- contacts[-head(cumsum(cs_size), -1),]
   linelist <- data.frame(id = seq_len(sum(cs_size)))
-  
-  x <- make_epicontacts(linelist, contacts)  
+
+  x <- make_epicontacts(linelist, contacts)
   clust <- get_clusters(x, 'data.frame')
 
   ## check that cluster size and membership are correct
@@ -99,7 +99,7 @@ test_that("get_clusters returns epicontacts object", {
   y <- get_clusters(x)
 
   expect_is(y, "epicontacts")
-  
+
 })
 
 
@@ -208,5 +208,5 @@ test_that("get_clusters works on different classes", {
   ## test whether get_cluster throws any errors
   mapply(test_get_cluster, comb$id, comb$from, comb$to,
          MoreArgs = list(linelist, contacts))
-  
+
 })

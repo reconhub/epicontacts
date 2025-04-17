@@ -239,12 +239,12 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
 
   ## warn of self-contacts
   contacts_self <- contacts$from == contacts$to
-  if(any(contacts_self, na.rm = TRUE)) {
+  if (any(contacts_self, na.rm = TRUE)) {
     warning("The contact(s) listed on row(s) ",
             paste(which(contacts_self), collapse = ", "),
             " are between a case and itself: this may be unwanted")
   }
-  
+
   ## Build final output
   out <- list(linelist = linelist, contacts = contacts, directed = directed)
   class(out) <- c("epicontacts")
@@ -257,12 +257,12 @@ make_epicontacts <- function(linelist, contacts, id = 1L, from = 1L, to = 2L,
 
   ## Check for cycles (A -> B -> C -> A)
   out_i <- as.igraph.epicontacts(out, na_rm = TRUE)
-  cycle_found <- igraph::girth(out_i)$girth > 0
+  cycle_found <- !is.infinite(igraph::girth(out_i)$girth)
 
   ## Throw warning if found
-  if(loop_found | cycle_found) {
+  if (loop_found || cycle_found) {
     warning("Cycle(s) detected in the contact network: this may be unwanted")
   }
-  
+
   return(out)
 }
