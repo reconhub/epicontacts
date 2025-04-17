@@ -77,7 +77,8 @@ get_clusters <- function(x, output = c("epicontacts", "data.frame"),
 
   output <- match.arg(output)
   net <- as.igraph.epicontacts(x)
-  cs <- igraph::clusters(net)
+
+  cs <- igraph::components(net)
   cs_size <- setNames(data.frame(cluster_member = seq_along(cs$csize),
                                  cluster_size = cs$csize),
                       cluster_cols)
